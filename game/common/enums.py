@@ -32,6 +32,7 @@ class ObjectType(Enum):
     STATION_RECEIVER_EXAMPLE = auto()
     OCCUPIABLE_STATION_EXAMPLE = auto()
     GAME_OBJECT_CONTAINER = auto()
+    CHARACTER = auto()
 
 
 class ActionType(Enum):
@@ -63,3 +64,13 @@ class ActionType(Enum):
     These last 10 enums are for selecting a slot from the Avatar class' inventory.
     You can add/remove these as needed for the purposes of your game. 
     """
+
+
+class CharacterType(Enum):
+    ATTACKER = auto()
+    TANK = auto()
+    HEALER = auto()
+
+class RankType(Enum):
+    GENERIC = auto()
+    LEADER = auto()

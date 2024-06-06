@@ -199,7 +199,7 @@ class Avatar(GameObject):
         if score is None or not isinstance(score, int):
             raise ValueError(
                 f'{self.__class__.__name__}.score must be an int. It is a(n) {score.__class__.__name__} and has the value of '
-                f'{score}')
+                f'{score}')o
         self.__score: int = score
 
     @position.setter
