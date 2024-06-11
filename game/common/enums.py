@@ -33,32 +33,58 @@ class ObjectType(Enum):
     OCCUPIABLE_STATION_EXAMPLE = auto()
     GAME_OBJECT_CONTAINER = auto()
 
+class Country(Enum):
+    URODA = auto()
+    TURPIS = auto()
+
+class Draft(Enum):
+    ANAHITA = auto()
+    BERRY = auto()
+    FULTRA = auto()
+    NINLIL = auto()
+    CALMUS = auto()
+    IRWIN = auto()
+
+class Place(Enum):
+    LEADER = auto()
+    ATTACKER = auto()
+    HEALER = auto()
+    TANK = auto()
+
+class MoveType(Enum):
+    MOVE = auto()
+    ATTACK = auto()
+    HEAL = auto()
+    GUARD = auto()
+    BUFF = auto()
+    DEBUFF = auto()
+
+class TargetType(Enum):
+    SELF = auto()
+    SINGLE_ALLY = auto()
+    ALL_ALLY = auto()
+    SINGLE_OPP = auto()
+    ALL_OPP = auto()
+
+class CharacterType(Enum):
+    ATTACKER = auto()
+    HEALER = auto()
+    TANK = auto()
 
 class ActionType(Enum):
-    NONE = auto()
-    MOVE_UP = auto()
-    MOVE_DOWN = auto()
-    MOVE_LEFT = auto()
-    MOVE_RIGHT = auto()
-    INTERACT_UP = auto()
-    INTERACT_DOWN = auto()
-    INTERACT_LEFT = auto()
-    INTERACT_RIGHT = auto()
-    INTERACT_CENTER = auto()
-    SELECT_SLOT_0 = auto()
-    SELECT_SLOT_1 = auto()
-    SELECT_SLOT_2 = auto()
-    SELECT_SLOT_3 = auto()
-    SELECT_SLOT_4 = auto()
-    SELECT_SLOT_5 = auto()
-    SELECT_SLOT_6 = auto()
-    SELECT_SLOT_7 = auto()
-    SELECT_SLOT_8 = auto()
-    SELECT_SLOT_9 = auto()
-    PLACE_ITEM_UP = auto()
-    PLACE_ITEM_DOWN = auto()
-    PLACE_ITEM_LEFT = auto()
-    PLACE_ITEM_RIGHT = auto()
+    # NONE = auto()
+    # MOVE_UP = auto()
+    # MOVE_DOWN = auto()
+    # MOVE_LEFT = auto()
+    # MOVE_RIGHT = auto()
+    USE_NA = auto()
+    USE_S1 = auto()
+    USE_S2 = auto()
+    USE_S3 = auto()
+    GUARD_SLOT_1 = auto()
+    GUARD_SLOT_2 = auto()
+    GUARD_SLOT_3 = auto()
+    SWAP = auto()
     """
     These last 10 enums are for selecting a slot from the Avatar class' inventory.
     You can add/remove these as needed for the purposes of your game. 
