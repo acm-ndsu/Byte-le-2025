@@ -32,7 +32,7 @@ class Character(GameObject):
 
     @name.setter
     def name(self, name: str) -> None:
-        if not isinstance(name, str):
+        if name is None or not isinstance(name, str):
             raise ValueError(f'{self.__class__.__name__}.name must be a string. It is a(n) {name.__class__.__name__} '
                              f'and has the value of {name}')
         self.__name = name
@@ -43,7 +43,7 @@ class Character(GameObject):
 
     @character_type.setter
     def character_type(self, character_type: CharacterType) -> None:
-        if not isinstance(character_type, CharacterType):
+        if CharacterType is None or not isinstance(character_type, CharacterType):
             raise ValueError(f'{self.__class__.__name__}.character_type must be a CharacterType. '
                              f'It is a(n) {character_type.__class__.__name__} and has the value of {character_type}')
         self.__character_type = character_type
@@ -54,7 +54,7 @@ class Character(GameObject):
 
     @health.setter
     def health(self, health: int) -> None:
-        if not isinstance(health, int):
+        if health is None or not isinstance(health, int):
             raise ValueError(f'{self.__class__.__name__}.health must be an int. It is a(n) {health.__class__.__name__} '
                              f'and has the value of {health}')
         if health < 0:
@@ -68,7 +68,7 @@ class Character(GameObject):
 
     @attack.setter
     def attack(self, attack: int) -> None:
-        if not isinstance(attack, int):
+        if attack is None or not isinstance(attack, int):
             raise ValueError(f'{self.__class__.__name__}.attack must be an int. '
                              f'It is a(n) {attack.__class__.__name__} and has the value of {attack}')
         if attack < 0:
@@ -82,13 +82,13 @@ class Character(GameObject):
 
     @defense.setter
     def defense(self, defense: int) -> None:
-        if not isinstance(defense, int):
+        if defense is None or not isinstance(defense, int):
             raise ValueError(f'{self.__class__.__name__}.defense must be an int. It is a(n) '
                              f'{defense.__class__.__name__} and has the value of {defense}')
         if defense < 0:
             raise ValueError(f'{self.__class__.__name__}.health must be a positive int.')
 
-        self.__health = defense
+        self.__defense = defense
 
     @property
     def speed(self) -> int:
@@ -96,7 +96,7 @@ class Character(GameObject):
 
     @speed.setter
     def speed(self, speed: int) -> None:
-        if not isinstance(speed, int):
+        if speed is None or not isinstance(speed, int):
             raise ValueError(f'{self.__class__.__name__}.speed must be an int. '
                              f'It is a(n) {speed.__class__.__name__} and has the value of {speed}')
         if speed < 0:
@@ -105,3 +105,74 @@ class Character(GameObject):
         self.__speed = speed
 
     # PASSIVE GETTERS AND SETTERS
+
+    @property
+    def guardian(self) -> Self:
+        return self.__guardian
+
+    @guardian.setter
+    def guardian(self, guardian: Self | None) -> None:
+        if guardian is not None and not isinstance(guardian, Character):
+            raise ValueError(f'{self.__class__.__name__}.held_item must be an Item or None. It is a(n) '
+                             f'{guardian.__class__.__name__} and has the value of {guardian}')
+
+        self.__guardian = guardian
+
+    @property
+    def special_points(self) -> int:
+        return self.__special_points
+
+    @special_points.setter
+    def special_points(self, special_points: int) -> None:
+        if special_points is None or not isinstance(special_points, int):
+            raise ValueError(f'{self.__class__.__name__}.special_points must be an int. It is a(n) '
+                             f'{special_points.__class__.__name__} and has the value of {special_points}')
+
+        self.__special_points = special_points
+
+    @property
+    def position(self) -> Vector:
+        return self.__position
+
+    @position.setter
+    def position(self, position: Vector | None) -> None:
+        if position is not None and not isinstance(position, Vector):
+            raise ValueError(f'{self.__class__.__name__}.position must be a Vector. It is a(n) '
+                             f'{position.__class__.__name__} and has the value of {position}')
+
+        self.__position = position
+
+    def to_json(self) -> dict:
+        data: dict = super().to_json()
+        data['name'] = self.name
+        data['character_type'] = self.character_type
+        data['health'] = self.health
+        data['attack'] = self.attack
+        data['defense'] = self.defense
+        data['speed'] = self.speed
+        data['rank'] = self.rank
+        data['guardian'] = self.guardian.to_json() if self.guardian is not None else None
+
+        # change type hint once Move class is made
+        # temp: dict = {}
+        # data['possible_moves'] =
+
+        data['special_points'] = self.special_points
+        data['position'] = self.position if self.position is not None else None
+
+        return data
+
+    def from_json(self, data: dict) -> Self:
+        super().from_json(data)
+        self.name = data['name']
+        self.character_type = data['character_type']
+        self.health = data['health']
+        self.attack = data['attack']
+        self.defense = data['defense']
+        self.speed = data['speed']
+        self.rank = data['rank']
+        self.guardian = data['guardian']
+        self.special_points = data['special_points']
+        self.position = data['position']
+
+        return self

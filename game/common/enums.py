@@ -33,6 +33,10 @@ class ObjectType(Enum):
     OCCUPIABLE_STATION_EXAMPLE = auto()
     GAME_OBJECT_CONTAINER = auto()
     CHARACTER = auto()
+    GENERIC_ATTACKER = auto()
+    GENERIC_HEALER = auto()
+    GENERIC_TANK = auto()
+    LEADER= auto()
 
 
 class ActionType(Enum):
