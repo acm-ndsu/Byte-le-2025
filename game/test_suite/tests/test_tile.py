@@ -2,9 +2,6 @@ import unittest
 
 from game.common.map.tile import Tile
 from game.common.map.wall import Wall
-from game.common.stations.station import Station
-from game.common.stations.occupiable_station import OccupiableStation
-from game.common.avatar import Avatar
 from game.common.enums import ObjectType
 
 
@@ -17,9 +14,6 @@ class TestTile(unittest.TestCase):
     def setUp(self) -> None:
         self.tile: Tile = Tile()
         self.wall: Wall = Wall()
-        self.station: Station = Station()
-        self.occupiable_station: OccupiableStation = OccupiableStation()
-        self.avatar: Avatar = Avatar()
 
     # test json method
     def test_tile_json(self):

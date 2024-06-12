@@ -1,5 +1,5 @@
 import random
-from game.common.avatar import Avatar
+from game.common.team_manager import TeamManager
 from game.utils.vector import Vector
 from game.config import *
 from game.utils.helpers import write_json_file
@@ -17,8 +17,8 @@ def generate(seed: int = random.randint(0, 1000000000)):
 
     print(f'Generating game map... seed: {seed}')
 
-    temp: GameBoard = GameBoard(seed, map_size=Vector(6, 6), locations={Vector(1, 1): [Avatar(),],
-                                                                        Vector(4, 4): [Avatar(),]}, walled=True)
+    temp: GameBoard = GameBoard(seed, map_size=Vector(6, 6), locations={Vector(1, 1): [TeamManager(), ],
+                                                                        Vector(4, 4): [TeamManager(), ]}, walled=True)
     temp.generate_map()
     data: dict = {'game_board': temp.to_json()}
     # for x in range(1, MAX_TICKS + 1):
