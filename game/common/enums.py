@@ -84,8 +84,5 @@ class ActionType(Enum):
     GUARD_SLOT_1 = auto()
     GUARD_SLOT_2 = auto()
     GUARD_SLOT_3 = auto()
-    SWAP = auto()
-    """
-    These last 10 enums are for selecting a slot from the Avatar class' inventory.
-    You can add/remove these as needed for the purposes of your game. 
-    """
+    SWAP_UP = auto()
+    SWAP_DOWN = auto()
