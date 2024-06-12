@@ -83,6 +83,11 @@ class CharacterType(Enum):
     TANK = auto()
 
 
+class RankType(Enum):
+    GENERIC = auto()
+    LEADER = auto()
+
+
 class ActionType(Enum):
     # NONE = auto()
     # MOVE_UP = auto()
