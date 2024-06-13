@@ -1,6 +1,6 @@
 from typing import Self
 
-from character import Character
+from game.byte_le_2025.character.character import Character
 from game.common.enums import CharacterType, ObjectType, RankType
 from game.utils.vector import Vector
 

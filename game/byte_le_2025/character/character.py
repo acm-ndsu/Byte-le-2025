@@ -8,8 +8,8 @@ from game.utils.vector import Vector
 class Character(GameObject):
     # PASSIVE NEEDS TO BE ABILITY | NONE
     # POSSIBLE MOVES NEEDS TO BE DICT[STR: MOVE]
-    def __init__(self, name: str, character_type: CharacterType, health: int = 1, attack: int = 1, defense: int = 1,
-                 speed: int = 1, passive: None = None, guardian: Self | None = None,
+    def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
+                 attack: int = 1, defense: int = 1, speed: int = 1, passive: None = None, guardian: Self | None = None,
                  possible_moves: dict[str: None] = {}, special_points: int = 0, position: Vector | None = None):
         super().__init__()
         self.name = name
@@ -127,6 +127,9 @@ class Character(GameObject):
         if special_points is None or not isinstance(special_points, int):
             raise ValueError(f'{self.__class__.__name__}.special_points must be an int. It is a(n) '
                              f'{special_points.__class__.__name__} and has the value of {special_points}')
+
+        if special_points < 0:
+            raise ValueError(f'{self.__class__.__name__}.special_points must be a positive int.')
 
         self.__special_points = special_points
 
