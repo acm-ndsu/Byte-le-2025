@@ -33,9 +33,11 @@ class ObjectType(Enum):
     OCCUPIABLE_STATION_EXAMPLE = auto()
     GAME_OBJECT_CONTAINER = auto()
 
+
 class Country(Enum):
     URODA = auto()
     TURPIS = auto()
+
 
 class Draft(Enum):
     ANAHITA = auto()
@@ -45,11 +47,13 @@ class Draft(Enum):
     CALMUS = auto()
     IRWIN = auto()
 
+
 class Place(Enum):
     LEADER = auto()
     ATTACKER = auto()
     HEALER = auto()
     TANK = auto()
+
 
 class MoveType(Enum):
     MOVE = auto()
@@ -59,6 +63,7 @@ class MoveType(Enum):
     BUFF = auto()
     DEBUFF = auto()
 
+
 class TargetType(Enum):
     SELF = auto()
     SINGLE_ALLY = auto()
@@ -66,17 +71,19 @@ class TargetType(Enum):
     SINGLE_OPP = auto()
     ALL_OPP = auto()
 
+
 class CharacterType(Enum):
     ATTACKER = auto()
     HEALER = auto()
     TANK = auto()
 
+
 class ActionType(Enum):
-    # NONE = auto()
-    # MOVE_UP = auto()
-    # MOVE_DOWN = auto()
-    # MOVE_LEFT = auto()
-    # MOVE_RIGHT = auto()
+    NONE = auto()
+    MOVE_UP = auto()
+    MOVE_DOWN = auto()
+    MOVE_LEFT = auto()
+    MOVE_RIGHT = auto()
     USE_NA = auto()
     USE_S1 = auto()
     USE_S2 = auto()
