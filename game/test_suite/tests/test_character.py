@@ -1,10 +1,6 @@
 import unittest
 
-from game.byte_le_2025.character.character import Character
-from game.byte_le_2025.character.generic_attacker import GenericAttacker
-from game.byte_le_2025.character.generic_healer import GenericHealer
-from game.byte_le_2025.character.generic_tank import GenericTank
-from game.byte_le_2025.character.leader import Leader
+from game.byte_2025.character import *
 from game.common.enums import CharacterType
 from game.utils.vector import Vector
 from game.test_suite.utils import spell_check
@@ -17,6 +13,8 @@ class TestCharacter(unittest.TestCase):
         self.gen_healer: GenericHealer = GenericHealer('Steve', CharacterType.HEALER)
         self.gen_tank: GenericTank = GenericTank('Bertha', CharacterType.TANK)
         self.leader: Leader = Leader('Phil', CharacterType.TANK)
+        self.special: Character = Character('Special', CharacterType.TANK, 10, 15, 20, 10,
+                                            None, self.leader, {}, 5, Vector(0, 0))
         self.num: int = 100
         self.neg_num: int = -1
         self.none: None = None
@@ -41,6 +39,17 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.gen_tank.guardian, self.gen_attacker)
         self.assertEqual(self.gen_tank.special_points, self.num)
         self.assertEqual(self.gen_tank.position, Vector(0, 0))
+
+        # test that all the parameters are set properly with the constructor
+        self.assertEqual(self.special.name, 'Special')
+        self.assertEqual(self.special.character_type, CharacterType.TANK)
+        self.assertEqual(self.special.health, 10)
+        self.assertEqual(self.special.attack, 15)
+        self.assertEqual(self.special.defense, 20)
+        self.assertEqual(self.special.speed, 10)
+        self.assertEqual(self.special.passive, None)
+        self.assertEqual(self.special.guardian, self.leader)
+        self.assertEqual(self.special.position, Vector(0, 0))
 
     # Test that passing in bad inputs (a string instead of an int, a None value where it's not needed, etc)
     def test_initialization_fail(self):
@@ -99,29 +108,32 @@ class TestCharacter(unittest.TestCase):
         # check that a negative int fails for special_points
         with self.assertRaises(ValueError) as e:
             self.gen_tank.special_points = self.neg_num
-        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.special_points must be a positive '
-                                                      f'int.', True))
+        self.assertTrue(
+            spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.special_points must be a positive '
+                                          f'int.', True))
 
         # check that a None value fails for special_points
         with self.assertRaises(ValueError) as e:
             self.gen_tank.special_points = self.none
-        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.special_points must be an int. It '
-                                                      f'is a(n) {self.none.__class__.__name__} '
-                                                      f'and has the value of {self.none}', True))
+        self.assertTrue(
+            spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.special_points must be an int. It '
+                                          f'is a(n) {self.none.__class__.__name__} '
+                                          f'and has the value of {self.none}', True))
 
-        #Come back to this
+        # check that the Character position has to be a Vector
         value: int = 10
         with self.assertRaises(ValueError) as e:
             self.gen_tank.position = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'gen_tank.position must be a Vector or None. '
-                                                                 f'It is a(n) {value.__class__.__name__} and has the value of {value}',
-                                               False))
+        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.position must be a Vector '
+                                                      f'or None. It is a(n) {value.__class__.__name__} and has the '
+                                                      f'value of {value}', False))
 
+        # check that the Character's guardian has to be a Character of None
         with self.assertRaises(ValueError) as e:
             self.gen_tank.guardian = value
-        self.assertTrue(self.utils.spell_check(str(e.exception), f'gen_tank.guardian must be a Character or None. '
-                                                                 f'It is a(n) {value.__class__.__name__} and has the value of {value}',
-                                               False))
+        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.guardian must be a '
+                                                      f'Character or None. It is a(n) {value.__class__.__name__} and '
+                                                      f'has the value of {value}', False))
 
     def test_to_json_character(self):
         data: dict = self.character.to_json()
@@ -192,14 +204,3 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.special_points, self.leader.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
-
-
-
-
-        # continue here...
-        # reference the to_ and from_json methods in the actual classes to see what is stored.
-        # do this for Character, GenericAttacker, GenericHealer, GenericTank, and Leader
-        # make sure to check the rank type especially for all of them
-        # test the to_ and from_json methods work
-
-

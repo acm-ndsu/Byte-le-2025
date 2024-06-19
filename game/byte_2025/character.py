@@ -8,23 +8,30 @@ from game.utils.vector import Vector
 class Character(GameObject):
     # PASSIVE NEEDS TO BE ABILITY | NONE
     # POSSIBLE MOVES NEEDS TO BE DICT[STR: MOVE]
+
+    """
+    This is the superclass of all Character instances. Characters will have stats (health, attack, defense, speed);
+    pre-determined moves that will allow for attacking, healing, buffing, and debuffing; and other properties that will
+    help with the game mechanics.
+    """
+
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
                  attack: int = 1, defense: int = 1, speed: int = 1, passive: None = None, guardian: Self | None = None,
-                 possible_moves: dict[str: None] = {}, special_points: int = 0, position: Vector | None = None):
+                 possible_moves: dict[str, None] = {}, special_points: int = 0, position: Vector | None = None):
         super().__init__()
-        self.name = name
-        self.object_type = ObjectType.CHARACTER
-        self.character_type = character_type
-        self.health = health
-        self.attack = attack
-        self.defense = defense
-        self.speed = speed
-        self.passive = passive
-        self.rank = RankType.GENERIC
-        self.guardian = guardian
-        self.possible_moves = possible_moves
-        self.special_points = special_points
-        self.position = position
+        self.name: str = name
+        self.object_type: ObjectType = ObjectType.CHARACTER
+        self.character_type: CharacterType = character_type
+        self.health: int = health
+        self.attack: int = attack
+        self.defense: int = defense
+        self.speed: int = speed
+        self.passive: None = passive
+        self.rank: RankType = RankType.GENERIC
+        self.guardian: Self | None = guardian
+        self.possible_moves: dict[str, None] = possible_moves
+        self.special_points: int = special_points
+        self.position: Vector | None = position
 
     @property
     def name(self) -> str:
@@ -86,7 +93,7 @@ class Character(GameObject):
             raise ValueError(f'{self.__class__.__name__}.defense must be an int. It is a(n) '
                              f'{defense.__class__.__name__} and has the value of {defense}')
         if defense < 0:
-            raise ValueError(f'{self.__class__.__name__}.health must be a positive int.')
+            raise ValueError(f'{self.__class__.__name__}.defense must be a positive int.')
 
         self.__defense = defense
 
@@ -107,13 +114,13 @@ class Character(GameObject):
     # PASSIVE GETTERS AND SETTERS
 
     @property
-    def guardian(self) -> Self:
+    def guardian(self) -> Self | None:
         return self.__guardian
 
     @guardian.setter
     def guardian(self, guardian: Self | None) -> None:
         if guardian is not None and not isinstance(guardian, Character):
-            raise ValueError(f'{self.__class__.__name__}.held_item must be an Item or None. It is a(n) '
+            raise ValueError(f'{self.__class__.__name__}.guardian must be a Character or None. It is a(n) '
                              f'{guardian.__class__.__name__} and has the value of {guardian}')
 
         self.__guardian = guardian
@@ -134,13 +141,13 @@ class Character(GameObject):
         self.__special_points = special_points
 
     @property
-    def position(self) -> Vector:
+    def position(self) -> Vector | None:
         return self.__position
 
     @position.setter
     def position(self, position: Vector | None) -> None:
         if position is not None and not isinstance(position, Vector):
-            raise ValueError(f'{self.__class__.__name__}.position must be a Vector. It is a(n) '
+            raise ValueError(f'{self.__class__.__name__}.position must be a Vector or None. It is a(n) '
                              f'{position.__class__.__name__} and has the value of {position}')
 
         self.__position = position
@@ -178,4 +185,83 @@ class Character(GameObject):
         self.special_points = data['special_points']
         self.position = data['position']
 
+        return self
+
+
+class GenericAttacker(Character):
+    def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
+                 attack: int = 1, defense: int = 1,
+                 speed: int = 1, passive: None = None, guardian: Self | None = None,
+                 possible_moves: dict[str: None] = {}, special_points: int = 0, position: Vector | None = None):
+        super().__init__(name, character_type, health, attack, defense, speed, passive, guardian, possible_moves,
+                         special_points, position)
+
+        self.object_type: ObjectType = ObjectType.GENERIC_ATTACKER
+        self.character_type: CharacterType = CharacterType.ATTACKER
+        self.rank: RankType = RankType.GENERIC
+
+    def to_json(self) -> dict:
+        return super().to_json()
+
+    def from_json(self, data: dict) -> Self:
+        super().from_json(data)
+        return self
+
+
+class GenericHealer(Character):
+    def __init__(self, name: str = '', character_type: CharacterType = CharacterType.HEALER, health: int = 1,
+                 attack: int = 1, defense: int = 1,
+                 speed: int = 1, passive: None = None, guardian: Self | None = None,
+                 possible_moves: dict[str: None] = {}, special_points: int = 0, position: Vector | None = None):
+        super().__init__(name, character_type, health, attack, defense, speed, passive, guardian, possible_moves,
+                         special_points, position)
+
+        self.object_type: ObjectType = ObjectType.GENERIC_HEALER
+        self.character_type: CharacterType = CharacterType.HEALER
+        self.rank: RankType = RankType.GENERIC
+
+    def to_json(self) -> dict:
+        return super().to_json()
+
+    def from_json(self, data: dict) -> Self:
+        super().from_json(data)
+        return self
+
+
+class GenericTank(Character):
+    def __init__(self, name: str = '', character_type: CharacterType = CharacterType.TANK, health: int = 1,
+                 attack: int = 1, defense: int = 1,
+                 speed: int = 1, passive: None = None, guardian: Self | None = None,
+                 possible_moves: dict[str: None] = {}, special_points: int = 0, position: Vector | None = None):
+        super().__init__(name, character_type, health, attack, defense, speed, passive, guardian, possible_moves,
+                         special_points, position)
+
+        self.object_type: ObjectType = ObjectType.GENERIC_TANK
+        self.character_type: CharacterType = CharacterType.TANK
+        self.rank: RankType = RankType.GENERIC
+
+    def to_json(self) -> dict:
+        return super().to_json()
+
+    def from_json(self, data: dict) -> Self:
+        super().from_json(data)
+        return self
+
+
+class Leader(Character):
+    def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
+                 attack: int = 1, defense: int = 1,
+                 speed: int = 1, passive: None = None, guardian: Self | None = None,
+                 possible_moves: dict[str: None] = {}, special_points: int = 0, position: Vector | None = None):
+        super().__init__(name, character_type, health, attack, defense, speed, passive, guardian, possible_moves,
+                         special_points, position)
+
+        self.object_type: ObjectType = ObjectType.LEADER
+        self.rank: RankType = RankType.LEADER
+
+    def to_json(self) -> dict:
+        return super().to_json()
+
+    def from_json(self, data: dict) -> Self:
+        super().from_json(data)
         return self
