@@ -32,6 +32,11 @@ class ObjectType(Enum):
     STATION_RECEIVER_EXAMPLE = auto()
     OCCUPIABLE_STATION_EXAMPLE = auto()
     GAME_OBJECT_CONTAINER = auto()
+    CHARACTER = auto()
+    GENERIC_ATTACKER = auto()
+    GENERIC_HEALER = auto()
+    GENERIC_TANK = auto()
+    LEADER = auto()
 
 
 class Country(Enum):
@@ -76,6 +81,11 @@ class CharacterType(Enum):
     ATTACKER = auto()
     HEALER = auto()
     TANK = auto()
+
+
+class RankType(Enum):
+    GENERIC = auto()
+    LEADER = auto()
 
 
 class ActionType(Enum):

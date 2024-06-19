@@ -2,14 +2,13 @@ from copy import deepcopy
 import random
 
 from game.common.action import Action
-from game.common.avatar import Avatar
+from game.common.team_manager import TeamManager
 from game.common.enums import *
 from game.common.player import Player
 import game.config as config   # this is for turns
 from game.utils.thread import CommunicationThread
 from game.controllers.movement_controller import MovementController
 from game.controllers.controller import Controller
-from game.controllers.interact_controller import InteractController
 from game.common.map.game_board import GameBoard
 from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN
 from game.utils.vector import Vector 
@@ -53,13 +52,12 @@ class MasterController(Controller):
         self.turn: int = 1
         self.current_world_data: dict = None
         self.movement_controller: MovementController = MovementController()
-        self.interact_controller: InteractController = InteractController()
 
     # Receives all clients for the purpose of giving them the objects they will control
     def give_clients_objects(self, clients: list[Player], world: dict):
         # starting_positions = [[3, 3], [3, 9]]   # would be done in generate game
         gb: GameBoard = world['game_board']
-        avatars: list[tuple[Vector, list[Avatar]]] = gb.get_objects(ObjectType.AVATAR)
+        avatars: list[tuple[Vector, list[TeamManager]]] = gb.get_objects(ObjectType.AVATAR)
         for avatar, client in zip(avatars, clients):
             avatar[1][0].position = avatar[0]
             client.avatar = avatar[1][0]
@@ -107,7 +105,6 @@ class MasterController(Controller):
             for i in range(MAX_NUMBER_OF_ACTIONS_PER_TURN):
                 try:
                     self.movement_controller.handle_actions(client.actions[i], client, self.current_world_data["game_board"])
-                    self.interact_controller.handle_actions(client.actions[i], client, self.current_world_data["game_board"])
                 except IndexError:
                     pass
 
