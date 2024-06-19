@@ -42,7 +42,7 @@ class Character(GameObject):
         if name is None or not isinstance(name, str):
             raise ValueError(f'{self.__class__.__name__}.name must be a string. It is a(n) {name.__class__.__name__} '
                              f'and has the value of {name}')
-        self.__name = name
+        self.__name: str = name
 
     @property
     def character_type(self) -> CharacterType:
@@ -53,7 +53,7 @@ class Character(GameObject):
         if CharacterType is None or not isinstance(character_type, CharacterType):
             raise ValueError(f'{self.__class__.__name__}.character_type must be a CharacterType. '
                              f'It is a(n) {character_type.__class__.__name__} and has the value of {character_type}')
-        self.__character_type = character_type
+        self.__character_type: CharacterType = character_type
 
     @property
     def health(self) -> int:
@@ -67,7 +67,7 @@ class Character(GameObject):
         if health < 0:
             raise ValueError(f'{self.__class__.__name__}.health must be a positive int.')
 
-        self.__health = health
+        self.__health: int = health
 
     @property
     def attack(self) -> int:
@@ -81,7 +81,7 @@ class Character(GameObject):
         if attack < 0:
             raise ValueError(f'{self.__class__.__name__}.attack must be a positive int.')
 
-        self.__attack = attack
+        self.__attack: int = attack
 
     @property
     def defense(self) -> int:
@@ -95,7 +95,7 @@ class Character(GameObject):
         if defense < 0:
             raise ValueError(f'{self.__class__.__name__}.defense must be a positive int.')
 
-        self.__defense = defense
+        self.__defense: int = defense
 
     @property
     def speed(self) -> int:
@@ -109,7 +109,7 @@ class Character(GameObject):
         if speed < 0:
             raise ValueError(f'{self.__class__.__name__}.speed must be a positive int.')
 
-        self.__speed = speed
+        self.__speed: int = speed
 
     # PASSIVE GETTERS AND SETTERS
 
@@ -123,7 +123,7 @@ class Character(GameObject):
             raise ValueError(f'{self.__class__.__name__}.guardian must be a Character or None. It is a(n) '
                              f'{guardian.__class__.__name__} and has the value of {guardian}')
 
-        self.__guardian = guardian
+        self.__guardian: Character = guardian
 
     @property
     def special_points(self) -> int:
@@ -138,7 +138,7 @@ class Character(GameObject):
         if special_points < 0:
             raise ValueError(f'{self.__class__.__name__}.special_points must be a positive int.')
 
-        self.__special_points = special_points
+        self.__special_points: int = special_points
 
     @property
     def position(self) -> Vector | None:
@@ -150,7 +150,7 @@ class Character(GameObject):
             raise ValueError(f'{self.__class__.__name__}.position must be a Vector or None. It is a(n) '
                              f'{position.__class__.__name__} and has the value of {position}')
 
-        self.__position = position
+        self.__position: Vector = position
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
@@ -174,16 +174,16 @@ class Character(GameObject):
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
-        self.name = data['name']
-        self.character_type = data['character_type']
-        self.health = data['health']
-        self.attack = data['attack']
-        self.defense = data['defense']
-        self.speed = data['speed']
-        self.rank = data['rank']
-        self.guardian = data['guardian']
-        self.special_points = data['special_points']
-        self.position = data['position']
+        self.name: str = data['name']
+        self.character_type: CharacterType = data['character_type']
+        self.health: int = data['health']
+        self.attack: int = data['attack']
+        self.defense: int = data['defense']
+        self.speed: int = data['speed']
+        self.rank: RankType = data['rank']
+        self.guardian: Character = data['guardian']
+        self.special_points: int = data['special_points']
+        self.position: Vector = data['position']
 
         return self
 
