@@ -1,7 +1,6 @@
 import unittest
 from game.common.enums import *
-from game.common.enums import *
-from move import *
+from game.byte_2025.move import *
 import game.test_suite.utils
 
 
@@ -15,7 +14,7 @@ class TestMove(unittest.TestCase):
 
     def setUp(self) -> None:
         self.move: Move = Move()
-        self.ATTACK: Attack = ATTACK(move)
+        self.attack: Attack = Attack(name="Basic", damage_points=1)
         self.HEAL: Heal = HEAL(move)
         self.DEBUFF: Debuff = DEBUFF(move)
         self.BUFF: Buff = BUFF(move)
