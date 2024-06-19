@@ -1,8 +1,6 @@
 from game.common.enums import ObjectType
 from game.common.game_object import GameObject
-from game.common.items.item import Item
 from typing import Self, Type
-from game.common.avatar import Avatar
 
 
 class Occupiable(GameObject):

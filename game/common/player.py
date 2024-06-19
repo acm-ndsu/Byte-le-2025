@@ -1,6 +1,6 @@
 from game.common.action import Action
 from game.common.game_object import GameObject
-from game.common.avatar import Avatar
+from game.common.team_manager import TeamManager
 from game.common.enums import *
 from game.client.user_client import UserClient
 
@@ -18,7 +18,7 @@ class Player(GameObject):
     """
 
     def __init__(self, code: object | None = None, team_name: str | None = None, actions: list[ActionType] = [],
-                 avatar: Avatar | None = None):
+                 avatar: TeamManager | None = None):
         super().__init__()
         self.object_type: ObjectType = ObjectType.PLAYER
         self.functional: bool = True
@@ -28,7 +28,7 @@ class Player(GameObject):
         self.code: UserClient | None = code
         # self.action: Action = action
         self.actions: list[ActionType] = actions
-        self.avatar: Avatar | None = avatar
+        self.avatar: TeamManager | None = avatar
 
     @property
     def error(self) -> str | None:
@@ -89,12 +89,12 @@ class Player(GameObject):
         self.__file_name = file_name
 
     @property
-    def avatar(self) -> Avatar:
+    def avatar(self) -> TeamManager:
         return self.__avatar
 
     @avatar.setter
-    def avatar(self, avatar: Avatar) -> None:
-        if avatar is not None and not isinstance(avatar, Avatar):
+    def avatar(self, avatar: TeamManager) -> None:
+        if avatar is not None and not isinstance(avatar, TeamManager):
             raise ValueError(
                 f'{self.__class__.__name__}.avatar must be Avatar or None. It is a(n) {avatar.__class__.__name__} and has the value of {avatar}.')
         self.__avatar = avatar
@@ -131,7 +131,7 @@ class Player(GameObject):
         self.file_name = data['file_name']
 
         self.actions: list[ActionType] = [ObjectType(action) for action in data['actions']]
-        avatar: Avatar | None = data['avatar']
+        avatar: TeamManager | None = data['avatar']
         if avatar is None:
             self.avatar = None
             return self
@@ -147,7 +147,7 @@ class Player(GameObject):
         # match case for avatar
         match ObjectType(avatar['object_type']):
             case ObjectType.AVATAR:
-                self.avatar = Avatar().from_json(data['avatar'])
+                self.avatar = TeamManager().from_json(data['avatar'])
             case None:
                 self.avatar = None
             case _:
