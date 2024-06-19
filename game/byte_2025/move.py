@@ -91,11 +91,11 @@ class Attack(Move):
         self.move_type: MoveType = MoveType.ATTACK
 
     @property
-    def damage_points(self):
+    def damage_points(self) -> int:
         return self.__damage_points
 
     @damage_points.setter
-    def damage_points(self, damage_points: int):
+    def damage_points(self, damage_points: int) -> None:
         if damage_points is None or not isinstance(damage_points, int):
             raise ValueError(f'{self.__class__.__name__}.damage_points must be an int. Damage_points is currently'
                              f' a {damage_points.__class__.__name__}.')
@@ -118,22 +118,22 @@ class Attack(Move):
 
 class Heal(Move):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_ALLY, cost: int = 0,
-                 subaction: Move | None = None, heal_points: float = 0.0):
+                 subaction: Move | None = None, heal_points: int = 0):
         super().__init__(name, target_type, cost, subaction)
 
-        self.heal_points: float = heal_points
+        self.heal_points: int = heal_points
         self.move_type: MoveType = MoveType.HEAL
 
     @property
-    def heal_points(self):
+    def heal_points(self) -> int:
         return self.__heal_points
 
     @heal_points.setter
-    def heal_points(self, heal_points: float):
-        if heal_points is None or not isinstance(heal_points, float):
-            raise ValueError(f'{self.__class__.__name__}.heal_points must be an float. Heal_points is currently'
+    def heal_points(self, heal_points: int) -> None:
+        if heal_points is None or not isinstance(heal_points, int):
+            raise ValueError(f'{self.__class__.__name__}.heal_points must be an int. Heal_points is currently'
                              f' a {heal_points.__class__.__name__}.')
-        self.__heal_points: float = heal_points
+        self.__heal_points: int = heal_points
 
     def use_move(self, targets=None) -> None:
         pass
@@ -158,11 +158,11 @@ class Buff(Move):
         self.move_type: MoveType = MoveType.BUFF
 
     @property
-    def buff_amount(self):
+    def buff_amount(self) -> float:
         return self.__buff_amount
 
     @buff_amount.setter
-    def buff_amount(self, buff_amount: float):
+    def buff_amount(self, buff_amount: float) -> None:
         if buff_amount is None or not isinstance(buff_amount, float):
             raise ValueError(f'{self.__class__.__name__}.buff_amount must be an float. Buff_amount is currently'
                              f' a {buff_amount.__class__.__name__}.')
@@ -192,11 +192,11 @@ class Debuff(Move):
         self.move_type: MoveType = MoveType.DEBUFF
 
     @property
-    def debuff_amount(self):
+    def debuff_amount(self) -> float:
         return self.__debuff_amount
 
     @debuff_amount.setter
-    def debuff_amount(self, debuff_amount: float):
+    def debuff_amount(self, debuff_amount: float) -> None:
         if debuff_amount is None or not isinstance(debuff_amount, float):
             raise ValueError(f'{self.__class__.__name__}.debuff_amount must be an float. Debuff_amount is currently'
                              f' a {debuff_amount.__class__.__name__}.')
