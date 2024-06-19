@@ -1,13 +1,9 @@
-from game.common.avatar import Avatar
+from game.common.team_manager import TeamManager
 from game.common.game_object import GameObject
 from game.common.map.occupiable import Occupiable
 from game.common.enums import ObjectType
 from game.common.map.wall import Wall
 from typing import Self
-
-from game.common.stations.occupiable_station import OccupiableStation
-from game.common.stations.station import Station
-
 
 class GameObjectContainer(GameObject):
     """
@@ -125,12 +121,8 @@ class GameObjectContainer(GameObject):
         match temp:
             case ObjectType.WALL:
                 return Wall().from_json(data)
-            case ObjectType.OCCUPIABLE_STATION:
-                return OccupiableStation().from_json(data)
-            case ObjectType.STATION:
-                return Station().from_json(data)
-            case ObjectType.AVATAR:
-                return Avatar().from_json(data)
+            # case ObjectType.AVATAR:
+            #     return TeamManager().from_json(data)
             # If adding more ObjectTypes that can be placed on the game_board, specify here
             case _:
                 raise ValueError(
