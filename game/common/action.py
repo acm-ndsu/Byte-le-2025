@@ -21,13 +21,11 @@ class Action:
     def to_json(self):
         data = dict()
 
-        data['object_type'] = self.object_type
         data['example_action'] = self._example_action
 
         return data
 
     def from_json(self, data):
-        self.object_type = data['object_type']
         self._example_action = data['example_action']
 
     def __str__(self):

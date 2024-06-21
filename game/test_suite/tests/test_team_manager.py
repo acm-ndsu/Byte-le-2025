@@ -2,6 +2,7 @@ import unittest
 
 from game.common.team_manager import TeamManager
 
+
 class TestTeamManager(unittest.TestCase):
     """
     Test for Team Manager class
