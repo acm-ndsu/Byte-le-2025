@@ -21,10 +21,20 @@ class Move(GameObject):
     @name.setter
     def name(self, name: str) -> None:
         if name is None or not isinstance(name, str):
-            raise ValueError(f'{self.__class__.__name__}.name must be a str. Name is currently'
-                             f' a {name.__class__.__name__}.')
+            raise ValueError(f'{self.__class__.__name__}.name must be a string. It is a(n) {name.__class__.__name__} '
+                             f'and has the value of {name}.')
         self.__name: str = name
 
+    @property
+    def move_type(self) -> MoveType:
+        return self.__move_type
+
+    @move_type.setter
+    def move_type(self, move_type: MoveType) -> None:
+        if move_type is None or not isinstance(move_type, MoveType):
+            raise ValueError(f'{self.__class__.__name__}.move_type must be a MoveType. It is a(n) '
+                             f'{move_type.__class__.__name__} and has the value of {move_type}.')
+        self.__move_type: MoveType = move_type
     @property
     def target_type(self) -> TargetType:
         return self.__target_type
@@ -32,8 +42,8 @@ class Move(GameObject):
     @target_type.setter
     def target_type(self, target_type: TargetType) -> None:
         if target_type is None or not isinstance(target_type, TargetType):
-            raise ValueError(f'{self.__class__.__name__}.target_type bust be a Target_type. Target_type is currentlt '
-                             f'a{target_type.__class__.__name__}.')
+            raise ValueError(f'{self.__class__.__name__}.target_type must be a TargetType. It is a(n) {target_type.__class__.__name__} '
+                             f'and has the value of {target_type}.')
         self.__target_type: TargetType = target_type
 
     @property
@@ -43,20 +53,20 @@ class Move(GameObject):
     @cost.setter
     def cost(self, cost: int) -> None:
         if cost is None or not isinstance(cost, int):
-            raise ValueError(f'{self.__class__.__name__}.cost must be a int. Cost is currently'
-                             f' a {cost.__class__.__name__}.')
+            raise ValueError(f'{self.__class__.__name__}.cost must be an int. It is a(n) {cost.__class__.__name__} '
+                             f'and has the value of {cost}.')
         self.__cost: int = cost
 
     @property
-    def subaction(self):
+    def subaction(self) -> Self | None:
         return self.__subaction
 
     @subaction.setter
     def subaction(self, subaction: Self | None) -> None:
         if subaction is not None and not isinstance(subaction, Move):
-            raise ValueError(f'{self.__class__.__name__}.subaction must be a None. Subaction is currently'
-                             f' a {subaction.__class__.__name__}.')
-        self.__subaction: Self = subaction
+            raise ValueError(f'{self.__class__.__name__}.subaction must be a Move or None. It is a(n) '
+                             f'{subaction.__class__.__name__} and has the value of {subaction}.')
+        self.__subaction: Self | None = subaction
 
     def use_move(self, targets=None) -> None:
         pass
@@ -77,8 +87,19 @@ class Move(GameObject):
         self.move_type: MoveType = data['move_type']
         self.target_type: TargetType = data['target_type']
         self.cost: int = data['cost']
-        self.subaction: Self | None = data['subaction']
-
+        if data['subaction'] is None:
+            self.subaction: Self | None = None
+        else:
+            if data['subaction']['move_type'] == MoveType.MOVE:
+                self.subaction: Self | None = Move().from_json(data['subaction'])
+            elif data['subaction']['move_type'] == MoveType.ATTACK:
+                self.subaction: Self | None = Attack().from_json(data['subaction'])
+            elif data['subaction']['move_type'] == MoveType.HEAL:
+                self.subaction: Self | None = Heal().from_json(data['subaction'])
+            elif data['subaction']['move_type'] == MoveType.BUFF:
+                self.subaction: Self | None = Buff().from_json(data['subaction'])
+            elif data['subaction']['move_type'] == MoveType.DEBUFF:
+                self.subaction: Self | None = Debuff().from_json(data['subaction'])
         return self
 
 
@@ -97,8 +118,8 @@ class Attack(Move):
     @damage_points.setter
     def damage_points(self, damage_points: int) -> None:
         if damage_points is None or not isinstance(damage_points, int):
-            raise ValueError(f'{self.__class__.__name__}.damage_points must be an int. Damage_points is currently'
-                             f' a {damage_points.__class__.__name__}.')
+            raise ValueError(f'{self.__class__.__name__}.damage_points must be an int. It is a(n) '
+                             f'{damage_points.__class__.__name__} and has the value of {damage_points}.')
         self.__damage_points: int = damage_points
 
     def use_move(self, targets=None) -> None:
@@ -131,8 +152,8 @@ class Heal(Move):
     @heal_points.setter
     def heal_points(self, heal_points: int) -> None:
         if heal_points is None or not isinstance(heal_points, int):
-            raise ValueError(f'{self.__class__.__name__}.heal_points must be an int. Heal_points is currently'
-                             f' a {heal_points.__class__.__name__}.')
+            raise ValueError(f'{self.__class__.__name__}.heal_points must be an int. It is a(n) '
+                             f'{heal_points.__class__.__name__} and has the value of {heal_points}.')
         self.__heal_points: int = heal_points
 
     def use_move(self, targets=None) -> None:
@@ -164,8 +185,8 @@ class Buff(Move):
     @buff_amount.setter
     def buff_amount(self, buff_amount: float) -> None:
         if buff_amount is None or not isinstance(buff_amount, float):
-            raise ValueError(f'{self.__class__.__name__}.buff_amount must be an float. Buff_amount is currently'
-                             f' a {buff_amount.__class__.__name__}.')
+            raise ValueError(f'{self.__class__.__name__}.buff_amount must be a float. It is a(n) '
+                             f'{buff_amount.__class__.__name__} and has the value of {buff_amount}.')
         self.__buff_amount: float = buff_amount
 
     def use_move(self, targets=None) -> None:
@@ -198,8 +219,8 @@ class Debuff(Move):
     @debuff_amount.setter
     def debuff_amount(self, debuff_amount: float) -> None:
         if debuff_amount is None or not isinstance(debuff_amount, float):
-            raise ValueError(f'{self.__class__.__name__}.debuff_amount must be an float. Debuff_amount is currently'
-                             f' a {debuff_amount.__class__.__name__}.')
+            raise ValueError(f'{self.__class__.__name__}.debuff_amount must be a float. It is a(n) '
+                             f'{debuff_amount.__class__.__name__} and has the value of {debuff_amount}.')
         self.__debuff_amount: float = debuff_amount
 
     def use_move(self, targets=None) -> None:
