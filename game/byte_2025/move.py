@@ -9,7 +9,7 @@ class Move(GameObject):
                  subaction: Self | None = None):
         super().__init__()
         self.name: str = name
-        self.move_type: MoveType
+        self.move_type: MoveType = MoveType.MOVE
         self.target_type: TargetType = target_type
         self.cost: int = cost
         self.subaction: Self | None = subaction
