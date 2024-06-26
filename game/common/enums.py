@@ -85,11 +85,11 @@ class RankType(Enum):
 
 
 class ActionType(Enum):
-    # NONE = auto()
-    # MOVE_UP = auto()
-    # MOVE_DOWN = auto()
-    # MOVE_LEFT = auto()
-    # MOVE_RIGHT = auto()
+    NONE = auto()
+    MOVE_UP = auto()
+    MOVE_DOWN = auto()
+    MOVE_LEFT = auto()
+    MOVE_RIGHT = auto()
     USE_NA = auto()
     USE_S1 = auto()
     USE_S2 = auto()
