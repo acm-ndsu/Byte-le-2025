@@ -22,18 +22,18 @@ class TeamManager(GameObject):
 
     Values:
         Team - list of characters (max of three) with a default generic team
-        Score - an int for the current score of this team
+        Score - an int for the current score of this team with a default set to 0
 
     Methods:
         speed_sort() - returns sorted list of team by fastest to slowest speed
         filter_by_type(character_type) - returns list of characters of the specified CharacterType
     """
 
-    def __init__(self, team: list[Character] = gen_team, score: int = 0):
+    def __init__(self, team: list[Character] = gen_team):
         super().__init__()
         self.object_type: ObjectType = ObjectType.TEAMMANAGER
         self.team: list[Character] = team
-        self.score: int = score
+        self.score: int = 0
 
     # Getters and Setters
     @property
@@ -45,7 +45,7 @@ class TeamManager(GameObject):
         if team is None or not isinstance(team, list):
             raise ValueError(
                 f'{self.__class__.__name__}.team must be a list[Character]. It is a(n) {team.__class__.__name__} '
-                f'and has the value of {team}')
+                f'and has the value of {team}.')
         for i in team:
             if i is None or not isinstance(i, Character):
                 raise ValueError(
@@ -65,7 +65,7 @@ class TeamManager(GameObject):
         if object_type is None or not isinstance(object_type, ObjectType):
             raise ValueError(
                 f'{self.__class__.__name__}.object_type must be an ObjectType. It is a(n) {object_type.__class__.__name__} '
-                f'and has the value of {object_type}')
+                f'and has the value of {object_type}.')
         self.__object_type: ObjectType = object_type
 
     @property
@@ -76,7 +76,7 @@ class TeamManager(GameObject):
     def score(self, score: int) -> None:
         if score is None or not isinstance(score, int):
             raise ValueError(f'{self.__class__.__name__}.score must be an int. It is a(n) {score.__class__.__name__} '
-                             f'and has the value of {score}')
+                             f'and has the value of {score}.')
         self.__score: int = score
 
     # To and From Json
