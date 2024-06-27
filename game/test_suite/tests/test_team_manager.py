@@ -31,20 +31,20 @@ class TestTeamManager(unittest.TestCase):
             self.team_manager.object_type = 2
         self.assertEqual(str(e.exception), f'{self.team_manager.__class__.__name__}.object_type must be an '
                                            f'ObjectType. It is a(n) {int.__name__} '
-                                           f'and has the value of {2}.')
+                                           f'and has the value of 2.')
         with self.assertRaises(ValueError) as e:
             self.team_manager.team = 1
         self.assertEqual(str(e.exception), f'{self.team_manager.__class__.__name__}.team must be a list[Character]. '
                                            f'It is a(n) {int.__name__} '
-                                           f'and has the value of {1}.')
+                                           f'and has the value of 1.')
         with self.assertRaises(ValueError) as e:
             self.team_manager.team = [self.character1, self.character2, 3]
         self.assertEqual(str(e.exception), f'{self.team_manager.__class__.__name__}.team must be a list[Character]. '
-                                           f'It contains a(n) {int.__name__} with the value {3}.')
+                                           f'It contains a(n) {int.__name__} with the value 3.')
         with self.assertRaises(ValueError) as e:
             self.team_manager.team = [self.character1, self.character2, self.character3, self.character1]
         self.assertEqual(str(e.exception), f'{self.team_manager.__class__.__name__}.team must be a list[Character] '
-                                           f'with a length of three or less. It has a length of {4}.')
+                                           f'with a length of three or less. It has a length of 4.')
         with self.assertRaises(ValueError) as e:
             self.team_manager.score = 'hi'
         self.assertEqual(str(e.exception), f'{self.team_manager.__class__.__name__}.score must be an int. '
