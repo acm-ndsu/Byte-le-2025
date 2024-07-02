@@ -12,13 +12,13 @@ class Player(GameObject):
     -----
 
         The Player class is what represents the team that's competing. The player can contain a list of Actions to
-        execute each turn. The avatar is what's used to execute actions (e.g., interacting with stations, picking up
-        items, etc.). For more details on the difference between the Player and Avatar classes, refer to the README
+        execute each turn. The team_manager is what's used to execute actions (e.g., interacting with stations, picking up
+        items, etc.). For more details on the difference between the Player and team_manager classes, refer to the README
         document.
     """
 
     def __init__(self, code: object | None = None, team_name: str | None = None, actions: list[ActionType] = [],
-                 avatar: TeamManager | None = None):
+                 team_manager: TeamManager | None = None):
         super().__init__()
         self.object_type: ObjectType = ObjectType.PLAYER
         self.functional: bool = True
@@ -28,7 +28,7 @@ class Player(GameObject):
         self.code: UserClient | None = code
         # self.action: Action = action
         self.actions: list[ActionType] = actions
-        self.avatar: TeamManager | None = avatar
+        self.team_manager: TeamManager | None = team_manager
 
     @property
     def error(self) -> str | None:
@@ -89,15 +89,15 @@ class Player(GameObject):
         self.__file_name = file_name
 
     @property
-    def avatar(self) -> TeamManager:
-        return self.__avatar
+    def team_manager(self) -> TeamManager:
+        return self.__team_manager
 
-    @avatar.setter
-    def avatar(self, avatar: TeamManager) -> None:
-        if avatar is not None and not isinstance(avatar, TeamManager):
+    @team_manager.setter
+    def team_manager(self, team_manager: TeamManager) -> None:
+        if team_manager is not None and not isinstance(team_manager, TeamManager):
             raise ValueError(
-                f'{self.__class__.__name__}.avatar must be Avatar or None. It is a(n) {avatar.__class__.__name__} and has the value of {avatar}.')
-        self.__avatar = avatar
+                f'{self.__class__.__name__}.team_manager must be team_manager or None. It is a(n) {team_manager.__class__.__name__} and has the value of {team_manager}.')
+        self.__team_manager = team_manager
 
     @property
     def object_type(self) -> ObjectType:
@@ -118,7 +118,7 @@ class Player(GameObject):
         data['team_name'] = self.team_name
         data['file_name'] = self.file_name
         data['actions'] = [act.value for act in self.actions]
-        data['avatar'] = self.avatar.to_json() if self.avatar is not None else None
+        data['team_manager'] = self.team_manager.to_json() if self.team_manager is not None else None
 
         return data
 
@@ -131,9 +131,9 @@ class Player(GameObject):
         self.file_name = data['file_name']
 
         self.actions: list[ActionType] = [ObjectType(action) for action in data['actions']]
-        avatar: TeamManager | None = data['avatar']
-        if avatar is None:
-            self.avatar = None
+        team_manager: TeamManager | None = data['team_manager']
+        if team_manager is None:
+            self.team_manager = None
             return self
         # match case for action
         # match action['object_type']:
@@ -144,17 +144,17 @@ class Player(GameObject):
         #     case _:  # checks if it is anything else
         #         raise Exception(f'Could not parse action: {self.action}')
 
-        # match case for avatar
-        match ObjectType(avatar['object_type']):
-            case ObjectType.AVATAR:
-                self.avatar = TeamManager().from_json(data['avatar'])
+        # match case for team_manager
+        match ObjectType(team_manager['object_type']):
+            case ObjectType.TEAMMANAGER:
+                self.team_manager = TeamManager().from_json(data['team_manager'])
             case None:
-                self.avatar = None
+                self.team_manager = None
             case _:
-                raise Exception(f'Could not parse avatar: {self.avatar}')
+                raise Exception(f'Could not parse team_manager: {self.team_manager}')
         return self
         # self.action = Action().from_json(data['action']) if data['action'] is not None else None
-        # self.avatar = Avatar().from_json(data['avatar']) if data['avatar'] is not None else None
+        # self.team_manager = team_manager().from_json(data['team_manager']) if data['team_manager'] is not None else None
 
     # to String
     def __str__(self):
