@@ -3,14 +3,15 @@ from game.common.map.game_board import GameBoard
 from game.common.enums import *
 from game.utils.vector import Vector
 from game.controllers.controller import Controller
+from game.common.team_manager import *
 
 
-class MovementController(Controller):
+class SwapController(Controller):
     """
-    `Movement Controller Notes:`
+    `Swap Controller Notes:`
 
-        The Movement Controller manages the movement actions the player tries to execute. Players can move up, down,
-        left, and right. If the player tries to move into a space that's impassable, they don't move.
+        The Swap Controller manages the swap actions the player tries to execute. Players can move up and down to swap placed.
+        If the player tries to move into a space that's impassable, they don't move.
 
         For example, if the player attempts to move into an Occupiable Station (something the player can be on) that is
         occupied by a Wall object (something the player can't be on), the player doesn't move; that is, if the player
@@ -21,7 +22,7 @@ class MovementController(Controller):
         super().__init__()
 
     def handle_actions(self, action: ActionType, client: Player, world: GameBoard):
-        avatar_pos: Vector = Vector(client.avatar.position.x, client.avatar.position.y)
+        character_pos: Vector = Vector(client.avatar.position.x, client.avatar.position.y)
 
         pos_mod: Vector
 
@@ -37,7 +38,7 @@ class MovementController(Controller):
             case _:  # default case
                 return
 
-        temp_vec: Vector = avatar_pos.add_to_vector(pos_mod)
+        temp_vec: Vector = character_pos.add_to_vector(pos_mod)
 
         # if the top of the given coordinates are not occupiable or are invalid, return to do nothing
         if not world.is_occupiable(temp_vec):

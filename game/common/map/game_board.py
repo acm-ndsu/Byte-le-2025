@@ -1,7 +1,9 @@
 import ast
+import ast
 import random
 from typing import Self
 
+from game.byte_2025.character import *
 from game.common.team_manager import TeamManager
 from game.common.enums import *
 from game.common.game_object import GameObject
@@ -210,10 +212,10 @@ class GameBoard(GameObject):
     def __map_init(self) -> dict[Vector, GameObjectContainer]:
         output: dict[Vector, GameObjectContainer] = dict()
 
-        # Update all Avatar positions if they are to be placed on the map
+        # Update all Character positions if they are to be placed on the map
         for vec, objs in self.locations.items():
             for obj in objs:
-                if isinstance(obj, TeamManager):
+                if isinstance(obj, Character):
                     obj.position = vec
 
         if self.walled:
@@ -368,6 +370,14 @@ class GameBoard(GameObject):
                 return Tile().from_json(data)
             case ObjectType.WALL:
                 return Wall().from_json(data)
+            case ObjectType.GENERIC_ATTACKER:
+                return GenericAttacker().from_json(data)
+            case ObjectType.GENERIC_HEALER:
+                return GenericHealer().from_json(data)
+            case ObjectType.GENERIC_TANK:
+                return GenericTank().from_json(data)
+            case ObjectType.LEADER:
+                return Leader().from_json(data)
             # case ObjectType.AVATAR:
             #     return TeamManager().from_json(data)
             # If adding more ObjectTypes that can be placed on the game_board, specify here

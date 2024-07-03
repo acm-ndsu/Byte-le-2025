@@ -7,7 +7,7 @@ from game.common.enums import *
 from game.common.player import Player
 import game.config as config   # this is for turns
 from game.utils.thread import CommunicationThread
-from game.controllers.movement_controller import MovementController
+from game.controllers.swap_controller import MovementController
 from game.controllers.controller import Controller
 from game.common.map.game_board import GameBoard
 from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN

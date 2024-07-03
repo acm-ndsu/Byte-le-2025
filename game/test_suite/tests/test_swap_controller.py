@@ -1,7 +1,7 @@
 import unittest
 
 from game.common.map.game_board import GameBoard
-from game.controllers.movement_controller import MovementController
+from game.controllers.swap_controller import MovementController
 from game.common.map.wall import Wall
 from game.utils.vector import Vector
 from game.common.player import Player
