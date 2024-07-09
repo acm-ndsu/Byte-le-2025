@@ -1,3 +1,4 @@
+from game.byte_2025.moves.submove import Submove
 from game.common.enums import *
 from game.common.game_object import GameObject
 from typing import Self
@@ -5,14 +6,15 @@ from typing import Self
 
 class Move(GameObject):
 
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0, 
-                 subaction: Self | None = None):
+    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
+                 submove: Self | None = None):
         super().__init__()
         self.name: str = name
+        self.object_type = ObjectType.MOVE
         self.move_type: MoveType = MoveType.MOVE
         self.target_type: TargetType = target_type
         self.cost: int = cost
-        self.subaction: Self | None = subaction
+        self.submove: Self | None = submove
 
     @property
     def name(self) -> str:
@@ -35,6 +37,7 @@ class Move(GameObject):
             raise ValueError(f'{self.__class__.__name__}.move_type must be a MoveType. It is a(n) '
                              f'{move_type.__class__.__name__} and has the value of {move_type}.')
         self.__move_type: MoveType = move_type
+
     @property
     def target_type(self) -> TargetType:
         return self.__target_type
@@ -42,8 +45,8 @@ class Move(GameObject):
     @target_type.setter
     def target_type(self, target_type: TargetType) -> None:
         if target_type is None or not isinstance(target_type, TargetType):
-            raise ValueError(f'{self.__class__.__name__}.target_type must be a TargetType. It is a(n) {target_type.__class__.__name__} '
-                             f'and has the value of {target_type}.')
+            raise ValueError(f'{self.__class__.__name__}.target_type must be a TargetType. It is a(n) '
+                             f'{target_type.__class__.__name__} and has the value of {target_type}.')
         self.__target_type: TargetType = target_type
 
     @property
@@ -58,15 +61,15 @@ class Move(GameObject):
         self.__cost: int = cost
 
     @property
-    def subaction(self) -> Self | None:
-        return self.__subaction
+    def submove(self) -> Self | None:
+        return self.__submove
 
-    @subaction.setter
-    def subaction(self, subaction: Self | None) -> None:
-        if subaction is not None and not isinstance(subaction, Move):
-            raise ValueError(f'{self.__class__.__name__}.subaction must be a Move or None. It is a(n) '
-                             f'{subaction.__class__.__name__} and has the value of {subaction}.')
-        self.__subaction: Self | None = subaction
+    @submove.setter
+    def submove(self, submove: Self | None) -> None:
+        if submove is not None and not isinstance(submove, Move):
+            raise ValueError(f'{self.__class__.__name__}.submove must be a Move or None. It is a(n) '
+                             f'{submove.__class__.__name__} and has the value of {submove}.')
+        self.__submove: Self | None = submove
 
     def use_move(self, targets=None) -> None:
         pass
@@ -77,7 +80,7 @@ class Move(GameObject):
         data['move_type'] = self.move_type
         data['target_type'] = self.target_type
         data['cost'] = self.cost
-        data['subaction'] = self.subaction.to_json() if self.subaction is not None else None
+        data['submove'] = self.submove.to_json() if self.submove is not None else None
 
         return data
 
@@ -87,27 +90,28 @@ class Move(GameObject):
         self.move_type: MoveType = data['move_type']
         self.target_type: TargetType = data['target_type']
         self.cost: int = data['cost']
-        if data['subaction'] is None:
-            self.subaction: Self | None = None
+        if data['submove'] is None:
+            self.submove: Self | None = None
         else:
-            if data['subaction']['move_type'] == MoveType.MOVE:
-                self.subaction: Self | None = Move().from_json(data['subaction'])
-            elif data['subaction']['move_type'] == MoveType.ATTACK:
-                self.subaction: Self | None = Attack().from_json(data['subaction'])
-            elif data['subaction']['move_type'] == MoveType.HEAL:
-                self.subaction: Self | None = Heal().from_json(data['subaction'])
-            elif data['subaction']['move_type'] == MoveType.BUFF:
-                self.subaction: Self | None = Buff().from_json(data['subaction'])
-            elif data['subaction']['move_type'] == MoveType.DEBUFF:
-                self.subaction: Self | None = Debuff().from_json(data['subaction'])
+            if data['submove']['move_type'] == MoveType.MOVE:
+                self.submove: Self | None = Move().from_json(data['submove'])
+            elif data['submove']['move_type'] == MoveType.ATTACK:
+                self.submove: Self | None = Attack().from_json(data['submove'])
+            elif data['submove']['move_type'] == MoveType.HEAL:
+                self.submove: Self | None = Heal().from_json(data['submove'])
+            elif data['submove']['move_type'] == MoveType.BUFF:
+                self.submove: Self | None = Buff().from_json(data['submove'])
+            elif data['submove']['move_type'] == MoveType.DEBUFF:
+                self.submove: Self | None = Debuff().from_json(data['submove'])
         return self
 
 
 class Attack(Move):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 subaction: Move | None = None, damage_points: int = 0):
-        super().__init__(name, target_type, cost, subaction)
+                 submove: Move | None = None, damage_points: int = 0):
+        super().__init__(name, target_type, cost, submove)
 
+        self.object_type = ObjectType.ATTACK
         self.damage_points: int = damage_points
         self.move_type: MoveType = MoveType.ATTACK
 
@@ -139,9 +143,10 @@ class Attack(Move):
 
 class Heal(Move):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_ALLY, cost: int = 0,
-                 subaction: Move | None = None, heal_points: int = 0):
-        super().__init__(name, target_type, cost, subaction)
+                 submove: Move | None = None, heal_points: int = 0):
+        super().__init__(name, target_type, cost, submove)
 
+        self.object_type = ObjectType.HEAL
         self.heal_points: int = heal_points
         self.move_type: MoveType = MoveType.HEAL
 
@@ -171,10 +176,11 @@ class Heal(Move):
 
 
 class Buff(Move):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_ALLY, cost: int = 0, 
-                 subaction: Move | None = None, buff_amount: float = 0.0):
-        super().__init__(name, target_type, cost, subaction)
+    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_ALLY, cost: int = 0,
+                 submove: Move | None = None, buff_amount: float = 0.0):
+        super().__init__(name, target_type, cost, submove)
 
+        self.object_type = ObjectType.BUFF
         self.buff_amount: float = buff_amount
         self.move_type: MoveType = MoveType.BUFF
 
@@ -206,9 +212,10 @@ class Buff(Move):
 
 class Debuff(Move):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 subaction: Move | None = None, debuff_amount: float = 0.0):
-        super().__init__(name, target_type, cost, subaction)
+                 submove: Move | None = None, debuff_amount: float = 0.0):
+        super().__init__(name, target_type, cost, submove)
 
+        self.object_type = ObjectType.DEBUFF
         self.debuff_amount: float = debuff_amount
         self.move_type: MoveType = MoveType.DEBUFF
 

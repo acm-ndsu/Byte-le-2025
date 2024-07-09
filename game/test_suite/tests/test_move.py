@@ -1,7 +1,7 @@
 import unittest
+
+from game.byte_2025.moves.move import *
 from game.common.enums import *
-from game.byte_2025.move import *
-from game.test_suite.utils import spell_check
 
 
 class TestMove(unittest.TestCase):
@@ -16,8 +16,8 @@ class TestMove(unittest.TestCase):
         self.move: Move = Move()
         self.attack: Attack = Attack(name='Basic Attack', damage_points=1)
         self.heal: Heal = Heal(name='Basic Heal', heal_points=1)
-        self.buff: Buff = Buff('Big Buff', target_type=TargetType.ALL_ALLY, buff_amount=2.0, subaction=self.attack)
-        self.debuff: Debuff = Debuff(name='Big Debuff', cost=2, debuff_amount=2.0, subaction=self.buff)
+        self.buff: Buff = Buff('Big Buff', target_type=TargetType.ALL_ALLY, buff_amount=2.0, submove=self.attack)
+        self.debuff: Debuff = Debuff(name='Big Debuff', cost=2, debuff_amount=2.0, submove=self.buff)
 
     def test_base_setters(self) -> None:
         with self.assertRaises(ValueError) as e:
@@ -53,7 +53,7 @@ class TestMove(unittest.TestCase):
         self.assertEqual(str(e.exception), f'{self.move.__class__.__name__}.cost must be an int. '
                                            f'It is a(n) NoneType and has the value of {None}.')
         with self.assertRaises(ValueError) as e:
-            self.move.subaction= 12
+            self.move.submove= 12
         self.assertEqual(str(e.exception), f'{self.move.__class__.__name__}.subaction must be a Move or None. '
                                            f'It is a(n) {int.__name__} and has the value of {12}.')
 
@@ -137,7 +137,7 @@ class TestMove(unittest.TestCase):
         self.assertEqual(move.move_type, self.move.move_type)
         self.assertEqual(move.target_type, self.move.target_type)
         self.assertEqual(move.cost, self.move.cost)
-        self.assertEqual(move.subaction, self.move.subaction)
+        self.assertEqual(move.submove, self.move.submove)
 
     def test_attack_json(self) -> None:
         data: dict = self.attack.to_json()

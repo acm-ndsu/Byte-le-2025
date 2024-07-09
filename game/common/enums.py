@@ -37,6 +37,13 @@ class ObjectType(Enum):
     GENERIC_HEALER = auto()
     GENERIC_TANK = auto()
     LEADER = auto()
+    MOVE = auto()
+    ATTACK = auto()
+    HEAL = auto()
+    GUARD = auto()
+    BUFF = auto()
+    DEBUFF = auto()
+    SUBMOVE = auto()
 
 
 class Country(Enum):
