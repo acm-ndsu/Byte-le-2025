@@ -1,6 +1,7 @@
 import unittest
 
-from game.byte_2025.moves.move import *
+from game.byte_2025.moves.moves import *
+from game.byte_2025.moves.submoves import *
 from game.common.enums import *
 
 
@@ -9,15 +10,18 @@ class TestMove(unittest.TestCase):
     `Test Move Notes:`
 
         This class tests the different methods in the Move class.
-        This class tests that, along with the other values, tests that subactions nests properly, including in jsons.
+        This class tests that, along with the other values, submoves nests properly, including in jsons.
     """
     # NEED TO TEST THE USE ACTION METHODS WHEN FULLY IMPLEMENTED
     def setUp(self) -> None:
         self.move: Move = Move()
+        self.submove: Submove = Submove()
+        self.subattack: AttackSubmove = AttackSubmove()
+        self.subdebuff: DebuffSubmove = DebuffSubmove()
         self.attack: Attack = Attack(name='Basic Attack', damage_points=1)
         self.heal: Heal = Heal(name='Basic Heal', heal_points=1)
-        self.buff: Buff = Buff('Big Buff', target_type=TargetType.ALL_ALLY, buff_amount=2.0, submove=self.attack)
-        self.debuff: Debuff = Debuff(name='Big Debuff', cost=2, debuff_amount=2.0, submove=self.buff)
+        self.buff: Buff = Buff('Big Buff', target_type=TargetType.ALL_ALLY, buff_amount=2.0, submove=self.subdebuff)
+        self.debuff: Debuff = Debuff(name='Big Debuff', cost=2, debuff_amount=2.0, submove=self.subattack)
 
     def test_base_setters(self) -> None:
         with self.assertRaises(ValueError) as e:
@@ -29,22 +33,6 @@ class TestMove(unittest.TestCase):
         self.assertEqual(str(e.exception), f'{self.move.__class__.__name__}.name must be a string. It is a(n) '
                                            f'NoneType and has the value of {None}.')
         with self.assertRaises(ValueError) as e:
-            self.move.move_type = 12
-        self.assertEqual(str(e.exception), f'{self.move.__class__.__name__}.move_type must be a MoveType. '
-                                           f'It is a(n) {int.__name__} and has the value of {12}.')
-        with self.assertRaises(ValueError) as e:
-            self.move.move_type = None
-        self.assertEqual(str(e.exception), f'{self.move.__class__.__name__}.move_type must be a MoveType. '
-                                           f'It is a(n) NoneType and has the value of {None}.')
-        with self.assertRaises(ValueError) as e:
-            self.move.target_type = 12
-        self.assertEqual(str(e.exception), f'{self.move.__class__.__name__}.target_type must be a TargetType. '
-                                           f'It is a(n) {int.__name__} and has the value of {12}.')
-        with self.assertRaises(ValueError) as e:
-            self.move.target_type = None
-        self.assertEqual(str(e.exception), f'{self.move.__class__.__name__}.target_type must be a TargetType. '
-                                           f'It is a(n) NoneType and has the value of {None}.')
-        with self.assertRaises(ValueError) as e:
             self.move.cost = '12'
         self.assertEqual(str(e.exception), f'{self.move.__class__.__name__}.cost must be an int. '
                                            f'It is a(n) {str.__name__} and has the value of {12}.')
@@ -53,8 +41,8 @@ class TestMove(unittest.TestCase):
         self.assertEqual(str(e.exception), f'{self.move.__class__.__name__}.cost must be an int. '
                                            f'It is a(n) NoneType and has the value of {None}.')
         with self.assertRaises(ValueError) as e:
-            self.move.submove= 12
-        self.assertEqual(str(e.exception), f'{self.move.__class__.__name__}.subaction must be a Move or None. '
+            self.move.submove = 12
+        self.assertEqual(str(e.exception), f'{self.move.__class__.__name__}.submove must be a Move or None. '
                                            f'It is a(n) {int.__name__} and has the value of {12}.')
 
     def test_attack_init(self) -> None:
@@ -62,7 +50,7 @@ class TestMove(unittest.TestCase):
         self.assertEqual(self.attack.move_type, MoveType.ATTACK)
         self.assertEqual(self.attack.target_type, TargetType.SINGLE_OPP)
         self.assertEqual(self.attack.cost, 0)
-        self.assertEqual(self.attack.subaction, None)
+        self.assertEqual(self.attack.submove, None)
         self.assertEqual(self.attack.damage_points, 1)
 
     def test_attack_setter(self) -> None:
@@ -80,7 +68,7 @@ class TestMove(unittest.TestCase):
         self.assertEqual(self.heal.move_type, MoveType.HEAL)
         self.assertEqual(self.heal.target_type, TargetType.SINGLE_ALLY)
         self.assertEqual(self.heal.cost, 0)
-        self.assertEqual(self.heal.subaction, None)
+        self.assertEqual(self.heal.submove, None)
         self.assertEqual(self.heal.heal_points, 1)
 
     def test_heal_setter(self) -> None:
@@ -98,7 +86,7 @@ class TestMove(unittest.TestCase):
         self.assertEqual(self.buff.move_type, MoveType.BUFF)
         self.assertEqual(self.buff.target_type, TargetType.ALL_ALLY)
         self.assertEqual(self.buff.cost, 0)
-        self.assertEqual(self.buff.subaction, self.attack)
+        self.assertEqual(self.buff.submove, self.subdebuff)
         self.assertEqual(self.buff.buff_amount, 2.0)
 
     def test_buff_setter(self) -> None:
@@ -116,8 +104,8 @@ class TestMove(unittest.TestCase):
         self.assertEqual(self.debuff.move_type, MoveType.DEBUFF)
         self.assertEqual(self.debuff.target_type, TargetType.SINGLE_OPP)
         self.assertEqual(self.debuff.cost, 2)
-        self.assertEqual(self.debuff.subaction, self.buff)
-        self.assertEqual(self.debuff.subaction.subaction, self.attack)
+        self.assertEqual(self.debuff.submove, self.buff)
+        self.assertEqual(self.debuff.submove.submove, self.subattack)
         self.assertEqual(self.debuff.debuff_amount, 2.0)
 
     def test_debuff_setter(self) -> None:
@@ -146,7 +134,7 @@ class TestMove(unittest.TestCase):
         self.assertEqual(attack.move_type, self.attack.move_type)
         self.assertEqual(attack.target_type, self.attack.target_type)
         self.assertEqual(attack.cost, self.attack.cost)
-        self.assertEqual(attack.subaction, self.attack.subaction)
+        self.assertEqual(attack.submove, self.attack.submove)
         self.assertEqual(attack.damage_points, self.attack.damage_points)
 
     def test_heal_json(self) -> None:
@@ -156,7 +144,7 @@ class TestMove(unittest.TestCase):
         self.assertEqual(heal.move_type, self.heal.move_type)
         self.assertEqual(heal.target_type, self.heal.target_type)
         self.assertEqual(heal.cost, self.heal.cost)
-        self.assertEqual(heal.subaction, self.heal.subaction)
+        self.assertEqual(heal.submove, self.heal.submove)
         self.assertEqual(heal.heal_points, self.heal.heal_points)
 
     def test_buff_json(self) -> None:
@@ -166,7 +154,7 @@ class TestMove(unittest.TestCase):
         self.assertEqual(buff.move_type, self.buff.move_type)
         self.assertEqual(buff.target_type, self.buff.target_type)
         self.assertEqual(buff.cost, self.buff.cost)
-        self.assertEqual(buff.subaction.to_json(), self.buff.subaction.to_json())
+        self.assertEqual(buff.submove.to_json(), self.buff.submove.to_json())
         self.assertEqual(buff.buff_amount, self.buff.buff_amount)
 
     def test_debuff_json(self) -> None:
@@ -176,6 +164,5 @@ class TestMove(unittest.TestCase):
         self.assertEqual(debuff.move_type, self.debuff.move_type)
         self.assertEqual(debuff.target_type, self.debuff.target_type)
         self.assertEqual(debuff.cost, self.debuff.cost)
-        self.assertEqual(debuff.subaction.to_json(), self.debuff.subaction.to_json())
-        self.assertEqual(debuff.subaction.to_json()['subaction'], self.debuff.subaction.to_json()['subaction'])
+        self.assertEqual(debuff.submove.to_json(), self.debuff.submove.to_json())
         self.assertEqual(debuff.debuff_amount, self.debuff.debuff_amount)

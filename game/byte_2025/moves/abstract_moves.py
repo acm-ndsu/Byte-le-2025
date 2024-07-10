@@ -1,31 +1,15 @@
-from game.byte_2025.moves.submove import Submove
+from abc import abstractmethod
+from typing import Self
 from game.common.enums import *
 from game.common.game_object import GameObject
-from typing import Self
 
 
-class Move(GameObject):
-
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 submove: Self | None = None):
+class AbstractMove(GameObject):
+    def __init__(self, target_type: TargetType = TargetType.SELF):
         super().__init__()
-        self.name: str = name
-        self.object_type = ObjectType.MOVE
-        self.move_type: MoveType = MoveType.MOVE
-        self.target_type: TargetType = target_type
-        self.cost: int = cost
-        self.submove: Self | None = submove
-
-    @property
-    def name(self) -> str:
-        return self.__name
-
-    @name.setter
-    def name(self, name: str) -> None:
-        if name is None or not isinstance(name, str):
-            raise ValueError(f'{self.__class__.__name__}.name must be a string. It is a(n) {name.__class__.__name__} '
-                             f'and has the value of {name}.')
-        self.__name: str = name
+        self.object_type = ObjectType.ABSTRACT_MOVE
+        self.move_type = MoveType.MOVE
+        self.target_type = target_type
 
     @property
     def move_type(self) -> MoveType:
@@ -49,71 +33,28 @@ class Move(GameObject):
                              f'{target_type.__class__.__name__} and has the value of {target_type}.')
         self.__target_type: TargetType = target_type
 
-    @property
-    def cost(self) -> int:
-        return self.__cost
-
-    @cost.setter
-    def cost(self, cost: int) -> None:
-        if cost is None or not isinstance(cost, int):
-            raise ValueError(f'{self.__class__.__name__}.cost must be an int. It is a(n) {cost.__class__.__name__} '
-                             f'and has the value of {cost}.')
-        self.__cost: int = cost
-
-    @property
-    def submove(self) -> Self | None:
-        return self.__submove
-
-    @submove.setter
-    def submove(self, submove: Self | None) -> None:
-        if submove is not None and not isinstance(submove, Move):
-            raise ValueError(f'{self.__class__.__name__}.submove must be a Move or None. It is a(n) '
-                             f'{submove.__class__.__name__} and has the value of {submove}.')
-        self.__submove: Self | None = submove
-
-    def use_move(self, targets=None) -> None:
+    @abstractmethod
+    def use(self):
         pass
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
-        data['name'] = self.name
         data['move_type'] = self.move_type
         data['target_type'] = self.target_type
-        data['cost'] = self.cost
-        data['submove'] = self.submove.to_json() if self.submove is not None else None
-
         return data
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
-        self.name: str = data['name']
         self.move_type: MoveType = data['move_type']
         self.target_type: TargetType = data['target_type']
-        self.cost: int = data['cost']
-        if data['submove'] is None:
-            self.submove: Self | None = None
-        else:
-            if data['submove']['move_type'] == MoveType.MOVE:
-                self.submove: Self | None = Move().from_json(data['submove'])
-            elif data['submove']['move_type'] == MoveType.ATTACK:
-                self.submove: Self | None = Attack().from_json(data['submove'])
-            elif data['submove']['move_type'] == MoveType.HEAL:
-                self.submove: Self | None = Heal().from_json(data['submove'])
-            elif data['submove']['move_type'] == MoveType.BUFF:
-                self.submove: Self | None = Buff().from_json(data['submove'])
-            elif data['submove']['move_type'] == MoveType.DEBUFF:
-                self.submove: Self | None = Debuff().from_json(data['submove'])
         return self
 
 
-class Attack(Move):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 submove: Move | None = None, damage_points: int = 0):
-        super().__init__(name, target_type, cost, submove)
-
-        self.object_type = ObjectType.ATTACK
+class AbstractAttack(AbstractMove):
+    def __init__(self, target_type: TargetType = TargetType.SELF, damage_points: int = 0):
+        super().__init__(target_type)
         self.damage_points: int = damage_points
-        self.move_type: MoveType = MoveType.ATTACK
+        self.move_type = MoveType.ATTACK
 
     @property
     def damage_points(self) -> int:
@@ -126,8 +67,8 @@ class Attack(Move):
                              f'{damage_points.__class__.__name__} and has the value of {damage_points}.')
         self.__damage_points: int = damage_points
 
-    def use_move(self, targets=None) -> None:
-        # IMPLEMENT HERE
+    @abstractmethod
+    def use(self):
         pass
 
     def to_json(self) -> dict:
@@ -141,12 +82,9 @@ class Attack(Move):
         return self
 
 
-class Heal(Move):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_ALLY, cost: int = 0,
-                 submove: Move | None = None, heal_points: int = 0):
-        super().__init__(name, target_type, cost, submove)
-
-        self.object_type = ObjectType.HEAL
+class AbstractHeal(AbstractMove):
+    def __init__(self, target_type: TargetType = TargetType.SELF, heal_points: int = 0):
+        super().__init__(target_type)
         self.heal_points: int = heal_points
         self.move_type: MoveType = MoveType.HEAL
 
@@ -161,7 +99,8 @@ class Heal(Move):
                              f'{heal_points.__class__.__name__} and has the value of {heal_points}.')
         self.__heal_points: int = heal_points
 
-    def use_move(self, targets=None) -> None:
+    @abstractmethod
+    def use(self):
         pass
 
     def to_json(self) -> dict:
@@ -175,12 +114,9 @@ class Heal(Move):
         return self
 
 
-class Buff(Move):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_ALLY, cost: int = 0,
-                 submove: Move | None = None, buff_amount: float = 0.0):
-        super().__init__(name, target_type, cost, submove)
-
-        self.object_type = ObjectType.BUFF
+class AbstractBuff(AbstractMove):
+    def __init__(self, target_type: TargetType = TargetType.SELF, buff_amount: float = 0.0):
+        super().__init__(target_type)
         self.buff_amount: float = buff_amount
         self.move_type: MoveType = MoveType.BUFF
 
@@ -195,8 +131,8 @@ class Buff(Move):
                              f'{buff_amount.__class__.__name__} and has the value of {buff_amount}.')
         self.__buff_amount: float = buff_amount
 
-    def use_move(self, targets=None) -> None:
-        # IMPLEMENT HERE
+    @abstractmethod
+    def use(self) -> None:
         pass
 
     def to_json(self) -> dict:
@@ -210,12 +146,9 @@ class Buff(Move):
         return self
 
 
-class Debuff(Move):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 submove: Move | None = None, debuff_amount: float = 0.0):
-        super().__init__(name, target_type, cost, submove)
-
-        self.object_type = ObjectType.DEBUFF
+class AbstractDebuff(AbstractMove):
+    def __init__(self, target_type: TargetType = TargetType.SELF, debuff_amount: float = 0.0):
+        super().__init__(target_type)
         self.debuff_amount: float = debuff_amount
         self.move_type: MoveType = MoveType.DEBUFF
 
@@ -230,8 +163,8 @@ class Debuff(Move):
                              f'{debuff_amount.__class__.__name__} and has the value of {debuff_amount}.')
         self.__debuff_amount: float = debuff_amount
 
-    def use_move(self, targets=None) -> None:
-        # IMPLEMENT HERE
+    @abstractmethod
+    def use(self) -> None:
         pass
 
     def to_json(self) -> dict:
