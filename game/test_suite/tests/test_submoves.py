@@ -29,30 +29,26 @@ class TestEffects(unittest.TestCase):
         effect: Effect = Effect().from_json(data)
         self.assertEqual(effect.object_type, self.effect.object_type)
 
-    def test_subattack_json(self) -> None:
+    def test_attack_effect_json(self) -> None:
         data: dict = self.attack_effect.to_json()
-        subattack: AttackEffect = AttackEffect().from_json(data)
-        self.assertEqual(subattack.object_type, self.attack_effect.object_type)
-        self.assertEqual(subattack.damage_points, self.attack_effect.damage_points)
+        attack_effect: AttackEffect = AttackEffect().from_json(data)
+        self.assertEqual(attack_effect.object_type, self.attack_effect.object_type)
+        self.assertEqual(attack_effect.damage_points, self.attack_effect.damage_points)
 
-    def test_subheal_json(self) -> None:
+    def test_heal_effect_json(self) -> None:
         data: dict = self.heal_effect.to_json()
-        subheal: HealEffect = HealEffect().from_json(data)
-        self.assertEqual(subheal.object_type, self.heal_effect.object_type)
-        self.assertEqual(subheal.heal_points, self.heal_effect.heal_points)
+        heal_effect: HealEffect = HealEffect().from_json(data)
+        self.assertEqual(heal_effect.object_type, self.heal_effect.object_type)
+        self.assertEqual(heal_effect.heal_points, self.heal_effect.heal_points)
 
-    def test_subbuff_json(self) -> None:
+    def test_buff_effect_json(self) -> None:
         data: dict = self.buff_effect.to_json()
-        subbuff: BuffEffect = BuffEffect().from_json(data)
-        self.assertEqual(subbuff.object_type, self.buff_effect.object_type)
-        self.assertEqual(subbuff.buff_amount, self.buff_effect.buff_amount)
+        buff_effect: BuffEffect = BuffEffect().from_json(data)
+        self.assertEqual(buff_effect.object_type, self.buff_effect.object_type)
+        self.assertEqual(buff_effect.buff_amount, self.buff_effect.buff_amount)
 
-    def test_subdebuff_json(self) -> None:
+    def test_debuff_effect_json(self) -> None:
         data: dict = self.debuff_effect.to_json()
-        subdebuff: DebuffEffect = DebuffEffect().from_json(data)
-        self.assertEqual(subdebuff.object_type, self.debuff_effect.object_type)
-        self.assertEqual(subdebuff.debuff_amount, self.debuff_effect.debuff_amount)
-
-
-
-
+        debuff_effect: DebuffEffect = DebuffEffect().from_json(data)
+        self.assertEqual(debuff_effect.object_type, self.debuff_effect.object_type)
+        self.assertEqual(debuff_effect.debuff_amount, self.debuff_effect.debuff_amount)

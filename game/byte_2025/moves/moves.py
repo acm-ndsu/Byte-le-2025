@@ -67,13 +67,13 @@ class Move(AbstractMove):
             if data['effect']['move_type'] == MoveType.MOVE:
                 self.effect: Effect | None = Effect().from_json(data['effect'])
             elif data['effect']['move_type'] == MoveType.ATTACK:
-                self.effect: Effect | None = AttackEffect().from_json(data['effect'])
+                self.effect: AttackEffect | None = AttackEffect().from_json(data['effect'])
             elif data['effect']['move_type'] == MoveType.HEAL:
-                self.effect: Effect | None = HealEffect().from_json(data['effect'])
+                self.effect: HealEffect | None = HealEffect().from_json(data['effect'])
             elif data['effect']['move_type'] == MoveType.BUFF:
-                self.effect: Effect | None = BuffEffect().from_json(data['effect'])
+                self.effect: BuffEffect | None = BuffEffect().from_json(data['effect'])
             elif data['effect']['move_type'] == MoveType.DEBUFF:
-                self.effect: Effect | None = DebuffEffect().from_json(data['effect'])
+                self.effect: DebuffEffect | None = DebuffEffect().from_json(data['effect'])
 
         return self
 

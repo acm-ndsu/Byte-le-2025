@@ -1,3 +1,5 @@
+import json
+
 from game.byte_2025.moves.moves import *
 from game.common.enums import ObjectType, CharacterType, RankType
 from game.common.game_object import GameObject
@@ -26,7 +28,7 @@ class Character(GameObject):
         self.speed: int = speed
         self.rank: RankType = RankType.GENERIC
         self.guardian: Self | None = guardian
-        self.possible_moves: dict[str: Move] = dict()
+        self.moves: dict[str: Move] = dict()
         self.special_points: int = 0
         self.position: Vector | None = position
 
@@ -157,15 +159,27 @@ class Character(GameObject):
         data['speed'] = self.speed
         data['rank'] = self.rank
         data['guardian'] = self.guardian.to_json() if self.guardian is not None else None
-
-        # change type hint once Move class is made
-        # temp: dict = {}
-        # data[''] =
-
+        data['moves'] = {move_name: move.to_json() for move_name, move in self.moves.items()}
         data['special_points'] = self.special_points
         data['position'] = self.position if self.position is not None else None
 
         return data
+
+    def __from_json_helper(self, data) -> Move:
+        # temp: ObjectType = ObjectType(data['object_type'])
+
+        match ObjectType(data['object_type']):
+            case ObjectType.ATTACK:
+                return Attack().from_json(data)
+            case ObjectType.HEAL:
+                return Heal().from_json(data)
+            case ObjectType.BUFF:
+                return Buff().from_json(data)
+            case ObjectType.DEBUFF:
+                return Debuff().from_json(data)
+            # case _:
+                # raise ValueError(
+                #     f'The object type of the object is not handled properly. The object type passed in is {temp}.')
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
@@ -179,6 +193,9 @@ class Character(GameObject):
         self.guardian: Character = data['guardian']
         self.special_points: int = data['special_points']
         self.position: Vector = data['position']
+
+        self.moves: dict[str, Move] = {move_name: self.__from_json_helper(move)
+                                       for move_name, move in data['moves'].items()}
 
         return self
 

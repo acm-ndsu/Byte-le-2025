@@ -1,10 +1,7 @@
 import unittest
 
 from game.common.enums import ObjectType
-from game.common.team_manager import TeamManager
-from game.common.map.game_object_container import GameObjectContainer
 from game.common.map.wall import Wall
-from game.controllers.movement_controller import MovementController
 from game.utils.vector import Vector
 from game.common.game_object import GameObject
 from game.common.map.game_board import GameBoard
