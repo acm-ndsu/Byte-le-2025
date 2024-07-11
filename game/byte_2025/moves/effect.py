@@ -48,7 +48,7 @@ class BuffEffect(AbstractBuff, Effect):
 
 
 class DebuffEffect(AbstractDebuff, Effect):
-    def __init__(self, target_type: TargetType = TargetType.SELF, debuff_amount: int = 0.75):
+    def __init__(self, target_type: TargetType = TargetType.SELF, debuff_amount: float = 0.75):
         super().__init__(target_type, debuff_amount)
         self.object_type = ObjectType.DEBUFF_EFFECT
 

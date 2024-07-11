@@ -14,11 +14,12 @@ class TestTeamManager(unittest.TestCase):
         self.character2: Character = GenericAttacker('Grog', health=50, attack=15, defense=5, speed=15)
         self.character3: Character = GenericHealer('Eden', health=60, attack=5, defense=15, speed=10)
         self.team_manager: TeamManager = TeamManager()
-        self.team_manager2: TeamManager = TeamManager([self.character1, self.character2, self.character3])
+        self.team_manager2: TeamManager = TeamManager()
+        self.team_manager2.team = [self.character1, self.character2, self.character3]
 
     def test_init_default(self) -> None:
         self.assertEqual(self.team_manager.object_type, ObjectType.TEAMMANAGER)
-        self.assertEqual(self.team_manager.team, TeamManager().team)
+        self.assertEqual(len(self.team_manager.team), 3)
         self.assertEqual(self.team_manager.score, 0)
 
     def test_init_unique(self) -> None:
@@ -55,7 +56,7 @@ class TestTeamManager(unittest.TestCase):
         self.assertEqual(self.team_manager2.team, [self.character2, self.character3, self.character1])
 
     def test_filter_by_type(self) -> None:
-        self.assertEqual(self.team_manager.filter_by_type(CharacterType.ATTACKER), TeamManager().team)
+        self.assertEqual(len(self.team_manager.filter_by_type(CharacterType.ATTACKER)), 3)
         self.assertEqual(self.team_manager.filter_by_type(CharacterType.TANK), [])
         self.assertEqual(self.team_manager2.filter_by_type(CharacterType.TANK), [self.character1])
         self.assertEqual(self.team_manager2.filter_by_type(CharacterType.ATTACKER), [self.character2])

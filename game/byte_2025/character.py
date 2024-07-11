@@ -1,6 +1,4 @@
-from typing import Self
-
-from game.byte_2025.moves.move import Move
+from game.byte_2025.moves.moves import *
 from game.common.enums import ObjectType, CharacterType, RankType
 from game.common.game_object import GameObject
 from game.utils.vector import Vector
@@ -17,7 +15,7 @@ class Character(GameObject):
 
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
                  attack: int = 1, defense: int = 1, speed: int = 1, guardian: Self | None = None,
-                 possible_moves: dict[str: Move] = dict(), position: Vector | None = None):
+                 position: Vector | None = None):
         super().__init__()
         self.name: str = name
         self.object_type: ObjectType = ObjectType.CHARACTER
@@ -28,7 +26,7 @@ class Character(GameObject):
         self.speed: int = speed
         self.rank: RankType = RankType.GENERIC
         self.guardian: Self | None = guardian
-        self.possible_moves: dict[str: Move] = possible_moves
+        self.possible_moves: dict[str: Move] = dict()
         self.special_points: int = 0
         self.position: Vector | None = position
 
@@ -162,7 +160,7 @@ class Character(GameObject):
 
         # change type hint once Move class is made
         # temp: dict = {}
-        # data['possible_moves'] =
+        # data[''] =
 
         data['special_points'] = self.special_points
         data['position'] = self.position if self.position is not None else None
@@ -189,8 +187,8 @@ class GenericAttacker(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
                  attack: int = 1, defense: int = 1,
                  speed: int = 1, passive: None = None, guardian: Self | None = None,
-                 possible_moves: dict[str: Move] = {}, position: Vector | None = None):
-        super().__init__(name, character_type, health, attack, defense, speed, guardian, possible_moves, position)
+                 position: Vector | None = None):
+        super().__init__(name, character_type, health, attack, defense, speed, guardian, position)
 
         self.object_type: ObjectType = ObjectType.GENERIC_ATTACKER
         self.character_type: CharacterType = CharacterType.ATTACKER
@@ -208,8 +206,8 @@ class GenericHealer(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.HEALER, health: int = 1,
                  attack: int = 1, defense: int = 1,
                  speed: int = 1, passive: None = None, guardian: Self | None = None,
-                 possible_moves: dict[str: Move] = {}, position: Vector | None = None):
-        super().__init__(name, character_type, health, attack, defense, speed, guardian, possible_moves, position)
+                 position: Vector | None = None):
+        super().__init__(name, character_type, health, attack, defense, speed, guardian, position)
 
         self.object_type: ObjectType = ObjectType.GENERIC_HEALER
         self.character_type: CharacterType = CharacterType.HEALER
@@ -227,8 +225,8 @@ class GenericTank(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.TANK, health: int = 1,
                  attack: int = 1, defense: int = 1,
                  speed: int = 1, passive: None = None, guardian: Self | None = None,
-                 possible_moves: dict[str: Move] = {}, position: Vector | None = None):
-        super().__init__(name, character_type, health, attack, defense, speed, guardian, possible_moves, position)
+                 position: Vector | None = None):
+        super().__init__(name, character_type, health, attack, defense, speed, guardian, position)
 
         self.object_type: ObjectType = ObjectType.GENERIC_TANK
         self.character_type: CharacterType = CharacterType.TANK
@@ -245,9 +243,8 @@ class GenericTank(Character):
 class Leader(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
                  attack: int = 1, defense: int = 1, speed: int = 1, guardian: Self | None = None,
-                 possible_moves: dict[str: Move] = {}, special_points: int = 0, position: Vector | None = None,
-                 passive: None = None):
-        super().__init__(name, character_type, health, attack, defense, speed, guardian, possible_moves, position)
+                 special_points: int = 0, position: Vector | None = None, passive: None = None):
+        super().__init__(name, character_type, health, attack, defense, speed, guardian, position)
 
         self.object_type: ObjectType = ObjectType.LEADER
         self.rank: RankType = RankType.LEADER

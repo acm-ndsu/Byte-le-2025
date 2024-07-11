@@ -2,8 +2,8 @@ import unittest
 
 from game.byte_2025.character import *
 from game.common.enums import CharacterType
-from game.utils.vector import Vector
 from game.test_suite.utils import spell_check
+from game.utils.vector import Vector
 
 
 class TestCharacter(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestCharacter(unittest.TestCase):
         self.gen_tank: GenericTank = GenericTank('Bertha', CharacterType.TANK)
         self.leader: Leader = Leader('Phil', CharacterType.TANK)
         self.special: Character = Character('Special', CharacterType.TANK, 10, 15, 20, 10,
-                                            None, self.leader, {}, 5, Vector(0, 0))
+                                            self.leader, Vector(0, 0))
         self.num: int = 100
         self.neg_num: int = -1
         self.none: None = None
@@ -47,7 +47,6 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.special.attack, 15)
         self.assertEqual(self.special.defense, 20)
         self.assertEqual(self.special.speed, 10)
-        self.assertEqual(self.special.passive, None)
         self.assertEqual(self.special.guardian, self.leader)
         self.assertEqual(self.special.position, Vector(0, 0))
 
@@ -134,6 +133,10 @@ class TestCharacter(unittest.TestCase):
         self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.guardian must be a '
                                                       f'Character or None. It is a(n) {value.__class__.__name__} and '
                                                       f'has the value of {value}', False))
+
+        # ensure passing None as the guarding works since there's currently a warning
+        self.special.guardian = None
+        self.assertEqual(self.special.guardian, None)
 
     def test_to_json_character(self):
         data: dict = self.character.to_json()
