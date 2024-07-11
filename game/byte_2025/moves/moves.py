@@ -1,16 +1,16 @@
-from game.byte_2025.moves.submoves import *
+from game.byte_2025.moves.effect import *
 from game.byte_2025.moves.abstract_moves import *
 from game.common.enums import *
 
 
 class Move(AbstractMove):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 submove: Submove | None = None):
+                 effect: Effect | None = None):
         super().__init__(target_type)
         self.name: str = name
         self.object_type = ObjectType.MOVE
         self.cost: int = cost
-        self.submove: Submove | None = submove
+        self.effect: Effect | None = effect
 
     @property
     def name(self) -> str:
@@ -35,15 +35,15 @@ class Move(AbstractMove):
         self.__cost: int = cost
 
     @property
-    def submove(self) -> Submove | None:
-        return self.__submove
+    def effect(self) -> Effect | None:
+        return self.__effect
 
-    @submove.setter
-    def submove(self, submove: Submove | None) -> None:
-        if submove is not None and not isinstance(submove, Submove):
-            raise ValueError(f'{self.__class__.__name__}.submove must be a Move or None. It is a(n) '
-                             f'{submove.__class__.__name__} and has the value of {submove}.')
-        self.__submove: Submove | None = submove
+    @effect.setter
+    def effect(self, effect: Effect | None) -> None:
+        if effect is not None and not isinstance(effect, Effect):
+            raise ValueError(f'{self.__class__.__name__}.effect must be a Move or None. It is a(n) '
+                             f'{effect.__class__.__name__} and has the value of {effect}.')
+        self.__effect: Effect | None = effect
 
     def use(self) -> None:
         pass
@@ -52,7 +52,7 @@ class Move(AbstractMove):
         data: dict = super().to_json()
         data['name'] = self.name
         data['cost'] = self.cost
-        data['submove'] = self.submove.to_json() if self.submove is not None else None
+        data['effect'] = self.effect.to_json() if self.effect is not None else None
 
         return data
 
@@ -61,27 +61,27 @@ class Move(AbstractMove):
         self.name: str = data['name']
         self.cost: int = data['cost']
 
-        if data['submove'] is None:
-            self.submove: Submove | None = None
+        if data['effect'] is None:
+            self.effect: Effect | None = None
         else:
-            if data['submove']['move_type'] == MoveType.MOVE:
-                self.submove: Submove | None = Submove().from_json(data['submove'])
-            elif data['submove']['move_type'] == MoveType.ATTACK:
-                self.submove: Submove | None = AttackSubmove().from_json(data['submove'])
-            elif data['submove']['move_type'] == MoveType.HEAL:
-                self.submove: Submove | None = HealSubmove().from_json(data['submove'])
-            elif data['submove']['move_type'] == MoveType.BUFF:
-                self.submove: Submove | None = BuffSubmove().from_json(data['submove'])
-            elif data['submove']['move_type'] == MoveType.DEBUFF:
-                self.submove: Submove | None = DebuffSubmove().from_json(data['submove'])
+            if data['effect']['move_type'] == MoveType.MOVE:
+                self.effect: Effect | None = Effect().from_json(data['effect'])
+            elif data['effect']['move_type'] == MoveType.ATTACK:
+                self.effect: Effect | None = AttackEffect().from_json(data['effect'])
+            elif data['effect']['move_type'] == MoveType.HEAL:
+                self.effect: Effect | None = HealEffect().from_json(data['effect'])
+            elif data['effect']['move_type'] == MoveType.BUFF:
+                self.effect: Effect | None = BuffEffect().from_json(data['effect'])
+            elif data['effect']['move_type'] == MoveType.DEBUFF:
+                self.effect: Effect | None = DebuffEffect().from_json(data['effect'])
 
         return self
 
 
 class Attack(Move, AbstractAttack):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 submove: Move | None = None, damage_points: int = 0):
-        super().__init__(name, target_type, cost, submove)
+                 effect: Move | None = None, damage_points: int = 0):
+        super().__init__(name, target_type, cost, effect)
 
         self.damage_points: int = damage_points
         self.object_type = ObjectType.ATTACK
@@ -89,8 +89,8 @@ class Attack(Move, AbstractAttack):
 
 class Heal(Move, AbstractHeal):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_ALLY, cost: int = 0,
-                 submove: Move | None = None, heal_points: int = 0):
-        super().__init__(name, target_type, cost, submove)
+                 effect: Move | None = None, heal_points: int = 0):
+        super().__init__(name, target_type, cost, effect)
 
         self.heal_points: int = heal_points
         self.object_type = ObjectType.HEAL
@@ -98,8 +98,8 @@ class Heal(Move, AbstractHeal):
 
 class Buff(Move, AbstractBuff):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_ALLY, cost: int = 0,
-                 submove: Move | None = None, buff_amount: float = 0.0):
-        super().__init__(name, target_type, cost, submove)
+                 effect: Effect | None = None, buff_amount: float = 1.25):
+        super().__init__(name, target_type, cost, effect)
 
         self.buff_amount: float = buff_amount
         self.object_type = ObjectType.BUFF
@@ -107,8 +107,8 @@ class Buff(Move, AbstractBuff):
 
 class Debuff(Move, AbstractDebuff):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 submove: Move | None = None, debuff_amount: float = 0.0):
-        super().__init__(name, target_type, cost, submove)
+                 effect: Effect | None = None, debuff_amount: float = 0.75):
+        super().__init__(name, target_type, cost, effect)
 
         self.debuff_amount: float = debuff_amount
         self.object_type = ObjectType.DEBUFF

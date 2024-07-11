@@ -115,7 +115,7 @@ class AbstractHeal(AbstractMove):
 
 
 class AbstractBuff(AbstractMove):
-    def __init__(self, target_type: TargetType = TargetType.SELF, buff_amount: float = 0.0):
+    def __init__(self, target_type: TargetType = TargetType.SELF, buff_amount: float = 1.25):
         super().__init__(target_type)
         self.buff_amount: float = buff_amount
         self.move_type: MoveType = MoveType.BUFF
@@ -147,7 +147,7 @@ class AbstractBuff(AbstractMove):
 
 
 class AbstractDebuff(AbstractMove):
-    def __init__(self, target_type: TargetType = TargetType.SELF, debuff_amount: float = 0.0):
+    def __init__(self, target_type: TargetType = TargetType.SELF, debuff_amount: float = 0.75):
         super().__init__(target_type)
         self.debuff_amount: float = debuff_amount
         self.move_type: MoveType = MoveType.DEBUFF

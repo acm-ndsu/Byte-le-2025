@@ -38,12 +38,12 @@ class ObjectType(Enum):
     GUARD = auto()
     BUFF = auto()
     DEBUFF = auto()
-    SUBMOVE = auto()
-    ATTACK_SUBMOVE = auto()
-    HEAL_SUBMOVE = auto()
-    GUARD_SUBMOVE = auto()
-    BUFF_SUBMOVE = auto()
-    DEBUFF_SUBMOVE = auto()
+    EFFECT = auto()
+    ATTACK_EFFECT = auto()
+    HEAL_EFFECT = auto()
+    GUARD_EFFECT = auto()
+    BUFF_EFFECT = auto()
+    DEBUFF_EFFECT = auto()
 
 
 class Country(Enum):
