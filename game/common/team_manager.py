@@ -26,10 +26,11 @@ class TeamManager(GameObject):
     the default for team in the TeamManager class is also changed. This, for the most part, can be 
     ignored, but reminder to exercise caution when adjusting the Character class for this reason.
     '''
-    def __init__(self):
+
+    def __init__(self, team: list[Character] = [Character(), Character(), Character()]):
         super().__init__()
         self.object_type: ObjectType = ObjectType.TEAMMANAGER
-        self.team: list[Character] = [Character(), Character(), Character()]
+        self.team: list[Character] = team
         self.score: int = 0
 
     # Getters and Setters

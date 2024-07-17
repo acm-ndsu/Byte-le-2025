@@ -13,7 +13,7 @@ class Player(GameObject):
 
         The Player class is what represents the team that's competing. The player can contain a list of Actions to
         execute each turn. The team_manager is what's used to execute actions (e.g., interacting with stations, picking up
-        items, etc.). For more details on the difference between the Player and Avatar classes, refer to the README
+        items, etc.). For more details on the difference between the Player and team_manager classes, refer to the README
         document.
     """
 
@@ -96,7 +96,7 @@ class Player(GameObject):
     def team_manager(self, team_manager: TeamManager) -> None:
         if team_manager is not None and not isinstance(team_manager, TeamManager):
             raise ValueError(
-                f'{self.__class__.__name__}.team_manager must be Avatar or None. It is a(n) {team_manager.__class__.__name__} and has the value of {team_manager}.')
+                f'{self.__class__.__name__}.team_manager must be team_manager or None. It is a(n) {team_manager.__class__.__name__} and has the value of {team_manager}.')
         self.__team_manager = team_manager
 
     @property
@@ -146,7 +146,7 @@ class Player(GameObject):
 
         # match case for team_manager
         match ObjectType(team_manager['object_type']):
-            case ObjectType.AVATAR:
+            case ObjectType.TEAMMANAGER:
                 self.team_manager = TeamManager().from_json(data['team_manager'])
             case None:
                 self.team_manager = None
@@ -154,7 +154,7 @@ class Player(GameObject):
                 raise Exception(f'Could not parse team_manager: {self.team_manager}')
         return self
         # self.action = Action().from_json(data['action']) if data['action'] is not None else None
-        # self.team_manager = Avatar().from_json(data['team_manager']) if data['team_manager'] is not None else None
+        # self.team_manager = team_manager().from_json(data['team_manager']) if data['team_manager'] is not None else None
 
     # to String
     def __str__(self):

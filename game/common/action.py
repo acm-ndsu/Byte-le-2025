@@ -1,3 +1,5 @@
+from typing import Self
+
 from game.common.enums import *
 
 
@@ -12,26 +14,27 @@ class Action:
     """
 
     def __init__(self):
-        self.object_type = ObjectType.ACTION
+        self.object_type: ObjectType = ObjectType.ACTION
         self._example_action = None
 
     def set_action(self, action):
         self._example_action = action
 
-    def to_json(self):
-        data = dict()
-
+    def to_json(self) -> dict:
+        data: dict = dict()
         data['object_type'] = self.object_type
         data['example_action'] = self._example_action
 
         return data
 
-    def from_json(self, data):
-        self.object_type = data['object_type']
+    def from_json(self, data) -> Self:
+        self.object_type: ObjectType = data['object_type']
         self._example_action = data['example_action']
 
-    def __str__(self):
-        outstring = ''
+        return self
+
+    def __str__(self) -> str:
+        outstring: str = ''
         outstring += f'Example Action: {self._example_action}\n'
 
         return outstring

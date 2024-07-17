@@ -19,7 +19,7 @@ class ObjectType(Enum):
     NONE = auto()
     ACTION = auto()
     PLAYER = auto()
-    AVATAR = auto()
+    TEAMMANAGER = auto()
     GAMEBOARD = auto()
     VECTOR = auto()
     TILE = auto()
