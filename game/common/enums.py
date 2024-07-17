@@ -26,7 +26,6 @@ class ObjectType(Enum):
     WALL = auto()
     OCCUPIABLE = auto()
     GAME_OBJECT_CONTAINER = auto()
-    TEAMMANAGER = auto()
     CHARACTER = auto()
     GENERIC_ATTACKER = auto()
     GENERIC_HEALER = auto()
