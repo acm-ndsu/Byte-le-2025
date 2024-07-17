@@ -1,3 +1,4 @@
+from game.byte_2025.character import Character
 from game.common.team_manager import TeamManager
 from game.common.game_object import GameObject
 from game.common.map.occupiable import Occupiable
@@ -99,6 +100,9 @@ class GameObjectContainer(GameObject):
     def get_top(self) -> GameObject | None:
         return self.__sublist[-1] if self.__sublist is not None \
                              and len(self.__sublist) > 0 else None
+
+    def contains_character(self, character: Character) -> bool:
+        return isinstance(character, Character) and character in self.__sublist
 
     def get_objects(self, object_type: ObjectType | None = None) -> list[GameObject]:
         """

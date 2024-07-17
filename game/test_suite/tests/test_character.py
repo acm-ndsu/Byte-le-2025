@@ -161,6 +161,8 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
         self.assertEqual(char.moves, self.character.moves)
+        self.assertEqual(char.took_action, self.character.took_action)
+        self.assertEqual(char.country_type, self.character.country_type)
 
     def test_to_json_gen_atk(self):
         data: dict = self.gen_attacker.to_json()
@@ -176,6 +178,8 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
         self.assertEqual(char.moves, self.gen_attacker.moves)
+        self.assertEqual(char.took_action, self.character.took_action)
+        self.assertEqual(char.country_type, self.character.country_type)
 
     def test_to_json_gen_heal(self):
         data: dict = self.gen_healer.to_json()
@@ -191,6 +195,8 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
         self.assertEqual(char.moves, self.gen_healer.moves)
+        self.assertEqual(char.took_action, self.character.took_action)
+        self.assertEqual(char.country_type, self.character.country_type)
 
     def test_to_json_gen_tank(self):
         data: dict = self.gen_tank.to_json()
@@ -205,6 +211,8 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.special_points, self.gen_tank.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
+        self.assertEqual(char.took_action, self.character.took_action)
+        self.assertEqual(char.country_type, self.character.country_type)
 
         self.assertEqual(len(char.moves.keys()), len(self.gen_tank.moves.keys()))
         self.assertEqual(len(char.moves.values()), len(self.gen_tank.moves.values()))
@@ -227,3 +235,5 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
         self.assertEqual(char.moves, self.leader.moves)
+        self.assertEqual(char.took_action, self.character.took_action)
+        self.assertEqual(char.country_type, self.character.country_type)

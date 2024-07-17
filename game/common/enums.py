@@ -46,7 +46,7 @@ class ObjectType(Enum):
     DEBUFF_EFFECT = auto()
 
 
-class Country(Enum):
+class CountryType(Enum):
     URODA = auto()
     TURPIS = auto()
 

@@ -1,6 +1,7 @@
 from copy import deepcopy
 import random
 
+from game.byte_2025.character import Character
 from game.common.action import Action
 from game.common.team_manager import TeamManager
 from game.common.enums import *
@@ -57,10 +58,10 @@ class MasterController(Controller):
     def give_clients_objects(self, clients: list[Player], world: dict):
         # starting_positions = [[3, 3], [3, 9]]   # would be done in generate game
         gb: GameBoard = world['game_board']
-        avatars: list[tuple[Vector, list[TeamManager]]] = gb.get_objects(ObjectType.AVATAR)
-        for avatar, client in zip(avatars, clients):
-            avatar[1][0].position = avatar[0]
-            client.avatar = avatar[1][0]
+        team_managers: list[tuple[Vector, list[Character]]] = gb.get_objects(ObjectType.CHARACTER)
+        for team_manager, client in zip(team_managers, clients):
+            team_manager[1][0].position = team_manager[0]
+            client.team_manager = team_manager[1][0]
 
     # Generator function. Given a key:value pair where the key is the identifier for the current world and the value is
     # the state of the world, returns the key that will give the appropriate world information
@@ -93,7 +94,7 @@ class MasterController(Controller):
 
         # Create deep copies of all objects sent to the player
         current_world = deepcopy(self.current_world_data["game_board"])    # what is current world and copy avatar
-        copy_avatar = deepcopy(client.avatar)
+        copy_avatar = deepcopy(client.team_manager)
         # Obfuscate data in objects that that player should not be able to see
         # Currently world data isn't obfuscated at all
         args = (self.turn, turn_actions, current_world, copy_avatar)

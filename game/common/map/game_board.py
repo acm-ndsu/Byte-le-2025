@@ -2,6 +2,7 @@ import ast
 import random
 from typing import Self
 
+from game.byte_2025.character import Character
 from game.common.team_manager import TeamManager
 from game.common.enums import *
 from game.common.game_object import GameObject
@@ -341,6 +342,25 @@ class GameBoard(GameObject):
                 results.append((vec, found))  # Add tuple pairings and objects found
 
         return results
+
+    def get_characters(self, country: CountryType | None = None) -> dict[Vector, Character]:
+        """
+        Returns a dictionary of Vector: Character pair.
+        """
+
+        # all values are GameObjectContainers (GOC), so this gets all the characters from each GOC
+        # Ignore the warning; Character objects will always be at the top of an existing GOC
+        objects: list[GameObject] = [game_object_container.get_top() for game_object_container in
+                                     self.game_map.values()]
+
+        if country is None:
+            # create a dictionary by combining all coordinates with the characters
+            return {coords: character for coords, character in zip(self.game_map.keys(), objects)
+                    if self.game_map[coords].contains_character(character)}
+
+        characters = [obj for obj in objects if isinstance(obj, Character) and obj.country_type == country]
+
+        return {coords: character for coords, character in zip(self.game_map.keys(), characters)}
 
     def to_json(self) -> dict:
         data: dict[str, object] = super().to_json()
