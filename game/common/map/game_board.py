@@ -208,6 +208,8 @@ class GameBoard(GameObject):
         # Dictionary Init
         self.game_map = self.__map_init()
 
+    # FIX ME TO PLACE ALL CHARACTERS FROM EACH TEAM MANAGER
+
     def __map_init(self) -> dict[Vector, GameObjectContainer]:
         output: dict[Vector, GameObjectContainer] = dict()
 
@@ -358,9 +360,11 @@ class GameBoard(GameObject):
             return {coords: character for coords, character in zip(self.game_map.keys(), objects)
                     if self.game_map[coords].contains_character(character)}
 
-        characters = [obj for obj in objects if isinstance(obj, Character) and obj.country_type == country]
-
-        return {coords: character for coords, character in zip(self.game_map.keys(), characters)}
+        # filter out any objects that aren't characters and doesn't have the matching country_type
+        # the warning can be ignored since that if statement is only reached if the object is a Character
+        return {coords: character for coords, character in zip(self.game_map.keys(), objects) if
+                isinstance(self.game_map[coords].get_top(), Character) and
+                self.game_map[coords].get_top().country_type == country}
 
     def to_json(self) -> dict:
         data: dict[str, object] = super().to_json()
