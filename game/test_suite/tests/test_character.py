@@ -2,8 +2,8 @@ import unittest
 
 from game.byte_2025.character import *
 from game.common.enums import CharacterType
-from game.utils.vector import Vector
 from game.test_suite.utils import spell_check
+from game.utils.vector import Vector
 
 
 class TestCharacter(unittest.TestCase):
@@ -14,10 +14,19 @@ class TestCharacter(unittest.TestCase):
         self.gen_tank: GenericTank = GenericTank('Bertha', CharacterType.TANK)
         self.leader: Leader = Leader('Phil', CharacterType.TANK)
         self.special: Character = Character('Special', CharacterType.TANK, 10, 15, 20, 10,
-                                            None, self.leader, {}, 5, Vector(0, 0))
+                                            self.leader, Vector(0, 0))
         self.num: int = 100
         self.neg_num: int = -1
         self.none: None = None
+
+        self.moves = {
+            'NA': Attack('Baja Blast', TargetType.ALL_OPP, 0, None, 5),
+            'S1': Buff('Baja Slurp', TargetType.SELF, 1, HealEffect(heal_points=10), 1.5),
+            'S2': Debuff('Baja Dump', TargetType.ALL_OPP, 2, None, 0.5),
+            'S3': Heal('Baja Blessing', TargetType.ALL_ALLY, 3, None, 10),
+        }
+
+        self.gen_tank.moves = self.moves
 
     # Test that passing in valid inputs for all the constructor parameters is correct
     def test_initialization(self):
@@ -47,7 +56,6 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.special.attack, 15)
         self.assertEqual(self.special.defense, 20)
         self.assertEqual(self.special.speed, 10)
-        self.assertEqual(self.special.passive, None)
         self.assertEqual(self.special.guardian, self.leader)
         self.assertEqual(self.special.position, Vector(0, 0))
 
@@ -135,6 +143,10 @@ class TestCharacter(unittest.TestCase):
                                                       f'Character or None. It is a(n) {value.__class__.__name__} and '
                                                       f'has the value of {value}', False))
 
+        # ensure passing None as the guarding works since there's currently a warning
+        self.special.guardian = None
+        self.assertEqual(self.special.guardian, None)
+
     def test_to_json_character(self):
         data: dict = self.character.to_json()
         char: Character = Character().from_json(data)
@@ -148,8 +160,11 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.special_points, self.character.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
+        self.assertEqual(char.moves, self.character.moves)
+        self.assertEqual(char.took_action, self.character.took_action)
+        self.assertEqual(char.country_type, self.character.country_type)
 
-    def test_to_json_genatk(self):
+    def test_to_json_gen_atk(self):
         data: dict = self.gen_attacker.to_json()
         char: GenericAttacker = GenericAttacker().from_json(data)
         self.assertEqual(char.name, self.gen_attacker.name)
@@ -162,8 +177,11 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.special_points, self.gen_attacker.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
+        self.assertEqual(char.moves, self.gen_attacker.moves)
+        self.assertEqual(char.took_action, self.character.took_action)
+        self.assertEqual(char.country_type, self.character.country_type)
 
-    def test_to_json_genheal(self):
+    def test_to_json_gen_heal(self):
         data: dict = self.gen_healer.to_json()
         char: GenericHealer = GenericHealer().from_json(data)
         self.assertEqual(char.name, self.gen_healer.name)
@@ -176,8 +194,11 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.special_points, self.gen_healer.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
+        self.assertEqual(char.moves, self.gen_healer.moves)
+        self.assertEqual(char.took_action, self.character.took_action)
+        self.assertEqual(char.country_type, self.character.country_type)
 
-    def test_to_json_gentank(self):
+    def test_to_json_gen_tank(self):
         data: dict = self.gen_tank.to_json()
         char: GenericTank = GenericTank().from_json(data)
         self.assertEqual(char.name, self.gen_tank.name)
@@ -190,6 +211,15 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.special_points, self.gen_tank.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
+        self.assertEqual(char.took_action, self.character.took_action)
+        self.assertEqual(char.country_type, self.character.country_type)
+
+        self.assertEqual(len(char.moves.keys()), len(self.gen_tank.moves.keys()))
+        self.assertEqual(len(char.moves.values()), len(self.gen_tank.moves.values()))
+
+        # make sure all object types match
+        [self.assertEqual(expected.object_type, actual.object_type)
+         for expected, actual in zip(char.moves.values(), self.gen_tank.moves.values())]
 
     def test_to_json_leader(self):
         data: dict = self.leader.to_json()
@@ -204,3 +234,6 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.special_points, self.leader.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
+        self.assertEqual(char.moves, self.leader.moves)
+        self.assertEqual(char.took_action, self.character.took_action)
+        self.assertEqual(char.country_type, self.character.country_type)

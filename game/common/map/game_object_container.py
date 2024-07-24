@@ -1,9 +1,11 @@
+from game.byte_2025.character import *
 from game.common.team_manager import TeamManager
 from game.common.game_object import GameObject
 from game.common.map.occupiable import Occupiable
 from game.common.enums import ObjectType
 from game.common.map.wall import Wall
 from typing import Self
+
 
 class GameObjectContainer(GameObject):
     """
@@ -97,8 +99,16 @@ class GameObjectContainer(GameObject):
         return None
 
     def get_top(self) -> GameObject | None:
-        return self.__sublist[-1] if self.__sublist is not None \
-                             and len(self.__sublist) > 0 else None
+        """
+        Returns the last object in the sublist.
+        """
+        return self.__sublist[-1] if self.__sublist is not None and len(self.__sublist) > 0 else None
+
+    def contains_character(self, character: Character) -> bool:
+        """
+        Checks if the given character is in the sublist.
+        """
+        return isinstance(character, Character) and character in self.__sublist
 
     def get_objects(self, object_type: ObjectType | None = None) -> list[GameObject]:
         """
@@ -121,9 +131,14 @@ class GameObjectContainer(GameObject):
         match temp:
             case ObjectType.WALL:
                 return Wall().from_json(data)
-            # case ObjectType.AVATAR:
-            #     return TeamManager().from_json(data)
-            # If adding more ObjectTypes that can be placed on the game_board, specify here
+            case ObjectType.LEADER:
+                return Leader().from_json(data)
+            case ObjectType.GENERIC_ATTACKER:
+                return GenericAttacker().from_json(data)
+            case ObjectType.GENERIC_HEALER:
+                return GenericHealer().from_json(data)
+            case ObjectType.GENERIC_TANK:
+                return GenericTank().from_json(data)
             case _:
                 raise ValueError(
                     f'The object type of the object is not handled properly. The object type passed in is {temp}.')

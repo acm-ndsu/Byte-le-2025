@@ -1,5 +1,4 @@
 import ast
-import ast
 import random
 from typing import Self
 
@@ -209,13 +208,15 @@ class GameBoard(GameObject):
         # Dictionary Init
         self.game_map = self.__map_init()
 
+    # FIX ME TO PLACE ALL CHARACTERS FROM EACH TEAM MANAGER
+
     def __map_init(self) -> dict[Vector, GameObjectContainer]:
         output: dict[Vector, GameObjectContainer] = dict()
 
-        # Update all Character positions if they are to be placed on the map
+        # Update all Avatar positions if they are to be placed on the map
         for vec, objs in self.locations.items():
             for obj in objs:
-                if isinstance(obj, Character):
+                if isinstance(obj, TeamManager):
                     obj.position = vec
 
         if self.walled:
@@ -344,6 +345,27 @@ class GameBoard(GameObject):
 
         return results
 
+    def get_characters(self, country: CountryType | None = None) -> dict[Vector, Character]:
+        """
+        Returns a dictionary of Vector: Character pair.
+        """
+
+        # all values are GameObjectContainers (GOC), so this gets all the characters from each GOC
+        # Ignore the warning; Character objects will always be at the top of an existing GOC
+        objects: list[GameObject] = [game_object_container.get_top() for game_object_container in
+                                     self.game_map.values()]
+
+        if country is None:
+            # create a dictionary by combining all coordinates with the characters
+            return {coords: character for coords, character in zip(self.game_map.keys(), objects)
+                    if self.game_map[coords].contains_character(character)}
+
+        # filter out any objects that aren't characters and doesn't have the matching country_type
+        # the warning can be ignored since that if statement is only reached if the object is a Character
+        return {coords: character for coords, character in zip(self.game_map.keys(), objects) if
+                isinstance(self.game_map[coords].get_top(), Character) and
+                self.game_map[coords].get_top().country_type == country}
+
     def to_json(self) -> dict:
         data: dict[str, object] = super().to_json()
         temp: dict[Vector, GameObjectContainer] | None = {str(vec.to_json()): go_container.to_json() for
@@ -370,17 +392,14 @@ class GameBoard(GameObject):
                 return Tile().from_json(data)
             case ObjectType.WALL:
                 return Wall().from_json(data)
+            case ObjectType.LEADER:
+                return Leader().from_json(data)
             case ObjectType.GENERIC_ATTACKER:
                 return GenericAttacker().from_json(data)
             case ObjectType.GENERIC_HEALER:
                 return GenericHealer().from_json(data)
             case ObjectType.GENERIC_TANK:
                 return GenericTank().from_json(data)
-            case ObjectType.LEADER:
-                return Leader().from_json(data)
-            # case ObjectType.AVATAR:
-            #     return TeamManager().from_json(data)
-            # If adding more ObjectTypes that can be placed on the game_board, specify here
             case _:
                 raise ValueError(
                     f'The object type of the object is not handled properly. The object type passed in is {temp}.')

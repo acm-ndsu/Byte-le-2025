@@ -1,10 +1,8 @@
 import unittest
 
-from game.common.enums import ObjectType
-from game.common.team_manager import TeamManager
-from game.common.map.game_object_container import GameObjectContainer
+from game.byte_2025.character import Leader, GenericAttacker, Character
+from game.common.enums import ObjectType, CountryType
 from game.common.map.wall import Wall
-from game.controllers.swap_controller import MovementController
 from game.utils.vector import Vector
 from game.common.game_object import GameObject
 from game.common.map.game_board import GameBoard
@@ -25,9 +23,14 @@ class TestGameBoard(unittest.TestCase):
         # TEST TEAM MANAGER, GAME BOARD, PLAYER, CHARACTER, ALL WHEN IMPLEMENTED
 
         self.wall: Wall = Wall()
+        self.leader: Leader = Leader(position=Vector(1, 2), country_type=CountryType.TURPIS)
+        self.attacker: GenericAttacker = GenericAttacker(position=Vector(1, 3))
+
         # self.avatar: TeamManager = TeamManager()
         self.locations: dict[Vector, list[GameObject]] = {
             Vector(1, 1): [self.wall, ],
+            Vector(1, 2): [self.leader],
+            Vector(1, 3): [self.attacker],
         }
 
         self.game_board: GameBoard = GameBoard(1, Vector(3, 3), self.locations, False)
@@ -73,6 +76,17 @@ class TestGameBoard(unittest.TestCase):
         walls: list[tuple[Vector, list[GameObject]]] = self.game_board.get_objects(ObjectType.WALL)
         self.assertTrue(all(map(lambda wall: isinstance(wall[1][0], Wall), walls)))
         self.assertEqual(len(walls), 1)
+
+    def test_get_characters(self):
+        characters: dict[Vector, Character] = self.game_board.get_characters()
+        self.assertEqual(characters[Vector(1, 2)], self.leader)
+        self.assertEqual(characters[Vector(1, 3)], self.attacker)
+        self.assertEqual(len(characters), 2)
+
+    def test_get_characters_by_country(self):
+        characters: dict[Vector, Character] = self.game_board.get_characters(CountryType.TURPIS)
+        self.assertEqual(characters[Vector(1, 2)], self.leader)
+        self.assertEqual(len(characters), 1)
 
     # test json method
     def test_game_board_json(self):
