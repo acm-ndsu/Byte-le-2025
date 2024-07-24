@@ -2,7 +2,7 @@ import ast
 import random
 from typing import Self
 
-from game.byte_2025.character import Character
+from game.byte_2025.character import *
 from game.common.team_manager import TeamManager
 from game.common.enums import *
 from game.common.game_object import GameObject
@@ -392,9 +392,14 @@ class GameBoard(GameObject):
                 return Tile().from_json(data)
             case ObjectType.WALL:
                 return Wall().from_json(data)
-            # case ObjectType.AVATAR:
-            #     return TeamManager().from_json(data)
-            # If adding more ObjectTypes that can be placed on the game_board, specify here
+            case ObjectType.LEADER:
+                return Leader().from_json(data)
+            case ObjectType.GENERIC_ATTACKER:
+                return GenericAttacker().from_json(data)
+            case ObjectType.GENERIC_HEALER:
+                return GenericHealer().from_json(data)
+            case ObjectType.GENERIC_TANK:
+                return GenericTank().from_json(data)
             case _:
                 raise ValueError(
                     f'The object type of the object is not handled properly. The object type passed in is {temp}.')
