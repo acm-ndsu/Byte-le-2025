@@ -56,12 +56,19 @@ class MasterController(Controller):
 
     # Receives all clients for the purpose of giving them the objects they will control
     def give_clients_objects(self, clients: list[Player], world: dict):
-        # starting_positions = [[3, 3], [3, 9]]   # would be done in generate game
+        # starting_positions would set done in generate game
+
         gb: GameBoard = world['game_board']
-        team_managers: list[tuple[Vector, list[Character]]] = gb.get_objects(ObjectType.CHARACTER)
-        for team_manager, client in zip(team_managers, clients):
-            team_manager[1][0].position = team_manager[0]
-            client.team_manager = team_manager[1][0]
+
+        # get the two teams from the gameboard
+        uroda_team: dict[Vector, Character] = gb.get_characters(CountryType.URODA)
+        turpis_team: dict[Vector, Character] = gb.get_characters(CountryType.TURPIS)
+
+        # create a new TeamManager for every Player object
+        # the first Player is assigned the Uroda team, and then second is assigned Turpis
+        for client, iteration in enumerate(clients):
+            client.team_manager = TeamManager()
+            client.team_manager.team = uroda_team if iteration == 0 else turpis_team
 
     # Generator function. Given a key:value pair where the key is the identifier for the current world and the value is
     # the state of the world, returns the key that will give the appropriate world information
