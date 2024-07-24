@@ -66,7 +66,7 @@ class MasterController(Controller):
 
         # create a new TeamManager for every Player object
         # the first Player is assigned the Uroda team, and then second is assigned Turpis
-        for client, iteration in enumerate(clients):
+        for iteration, client in enumerate(clients):
             client.team_manager = TeamManager()
             client.team_manager.team = uroda_team if iteration == 0 else turpis_team
 
