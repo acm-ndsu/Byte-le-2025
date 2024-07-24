@@ -292,8 +292,7 @@ class GenericTank(Character):
 class Leader(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
                  attack: int = 1, defense: int = 1, speed: int = 1, guardian: Self | None = None,
-                 special_points: int = 0, position: Vector | None = None, passive: None = None,
-                 country_type: CountryType = CountryType.URODA):
+                 position: Vector | None = None, passive: None = None, country_type: CountryType = CountryType.URODA):
         super().__init__(name, character_type, health, attack, defense, speed, guardian, position)
 
         self.object_type: ObjectType = ObjectType.LEADER
