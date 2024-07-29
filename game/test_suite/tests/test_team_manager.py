@@ -10,9 +10,9 @@ class TestTeamManager(unittest.TestCase):
     Test for Team Manager class
     """
     def setUp(self):
-        self.character1: Character = Leader('Agles', CharacterType.TANK, 100, 10, 10, 5)
-        self.character2: Character = GenericAttacker('Grog', health=50, attack=15, defense=5, speed=15)
-        self.character3: Character = GenericHealer('Eden', health=60, attack=5, defense=15, speed=10)
+        self.character1: Character = Leader('Agles', CharacterType.TANK, 100, 10, 5)
+        self.character2: Character = GenericAttacker('Grog', health=50, defense=5, speed=15)
+        self.character3: Character = GenericHealer('Eden', health=60, defense=15, speed=10)
         self.team_manager: TeamManager = TeamManager()
         self.team_manager2: TeamManager = TeamManager([self.character1, self.character2, self.character3])
 
