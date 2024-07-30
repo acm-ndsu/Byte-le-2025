@@ -186,6 +186,18 @@ class Character(GameObject):
         """
         return self.__moveset[move] if move in self.moveset else None
 
+    def get_na(self):
+        return self.moveset['NA']
+
+    def get_s1(self):
+        return self.moveset['S1']
+
+    def get_s2(self):
+        return self.moveset['S2']
+
+    def get_s3(self):
+        return self.moveset['S3']
+
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['name'] = self.name

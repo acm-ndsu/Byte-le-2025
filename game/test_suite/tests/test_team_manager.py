@@ -14,7 +14,8 @@ class TestTeamManager(unittest.TestCase):
         self.character2: Character = GenericAttacker('Grog', health=50, defense=5, speed=15)
         self.character3: Character = GenericHealer('Eden', health=60, defense=15, speed=10)
         self.team_manager: TeamManager = TeamManager()
-        self.team_manager2: TeamManager = TeamManager([self.character1, self.character2, self.character3])
+        self.team_manager2: TeamManager = TeamManager([self.character1, self.character2, self.character3],
+                                                      CountryType.TURPIS)
 
     def test_init_default(self) -> None:
         self.assertEqual(self.team_manager.object_type, ObjectType.TEAMMANAGER)
@@ -66,6 +67,7 @@ class TestTeamManager(unittest.TestCase):
         team_manager: TeamManager = TeamManager().from_json(data)
         self.assertEqual(team_manager.object_type, self.team_manager.object_type)
         self.assertEqual(team_manager.team, self.team_manager.team)
+        self.assertEqual(team_manager.country, self.team_manager.country)
         self.assertEqual(team_manager.score, self.team_manager.score)
 
     def test_json_unique(self) -> None:
@@ -73,4 +75,5 @@ class TestTeamManager(unittest.TestCase):
         team_manager2: TeamManager = TeamManager().from_json(data)
         self.assertEqual(team_manager2.object_type, self.team_manager2.object_type)
         self.assertEqual(team_manager2.team, self.team_manager2.team)
+        self.assertEqual(team_manager2.country, self.team_manager2.country)
         self.assertEqual(team_manager2.score, self.team_manager2.score)

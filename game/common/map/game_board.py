@@ -128,6 +128,7 @@ class GameBoard(GameObject):
         # when passing Vectors as a tuple, end the tuple of Vectors with a comma, so it is recognized as a tuple
         self.locations: dict | None = locations
         self.walled: bool = walled
+        self.ordered_teams: list[Character] = []
 
     @property
     def seed(self) -> int:

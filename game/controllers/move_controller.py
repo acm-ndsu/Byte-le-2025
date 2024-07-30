@@ -15,7 +15,7 @@ class MoveController(Controller):
     def handle_actions(self, action: ActionType, client: Player, world: GameBoard):
         match action:
             case ActionType.USE_NA:
-                pass
+                na: Move =
             case ActionType.USE_S1:
                 pass
             case ActionType.USE_S2:
@@ -24,3 +24,4 @@ class MoveController(Controller):
                 pass
             case _:
                 return
+
