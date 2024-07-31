@@ -1,15 +1,14 @@
 import ast
 import random
-from typing import Self
 
 from game.byte_2025.character import *
-from game.common.team_manager import TeamManager
 from game.common.enums import *
 from game.common.game_object import GameObject
 from game.common.map.game_object_container import GameObjectContainer
+from game.common.map.occupiable import Occupiable
 from game.common.map.tile import Tile
 from game.common.map.wall import Wall
-from game.common.map.occupiable import Occupiable
+from game.common.team_manager import TeamManager
 from game.utils.vector import Vector
 
 
@@ -115,7 +114,8 @@ class GameBoard(GameObject):
     """
 
     def __init__(self, seed: int | None = None, map_size: Vector = Vector(),
-                 locations: dict[Vector, list[GameObject]] | None = None, walled: bool = False):
+                 locations: dict[Vector, list[GameObject]] | None = None, walled: bool = False,
+                 uroda_team_manager: TeamManager | None = None, turpis_team_manager: TeamManager | None = None):
 
         super().__init__()
         # game_map is initially going to be None. Since generation is slow, call generate_map() as needed
@@ -128,7 +128,11 @@ class GameBoard(GameObject):
         # when passing Vectors as a tuple, end the tuple of Vectors with a comma, so it is recognized as a tuple
         self.locations: dict | None = locations
         self.walled: bool = walled
-        self.ordered_teams: list[Character] = []
+        self.uroda_team_manager: TeamManager = uroda_team_manager
+        self.turpis_team_manager: TeamManager = turpis_team_manager
+
+        # NEED TO FIND A WAY TO PROTECT THIS PROPERTY
+        self.order_teams()
 
     @property
     def seed(self) -> int:
@@ -204,6 +208,23 @@ class GameBoard(GameObject):
                 f'It is a(n) {walled.__class__.__name__} with the value of {walled}.')
 
         self.__walled = walled
+
+    def get_ordered_teams_as_list(self) -> list[Character]:
+        """
+        Returns a list that will have the exact order every character will take their turn in. Returns a list
+        to easily loop through.
+        """
+        result: list[Character] = []
+
+        # separate every tuple into it's individual characters
+        for pair in self.ordered_teams:
+            result.append(pair[0]) if pair[0] is not None else None
+            result.append(pair[1]) if pair[1] is not None else None
+
+        result = sorted(result, key=lambda character: character.speed, reverse=True)
+
+        # return a final list that only contains the current, alive characters
+        return [character for character in result if character is not None]
 
     def generate_map(self) -> None:
         # Dictionary Init
@@ -367,6 +388,38 @@ class GameBoard(GameObject):
                 isinstance(self.game_map[coords].get_top(), Character) and
                 self.game_map[coords].get_top().country_type == country}
 
+    def order_teams(self) -> None:
+        """
+        Each turn, at most two characters will take action. It will be each team's next fastest character, assuming
+        it hasn't died or taken its action yet.
+
+        Example:
+            Uroda team speeds: [17, 16, 15]
+            Turpis team speeds: [20, 18, 14]
+        """
+
+        if self.uroda_team_manager is None or self.turpis_team_manager is None:
+            return
+
+        # contains the pairs of characters for each team; tuples will contain Character or None values
+        result: list[tuple[..., ...]] = []
+
+        # easy access to both teams
+        uroda_team: list[Character] = self.uroda_team_manager.team
+        turpis_team: list[Character] = self.turpis_team_manager.team
+
+        # pair the characters; the ordered pair matters, so uroda will be first in the tuples
+        for index in range(max(len(uroda_team), len(turpis_team))):
+            if index >= min(len(uroda_team), len(turpis_team)):
+                if len(uroda_team) > len(turpis_team):
+                    result.append((uroda_team[index], None))
+                else:
+                    result.append((None, turpis_team[index]))
+            else:
+                result.append((uroda_team[index], turpis_team[index]))
+
+        self.ordered_teams = result
+
     def to_json(self) -> dict:
         data: dict[str, object] = super().to_json()
         temp: dict[Vector, GameObjectContainer] | None = {str(vec.to_json()): go_container.to_json() for
@@ -381,6 +434,10 @@ class GameBoard(GameObject):
                                     self.locations.values()] if self.locations is not None else None
         data["walled"] = self.walled
         data['event_active'] = self.event_active
+        data['uroda_team_manager'] = self.uroda_team_manager.to_json() if self.uroda_team_manager is not None else None
+        data['turpis_team_manager'] = self.turpis_team_manager.to_json() \
+            if self.turpis_team_manager is not None else None
+
         return data
 
     def generate_event(self, start: int, end: int) -> None:
@@ -424,5 +481,10 @@ class GameBoard(GameObject):
         self.game_map: dict[Vector, GameObjectContainer] = {
             Vector().from_json(ast.literal_eval(k)): GameObjectContainer().from_json(v)
             for k, v in data['game_map'].items()} if data['game_map'] is not None else None
+
+        self.uroda_team_manager = TeamManager().from_json(data['uroda_team_manager']) \
+            if data['uroda_team_manager'] is not None else None
+        self.turpis_team_manager = TeamManager().from_json(data['turpis_team_manager']) \
+            if data['turpis_team_manager'] is not None else None
 
         return self
