@@ -207,7 +207,7 @@ class Character(GameObject):
         data['speed'] = self.speed
         data['rank'] = self.rank
         data['guardian'] = self.guardian.to_json() if self.guardian is not None else None
-        data['moves'] = {move_name: move.to_json() for move_name, move in self.moveset.items()}
+        data['moveset'] = {move_name: move.to_json() for move_name, move in self.moveset.items()}
         data['special_points'] = self.special_points
         data['position'] = self.position if self.position is not None else None
         data['took_action'] = self.took_action
@@ -246,7 +246,7 @@ class Character(GameObject):
         self.country_type = data['country_type']
 
         self.moveset: dict[str, Move] = {move_name: self.__from_json_helper(move)
-                                         for move_name, move in data['moves'].items()}
+                                         for move_name, move in data['moveset'].items()}
 
         return self
 

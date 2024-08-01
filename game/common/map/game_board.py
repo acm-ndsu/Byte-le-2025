@@ -393,9 +393,26 @@ class GameBoard(GameObject):
         Each turn, at most two characters will take action. It will be each team's next fastest character, assuming
         it hasn't died or taken its action yet.
 
+        Assume that the Uroda team has speeds of the following: [15, 17, 16]. They would be ordered as [17, 16, 15]
+        instead.
+
+        An example of fully ordered teams is below.
+
         Example:
             Uroda team speeds: [17, 16, 15]
             Turpis team speeds: [20, 18, 14]
+
+        Now, each character needs to be paired by how fast they are. The pairs will be coupled together in a tuple. This
+        tuple will specifically be ordered as the following: (Uroda character, Turpis character). Having a structured
+        tuple creates a good structure for organization.
+
+        Each tuple will be added to a list. The result of pairing the example Uroda and Turpis teams is below.
+
+        Example:
+            [(17, 20), (16, 18), (15, 14)]
+
+        If each pair is not already in order, when it is time execute each character's action, it will take the fastest
+        of the two characters and have it act first.
         """
 
         if self.uroda_team_manager is None or self.turpis_team_manager is None:
