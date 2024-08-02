@@ -1,7 +1,7 @@
 import unittest
 
 from game.common.map.game_board import GameBoard
-from game.controllers.movement_controller import MovementController
+from game.controllers.swap_controller import SwapController
 from game.common.map.wall import Wall
 from game.utils.vector import Vector
 from game.common.player import Player
@@ -21,7 +21,7 @@ class TestSwapController(unittest.TestCase):
     def setUp(self) -> None:
         # TEST SWAP CONTROLLER WHEN IMPLEMENTED
 
-        self.movement_controller = MovementController()
+        self.movement_controller = SwapController()
         self.game_board = GameBoard(0, Vector(2, 3), None, False)
 
         # test movements up, down, left and right by starting with default 3,3 then know if it changes from there \/

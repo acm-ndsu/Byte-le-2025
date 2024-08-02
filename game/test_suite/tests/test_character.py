@@ -13,7 +13,7 @@ class TestCharacter(unittest.TestCase):
         self.gen_healer: GenericHealer = GenericHealer('Steve', CharacterType.HEALER)
         self.gen_tank: GenericTank = GenericTank('Bertha', CharacterType.TANK)
         self.leader: Leader = Leader('Phil', CharacterType.TANK)
-        self.special: Character = Character('Special', CharacterType.TANK, 10, 15, 20, 10,
+        self.special: Character = Character('Special', CharacterType.TANK, 10, 20, 10,
                                             self.leader, Vector(0, 0))
         self.num: int = 100
         self.neg_num: int = -1
@@ -26,7 +26,7 @@ class TestCharacter(unittest.TestCase):
             'S3': Heal('Baja Blessing', TargetType.ALL_ALLY, 3, None, 10),
         }
 
-        self.gen_tank.moves = self.moves
+        self.gen_tank.moveset = self.moves
 
     # Test that passing in valid inputs for all the constructor parameters is correct
     def test_initialization(self):
@@ -53,7 +53,6 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.special.name, 'Special')
         self.assertEqual(self.special.character_type, CharacterType.TANK)
         self.assertEqual(self.special.health, 10)
-        self.assertEqual(self.special.attack, 15)
         self.assertEqual(self.special.defense, 20)
         self.assertEqual(self.special.speed, 10)
         self.assertEqual(self.special.guardian, self.leader)
@@ -71,19 +70,6 @@ class TestCharacter(unittest.TestCase):
         with self.assertRaises(ValueError) as e:
             self.gen_tank.health = self.none
         self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.health must be an int. It '
-                                                      f'is a(n) {self.none.__class__.__name__} '
-                                                      f'and has the value of {self.none}', True))
-
-        # check that a negative int fails for attack
-        with self.assertRaises(ValueError) as e:
-            self.gen_tank.attack = self.neg_num
-        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.attack must be a positive '
-                                                      f'int.', True))
-
-        # check that a None value fails for attack
-        with self.assertRaises(ValueError) as e:
-            self.gen_tank.attack = self.none
-        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.attack must be an int. It '
                                                       f'is a(n) {self.none.__class__.__name__} '
                                                       f'and has the value of {self.none}', True))
 
@@ -147,20 +133,25 @@ class TestCharacter(unittest.TestCase):
         self.special.guardian = None
         self.assertEqual(self.special.guardian, None)
 
+    def test_get_move(self):
+        self.assertEqual(self.gen_tank.get_move('NA'), self.moves['NA'])
+        self.assertEqual(self.gen_tank.get_move('S1'), self.moves['S1'])
+        self.assertEqual(self.gen_tank.get_move('S2'), self.moves['S2'])
+        self.assertEqual(self.gen_tank.get_move('S3'), self.moves['S3'])
+
     def test_to_json_character(self):
         data: dict = self.character.to_json()
         char: Character = Character().from_json(data)
         self.assertEqual(char.name, self.character.name)
         self.assertEqual(char.character_type, self.character.character_type)
         self.assertEqual(char.health, self.character.health)
-        self.assertEqual(char.attack, self.character.attack)
         self.assertEqual(char.defense, self.character.defense)
         self.assertEqual(char.speed, self.character.speed)
         self.assertEqual(char.rank, self.character.rank)
         self.assertEqual(char.special_points, self.character.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
-        self.assertEqual(char.moves, self.character.moves)
+        self.assertEqual(char.moveset, self.character.moveset)
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
 
@@ -170,14 +161,13 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.name, self.gen_attacker.name)
         self.assertEqual(char.character_type, self.gen_attacker.character_type)
         self.assertEqual(char.health, self.gen_attacker.health)
-        self.assertEqual(char.attack, self.gen_attacker.attack)
         self.assertEqual(char.defense, self.gen_attacker.defense)
         self.assertEqual(char.speed, self.gen_attacker.speed)
         self.assertEqual(char.rank, self.gen_attacker.rank)
         self.assertEqual(char.special_points, self.gen_attacker.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
-        self.assertEqual(char.moves, self.gen_attacker.moves)
+        self.assertEqual(char.moveset, self.gen_attacker.moveset)
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
 
@@ -187,14 +177,13 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.name, self.gen_healer.name)
         self.assertEqual(char.character_type, self.gen_healer.character_type)
         self.assertEqual(char.health, self.gen_healer.health)
-        self.assertEqual(char.attack, self.gen_healer.attack)
         self.assertEqual(char.defense, self.gen_healer.defense)
         self.assertEqual(char.speed, self.gen_healer.speed)
         self.assertEqual(char.rank, self.gen_healer.rank)
         self.assertEqual(char.special_points, self.gen_healer.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
-        self.assertEqual(char.moves, self.gen_healer.moves)
+        self.assertEqual(char.moveset, self.gen_healer.moveset)
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
 
@@ -204,7 +193,6 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.name, self.gen_tank.name)
         self.assertEqual(char.character_type, self.gen_tank.character_type)
         self.assertEqual(char.health, self.gen_tank.health)
-        self.assertEqual(char.attack, self.gen_tank.attack)
         self.assertEqual(char.defense, self.gen_tank.defense)
         self.assertEqual(char.speed, self.gen_tank.speed)
         self.assertEqual(char.rank, self.gen_tank.rank)
@@ -214,12 +202,12 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
 
-        self.assertEqual(len(char.moves.keys()), len(self.gen_tank.moves.keys()))
-        self.assertEqual(len(char.moves.values()), len(self.gen_tank.moves.values()))
+        self.assertEqual(len(char.moveset.keys()), len(self.gen_tank.moveset.keys()))
+        self.assertEqual(len(char.moveset.values()), len(self.gen_tank.moveset.values()))
 
         # make sure all object types match
         [self.assertEqual(expected.object_type, actual.object_type)
-         for expected, actual in zip(char.moves.values(), self.gen_tank.moves.values())]
+         for expected, actual in zip(char.moveset.values(), self.gen_tank.moveset.values())]
 
     def test_to_json_leader(self):
         data: dict = self.leader.to_json()
@@ -227,13 +215,12 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.name, self.leader.name)
         self.assertEqual(char.character_type, self.leader.character_type)
         self.assertEqual(char.health, self.leader.health)
-        self.assertEqual(char.attack, self.leader.attack)
         self.assertEqual(char.defense, self.leader.defense)
         self.assertEqual(char.speed, self.leader.speed)
         self.assertEqual(char.rank, self.leader.rank)
         self.assertEqual(char.special_points, self.leader.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
-        self.assertEqual(char.moves, self.leader.moves)
+        self.assertEqual(char.moveset, self.leader.moveset)
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)

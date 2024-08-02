@@ -1,7 +1,7 @@
 import unittest
 
 from game.controllers.place_controller import *
-from game.controllers.movement_controller import *
+from game.controllers.swap_controller import *
 
 
 class TestPlaceController(unittest.TestCase):

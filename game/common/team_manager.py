@@ -1,7 +1,7 @@
 from typing import Self
 
 from game.byte_2025.character import Character, CharacterType
-from game.common.enums import ObjectType
+from game.common.enums import ObjectType, CountryType
 from game.common.game_object import GameObject
 
 
@@ -27,10 +27,12 @@ class TeamManager(GameObject):
     ignored, but reminder to exercise caution when adjusting the Character class for this reason.
     '''
 
-    def __init__(self, team: list[Character] = [Character(), Character(), Character()]):
+    def __init__(self, team: list[Character] = [Character(), Character(), Character()],
+                 country: CountryType = CountryType.URODA):
         super().__init__()
         self.object_type: ObjectType = ObjectType.TEAMMANAGER
         self.team: list[Character] = team
+        self.country = country
         self.score: int = 0
 
     # Getters and Setters
@@ -89,11 +91,13 @@ class TeamManager(GameObject):
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['team'] = self.team
+        data['country'] = self.country
         data['score'] = self.score
         return data
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
         self.team = data['team']
+        self.country = data['country']
         self.score = data['score']
         return self

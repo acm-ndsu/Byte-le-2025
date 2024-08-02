@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from game.byte_2025.moves.abstract_moves import *
 from game.common.enums import TargetType
 
@@ -14,6 +16,7 @@ class Effect(AbstractMove):
         self.object_type = ObjectType.EFFECT
 
     def use(self):
+        # MUST BE IMPLEMENTED
         pass
 
 

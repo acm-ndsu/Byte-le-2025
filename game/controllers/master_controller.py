@@ -8,7 +8,7 @@ from game.common.enums import *
 from game.common.player import Player
 import game.config as config   # this is for turns
 from game.utils.thread import CommunicationThread
-from game.controllers.movement_controller import MovementController
+from game.controllers.swap_controller import SwapController
 from game.controllers.controller import Controller
 from game.common.map.game_board import GameBoard
 from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN
@@ -52,7 +52,7 @@ class MasterController(Controller):
         # self.event_times: tuple[int, int] | None = None
         self.turn: int = 1
         self.current_world_data: dict = None
-        self.movement_controller: MovementController = MovementController()
+        self.swap_controller: SwapController = SwapController()
 
     # Receives all clients for the purpose of giving them the objects they will control
     def give_clients_objects(self, clients: list[Player], world: dict):
