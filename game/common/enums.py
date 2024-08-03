@@ -71,17 +71,17 @@ class MoveType(Enum):
     MOVE = auto()
     ATTACK = auto()
     HEAL = auto()
-    GUARD = auto()
     BUFF = auto()
     DEBUFF = auto()
 
 
 class TargetType(Enum):
     SELF = auto()
-    SINGLE_ALLY = auto()
-    ALL_ALLY = auto()
+    SINGLE_ALLY_UP = auto()
+    SINGLE_ALLY_DOWN = auto()
+    ALL_ALLIES = auto()
     SINGLE_OPP = auto()
-    ALL_OPP = auto()
+    ALL_OPPS = auto()
 
 
 class CharacterType(Enum):
@@ -105,8 +105,7 @@ class ActionType(Enum):
     USE_S1 = auto()
     USE_S2 = auto()
     USE_S3 = auto()
-    GUARD_SLOT_1 = auto()
-    GUARD_SLOT_2 = auto()
-    GUARD_SLOT_3 = auto()
+    GUARD_UP = auto()
+    GUARD_DOWN = auto()
     SWAP_UP = auto()
     SWAP_DOWN = auto()

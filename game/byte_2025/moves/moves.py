@@ -11,6 +11,7 @@ class Move(AbstractMove):
         self.name: str = name
         self.object_type = ObjectType.MOVE
         self.cost: int = cost
+        self.__cost_reset_amount: int = cost
         self.effect: Effect | None = effect
 
     @property
@@ -46,13 +47,11 @@ class Move(AbstractMove):
                              f'{effect.__class__.__name__} and has the value of {effect}.')
         self.__effect: Effect | None = effect
 
-    def use(self) -> None:
-        pass
-
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['name'] = self.name
         data['cost'] = self.cost
+        data['cost_reset_amount'] = self.__cost_reset_amount
         data['effect'] = self.effect.to_json() if self.effect is not None else None
 
         return data
@@ -61,6 +60,7 @@ class Move(AbstractMove):
         super().from_json(data)
         self.name: str = data['name']
         self.cost: int = data['cost']
+        self.__cost_reset_amount: int = data['cost_reset_amount']
 
         if data['effect'] is None:
             self.effect: Effect | None = None
@@ -89,7 +89,7 @@ class Attack(Move, AbstractAttack):
 
 
 class Heal(Move, AbstractHeal):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_ALLY, cost: int = 0,
+    def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
                  effect: Move | None = None, heal_points: int = 0):
         super().__init__(name, target_type, cost, effect)
 
@@ -98,7 +98,7 @@ class Heal(Move, AbstractHeal):
 
 
 class Buff(Move, AbstractBuff):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_ALLY, cost: int = 0,
+    def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
                  effect: Effect | None = None, buff_amount: float = 1.25):
         super().__init__(name, target_type, cost, effect)
 

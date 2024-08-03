@@ -20,10 +20,10 @@ class TestCharacter(unittest.TestCase):
         self.none: None = None
 
         self.moves = {
-            'NA': Attack('Baja Blast', TargetType.ALL_OPP, 0, None, 5),
+            'NA': Attack('Baja Blast', TargetType.ALL_OPPS, 0, None, 5),
             'S1': Buff('Baja Slurp', TargetType.SELF, 1, HealEffect(heal_points=10), 1.5),
-            'S2': Debuff('Baja Dump', TargetType.ALL_OPP, 2, None, 0.5),
-            'S3': Heal('Baja Blessing', TargetType.ALL_ALLY, 3, None, 10),
+            'S2': Debuff('Baja Dump', TargetType.ALL_OPPS, 2, None, 0.5),
+            'S3': Heal('Baja Blessing', TargetType.ALL_ALLIES, 3, None, 10),
         }
 
         self.gen_tank.moveset = self.moves
@@ -52,7 +52,7 @@ class TestCharacter(unittest.TestCase):
         # test that all the parameters are set properly with the constructor
         self.assertEqual(self.special.name, 'Special')
         self.assertEqual(self.special.character_type, CharacterType.TANK)
-        self.assertEqual(self.special.health, 10)
+        self.assertEqual(self.special.current_health, 10)
         self.assertEqual(self.special.defense, 20)
         self.assertEqual(self.special.speed, 10)
         self.assertEqual(self.special.guardian, self.leader)
@@ -144,7 +144,7 @@ class TestCharacter(unittest.TestCase):
         char: Character = Character().from_json(data)
         self.assertEqual(char.name, self.character.name)
         self.assertEqual(char.character_type, self.character.character_type)
-        self.assertEqual(char.health, self.character.health)
+        self.assertEqual(char.current_health, self.character.current_health)
         self.assertEqual(char.defense, self.character.defense)
         self.assertEqual(char.speed, self.character.speed)
         self.assertEqual(char.rank, self.character.rank)

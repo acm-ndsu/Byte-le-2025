@@ -22,7 +22,8 @@ class Character(GameObject):
         self.name: str = name
         self.object_type: ObjectType = ObjectType.CHARACTER
         self.character_type: CharacterType = character_type
-        self.health: int = health
+        self.current_health: int = health
+        self.max_health: int = health
         self.defense: int = defense
         self.speed: int = speed
         self.rank: RankType = RankType.GENERIC
@@ -56,18 +57,32 @@ class Character(GameObject):
         self.__character_type: CharacterType = character_type
 
     @property
-    def health(self) -> int:
-        return self.__health
+    def current_health(self) -> int:
+        return self.__current_health
 
-    @health.setter
-    def health(self, health: int) -> None:
-        if health is None or not isinstance(health, int):
-            raise ValueError(f'{self.__class__.__name__}.health must be an int. It is a(n) {health.__class__.__name__} '
-                             f'and has the value of {health}')
-        if health < 0:
-            raise ValueError(f'{self.__class__.__name__}.health must be a positive int.')
+    @current_health.setter
+    def current_health(self, current_health: int) -> None:
+        if current_health is None or not isinstance(current_health, int):
+            raise ValueError(f'{self.__class__.__name__}.current_health must be an int. It is a(n) '
+                             f'{current_health.__class__.__name__} and has the value of {current_health}')
+        if current_health < 0:
+            raise ValueError(f'{self.__class__.__name__}.current_health must be a positive int.')
 
-        self.__health: int = health
+        self.__current_health: int = current_health
+
+    @property
+    def max_health(self) -> int:
+        return self.__max_health
+
+    @max_health.setter
+    def max_health(self, max_health: int) -> None:
+        if max_health is None or not isinstance(max_health, int):
+            raise ValueError(f'{self.__class__.__name__}.max_health must be an int. It is a(n) '
+                             f'{max_health.__class__.__name__} and has the value of {max_health}')
+        if max_health < 0:
+            raise ValueError(f'{self.__class__.__name__}.max_health must be a positive int.')
+
+        self.__max_health: int = max_health
 
     @property
     def defense(self) -> int:
@@ -202,7 +217,8 @@ class Character(GameObject):
         data: dict = super().to_json()
         data['name'] = self.name
         data['character_type'] = self.character_type
-        data['health'] = self.health
+        data['current_health'] = self.current_health
+        data['max_health'] = self.max_health
         data['defense'] = self.defense
         data['speed'] = self.speed
         data['rank'] = self.rank
@@ -235,7 +251,8 @@ class Character(GameObject):
         super().from_json(data)
         self.name: str = data['name']
         self.character_type: CharacterType = data['character_type']
-        self.health: int = data['health']
+        self.current_health: int = data['current_health']
+        self.max_health: int = data['max_health']
         self.defense: int = data['defense']
         self.speed: int = data['speed']
         self.rank: RankType = data['rank']
