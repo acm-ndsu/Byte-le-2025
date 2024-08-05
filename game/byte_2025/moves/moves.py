@@ -83,6 +83,7 @@ class Attack(Move, AbstractAttack):
 
         self.damage_points: int = damage_points
         self.object_type = ObjectType.ATTACK
+        self.move_type = MoveType.ATTACK
 
 
 class Heal(Move, AbstractHeal):
@@ -92,6 +93,7 @@ class Heal(Move, AbstractHeal):
 
         self.heal_points: int = heal_points
         self.object_type = ObjectType.HEAL
+        self.move_type = MoveType.HEAL
 
 
 class Buff(Move, AbstractBuff):
@@ -101,6 +103,7 @@ class Buff(Move, AbstractBuff):
 
         self.buff_amount: float = buff_amount
         self.object_type = ObjectType.BUFF
+        self.move_type = MoveType.BUFF
 
 
 class Debuff(Move, AbstractDebuff):
@@ -110,3 +113,4 @@ class Debuff(Move, AbstractDebuff):
 
         self.debuff_amount: float = debuff_amount
         self.object_type = ObjectType.DEBUFF
+        self.move_type = MoveType.DEBUFF

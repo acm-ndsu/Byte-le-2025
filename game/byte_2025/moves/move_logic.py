@@ -50,11 +50,13 @@ def calculate_damage(user: Character, target: Character, damage_points: int) -> 
 def __calc_and_apply_damage(user: Character, targets: list[Character], damage_points: int):
     for target in targets:
         # get the damage to be dealt
-        damage: int = calculate_damage(user, target, damage_points)
+        damage_to_deal: int = calculate_damage(user, target, damage_points)
 
         # reduces the target's health while preventing it from going below 0 (the setter will throw an error if < 0)
-        target.current_health = 0 if target.current_health - damage_points < 0 \
-            else target.current_health - damage_points
+        if target.current_health - damage_to_deal < 0:
+            target.current_health = 0
+        else:
+            target.current_health -= damage_to_deal
 
 
 def __apply_heal_points(user: Character, targets: list[Character], heal_amount: int) -> None:
@@ -63,8 +65,10 @@ def __apply_heal_points(user: Character, targets: list[Character], heal_amount: 
     causes the current health to become larger than the character's max health, set it to be the max health.
     """
     for target in targets:
-        target.current_health = target.max_health \
-            if target.current_health + heal_amount < target.max_health else target.current_health + heal_amount
+        if target.current_health + heal_amount > target.max_health:
+            target.current_health = target.max_health
+        else:
+            target.current_health = target.current_health + heal_amount
 
 
 def __handle_stat_modification(user: Character, targets: list[Character], modifier: float) -> None:
