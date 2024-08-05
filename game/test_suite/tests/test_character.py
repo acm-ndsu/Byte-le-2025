@@ -60,17 +60,30 @@ class TestCharacter(unittest.TestCase):
 
     # Test that passing in bad inputs (a string instead of an int, a None value where it's not needed, etc)
     def test_initialization_fail(self):
-        # check that a negative int fails for health
+        # check that a negative int fails for CURRENT health
         with self.assertRaises(ValueError) as e:
-            self.gen_tank.health = self.neg_num
-        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.health must be a positive '
-                                                      f'int.', True))
+            self.gen_tank.current_health = self.neg_num
+        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.current_health must be a'
+                                                      f' positive int.', True))
 
-        # check that a None value fails for health
+        # check that a None value fails for CURRENT health
         with self.assertRaises(ValueError) as e:
-            self.gen_tank.health = self.none
-        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.health must be an int. It '
-                                                      f'is a(n) {self.none.__class__.__name__} '
+            self.gen_tank.current_health = self.none
+        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.current_health must be '
+                                                      f'an int. It is a(n) {self.none.__class__.__name__} '
+                                                      f'and has the value of {self.none}', True))
+
+        # check that a negative int fails for MAX health
+        with self.assertRaises(ValueError) as e:
+            self.gen_tank.max_health = self.neg_num
+        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.max_health must be a'
+                                                      f' positive int.', True))
+
+        # check that a None value fails for MAX health
+        with self.assertRaises(ValueError) as e:
+            self.gen_tank.max_health = self.none
+        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.max_health must be '
+                                                      f'an int. It is a(n) {self.none.__class__.__name__} '
                                                       f'and has the value of {self.none}', True))
 
         # check that a negative int fails for defense
@@ -133,18 +146,20 @@ class TestCharacter(unittest.TestCase):
         self.special.guardian = None
         self.assertEqual(self.special.guardian, None)
 
-    def test_get_move(self):
-        self.assertEqual(self.gen_tank.get_move('NA'), self.moves['NA'])
-        self.assertEqual(self.gen_tank.get_move('S1'), self.moves['S1'])
-        self.assertEqual(self.gen_tank.get_move('S2'), self.moves['S2'])
-        self.assertEqual(self.gen_tank.get_move('S3'), self.moves['S3'])
+    def test_get_move_methods(self):
+        self.assertEqual(self.gen_tank.get_na(), self.moves['NA'])
+        self.assertEqual(self.gen_tank.get_s1(), self.moves['S1'])
+        self.assertEqual(self.gen_tank.get_s2(), self.moves['S2'])
+        self.assertEqual(self.gen_tank.get_s3(), self.moves['S3'])
 
     def test_to_json_character(self):
         data: dict = self.character.to_json()
         char: Character = Character().from_json(data)
         self.assertEqual(char.name, self.character.name)
+        self.assertEqual(char.object_type, self.character.object_type)
         self.assertEqual(char.character_type, self.character.character_type)
         self.assertEqual(char.current_health, self.character.current_health)
+        self.assertEqual(char.max_health, self.character.max_health)
         self.assertEqual(char.defense, self.character.defense)
         self.assertEqual(char.speed, self.character.speed)
         self.assertEqual(char.rank, self.character.rank)
@@ -159,8 +174,10 @@ class TestCharacter(unittest.TestCase):
         data: dict = self.gen_attacker.to_json()
         char: GenericAttacker = GenericAttacker().from_json(data)
         self.assertEqual(char.name, self.gen_attacker.name)
+        self.assertEqual(char.object_type, self.gen_attacker.object_type)
         self.assertEqual(char.character_type, self.gen_attacker.character_type)
-        self.assertEqual(char.health, self.gen_attacker.health)
+        self.assertEqual(char.current_health, self.gen_attacker.current_health)
+        self.assertEqual(char.max_health, self.gen_attacker.max_health)
         self.assertEqual(char.defense, self.gen_attacker.defense)
         self.assertEqual(char.speed, self.gen_attacker.speed)
         self.assertEqual(char.rank, self.gen_attacker.rank)
@@ -175,8 +192,10 @@ class TestCharacter(unittest.TestCase):
         data: dict = self.gen_healer.to_json()
         char: GenericHealer = GenericHealer().from_json(data)
         self.assertEqual(char.name, self.gen_healer.name)
+        self.assertEqual(char.object_type, self.gen_healer.object_type)
         self.assertEqual(char.character_type, self.gen_healer.character_type)
-        self.assertEqual(char.health, self.gen_healer.health)
+        self.assertEqual(char.current_health, self.gen_healer.current_health)
+        self.assertEqual(char.max_health, self.gen_healer.max_health)
         self.assertEqual(char.defense, self.gen_healer.defense)
         self.assertEqual(char.speed, self.gen_healer.speed)
         self.assertEqual(char.rank, self.gen_healer.rank)
@@ -191,8 +210,10 @@ class TestCharacter(unittest.TestCase):
         data: dict = self.gen_tank.to_json()
         char: GenericTank = GenericTank().from_json(data)
         self.assertEqual(char.name, self.gen_tank.name)
+        self.assertEqual(char.object_type, self.gen_tank.object_type)
         self.assertEqual(char.character_type, self.gen_tank.character_type)
-        self.assertEqual(char.health, self.gen_tank.health)
+        self.assertEqual(char.current_health, self.gen_tank.current_health)
+        self.assertEqual(char.max_health, self.gen_tank.max_health)
         self.assertEqual(char.defense, self.gen_tank.defense)
         self.assertEqual(char.speed, self.gen_tank.speed)
         self.assertEqual(char.rank, self.gen_tank.rank)
@@ -213,8 +234,10 @@ class TestCharacter(unittest.TestCase):
         data: dict = self.leader.to_json()
         char: Leader = Leader().from_json(data)
         self.assertEqual(char.name, self.leader.name)
+        self.assertEqual(char.object_type, self.leader.object_type)
         self.assertEqual(char.character_type, self.leader.character_type)
-        self.assertEqual(char.health, self.leader.health)
+        self.assertEqual(char.current_health, self.leader.current_health)
+        self.assertEqual(char.max_health, self.leader.max_health)
         self.assertEqual(char.defense, self.leader.defense)
         self.assertEqual(char.speed, self.leader.speed)
         self.assertEqual(char.rank, self.leader.rank)

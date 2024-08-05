@@ -11,7 +11,6 @@ class Move(AbstractMove):
         self.name: str = name
         self.object_type = ObjectType.MOVE
         self.cost: int = cost
-        self.__cost_reset_amount: int = cost
         self.effect: Effect | None = effect
 
     @property
@@ -51,7 +50,6 @@ class Move(AbstractMove):
         data: dict = super().to_json()
         data['name'] = self.name
         data['cost'] = self.cost
-        data['cost_reset_amount'] = self.__cost_reset_amount
         data['effect'] = self.effect.to_json() if self.effect is not None else None
 
         return data
@@ -60,7 +58,6 @@ class Move(AbstractMove):
         super().from_json(data)
         self.name: str = data['name']
         self.cost: int = data['cost']
-        self.__cost_reset_amount: int = data['cost_reset_amount']
 
         if data['effect'] is None:
             self.effect: Effect | None = None

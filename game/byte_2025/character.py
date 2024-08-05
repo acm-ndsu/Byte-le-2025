@@ -194,13 +194,6 @@ class Character(GameObject):
                              f'It is a(n) {country_type.__class__.__name__} and has the value of {country_type}')
         self.__country_type: CountryType = country_type
 
-    def get_move(self, move: str) -> Move | None:
-        """
-        Returns a Move object from the character's `moveset` dictionary. Returns None if an invalid key was passed in.
-        Valid keys: NA, S1, S2, S3
-        """
-        return self.__moveset[move] if move in self.moveset else None
-
     def get_na(self):
         return self.moveset['NA']
 
@@ -212,6 +205,10 @@ class Character(GameObject):
 
     def get_s3(self):
         return self.moveset['S3']
+
+    def get_opposing_country(self) -> CountryType:
+        # returns the opposite country based on the given CountryType
+        return CountryType.URODA if self.country_type is CountryType.URODA else CountryType.TURPIS
 
     def to_json(self) -> dict:
         data: dict = super().to_json()

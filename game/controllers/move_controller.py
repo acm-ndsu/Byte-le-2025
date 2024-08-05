@@ -24,13 +24,13 @@ class MoveController(Controller):
 
         match action:
             case ActionType.USE_NA:
-                current_move: Move = user.moveset['NA']
+                current_move: Move = user.get_na()
             case ActionType.USE_S1:
-                current_move: Move = user.moveset['S1']
+                current_move: Move = user.get_s1()
             case ActionType.USE_S2:
-                current_move: Move = user.moveset['S2']
+                current_move: Move = user.get_s2()
             case ActionType.USE_S3:
-                current_move: Move = user.moveset['S3']
+                current_move: Move = user.get_s3()
             case _:
                 return
 
@@ -79,10 +79,6 @@ class MoveController(Controller):
             case TargetType.ALL_OPPS:
                 # get_characters() returns a dict; receives the characters by getting the dict's values as a list
                 # gets all characters opposite the user's country_type
-                return list(world.get_characters(self.__opposite_country(user.country_type)).values())
+                return list(world.get_characters(user.get_opposing_country()).values())
             case _:
                 return []
-
-    def __opposite_country(self, country_type: CountryType) -> CountryType:
-        # returns the opposite country based on the given CountryType
-        return CountryType.URODA if country_type is CountryType.URODA else CountryType.TURPIS

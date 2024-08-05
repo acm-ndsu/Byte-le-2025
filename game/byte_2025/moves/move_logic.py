@@ -3,7 +3,7 @@ from game.byte_2025.moves.moves import Move
 from game.common.enums import MoveType
 
 """
-This is a file that will contain static methods to help
+This is a file that will contain static methods to help perform the logic behind each type of move.
 """
 
 
@@ -14,11 +14,8 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
     """
     match current_move.move_type:
         case MoveType.ATTACK:
-            for target in targets:
-                # potential warning is from type casting; ignore
-                damage: int = calculate_damage(user, target, current_move.damage_points)
-                __apply_damage(user, target, damage)
-
+            # potential warning is from type casting; ignore
+            __calc_and_apply_damage(user, targets, current_move.damage_points)
         case MoveType.HEAL:
             # potential warning is from type casting; ignore
             __apply_heal_points(user, targets, current_move.heal_points)
@@ -50,11 +47,14 @@ def calculate_damage(user: Character, target: Character, damage_points: int) -> 
     return damage_points - target.defense
 
 
-def __apply_damage(user: Character, target: Character, damage_points: int) -> None:
-    """
-    Reduces the target's health while preventing it from going below 0 (the setter will throw an error if < 0).
-    """
-    target.current_health = 0 if target.current_health - damage_points < 0 else target.current_health - damage_points
+def __calc_and_apply_damage(user: Character, targets: list[Character], damage_points: int):
+    for target in targets:
+        # get the damage to be dealt
+        damage: int = calculate_damage(user, target, damage_points)
+
+        # reduces the target's health while preventing it from going below 0 (the setter will throw an error if < 0)
+        target.current_health = 0 if target.current_health - damage_points < 0 \
+            else target.current_health - damage_points
 
 
 def __apply_heal_points(user: Character, targets: list[Character], heal_amount: int) -> None:
