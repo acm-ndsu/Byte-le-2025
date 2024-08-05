@@ -17,7 +17,8 @@ class Character(GameObject):
 
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
                  defense: int = 1, speed: int = 1, guardian: Self | None = None,
-                 position: Vector | None = None, country_type: CountryType = CountryType.URODA):
+                 position: Vector | None = None, country_type: CountryType = CountryType.URODA,
+                 moveset: dict[str, Move] = {'NA': Move()}):
         super().__init__()
         self.name: str = name
         self.object_type: ObjectType = ObjectType.CHARACTER
@@ -28,7 +29,7 @@ class Character(GameObject):
         self.speed: int = speed
         self.rank: RankType = RankType.GENERIC
         self.guardian: Self | None = guardian
-        self.moveset: dict[str: Move] = dict()
+        self.moveset: dict[str: Move] = moveset
         self.special_points: int = 0
         self.position: Vector | None = position
         self.took_action: bool = False
@@ -268,13 +269,13 @@ class Character(GameObject):
 class GenericAttacker(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
                  defense: int = 1, speed: int = 1, passive: None = None, guardian: Self | None = None,
-                 position: Vector | None = None, country_type: CountryType = CountryType.URODA):
-        super().__init__(name, character_type, health, defense, speed, guardian, position)
+                 position: Vector | None = None, country_type: CountryType = CountryType.URODA,
+                 moveset: dict[str, Move] = {'NA': Move()}):
+        super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
 
         self.object_type: ObjectType = ObjectType.GENERIC_ATTACKER
         self.character_type: CharacterType = CharacterType.ATTACKER
         self.rank: RankType = RankType.GENERIC
-        self.country_type: CountryType = country_type
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -286,15 +287,14 @@ class GenericAttacker(Character):
 
 class GenericHealer(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.HEALER, health: int = 1,
-                 defense: int = 1,
-                 speed: int = 1, passive: None = None, guardian: Self | None = None,
-                 position: Vector | None = None, country_type: CountryType = CountryType.URODA):
-        super().__init__(name, character_type, health, defense, speed, guardian, position)
+                 defense: int = 1, speed: int = 1, passive: None = None, guardian: Self | None = None,
+                 position: Vector | None = None, country_type: CountryType = CountryType.URODA,
+                 moveset: dict[str, Move] = {'NA': Move()}):
+        super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
 
         self.object_type: ObjectType = ObjectType.GENERIC_HEALER
         self.character_type: CharacterType = CharacterType.HEALER
         self.rank: RankType = RankType.GENERIC
-        self.country_type: CountryType = country_type
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -306,15 +306,14 @@ class GenericHealer(Character):
 
 class GenericTank(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.TANK, health: int = 1,
-                 defense: int = 1,
-                 speed: int = 1, passive: None = None, guardian: Self | None = None,
-                 position: Vector | None = None, country_type: CountryType = CountryType.URODA):
-        super().__init__(name, character_type, health, defense, speed, guardian, position)
+                 defense: int = 1, speed: int = 1, passive: None = None, guardian: Self | None = None,
+                 position: Vector | None = None, country_type: CountryType = CountryType.URODA,
+                 moveset: dict[str, Move] = {'NA': Move()}):
+        super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
 
         self.object_type: ObjectType = ObjectType.GENERIC_TANK
         self.character_type: CharacterType = CharacterType.TANK
         self.rank: RankType = RankType.GENERIC
-        self.country_type: CountryType = country_type
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -327,13 +326,13 @@ class GenericTank(Character):
 class Leader(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
                  defense: int = 1, speed: int = 1, guardian: Self | None = None,
-                 position: Vector | None = None, passive: None = None, country_type: CountryType = CountryType.URODA):
-        super().__init__(name, character_type, health, defense, speed, guardian, position)
+                 position: Vector | None = None, passive: None = None, country_type: CountryType = CountryType.URODA,
+                 moveset: dict[str, Move] = {'NA': Move()}):
+        super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
 
         self.object_type: ObjectType = ObjectType.LEADER
         self.rank: RankType = RankType.LEADER
         self.passive: None = None
-        self.country_type: CountryType = country_type
 
     # PASSIVE GETTERS AND SETTERS
 
