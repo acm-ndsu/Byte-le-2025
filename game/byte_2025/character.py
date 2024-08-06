@@ -268,6 +268,7 @@ class GenericAttacker(Character):
         self.object_type: ObjectType = ObjectType.GENERIC_ATTACKER
         self.character_type: CharacterType = CharacterType.ATTACKER
         self.rank: RankType = RankType.GENERIC
+        self.country_type: CountryType = country_type
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -287,6 +288,7 @@ class GenericHealer(Character):
         self.object_type: ObjectType = ObjectType.GENERIC_HEALER
         self.character_type: CharacterType = CharacterType.HEALER
         self.rank: RankType = RankType.GENERIC
+        self.country_type: CountryType = country_type
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -306,6 +308,7 @@ class GenericTank(Character):
         self.object_type: ObjectType = ObjectType.GENERIC_TANK
         self.character_type: CharacterType = CharacterType.TANK
         self.rank: RankType = RankType.GENERIC
+        self.country_type: CountryType = country_type
 
     def to_json(self) -> dict:
         return super().to_json()
