@@ -13,7 +13,30 @@ class Moveset(GameObject):
 
     def __init__(self, moves: tuple[Move, Move, Move, Move] = (Attack(), Buff(), Debuff(), Heal())):
         super().__init__()
+        self.object_type: ObjectType = ObjectType.MOVESET
         self.moves: dict[str, Move] = self.__tuple_to_dict(moves)
+
+    # override the equals method to simplify testing
+    def __eq__(self, other: Moveset) -> bool:
+        # return false if `other` isn't a Moveset
+        if not isinstance(other, Moveset):
+            return False
+
+        # it's harder to check every property of every move, so check that every move's object type and effect match
+        for move, other_move in zip(self.moves.values(), other.moves.values()):
+            # return true if both effects are None
+            if move.effect is None and other_move.effect is None:
+                return True
+
+            if move.object_type != other_move.object_type:
+                return False
+
+            # return false if neither effect's object type matches
+            if move.effect.object_type != other_move.effect.object_type:
+                return False
+
+        # return true as a base case
+        return True
 
     @property
     def moves(self) -> dict[str, Move]:
@@ -49,6 +72,9 @@ class Moveset(GameObject):
     def get_s3(self) -> Move:
         return self.moves['S3']
 
+    def as_dict(self) -> dict[str, Move]:
+        return self.__moves
+
     def __tuple_to_dict(self, moves: tuple[Move, Move, Move, Move]) -> dict[str, Move]:
         """
         Helper method to make the dict for the moveset.
@@ -79,6 +105,8 @@ class Moveset(GameObject):
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
+
+        # dictionary comprehension to recreate the dictionary of moves
         self.moves: dict[str, Move] = {move: self.__from_json_helper(data) for move, data in data['moves'].items()}
 
         return self

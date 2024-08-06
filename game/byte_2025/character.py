@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import Self
 from game.byte_2025.moves.moves import *
 from game.byte_2025.moves.moveset import Moveset
 from game.common.enums import ObjectType, CharacterType, RankType
@@ -216,47 +217,43 @@ class Character(GameObject):
         data['guardian'] = self.guardian.to_json() if self.guardian is not None else None
         data['moveset'] = self.moveset.to_json()
         data['special_points'] = self.special_points
-        data['position'] = self.position if self.position is not None else None
+        data['position'] = self.position.to_json() if self.position is not None else None
         data['took_action'] = self.took_action
         data['country_type'] = self.__country_type
 
         return data
 
-    # def __from_json_helper(self, data) -> Move:
-    #     # temp: ObjectType = ObjectType(data['object_type'])
-    #
-    #     match ObjectType(data['object_type']):
-    #         case ObjectType.ATTACK:
-    #             x = Attack().from_json(data)
-    #             return Attack().from_json(data)
-    #         case ObjectType.HEAL:
-    #             x = Heal().from_json(data)
-    #             return Heal().from_json(data)
-    #         case ObjectType.BUFF:
-    #             x = Buff().from_json(data)
-    #             return Buff().from_json(data)
-    #         case ObjectType.DEBUFF:
-    #             x = Debuff().from_json(data)
-    #             return Debuff().from_json(data)
-    #         case _:
-    #             raise ValueError(
-    #                 f'The object type of the object is not handled properly. The object type passed in is {temp}.')
+    def __from_json_helper(self, data) -> Character:
+        temp: ObjectType = ObjectType(data['object_type'])
+
+        match ObjectType(data['object_type']):
+            case ObjectType.GENERIC_ATTACKER:
+                return GenericAttacker().from_json(data)
+            case ObjectType.GENERIC_TANK:
+                return GenericTank().from_json(data)
+            case ObjectType.GENERIC_HEALER:
+                return GenericHealer().from_json(data)
+            case ObjectType.LEADER:
+                return Leader().from_json(data)
+            case _:
+                raise ValueError(
+                    f'The object type of the object is not handled properly. The object type passed in is {temp}.')
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
         self.name: str = data['name']
-        self.character_type: CharacterType = data['character_type']
+        self.character_type: CharacterType = CharacterType(data['character_type'])
         self.current_health: int = data['current_health']
         self.max_health: int = data['max_health']
         self.defense: int = data['defense']
         self.speed: int = data['speed']
-        self.rank: RankType = data['rank']
-        self.guardian: Character = data['guardian']
-        self.moveset: Moveset = Moveset().from_json(data)
+        self.rank: RankType = RankType(data['rank'])
+        self.guardian: Character = None if data['guardian'] is None else self.__from_json_helper(data['guardian'])
+        self.moveset: Moveset = Moveset().from_json(data['moveset'])
         self.special_points: int = data['special_points']
-        self.position: Vector = data['position']
+        self.position: Vector | None = None if data['position'] is None else Vector().from_json(data['position'])
         self.took_action = data['took_action']
-        self.country_type = data['country_type']
+        self.country_type = CountryType(data['country_type'])
 
         return self
 

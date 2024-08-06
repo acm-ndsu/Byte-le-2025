@@ -31,6 +31,7 @@ class ObjectType(Enum):
     GENERIC_HEALER = auto()
     GENERIC_TANK = auto()
     LEADER = auto()
+    MOVESET = auto()
     ABSTRACT_MOVE = auto()
     MOVE = auto()
     ATTACK = auto()

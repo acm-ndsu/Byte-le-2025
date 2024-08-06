@@ -1,6 +1,7 @@
 import unittest
 
 from game.byte_2025.character import *
+from game.byte_2025.moves.effects import HealEffect
 from game.common.enums import CharacterType
 from game.test_suite.utils import spell_check
 from game.utils.vector import Vector
@@ -19,14 +20,14 @@ class TestCharacter(unittest.TestCase):
         self.neg_num: int = -1
         self.none: None = None
 
-        self.moves = {
-            'NA': Attack('Baja Blast', TargetType.ALL_OPPS, 0, None, 5),
-            'S1': Buff('Baja Slurp', TargetType.SELF, 1, HealEffect(heal_points=10), 1.5),
-            'S2': Debuff('Baja Dump', TargetType.ALL_OPPS, 2, None, 0.5),
-            'S3': Heal('Baja Blessing', TargetType.ALL_ALLIES, 3, None, 10),
-        }
+        self.moves = (Attack('Baja Blast', TargetType.ALL_OPPS, 0, None, 5),
+                      Buff('Baja Slurp', TargetType.SELF, 1, HealEffect(heal_points=10), 1.5),
+                      Debuff('Baja Dump', TargetType.ALL_OPPS, 2, None, 0.5),
+                      Heal('Baja Blessing', TargetType.ALL_ALLIES, 3, None, 10))
 
-        self.gen_tank.moveset = self.moves
+        self.moveset: Moveset = Moveset(self.moves)
+
+        self.gen_tank.moveset = self.moveset
 
     # Test that passing in valid inputs for all the constructor parameters is correct
     def test_initialization(self):
@@ -147,10 +148,10 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.special.guardian, None)
 
     def test_get_move_methods(self):
-        self.assertEqual(self.gen_tank.get_na(), self.moves['NA'])
-        self.assertEqual(self.gen_tank.get_s1(), self.moves['S1'])
-        self.assertEqual(self.gen_tank.get_s2(), self.moves['S2'])
-        self.assertEqual(self.gen_tank.get_s3(), self.moves['S3'])
+        self.assertEqual(self.gen_tank.get_na(), self.moveset.get_na())
+        self.assertEqual(self.gen_tank.get_s1(), self.moveset.get_s1())
+        self.assertEqual(self.gen_tank.get_s2(), self.moveset.get_s2())
+        self.assertEqual(self.gen_tank.get_s3(), self.moveset.get_s3())
 
     def test_to_json_character(self):
         data: dict = self.character.to_json()
@@ -166,7 +167,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.special_points, self.character.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
-        self.assertEqual(char.moveset, self.character.moveset)
+        self.assertTrue(char.moveset == self.gen_attacker.moveset)
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
 
@@ -184,7 +185,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.special_points, self.gen_attacker.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
-        self.assertEqual(char.moveset, self.gen_attacker.moveset)
+        self.assertTrue(char.moveset == self.gen_attacker.moveset)
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
 
@@ -202,7 +203,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.special_points, self.gen_healer.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.guardian, None)
-        self.assertEqual(char.moveset, self.gen_healer.moveset)
+        self.assertTrue(char.moveset == self.gen_attacker.moveset)
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
 
@@ -222,13 +223,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.guardian, None)
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
-
-        self.assertEqual(len(char.moveset.keys()), len(self.gen_tank.moveset.keys()))
-        self.assertEqual(len(char.moveset.values()), len(self.gen_tank.moveset.values()))
-
-        # make sure all object types match
-        [self.assertEqual(expected.object_type, actual.object_type)
-         for expected, actual in zip(char.moveset.values(), self.gen_tank.moveset.values())]
+        self.assertTrue(char.moveset == self.gen_tank.moveset)
 
     def test_to_json_leader(self):
         data: dict = self.leader.to_json()

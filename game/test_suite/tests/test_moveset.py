@@ -7,10 +7,13 @@ from game.byte_2025.moves.moveset import Moveset
 class TestMoveset(unittest.TestCase):
     def setUp(self):
         self.na: Attack = Attack('Normal Attack')
+        self.na1: Attack = Attack('Normal Attack Extra')
         self.s1: Buff = Buff('Special 1')
         self.s2: Debuff = Debuff('Special 2')
         self.s3: Heal = Heal('Special 3')
+        self.none: None = None
         self.moveset = Moveset((self.na, self.s1, self.s2, self.s3))
+        self.other_moveset = Moveset((self.na1, self.s1, self.s2, self.s3))
 
     def test_get_na(self):
         self.assertEqual(self.moveset.get_na(), self.na)
@@ -23,6 +26,21 @@ class TestMoveset(unittest.TestCase):
 
     def test_get_s3(self):
         self.assertEqual(self.moveset.get_s3(), self.s3)
+
+    def test_equals_method(self):
+        self.assertTrue(self.moveset == self.other_moveset)
+
+    def test_equals_method_fails_not_given_moveset_object(self):
+        self.assertFalse(self.moveset == 5)
+
+    def test_equals_method_given_none_values(self):
+        self.moveset = None
+        self.assertTrue(self.moveset == self.none)
+
+    def test_equals_method_with_mismatching_effects(self):
+        self.moveset.get_na().effect = DebuffEffect()
+        self.other_moveset.get_na().effect = BuffEffect()
+        self.assertFalse(self.moveset == self.other_moveset)
 
     def test_json(self):
         data: dict = self.moveset.to_json()

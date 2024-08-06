@@ -1,7 +1,7 @@
 import unittest
 
 from game.byte_2025.moves.moves import *
-from game.byte_2025.moves.effect import *
+from game.byte_2025.moves.effects import *
 from game.common.enums import *
 
 
