@@ -32,6 +32,7 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
     user.special_points -= current_move.cost
 
     # Need to activate effect if applicable
+    # effect activation will be implemented on the Stat branch since I'll be able to fully implement it
 
 
 def calculate_damage(user: Character, target: Character, damage_points: int) -> int:
