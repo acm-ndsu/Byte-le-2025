@@ -58,7 +58,6 @@ class TestMoveController(unittest.TestCase):
         self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
 
         # the generic tank's health should be 0
-
         self.assertEqual(self.gen_tank.current_health, 0)
 
     def test_user_heals_self(self):
