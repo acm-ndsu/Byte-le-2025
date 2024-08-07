@@ -304,6 +304,14 @@ class GameBoard(GameObject):
 
         return to_return
 
+    def remove_coordinate(self, coords: Vector) -> None:
+        """
+        Removes the given coordinate from the game map.
+        """
+
+        if self.is_valid_coords(coords):
+            self.game_map.pop(coords, None)
+
     def get_top(self, coords: Vector) -> GameObject | None:
         """
         Returns the last object in the GameObjectContainer (i.e, the top-most object in the stack). Returns None if

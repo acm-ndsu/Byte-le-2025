@@ -81,11 +81,25 @@ class TeamManager(GameObject):
 
     # Method to sort team based on character speed, fastest to slowest (descending order)
     def speed_sort(self) -> None:
+        """
+        Sorts the team by the speed stat in descending order.
+        """
         self.team = sorted(self.team, key=lambda character: character.speed, reverse=True)
 
     # Method to filter the team by a character type
     def filter_by_type(self, character_type: CharacterType) -> list[Character]:
+        """
+        Returns characters from this team that have the specified character_type.
+        """
         return [character for character in self.team if character.character_type is character_type]
+
+    def get_active_character(self) -> Character:
+        """
+        Returns the first character in the team that hasn't taken its turn.
+        """
+        for character in self.team:
+            if not character.took_action:
+                return character
 
     # To and From Json
     def to_json(self) -> dict:

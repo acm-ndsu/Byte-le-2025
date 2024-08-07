@@ -1,3 +1,4 @@
+import game.common.map.game_board
 from game.common.player import Player
 from game.common.map.game_board import GameBoard
 from game.common.enums import *
@@ -22,33 +23,29 @@ class SwapController(Controller):
         super().__init__()
 
     def handle_actions(self, action: ActionType, client: Player, world: GameBoard):
-        character_pos: Vector = Vector(client.avatar.position.x, client.avatar.position.y)
-
+        characters_pos: dict[Vector, Character] = world.get_characters(client.team_manager.country)
+        character: Character = client.team_manager.get_active_character()
         pos_mod: Vector
-
+        # Determine pos_mod based on swapping up or down
         match action:
-            case ActionType.MOVE_UP:
+            case ActionType.SWAP_UP:
                 pos_mod = Vector(x=0, y=-1)
-            case ActionType.MOVE_DOWN:
+            case ActionType.SWAP_DOWN:
                 pos_mod = Vector(x=0, y=1)
-            case ActionType.MOVE_LEFT:
-                pos_mod = Vector(x=-1, y=0)
-            case ActionType.MOVE_RIGHT:
-                pos_mod = Vector(x=1, y=0)
             case _:  # default case
                 return
-
-        temp_vec: Vector = character_pos.add_to_vector(pos_mod)
-
-        # if the top of the given coordinates are not occupiable or are invalid, return to do nothing
-        if not world.is_occupiable(temp_vec):
+        new_vector: Vector = Vector.add_vectors(character.position, pos_mod)
+        # If character is attempting to leave the gameboard, prevent it (there is no escape)
+        if new_vector not in characters_pos:
             return
+        # Get character to swap to if there is one
+        swapped_character: Character | None = characters_pos.get(new_vector)
+        # Swap characters
+        if swapped_character is not None:
+            world.remove_coordinate(swapped_character.position)
+            swapped_character.position = character.position
+            world.place(character.position, swapped_character)
+        world.remove_coordinate(character.position)
+        character.position = new_vector
+        world.place(new_vector, character)
 
-        # remove the avatar from its previous location
-        world.remove(client.avatar.position, ObjectType.AVATAR)
-
-        # add the avatar to the top of the list of the coordinate
-        world.place(temp_vec, client.avatar)
-
-        # reassign the avatar's position
-        client.avatar.position = Vector(temp_vec.x, temp_vec.y)
