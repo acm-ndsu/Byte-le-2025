@@ -37,7 +37,7 @@ class TestCharacter(unittest.TestCase):
         self.gen_tank.speed = self.num
         # test passive ability later
         self.gen_tank.guardian = self.gen_attacker
-        # test possible moves later
+        self.gen_tank.moveset = self.moveset
         self.gen_tank.special_points = self.num
         self.gen_tank.position = Vector(0, 0)
 

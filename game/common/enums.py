@@ -32,6 +32,7 @@ class ObjectType(Enum):
     GENERIC_TANK = auto()
     LEADER = auto()
     MOVESET = auto()
+    STAT = auto()
     ABSTRACT_MOVE = auto()
     MOVE = auto()
     ATTACK = auto()
