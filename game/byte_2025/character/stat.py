@@ -137,12 +137,15 @@ class Stat(GameObject):
         for the stat at -4.
         """
 
-        # for max: min(self.__max, self.stage + stages)
-        # for min: max(self.__min, self.stage + stages)
+        # the following cleanly calculates what the stage value will be using value comparisons without if statements
+        # gets the largest value that is still in range of the value of STAGE_MAX
+        max_calc: int = min(STAGE_MAX, self.stage + stages)
 
-        # instead of using if statements, this cleanly calculates what the stage value will be
-        # adjusted_value: int = max(self.__min, min(stages, self.__max))
-        self.stage: int = max(max(STAGE_MIN, self.stage + stages), min(STAGE_MAX, self.stage + stages))
+        # gets the smallest value that is still in range of the value of STAGE_MIN
+        min_calc: int = min(STAGE_MIN, self.stage - stages)
+
+        # by comparing which of the two values is largest, the correctly adjusted value is returned
+        self.stage: int = max(min_calc, max_calc)
 
     def apply_modifier(self) -> None:
         pass

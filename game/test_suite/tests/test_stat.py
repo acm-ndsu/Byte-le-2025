@@ -13,7 +13,7 @@ class TestStat(unittest.TestCase):
         self.min_float: float = 0.0
         self.max_float: float = 2.1
 
-    def test_properties(self):
+    def test_properties(self) -> None:
         self.assertEqual(self.stat.base_value, 5)
         self.assertEqual(self.stat.value, 5)
         self.assertEqual(self.stat.stage, 0)
@@ -65,3 +65,56 @@ class TestStat(unittest.TestCase):
         self.assertEqual(str(e.exception), f'{self.stat.__class__.__name__}.modifier must be between '
                                            f'{MODIFIER_MIN} exclusive and {MODIFIER_MAX} inclusive. The value given '
                                            f'was {self.min_float}')
+
+    def test_is_maxed(self) -> None:
+        self.assertFalse(self.stat.is_maxed())
+
+        self.stat.stage = STAGE_MAX
+        self.assertTrue(self.stat.is_maxed)
+
+    def test_is_minimized(self) -> None:
+        self.assertFalse(self.stat.is_minimized())
+
+        self.stat.stage = STAGE_MIN
+        self.assertTrue(self.stat.is_minimized())
+
+    def test_update_stage_from_stage_0(self) -> None:
+        # max the stat
+        self.stat.update_stage(STAGE_MAX)
+        self.assertEqual(self.stat.stage, STAGE_MAX)
+
+        # set the stat back to neutral (stage 0)
+        self.stat.update_stage(STAGE_MIN)
+        self.assertEqual(self.stat.stage, 0)
+
+        # minimize the stat
+        self.stat.update_stage(STAGE_MIN)
+        self.assertEqual(self.stat.stage, STAGE_MIN)
+
+    def test_update_stage_not_going_over_cap(self) -> None:
+        # set the stage to 2
+        self.stat.stage = 2
+
+        # check that adding a value > 2 leaves the stage at +4
+        self.stat.update_stage(STAGE_MAX)
+        self.assertEqual(self.stat.stage, STAGE_MAX)
+
+        # set the stage to -2
+        self.stat.stage = -2
+
+        # check that adding a value < -2 leaves the stage at -4
+        self.stat.update_stage(STAGE_MIN)
+        self.assertEqual(self.stat.stage, STAGE_MIN)
+
+    def test_update_stage_mid_range_values(self):
+        # update from 0 -> 3
+        self.stat.update_stage(3)
+        self.assertEqual(self.stat.stage, 3)
+
+        # update from 3 -> -2
+        self.stat.update_stage(-5)
+        self.assertEqual(self.stat.stage, -2)
+
+        # update from -2 to 0
+        self.stat.update_stage(2)
+        self.assertEqual(self.stat.stage, 0)
