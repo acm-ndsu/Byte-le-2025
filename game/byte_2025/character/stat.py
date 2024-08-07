@@ -1,3 +1,5 @@
+from typing import Self
+
 from game.common.game_object import GameObject
 
 
@@ -5,8 +7,46 @@ class Stat(GameObject):
     def __init__(self, base_value: int):
         super().__init__()
         self.base_value = base_value
+        self.value = base_value
         self.stage: int = 0
         self.modifier: float = 1.0
+
+    # override the hashable methods to easily compare stats
+    def __gt__(self, other: Self) -> bool:
+        if not isinstance(other, Stat):
+            return False
+
+        return self.value > other.value
+
+    def __lt__(self, other: Self) -> bool:
+        if not isinstance(other, Stat):
+            return False
+
+        return self.value < other.value
+
+    def __ge__(self, other: Self) -> bool:
+        if not isinstance(other, Stat):
+            return False
+
+        return self.value >= other.value
+
+    def __le__(self, other: Self) -> bool:
+        if not isinstance(other, Stat):
+            return False
+
+        return self.value <= other.value
+
+    def __eq__(self, other: Self) -> bool:
+        if not isinstance(other, Stat):
+            return False
+
+        return self.value == other.value
+
+    def __ne__(self, other: Self) -> bool:
+        if not isinstance(other, Stat):
+            return False
+
+        return self.value != other.value
 
     @property
     def base_value(self) -> int:
@@ -19,6 +59,18 @@ class Stat(GameObject):
                             f'{base_value.__class__.__name__} and has a value of {base_value}')
 
         self.__base_value = base_value
+
+    @property
+    def value(self) -> int:
+        return self.__value
+
+    @value.setter
+    def value(self, value: int) -> None:
+        if value is None or not isinstance(value, int):
+            raise TypeError(f'{self.__class__.__name__}.value must be an int. It is a(n) '
+                            f'{value.__class__.__name__} and has a value of {value}')
+
+        self.__value = value
 
     @property
     def stage(self) -> int:
@@ -52,4 +104,23 @@ class Stat(GameObject):
 
         self.__modifier = modifier
 
+    def apply_modifier(self) -> None:
+        pass
 
+    def to_dict(self) -> dict:
+        data: dict = super().to_json()
+        data['base_value'] = self.base_value
+        data['value'] = self.value
+        data['stage'] = self.stage
+        data['modifier'] = self.modifier
+
+        return data
+
+    def from_dict(self, data: dict) -> Self:
+        super().from_json(data)
+        self.base_value = data['base_value']
+        self.value = data['value']
+        self.stage = data['stage']
+        self.modifier = data['modifier']
+
+        return self
