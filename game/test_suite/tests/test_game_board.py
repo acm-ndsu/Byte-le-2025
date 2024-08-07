@@ -34,13 +34,13 @@ class TestGameBoard(unittest.TestCase):
             Vector(1, 3): [self.attacker],
         }
 
-        self.ga1: GenericAttacker = GenericAttacker(speed=6)
-        self.gh1: GenericHealer = GenericHealer(speed=3)
-        self.gt1: GenericTank = GenericTank(speed=2)
+        self.ga1: GenericAttacker = GenericAttacker(speed=Stat(6))
+        self.gh1: GenericHealer = GenericHealer(speed=Stat(3))
+        self.gt1: GenericTank = GenericTank(speed=Stat(2))
 
-        self.ga2: GenericAttacker = GenericAttacker(speed=5)
-        self.gh2: GenericHealer = GenericHealer(speed=4)
-        self.gt2: GenericTank = GenericTank(speed=1)
+        self.ga2: GenericAttacker = GenericAttacker(speed=Stat(5))
+        self.gh2: GenericHealer = GenericHealer(speed=Stat(4))
+        self.gt2: GenericTank = GenericTank(speed=Stat(1))
 
         self.uroda_team: list[Character] = [self.ga1, self.gh1, self.gt1]
         self.turpis_team: list[Character] = [self.ga2, self.gh2, self.gt2]

@@ -1,6 +1,7 @@
 import unittest
 
 from game.byte_2025.character.character import GenericAttacker, GenericTank
+from game.byte_2025.character.stat import Stat
 from game.byte_2025.moves.moves import *
 from game.byte_2025.moves.moveset import Moveset
 from game.common.map.game_board import GameBoard
@@ -19,10 +20,11 @@ class TestMoveController(unittest.TestCase):
                                         Debuff('Baja Dump', TargetType.ALL_OPPS, 0, None, 0.5),
                                         Heal('Baja Blessing', TargetType.ALL_ALLIES, 0, None, 10)))
 
-        self.gen_attacker: GenericAttacker = GenericAttacker(health=20, defense=5, speed=15, position=Vector(0, 1),
+        self.gen_attacker: GenericAttacker = GenericAttacker(health=20, defense=Stat(5), speed=Stat(15),
+                                                             position=Vector(0, 1),
                                                              country_type=CountryType.URODA, moveset=self.moveset)
 
-        self.gen_tank: GenericTank = GenericTank(health=20, defense=10, speed=5, position=Vector(0, 1),
+        self.gen_tank: GenericTank = GenericTank(health=20, defense=Stat(10), speed=Stat(5), position=Vector(0, 1),
                                                  country_type=CountryType.TURPIS)
 
         # Uroda on the left, Turpis on the right; both characters are in the center of their respective sides

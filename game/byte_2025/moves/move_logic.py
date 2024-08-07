@@ -50,7 +50,7 @@ def calculate_damage(target: Character, current_move: Attack) -> int:
     """
 
     # NOTE: the formula doesn't have the modifier yet because the stat system needs to be changed; will happen soon
-    return current_move.damage_points - target.defense
+    return current_move.damage_points - target.defense.value
 
 
 def calculate_healing(target: Character, current_move: Heal) -> int:
