@@ -1,4 +1,4 @@
-from game.byte_2025.character import Character
+from game.byte_2025.character.character import Character
 from game.byte_2025.moves.moves import Move
 from game.common.enums import MoveType
 

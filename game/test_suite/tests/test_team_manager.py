@@ -1,6 +1,6 @@
 import unittest
 
-from game.byte_2025.character import *
+from game.byte_2025.character.character import *
 from game.common.action import *
 from game.common.team_manager import TeamManager
 

@@ -1,4 +1,4 @@
-from game.byte_2025.character import *
+from game.byte_2025.character.character import *
 from game.common.team_manager import TeamManager
 from game.common.game_object import GameObject
 from game.common.map.occupiable import Occupiable

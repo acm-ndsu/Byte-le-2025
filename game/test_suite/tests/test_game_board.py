@@ -1,6 +1,6 @@
 import unittest
 
-from game.byte_2025.character import *
+from game.byte_2025.character.character import *
 from game.common.enums import ObjectType, CountryType
 from game.common.map.wall import Wall
 from game.common.team_manager import TeamManager
