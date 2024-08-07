@@ -14,7 +14,7 @@ class MoveController(Controller):
     it will access that move and call its `use()` method to attempt to activate it.
     """
 
-    def handle_actions(self, action: ActionType, client: Player, world: GameBoard):
+    def handle_actions(self, action: ActionType, client: Player, world: GameBoard) -> None:
         """
         Given the correct enum, the matching move will be selected from the current character's moveset. If enough
         special points were gained, the move will be used; otherwise, nothing will happen.
@@ -52,14 +52,14 @@ class MoveController(Controller):
         match target_type:
             case TargetType.SELF:
                 return [user]
-            case TargetType.SINGLE_ALLY_UP:
+            case TargetType.ALLY_UP:
                 # get the position that is above the character
                 above_pos: Vector = user.position.add_to_vector(Vector(0, -1))
                 target: GameObject = world.get_objects_from(above_pos)[0]
 
                 # check to make sure the target is actually a character and not a potential Wall
                 return [target] if isinstance(target, Character) else []
-            case TargetType.SINGLE_ALLY_DOWN:
+            case TargetType.ALLY_DOWN:
                 # get the position that is below the character
                 below_pos: Vector = user.position.add_to_vector(Vector(0, 1))
                 target: GameObject = world.get_top(below_pos)
