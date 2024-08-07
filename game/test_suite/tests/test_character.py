@@ -30,7 +30,7 @@ class TestCharacter(unittest.TestCase):
         self.gen_tank.moveset = self.moveset
 
     # Test that passing in valid inputs for all the constructor parameters is correct
-    def test_initialization(self):
+    def test_initialization(self) -> None:
         self.gen_tank.health = self.num
         self.gen_tank.attack = self.num
         self.gen_tank.defense = self.num
@@ -60,7 +60,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.special.position, Vector(0, 0))
 
     # Test that passing in bad inputs (a string instead of an int, a None value where it's not needed, etc)
-    def test_initialization_fail(self):
+    def test_initialization_fail(self) -> None:
         # check that a negative int fails for CURRENT health
         with self.assertRaises(ValueError) as e:
             self.gen_tank.current_health = self.neg_num
@@ -147,13 +147,13 @@ class TestCharacter(unittest.TestCase):
         self.special.guardian = None
         self.assertEqual(self.special.guardian, None)
 
-    def test_get_move_methods(self):
+    def test_get_move_methods(self) -> None:
         self.assertEqual(self.gen_tank.get_na(), self.moveset.get_na())
         self.assertEqual(self.gen_tank.get_s1(), self.moveset.get_s1())
         self.assertEqual(self.gen_tank.get_s2(), self.moveset.get_s2())
         self.assertEqual(self.gen_tank.get_s3(), self.moveset.get_s3())
 
-    def test_to_json_character(self):
+    def test_to_json_character(self) -> None:
         data: dict = self.character.to_json()
         char: Character = Character().from_json(data)
         self.assertEqual(char.name, self.character.name)
@@ -171,7 +171,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
 
-    def test_to_json_gen_atk(self):
+    def test_to_json_gen_atk(self) -> None:
         data: dict = self.gen_attacker.to_json()
         char: GenericAttacker = GenericAttacker().from_json(data)
         self.assertEqual(char.name, self.gen_attacker.name)
@@ -189,7 +189,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
 
-    def test_to_json_gen_heal(self):
+    def test_to_json_gen_heal(self) -> None:
         data: dict = self.gen_healer.to_json()
         char: GenericHealer = GenericHealer().from_json(data)
         self.assertEqual(char.name, self.gen_healer.name)
@@ -207,7 +207,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
 
-    def test_to_json_gen_tank(self):
+    def test_to_json_gen_tank(self) -> None:
         data: dict = self.gen_tank.to_json()
         char: GenericTank = GenericTank().from_json(data)
         self.assertEqual(char.name, self.gen_tank.name)
@@ -225,7 +225,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.country_type, self.character.country_type)
         self.assertTrue(char.moveset == self.gen_tank.moveset)
 
-    def test_to_json_leader(self):
+    def test_to_json_leader(self) -> None:
         data: dict = self.leader.to_json()
         char: Leader = Leader().from_json(data)
         self.assertEqual(char.name, self.leader.name)

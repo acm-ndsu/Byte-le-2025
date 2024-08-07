@@ -7,7 +7,7 @@ This is a file that will contain static methods to help perform the logic behind
 """
 
 
-def handle_move_logic(user: Character, targets: list[Character], current_move: Move):
+def handle_move_logic(user: Character, targets: list[Character], current_move: Move) -> None:
     """
     Handles the logic for every move type. That is, damage is applied for attacks, health is increased for healing,
     and stats are modified based on the buff/debuff

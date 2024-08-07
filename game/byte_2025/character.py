@@ -260,7 +260,7 @@ class Character(GameObject):
 
 class GenericAttacker(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
-                 defense: int = 1, speed: int = 1, passive: None = None, guardian: Self | None = None,
+                 defense: int = 1, speed: int = 1, guardian: Self | None = None,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
         super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
@@ -280,7 +280,7 @@ class GenericAttacker(Character):
 
 class GenericHealer(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.HEALER, health: int = 1,
-                 defense: int = 1, speed: int = 1, passive: None = None, guardian: Self | None = None,
+                 defense: int = 1, speed: int = 1, guardian: Self | None = None,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
         super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
@@ -300,7 +300,7 @@ class GenericHealer(Character):
 
 class GenericTank(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.TANK, health: int = 1,
-                 defense: int = 1, speed: int = 1, passive: None = None, guardian: Self | None = None,
+                 defense: int = 1, speed: int = 1, guardian: Self | None = None,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
         super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
