@@ -1,5 +1,6 @@
+from __future__ import annotations
+
 from game.byte_2025.moves.effect import *
-from game.byte_2025.moves.abstract_moves import *
 from game.common.enums import *
 
 
