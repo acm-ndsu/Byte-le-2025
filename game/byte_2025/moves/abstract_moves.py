@@ -35,10 +35,6 @@ class AbstractMove(GameObject):
                              f'{target_type.__class__.__name__} and has the value of {target_type}.')
         self.__target_type: TargetType = target_type
 
-    @abstractmethod
-    def use(self):
-        pass
-
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['move_type'] = self.move_type
@@ -69,10 +65,6 @@ class AbstractAttack(AbstractMove):
                              f'{damage_points.__class__.__name__} and has the value of {damage_points}.')
         self.__damage_points: int = damage_points
 
-    @abstractmethod
-    def use(self):
-        pass
-
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['damage_points'] = self.damage_points
@@ -100,10 +92,6 @@ class AbstractHeal(AbstractMove):
             raise ValueError(f'{self.__class__.__name__}.heal_points must be an int. It is a(n) '
                              f'{heal_points.__class__.__name__} and has the value of {heal_points}.')
         self.__heal_points: int = heal_points
-
-    @abstractmethod
-    def use(self):
-        pass
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
@@ -133,10 +121,6 @@ class AbstractBuff(AbstractMove):
                              f'{buff_amount.__class__.__name__} and has the value of {buff_amount}.')
         self.__buff_amount: float = buff_amount
 
-    @abstractmethod
-    def use(self) -> None:
-        pass
-
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['buff_amount'] = self.buff_amount
@@ -164,10 +148,6 @@ class AbstractDebuff(AbstractMove):
             raise ValueError(f'{self.__class__.__name__}.debuff_amount must be a float. It is a(n) '
                              f'{debuff_amount.__class__.__name__} and has the value of {debuff_amount}.')
         self.__debuff_amount: float = debuff_amount
-
-    @abstractmethod
-    def use(self) -> None:
-        pass
 
     def to_json(self) -> dict:
         data: dict = super().to_json()

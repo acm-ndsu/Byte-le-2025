@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from game.byte_2025.moves.effect import *
+from game.byte_2025.moves.effects import *
 from game.common.enums import *
 
 
@@ -46,9 +46,6 @@ class Move(AbstractMove):
                              f'{effect.__class__.__name__} and has the value of {effect}.')
         self.__effect: Effect | None = effect
 
-    def use(self) -> None:
-        pass
-
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['name'] = self.name
@@ -86,24 +83,27 @@ class Attack(Move, AbstractAttack):
 
         self.damage_points: int = damage_points
         self.object_type = ObjectType.ATTACK
+        self.move_type = MoveType.ATTACK
 
 
 class Heal(Move, AbstractHeal):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_ALLY, cost: int = 0,
+    def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
                  effect: Move | None = None, heal_points: int = 0):
         super().__init__(name, target_type, cost, effect)
 
         self.heal_points: int = heal_points
         self.object_type = ObjectType.HEAL
+        self.move_type = MoveType.HEAL
 
 
 class Buff(Move, AbstractBuff):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_ALLY, cost: int = 0,
+    def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
                  effect: Effect | None = None, buff_amount: float = 1.25):
         super().__init__(name, target_type, cost, effect)
 
         self.buff_amount: float = buff_amount
         self.object_type = ObjectType.BUFF
+        self.move_type = MoveType.BUFF
 
 
 class Debuff(Move, AbstractDebuff):
@@ -113,3 +113,4 @@ class Debuff(Move, AbstractDebuff):
 
         self.debuff_amount: float = debuff_amount
         self.object_type = ObjectType.DEBUFF
+        self.move_type = MoveType.DEBUFF
