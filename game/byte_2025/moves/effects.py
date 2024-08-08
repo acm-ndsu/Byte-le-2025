@@ -15,19 +15,11 @@ class Effect(AbstractMove):
         super().__init__(target_type)
         self.object_type = ObjectType.EFFECT
 
-    def use(self):
-        # MUST BE IMPLEMENTED
-        pass
-
 
 class AttackEffect(AbstractAttack, Effect):
     def __init__(self, target_type: TargetType = TargetType.SELF, damage_points: int = 0):
         super().__init__(target_type, damage_points)
         self.object_type = ObjectType.ATTACK_EFFECT
-
-    def use(self):
-        # MUST BE IMPLEMENTED
-        pass
 
 
 class HealEffect(AbstractHeal, Effect):
@@ -35,26 +27,14 @@ class HealEffect(AbstractHeal, Effect):
         super().__init__(target_type, heal_points)
         self.object_type = ObjectType.HEAL_EFFECT
 
-    def use(self):
-        # MUST BE IMPLEMENTED
-        pass
-
 
 class BuffEffect(AbstractBuff, Effect):
-    def __init__(self, target_type: TargetType = TargetType.SELF, buff_amount: float = 1.25):
-        super().__init__(target_type, buff_amount)
+    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = 1):
+        super().__init__(target_type, stage_amount)
         self.object_type = ObjectType.BUFF_EFFECT
-
-    def use(self):
-        # MUST BE IMPLEMENTED
-        pass
 
 
 class DebuffEffect(AbstractDebuff, Effect):
-    def __init__(self, target_type: TargetType = TargetType.SELF, debuff_amount: float = 0.75):
-        super().__init__(target_type, debuff_amount)
+    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = -1):
+        super().__init__(target_type, stage_amount)
         self.object_type = ObjectType.DEBUFF_EFFECT
-
-    def use(self):
-        # MUST BE IMPLEMENTED
-        pass

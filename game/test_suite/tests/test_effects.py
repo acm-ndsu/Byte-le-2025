@@ -16,8 +16,8 @@ class TestEffects(unittest.TestCase):
         self.effect: Effect = Effect()
         self.attack_effect: AttackEffect = AttackEffect(target_type=TargetType.SINGLE_OPP, damage_points=10)
         self.heal_effect: HealEffect = HealEffect(target_type=TargetType.ALL_ALLIES, heal_points=5)
-        self.buff_effect: BuffEffect = BuffEffect(target_type=TargetType.ALL_ALLIES, buff_amount=10.0)
-        self.debuff_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SINGLE_OPP, debuff_amount=10.0)
+        self.buff_effect: BuffEffect = BuffEffect(target_type=TargetType.ALL_ALLIES, stage_amount=1)
+        self.debuff_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SINGLE_OPP, stage_amount=-1)
 
     def test_base_init(self) -> None:
         self.assertEqual(self.effect.object_type, ObjectType.EFFECT)
@@ -45,10 +45,10 @@ class TestEffects(unittest.TestCase):
         data: dict = self.buff_effect.to_json()
         buff_effect: BuffEffect = BuffEffect().from_json(data)
         self.assertEqual(buff_effect.object_type, self.buff_effect.object_type)
-        self.assertEqual(buff_effect.buff_amount, self.buff_effect.buff_amount)
+        self.assertEqual(buff_effect.stage_amount, self.buff_effect.stage_amount)
 
     def test_debuff_effect_json(self) -> None:
         data: dict = self.debuff_effect.to_json()
         debuff_effect: DebuffEffect = DebuffEffect().from_json(data)
         self.assertEqual(debuff_effect.object_type, self.debuff_effect.object_type)
-        self.assertEqual(debuff_effect.debuff_amount, self.debuff_effect.debuff_amount)
+        self.assertEqual(debuff_effect.stage_amount, self.debuff_effect.stage_amount)

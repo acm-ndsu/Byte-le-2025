@@ -98,19 +98,19 @@ class Heal(Move, AbstractHeal):
 
 class Buff(Move, AbstractBuff):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
-                 effect: Effect | None = None, buff_amount: float = 1.25):
+                 effect: Effect | None = None, stage_amount: int = 1):
         super().__init__(name, target_type, cost, effect)
 
-        self.buff_amount: float = buff_amount
+        self.stage_amount: int = stage_amount
         self.object_type = ObjectType.BUFF
         self.move_type = MoveType.BUFF
 
 
 class Debuff(Move, AbstractDebuff):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 effect: Effect | None = None, debuff_amount: float = 0.75):
+                 effect: Effect | None = None, stage_amount: int = -1):
         super().__init__(name, target_type, cost, effect)
 
-        self.debuff_amount: float = debuff_amount
+        self.stage_amount: int = stage_amount
         self.object_type = ObjectType.DEBUFF
         self.move_type = MoveType.DEBUFF

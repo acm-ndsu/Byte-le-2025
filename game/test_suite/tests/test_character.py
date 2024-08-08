@@ -21,8 +21,8 @@ class TestCharacter(unittest.TestCase):
         self.none: None = None
 
         self.moves = (Attack('Baja Blast', TargetType.ALL_OPPS, 0, None, 5),
-                      Buff('Baja Slurp', TargetType.SELF, 1, HealEffect(heal_points=10), 1.5),
-                      Debuff('Baja Dump', TargetType.ALL_OPPS, 2, None, 0.5),
+                      Buff('Baja Slurp', TargetType.SELF, 1, HealEffect(heal_points=10), 1),
+                      Debuff('Baja Dump', TargetType.ALL_OPPS, 2, None, -1),
                       Heal('Baja Blessing', TargetType.ALL_ALLIES, 3, None, 10))
 
         self.moveset: Moveset = Moveset(self.moves)

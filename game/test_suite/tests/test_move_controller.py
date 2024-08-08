@@ -1,7 +1,6 @@
 import unittest
 
 from game.byte_2025.character.character import GenericAttacker, GenericTank
-from game.byte_2025.character.stat import Stat
 from game.byte_2025.moves.moves import *
 from game.byte_2025.moves.moveset import Moveset
 from game.common.map.game_board import GameBoard
@@ -16,8 +15,8 @@ class TestMoveController(unittest.TestCase):
         self.move_controller: MoveController = MoveController()
 
         self.moveset: Moveset = Moveset((Attack('Baja Blast', TargetType.SINGLE_OPP, 0, None, 15),
-                                        Buff('Baja Slurp', TargetType.SELF, 0, HealEffect(heal_points=10), 1.5),
-                                        Debuff('Baja Dump', TargetType.ALL_OPPS, 0, None, 0.5),
+                                        Buff('Baja Slurp', TargetType.SELF, 0, HealEffect(heal_points=10), 1),
+                                        Debuff('Baja Dump', TargetType.ALL_OPPS, 0, None, -1),
                                         Heal('Baja Blessing', TargetType.ALL_ALLIES, 0, None, 10)))
 
         self.gen_attacker: GenericAttacker = GenericAttacker(health=20, defense=Stat(5), speed=Stat(15),
