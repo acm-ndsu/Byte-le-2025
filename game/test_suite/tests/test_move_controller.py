@@ -53,7 +53,6 @@ class TestMoveController(unittest.TestCase):
         # check the Generic Tank took damage
         # ceiling(15 damage * 1.5) - 10 defense = 13 damage dealt
 
-        # THIS TEST WILL BE MODIFIED WITH THE STAT CLASS IMPLEMENTATION
         self.assertEqual(self.gen_tank.current_health, self.gen_tank.max_health - 13)
 
     def test_opponent_health_stays_at_0(self) -> None:

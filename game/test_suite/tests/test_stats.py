@@ -94,14 +94,14 @@ class TestStat(unittest.TestCase):
 
     def test_get_stage_update_from_stage_0(self) -> None:
         # max the stat
-        stage: int = self.stat.get_stage_update(STAGE_MAX)
+        stage: int = self.stat.calculate_stage_update(STAGE_MAX)
         self.assertEqual(stage, STAGE_MAX)
 
         # set the stat back to neutral (stage 0)
         self.stat.stage = 0
 
         # minimize the stat
-        stage = self.stat.get_stage_update(STAGE_MIN)
+        stage = self.stat.calculate_stage_update(STAGE_MIN)
         self.assertEqual(stage, STAGE_MIN)
 
     def test_get_stage_update_not_going_over_cap(self) -> None:
@@ -109,33 +109,33 @@ class TestStat(unittest.TestCase):
         self.stat.stage = 2
 
         # check that adding a value > 2 leaves the stage at +4
-        stage: int = self.stat.get_stage_update(STAGE_MAX)
+        stage: int = self.stat.calculate_stage_update(STAGE_MAX)
         self.assertEqual(stage, STAGE_MAX)
 
         # set the stage to -2
         self.stat.stage = -2
 
         # check that adding a value < -2 leaves the stage at -4
-        stage = self.stat.get_stage_update(STAGE_MIN)
+        stage = self.stat.calculate_stage_update(STAGE_MIN)
         self.assertEqual(stage, STAGE_MIN)
 
     def test_get_stage_update_passed_in_0(self):
-        stage: int = self.stat.get_stage_update(0)
+        stage: int = self.stat.calculate_stage_update(0)
         self.assertEqual(stage, 0)
 
     def test_get_stage_update_mid_range_values(self) -> None:
         # update from 0 -> 3
-        stage: int = self.stat.get_stage_update(3)
+        stage: int = self.stat.calculate_stage_update(3)
         self.stat.stage = stage
         self.assertEqual(stage, 3)
 
         # update from 3 -> -2
-        stage = self.stat.get_stage_update(-5)
+        stage = self.stat.calculate_stage_update(-5)
         self.stat.stage = stage
         self.assertEqual(stage, -2)
 
         # update from -2 to 0
-        stage = self.stat.get_stage_update(2)
+        stage = self.stat.calculate_stage_update(2)
         self.stat.stage = stage
         self.assertEqual(stage, 0)
 

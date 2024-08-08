@@ -1,8 +1,10 @@
+import math
+
 from game.byte_2025.character.character import Character
+from game.byte_2025.character.stats import Stat
 from game.byte_2025.moves.moves import *
 from game.common.enums import MoveType
 from game.config import ATTACK_MODIFIER
-import math
 
 """
 This is a file that will contain static methods to help perform the logic behind each type of move.
@@ -74,13 +76,16 @@ def calculate_healing(target: Character, current_move: Heal) -> int:
     return min(current_move.heal_points, target.max_health - target.current_health)
 
 
-def calculate_modifier_effect(target: Character, modifier: float) -> int:
+def calculate_modifier_effect(target: Character, current_move: Buff | Debuff) -> int:
     """
-    Calculates and returns the value of the stat if the modifier can be applied.
+    Calculates and returns the potential value of the stat if the given move is used.
     """
 
-    # will be implemented in the Stat branch
-    pass
+    stat = __get_stat_object_to_affect(target, current_move)
+    modifier: float = stat.calculate_modifier()
+
+    # return the calculation done without applying it to the character
+    return math.ceil(stat.base_value * modifier)
 
 
 def __calc_and_apply_damage(targets: list[Character], current_move: Attack):
@@ -114,18 +119,26 @@ def __apply_heal_points(targets: list[Character], current_move: Heal) -> None:
 
         target.current_health = target.current_health + adjusted_healing_amount
 
-        # if target.current_health + heal_amount > target.max_health:
-        #     target.current_health = target.max_health
-        # else:
-        #     target.current_health = target.current_health + heal_amount
-
 
 def __handle_stat_modification(targets: list[Character], current_move: Buff | Debuff) -> None:
     """
-    This simply gets the modification needed from the current_move and applies it to every target's respective stat.
+    Gets the modification needed from the current_move and applies it to every target's corresponding stat.
     """
 
-    # stage_amount: int = current_move.stage_amount
-    #
-    # for target in targets:
-    #     target.
+    stat: Stat
+
+    for target in targets:
+        stat = __get_stat_object_to_affect(target, current_move)
+        stat.get_and_apply_modifier(current_move.stage_amount)
+
+
+def __get_stat_object_to_affect(target: Character, current_move: Buff | Debuff) -> Stat:
+    """
+    A helper method that returns the Stat object to buff/debuff based on the current_move's stat_to_affect.
+    """
+
+    match current_move.stat_to_affect:
+        case ObjectType.DEFENSE_STAT:
+            return target.defense
+        case ObjectType.SPEED_STAT:
+            return target.speed

@@ -130,7 +130,7 @@ class Stat(GameObject):
         """
         return self.stage == STAGE_MIN
 
-    def get_stage_update(self, stages: int = 0) -> int:
+    def calculate_stage_update(self, stages: int = 0) -> int:
         """
         Given the amount of stages to increase or decrease the stats stages, it will return what the stat's stage
         will be example to.
@@ -146,9 +146,9 @@ class Stat(GameObject):
         # by comparing which of the two values is largest, the correctly adjusted value is returned
         return max(min_calc, max_calc)
 
-    def apply_modifier(self) -> None:
+    def calculate_modifier(self) -> float:
         """
-        Calculates the modifier by adjusting a fraction based on the stage.
+        Calculates the stat's modifier by adjusting a fraction based on the stage.
 
         Formulas:
             * (numerator + stage) / denominator if stage is positive
@@ -159,24 +159,24 @@ class Stat(GameObject):
         With the current settings:
 
             ========== =================== ==================
-            Stat State Fraction Multiplier Decimal Multiplier 
+            Stat State Fraction Multiplier Decimal Multiplier
             ========== =================== ==================
                -4           2/6 (1/3)             0.333
-            
+
                -3              2/5                 0.4
-            
+
                -2           2/4 (1/2)              0.5
-            
+
                -1              2/3                0.667
-            
+
                 0               1                   1
-            
+
                 1              3/2                 1.5
-            
+
                 2            4/2 (2)                2
-            
+
                 3              5/2                 2.5
-            
+
                 4            6/2 (3)                3
             ========== =================== ==================
         """
@@ -191,15 +191,14 @@ class Stat(GameObject):
             # need to use the absolute value of the negative int
             denominator += abs(self.stage)
 
-        # update the modifier and adjust the value of the stat; round off decimals to the ten thousandth place
-        self.modifier = round(numerator / denominator, 3)
-
-        # apply the ceiling function to the value
-        self.value = math.ceil(self.base_value * self.modifier)
+        return round(numerator / denominator, 3)
 
     def get_and_apply_modifier(self, stages: int = 0):
-        self.stage = self.get_stage_update(stages)
-        self.apply_modifier()
+        self.stage = self.calculate_stage_update(stages)
+        self.modifier = self.calculate_modifier()
+
+        # after adjusting the stage and modifier, calculate the new value
+        self.value = math.ceil(self.base_value * self.modifier)
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
