@@ -22,10 +22,11 @@ class SwapController(Controller):
     def __init__(self):
         super().__init__()
 
-    def handle_actions(self, action: ActionType, client: Player, world: GameBoard):
+    def handle_actions(self, action: ActionType, client: Player, world: GameBoard) -> None:
         characters_pos: dict[Vector, Character] = world.get_characters(client.team_manager.country)
-        character: Character = client.team_manager.get_active_character()
+        active_character: Character = client.team_manager.get_active_character()
         pos_mod: Vector
+
         # Determine pos_mod based on swapping up or down
         match action:
             case ActionType.SWAP_UP:
@@ -34,20 +35,27 @@ class SwapController(Controller):
                 pos_mod = Vector(x=0, y=1)
             case _:  # default case
                 return
-        new_vector: Vector = Vector.add_vectors(character.position, pos_mod)
+
+        new_vector: Vector = Vector.add_vectors(active_character.position, pos_mod)
+
         # If character is attempting to leave the gameboard, prevent it (there is no escape)
-        if new_vector not in world.get_positions():
+        if new_vector not in world.get_in_bound_coords():
             return
+
         # Get character to swap to if there is one
         swapped_character: Character | None = characters_pos.get(new_vector)
-        # Swap characters First remove the acting character from the board, then, if there is a swapped character,
-        # move them, then finish moving the acting character
-        world.remove_coordinate(character.position)
+
+        # First remove the acting character from the board
+        # Then, if there is a swapped character, move them to the acting characters former position
+        # Then finish moving the acting character to the new position
+        world.remove_coordinate(active_character.position)
+
         if swapped_character is not None:
             world.remove_coordinate(swapped_character.position)
-            swapped_character.position = character.position
-            world.place(character.position, swapped_character)
-        character.position = new_vector
-        world.place(new_vector, character)
+            swapped_character.position = active_character.position
+            world.place(active_character.position, swapped_character)
+
+        active_character.position = new_vector
+        world.place(new_vector, active_character)
 
 

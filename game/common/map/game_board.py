@@ -396,7 +396,7 @@ class GameBoard(GameObject):
                 isinstance(self.game_map[coords].get_top(), Character) and
                 self.game_map[coords].get_top().country_type == country}
 
-    def get_positions(self) -> list[Vector]:
+    def get_in_bound_coords(self) -> list[Vector]:
         """
         Returns list of all vector positions available on the game board (everything in bounds).
         """

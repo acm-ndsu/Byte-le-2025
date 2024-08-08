@@ -1,6 +1,7 @@
 import unittest
 
 from game.byte_2025.character import Character
+from game.common.game_object import GameObject
 from game.common.map.game_board import GameBoard
 from game.controllers.swap_controller import SwapController
 from game.utils.vector import Vector
@@ -13,7 +14,16 @@ class TestSwapController(unittest.TestCase):
     """
     `Test Swap Controller:`
 
-        This class tests the Swap Controller for swapping up and down with other characters, no
+        This class tests the Swap Controller for swapping up and down. It tests:
+        - Swapping with other characters
+        - Swapping with nothing
+        - Not moving due to trying to leave the boundaries of the game
+
+        The tests follow a format of:
+        - Set the took_turn booleans of the characters to determine the active character
+        - Call the swap controller on the active character, moving up or down
+        - Check if the characters position/s changed or not
+        - Check if the game_board has placed the character/s in the correct position or not
     """
 
     def setUp(self) -> None:
@@ -22,18 +32,20 @@ class TestSwapController(unittest.TestCase):
                                                       Character(name='Count Leopold Von Liechtenstein III',
                                                                 position=Vector(0, 1)),
                                                       Character(name='Bob', position=Vector(0, 2))])
-        self.client = Player(None, None, [], self.team_manager)
-        self.locations = {Vector(0, 0): [self.client.team_manager.team[0]],
-                          Vector(0, 1): [self.client.team_manager.team[1]],
-                          Vector(0, 2): [self.client.team_manager.team[2]]}
-        self.game_board = GameBoard(0, Vector(2, 3), self.locations, False, self.client.team_manager)
+        self.client: Player = Player(None, None, [], self.team_manager)
+        self.locations: dict[Vector, list[GameObject]] = {Vector(0, 0): [self.client.team_manager.team[0]],
+                                                          Vector(0, 1): [self.client.team_manager.team[1]],
+                                                          Vector(0, 2): [self.client.team_manager.team[2]]}
+        self.game_board: GameBoard = GameBoard(0, Vector(2, 3), self.locations,
+                                               False, self.client.team_manager)
         self.game_board.generate_map()
 
-    # test swap up
+    # tests for swap up
     def test_swap_up_character(self) -> None:
         self.client.team_manager.team[0].took_action = True
         self.client.team_manager.team[1].took_action = True
         self.client.team_manager.team[2].took_action = False
+
         self.swap_controller.handle_actions(ActionType.SWAP_UP, self.client, self.game_board)
 
         self.assertEqual(self.client.team_manager.team[2].position, Vector(0, 1))
@@ -46,7 +58,9 @@ class TestSwapController(unittest.TestCase):
         self.game_board.remove_coordinate(self.client.team_manager.team.pop(1).position)
         self.client.team_manager.team[0].took_action = True
         self.client.team_manager.team[1].took_action = False
+
         self.swap_controller.handle_actions(ActionType.SWAP_UP, self.client, self.game_board)
+
         self.assertEqual(self.client.team_manager.team[1].position, Vector(0, 1))
         self.assertEqual(self.game_board.get_characters(CountryType.URODA)[Vector(0, 1)].name, 'Bob')
         with self.assertRaises(KeyError):
@@ -56,16 +70,18 @@ class TestSwapController(unittest.TestCase):
         self.client.team_manager.team[0].took_action = False
         self.client.team_manager.team[1].took_action = True
         self.client.team_manager.team[2].took_action = True
+
         self.swap_controller.handle_actions(ActionType.SWAP_UP, self.client, self.game_board)
 
         self.assertEqual(self.client.team_manager.team[0].position, Vector(0, 0))
         self.assertEqual(self.game_board.get_characters(CountryType.URODA)[Vector(0, 0)].name, 'Reginald')
 
-    # test swap down
+    # tests for swap down
     def test_swap_down_character(self) -> None:
         self.client.team_manager.team[0].took_action = True
         self.client.team_manager.team[1].took_action = False
         self.client.team_manager.team[2].took_action = True
+
         self.swap_controller.handle_actions(ActionType.SWAP_DOWN, self.client, self.game_board)
 
         self.assertEqual(self.client.team_manager.team[1].position, Vector(0, 2))
@@ -78,7 +94,9 @@ class TestSwapController(unittest.TestCase):
         self.game_board.remove_coordinate(self.client.team_manager.team.pop(1).position)
         self.client.team_manager.team[0].took_action = False
         self.client.team_manager.team[1].took_action = True
+
         self.swap_controller.handle_actions(ActionType.SWAP_DOWN, self.client, self.game_board)
+
         self.assertEqual(self.client.team_manager.team[0].position, Vector(0, 1))
         self.assertEqual(self.game_board.get_characters(CountryType.URODA)[Vector(0, 1)].name, 'Reginald')
         with self.assertRaises(KeyError):
@@ -88,6 +106,7 @@ class TestSwapController(unittest.TestCase):
         self.client.team_manager.team[0].took_action = True
         self.client.team_manager.team[1].took_action = True
         self.client.team_manager.team[2].took_action = False
+
         self.swap_controller.handle_actions(ActionType.SWAP_DOWN, self.client, self.game_board)
 
         self.assertEqual(self.client.team_manager.team[2].position, Vector(0, 2))

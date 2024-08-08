@@ -1,117 +1,79 @@
-from typing import Self
+import unittest
 
-from game.byte_2025.character import Character, CharacterType
-from game.common.enums import ObjectType, CountryType
-from game.common.game_object import GameObject
+from game.byte_2025.character import *
+from game.common.action import *
+from game.common.team_manager import TeamManager
 
 
-class TeamManager(GameObject):
+class TestTeamManager(unittest.TestCase):
     """
-    `TeamManager class notes:`
-
-    TeamManager (replacing the Avatar class) inherits from GameObject
-
-    Values:
-        Team - list of characters (max of three) with a default generic team
-        Score - an int for the current score of this team with a default set to 0
-
-    Methods:
-        speed_sort() - returns sorted list of team by fastest to slowest speed
-        filter_by_type(character_type) - returns list of characters of the specified CharacterType
+    Test for Team Manager class
     """
+    def setUp(self):
+        self.character1: Character = Leader('Agles', CharacterType.TANK, 100, 10, 5)
+        self.character2: Character = GenericAttacker('Grog', health=50, defense=5, speed=15)
+        self.character3: Character = GenericHealer('Eden', health=60, defense=15, speed=10)
+        self.team_manager: TeamManager = TeamManager()
+        self.team_manager2: TeamManager = TeamManager([self.character1, self.character2, self.character3],
+                                                      CountryType.TURPIS)
 
-    ''' 
-    The team default has a warning "Default argument value is mutable".
-    This is due to the list being mutable and if the Character() default is changed in the future, 
-    the default for team in the TeamManager class is also changed. This, for the most part, can be 
-    ignored, but reminder to exercise caution when adjusting the Character class for this reason.
-    '''
+    def test_init_default(self) -> None:
+        self.assertEqual(self.team_manager.object_type, ObjectType.TEAMMANAGER)
+        self.assertEqual(self.team_manager.team, TeamManager().team)
+        self.assertEqual(self.team_manager.score, 0)
 
-    def __init__(self, team: list[Character] = [Character(), Character(), Character()],
-                 country: CountryType = CountryType.URODA):
-        super().__init__()
-        self.object_type: ObjectType = ObjectType.TEAMMANAGER
-        self.team: list[Character] = team
-        self.country = country
-        self.score: int = 0
+    def test_init_unique(self) -> None:
+        self.assertEqual(self.team_manager2.object_type, ObjectType.TEAMMANAGER)
+        self.assertEqual(self.team_manager2.team, [self.character1, self.character2, self.character3])
+        self.assertEqual(self.team_manager2.score, 0)
 
-    # Getters and Setters
-    @property
-    def team(self) -> list[Character]:
-        return self.__team
+    def test_setters(self) -> None:
+        with self.assertRaises(ValueError) as e:
+            self.team_manager.object_type = 2
+        self.assertEqual(str(e.exception), f'{self.team_manager.__class__.__name__}.object_type must be an '
+                                           f'ObjectType. It is a(n) {int.__name__} '
+                                           f'and has the value of 2.')
+        with self.assertRaises(ValueError) as e:
+            self.team_manager.team = 1
+        self.assertEqual(str(e.exception), f'{self.team_manager.__class__.__name__}.team must be a list[Character]. '
+                                           f'It is a(n) {int.__name__} '
+                                           f'and has the value of 1.')
+        with self.assertRaises(ValueError) as e:
+            self.team_manager.team = [self.character1, self.character2, 3]
+        self.assertEqual(str(e.exception), f'{self.team_manager.__class__.__name__}.team must be a list[Character]. '
+                                           f'It contains a(n) {int.__name__} with the value 3.')
+        with self.assertRaises(ValueError) as e:
+            self.team_manager.team = [self.character1, self.character2, self.character3, self.character1]
+        self.assertEqual(str(e.exception), f'{self.team_manager.__class__.__name__}.team must be a list[Character] '
+                                           f'with a length of three or less. It has a length of 4.')
+        with self.assertRaises(ValueError) as e:
+            self.team_manager.score = 'hi'
+        self.assertEqual(str(e.exception), f'{self.team_manager.__class__.__name__}.score must be an int. '
+                                           f'It is a(n) {str.__name__} and has the value of hi.')
 
-    @team.setter
-    def team(self, team: list[Character]) -> None:
-        if team is None or not isinstance(team, list):
-            raise ValueError(
-                f'{self.__class__.__name__}.team must be a list[Character]. It is a(n) {team.__class__.__name__} '
-                f'and has the value of {team}.')
-        for i in team:
-            if i is None or not isinstance(i, Character):
-                raise ValueError(
-                    f'{self.__class__.__name__}.team must be a list[Character]. It contains a(n) '
-                    f'{i.__class__.__name__} with the value {i}.')
-        if len(team) > 3:
-            raise ValueError(f'{self.__class__.__name__}.team must be a list[Character] with a length of three or '
-                             f'less. It has a length of {len(team)}.')
-        self.__team: list[Character] = team
+    def test_speed_sort(self) -> None:
+        self.team_manager2.speed_sort()
+        self.assertEqual(self.team_manager2.team, [self.character2, self.character3, self.character1])
 
-    @property
-    def object_type(self) -> ObjectType:
-        return self.__object_type
+    def test_filter_by_type(self) -> None:
+        self.assertEqual(self.team_manager.filter_by_type(CharacterType.ATTACKER), TeamManager().team)
+        self.assertEqual(self.team_manager.filter_by_type(CharacterType.TANK), [])
+        self.assertEqual(self.team_manager2.filter_by_type(CharacterType.TANK), [self.character1])
+        self.assertEqual(self.team_manager2.filter_by_type(CharacterType.ATTACKER), [self.character2])
+        self.assertEqual(self.team_manager2.filter_by_type(CharacterType.HEALER), [self.character3])
 
-    @object_type.setter
-    def object_type(self, object_type: ObjectType) -> None:
-        if object_type is None or not isinstance(object_type, ObjectType):
-            raise ValueError(
-                f'{self.__class__.__name__}.object_type must be an ObjectType. It is a(n) '
-                f'{object_type.__class__.__name__} and has the value of {object_type}.')
-        self.__object_type: ObjectType = object_type
+    def test_json_default(self) -> None:
+        data: dict = self.team_manager.to_json()
+        team_manager: TeamManager = TeamManager().from_json(data)
+        self.assertEqual(team_manager.object_type, self.team_manager.object_type)
+        self.assertEqual(team_manager.team, self.team_manager.team)
+        self.assertEqual(team_manager.country, self.team_manager.country)
+        self.assertEqual(team_manager.score, self.team_manager.score)
 
-    @property
-    def score(self) -> int:
-        return self.__score
-
-    @score.setter
-    def score(self, score: int) -> None:
-        if score is None or not isinstance(score, int):
-            raise ValueError(f'{self.__class__.__name__}.score must be an int. It is a(n) {score.__class__.__name__} '
-                             f'and has the value of {score}.')
-        self.__score: int = score
-
-    # Method to sort team based on character speed, fastest to slowest (descending order)
-    def speed_sort(self) -> None:
-        """
-        Sorts the team by the speed stat in descending order.
-        """
-        self.team = sorted(self.team, key=lambda character: character.speed, reverse=True)
-
-    # Method to filter the team by a character type
-    def filter_by_type(self, character_type: CharacterType) -> list[Character]:
-        """
-        Returns characters from this team that have the specified character_type.
-        """
-        return [character for character in self.team if character.character_type is character_type]
-
-    def get_active_character(self) -> Character:
-        """
-        Returns the first character in the team that hasn't taken its turn.
-        """
-        for character in self.team:
-            if not character.took_action:
-                return character
-
-    # To and From Json
-    def to_json(self) -> dict:
-        data: dict = super().to_json()
-        data['team'] = self.team
-        data['country'] = self.country
-        data['score'] = self.score
-        return data
-
-    def from_json(self, data: dict) -> Self:
-        super().from_json(data)
-        self.team = data['team']
-        self.country = data['country']
-        self.score = data['score']
-        return self
+    def test_json_unique(self) -> None:
+        data: dict = self.team_manager2.to_json()
+        team_manager2: TeamManager = TeamManager().from_json(data)
+        self.assertEqual(team_manager2.object_type, self.team_manager2.object_type)
+        self.assertEqual(team_manager2.team, self.team_manager2.team)
+        self.assertEqual(team_manager2.country, self.team_manager2.country)
+        self.assertEqual(team_manager2.score, self.team_manager2.score)
