@@ -451,13 +451,13 @@ class GameBoard(GameObject):
                                                           vec, go_container in
                                                           self.game_map.items()} if self.game_map is not None else None
         data['game_map'] = temp
-        data["seed"] = self.seed
-        data["map_size"] = self.map_size.to_json()
-        data["location_vectors"] = [vec.to_json() for vec in self.locations.keys()] if self.locations is not None \
+        data['seed'] = self.seed
+        data['map_size'] = self.map_size.to_json()
+        data['location_vectors'] = [vec.to_json() for vec in self.locations.keys()] if self.locations is not None \
             else None
-        data["location_objects"] = [[obj.to_json() for obj in v] for v in
+        data['location_objects'] = [[obj.to_json() for obj in v] for v in
                                     self.locations.values()] if self.locations is not None else None
-        data["walled"] = self.walled
+        data['walled'] = self.walled
         data['event_active'] = self.event_active
         data['uroda_team_manager'] = self.uroda_team_manager.to_json() if self.uroda_team_manager is not None else None
         data['turpis_team_manager'] = self.turpis_team_manager.to_json() \
@@ -489,14 +489,14 @@ class GameBoard(GameObject):
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
-        self.seed: int | None = data["seed"]
-        self.map_size: Vector = Vector().from_json(data["map_size"])
+        self.seed: int | None = data['seed']
+        self.map_size: Vector = Vector().from_json(data['map_size'])
 
         self.locations: dict[Vector, list[GameObject]] = {
             Vector().from_json(k): [self.__from_json_helper(obj) for obj in v] for k, v in
-            zip(data["location_vectors"], data["location_objects"])} if data["location_vectors"] is not None else None
+            zip(data['location_vectors'], data['location_objects'])} if data['location_vectors'] is not None else None
 
-        self.walled: bool = data["walled"]
+        self.walled: bool = data['walled']
         self.event_active: int = data['event_active']
 
         # json.ast.literal_eval is `abstract syntax tree`
