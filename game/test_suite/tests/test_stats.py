@@ -1,6 +1,6 @@
 import unittest
 
-from game.byte_2025.character.stat import Stat
+from game.byte_2025.character.stats import *
 from game.config import STAGE_MAX, STAGE_MIN, MODIFIER_MAX, MODIFIER_MIN
 
 
@@ -8,6 +8,8 @@ class TestStat(unittest.TestCase):
     def setUp(self):
         self.stat = Stat(5)
         self.other_stat = Stat(1)
+        self.speed_stat = SpeedStat(5)
+        self.defense_stat = DefenseStat(5)
         self.string: str = 'hi'
         self.stage_min: int = STAGE_MIN - 1
         self.max: int = STAGE_MAX + 1
@@ -157,6 +159,18 @@ class TestStat(unittest.TestCase):
         self.stat.get_and_apply_modifier(1)  # use +1 since it's at -4 already
         self.assertEqual(self.stat.modifier, 0.4)
         self.assertEqual(self.stat.value, 2)
+
+    def test_speed_and_defense_stats(self):
+        self.assertEqual(self.speed_stat.object_type, ObjectType.SPEED_STAT)
+        self.assertEqual(self.speed_stat.base_value, 5)
+        self.assertEqual(self.speed_stat.value, 5)
+
+        self.assertEqual(self.defense_stat.object_type, ObjectType.DEFENSE_STAT)
+        self.assertEqual(self.defense_stat.base_value, 5)
+        self.assertEqual(self.defense_stat.value, 5)
+
+        # check the overridden hashable == operator still works
+        self.assertEqual(self.defense_stat, self.speed_stat)
 
     def test_json(self) -> None:
         data: dict = self.stat.to_json()

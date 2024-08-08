@@ -218,3 +218,15 @@ class Stat(GameObject):
         self.modifier = data['modifier']
 
         return self
+
+
+class DefenseStat(Stat):
+    def __init__(self, base_value: int = 1):
+        super().__init__(base_value)
+        self.object_type = ObjectType.DEFENSE_STAT
+
+
+class SpeedStat(Stat):
+    def __init__(self, base_value: int = 1):
+        super().__init__(base_value)
+        self.object_type = ObjectType.SPEED_STAT

@@ -1,6 +1,7 @@
 import unittest
 
 from game.byte_2025.character.character import GenericAttacker, GenericTank
+from game.byte_2025.character.stats import DefenseStat, SpeedStat
 from game.byte_2025.moves.moves import *
 from game.byte_2025.moves.moveset import Moveset
 from game.common.map.game_board import GameBoard
@@ -15,15 +16,16 @@ class TestMoveController(unittest.TestCase):
         self.move_controller: MoveController = MoveController()
 
         self.moveset: Moveset = Moveset((Attack('Baja Blast', TargetType.SINGLE_OPP, 0, None, 15),
-                                        Buff('Baja Slurp', TargetType.SELF, 0, HealEffect(heal_points=10), 1),
-                                        Debuff('Baja Dump', TargetType.ALL_OPPS, 0, None, -1),
-                                        Heal('Baja Blessing', TargetType.ALL_ALLIES, 0, None, 10)))
+                                         Buff('Baja Slurp', TargetType.SELF, 0, HealEffect(heal_points=10), 1),
+                                         Debuff('Baja Dump', TargetType.ALL_OPPS, 0, None, -1),
+                                         Heal('Baja Blessing', TargetType.ALL_ALLIES, 0, None, 10)))
 
-        self.gen_attacker: GenericAttacker = GenericAttacker(health=20, defense=Stat(5), speed=Stat(15),
+        self.gen_attacker: GenericAttacker = GenericAttacker(health=20, defense=DefenseStat(5), speed=SpeedStat(15),
                                                              position=Vector(0, 1),
                                                              country_type=CountryType.URODA, moveset=self.moveset)
 
-        self.gen_tank: GenericTank = GenericTank(health=20, defense=Stat(10), speed=Stat(5), position=Vector(0, 1),
+        self.gen_tank: GenericTank = GenericTank(health=20, defense=DefenseStat(10), speed=SpeedStat(5),
+                                                 position=Vector(0, 1),
                                                  country_type=CountryType.TURPIS)
 
         # Uroda on the left, Turpis on the right; both characters are in the center of their respective sides
@@ -49,10 +51,10 @@ class TestMoveController(unittest.TestCase):
         self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
 
         # check the Generic Tank took damage
-        # 15 damage - 10 defense = 5 damage dealt
+        # ceiling(15 damage * 1.5) - 10 defense = 13 damage dealt
 
         # THIS TEST WILL BE MODIFIED WITH THE STAT CLASS IMPLEMENTATION
-        self.assertEqual(self.gen_tank.current_health, self.gen_tank.max_health - 5)
+        self.assertEqual(self.gen_tank.current_health, self.gen_tank.max_health - 13)
 
     def test_opponent_health_stays_at_0(self) -> None:
         self.gen_tank.current_health = 1

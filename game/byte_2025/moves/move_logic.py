@@ -1,6 +1,8 @@
 from game.byte_2025.character.character import Character
 from game.byte_2025.moves.moves import *
 from game.common.enums import MoveType
+from game.config import ATTACK_MODIFIER
+import math
 
 """
 This is a file that will contain static methods to help perform the logic behind each type of move.
@@ -44,13 +46,15 @@ def calculate_damage(target: Character, current_move: Attack) -> int:
     """
     Calculates the damage done by using the following formula:
 
-        damage_points * buff/debuff modifier - target defense
+        ceiling(damage_points * attack modifier) - target's defense stat
+
+    The ceiling function is applied to the (damage_points * attack modifier) part of the formula to do the most damage
+    possible.
 
     This method can be used to plan for the competition and give competitors a way to adapt to battles.
     """
 
-    # NOTE: the formula doesn't have the modifier yet because the stat system needs to be changed; will happen soon
-    return current_move.damage_points - target.defense.value
+    return math.ceil(current_move.damage_points * ATTACK_MODIFIER) - target.defense.value
 
 
 def calculate_healing(target: Character, current_move: Heal) -> int:
@@ -117,5 +121,11 @@ def __apply_heal_points(targets: list[Character], current_move: Heal) -> None:
 
 
 def __handle_stat_modification(targets: list[Character], current_move: Buff | Debuff) -> None:
-    # Will be implemented with the updated stat system
-    pass
+    """
+    This simply gets the modification needed from the current_move and applies it to every target's respective stat.
+    """
+
+    # stage_amount: int = current_move.stage_amount
+    #
+    # for target in targets:
+    #     target.

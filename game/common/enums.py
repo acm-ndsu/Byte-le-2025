@@ -33,6 +33,8 @@ class ObjectType(Enum):
     LEADER = auto()
     MOVESET = auto()
     STAT = auto()
+    DEFENSE_STAT = auto()
+    SPEED_STAT = auto()
     ABSTRACT_MOVE = auto()
     MOVE = auto()
     ATTACK = auto()

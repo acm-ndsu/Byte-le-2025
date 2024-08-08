@@ -20,8 +20,10 @@ class TestMove(unittest.TestCase):
         self.debuff_effect: DebuffEffect = DebuffEffect()
         self.attack: Attack = Attack(name='Basic Attack', damage_points=1)
         self.heal: Heal = Heal(name='Basic Heal', heal_points=1)
-        self.buff: Buff = Buff('Big Buff', target_type=TargetType.ALL_ALLIES, stage_amount=2, effect=self.debuff_effect)
-        self.debuff: Debuff = Debuff(name='Big Debuff', cost=2, stage_amount=-2, effect=self.attack_effect)
+        self.buff: Buff = Buff('Big Buff', target_type=TargetType.ALL_ALLIES, stage_amount=2,
+                               effect=self.debuff_effect)
+        self.debuff: Debuff = Debuff(name='Big Debuff', cost=2, stage_amount=-2, effect=self.attack_effect,
+                                     stat_to_affect=ObjectType.SPEED_STAT)
 
     def test_base_setters(self) -> None:
         with self.assertRaises(ValueError) as e:
@@ -125,6 +127,7 @@ class TestMove(unittest.TestCase):
         self.assertEqual(self.buff.cost, 0)
         self.assertEqual(self.buff.effect, self.debuff_effect)
         self.assertEqual(self.buff.stage_amount, 2.0)
+        self.assertEqual(self.buff.stat_to_affect, ObjectType.DEFENSE_STAT)
 
     def test_buff_setter(self) -> None:
         with self.assertRaises(ValueError) as e:
@@ -143,6 +146,7 @@ class TestMove(unittest.TestCase):
         self.assertEqual(self.debuff.cost, 2)
         self.assertEqual(self.debuff.effect, self.attack_effect)
         self.assertEqual(self.debuff.stage_amount, -2)
+        self.assertEqual(self.debuff.stat_to_affect, ObjectType.SPEED_STAT)
 
     def test_debuff_setter(self) -> None:
         with self.assertRaises(ValueError) as e:
@@ -192,6 +196,7 @@ class TestMove(unittest.TestCase):
         self.assertEqual(buff.cost, self.buff.cost)
         self.assertEqual(buff.effect.to_json(), self.buff.effect.to_json())
         self.assertEqual(buff.stage_amount, self.buff.stage_amount)
+        self.assertEqual(buff.stat_to_affect, self.buff.stat_to_affect)
 
     def test_debuff_json(self) -> None:
         data: dict = self.debuff.to_json()
@@ -202,3 +207,4 @@ class TestMove(unittest.TestCase):
         self.assertEqual(debuff.cost, self.debuff.cost)
         self.assertEqual(debuff.effect.to_json(), self.debuff.effect.to_json())
         self.assertEqual(debuff.stage_amount, self.debuff.stage_amount)
+        self.assertEqual(debuff.stat_to_affect, self.debuff.stat_to_affect)

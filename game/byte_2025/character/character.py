@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from game.byte_2025.character.stat import Stat
+from game.byte_2025.character.stats import *
 from game.byte_2025.moves.moves import *
 from game.byte_2025.moves.moveset import Moveset
 from game.common.enums import ObjectType, CharacterType, RankType
@@ -18,7 +18,7 @@ class Character(GameObject):
     """
 
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
-                 defense: Stat = Stat(1), speed: Stat = Stat(1), guardian: Self | None = None,
+                 defense: DefenseStat = DefenseStat(1), speed: SpeedStat = SpeedStat(1), guardian: Self | None = None,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
         super().__init__()
@@ -256,7 +256,7 @@ class Character(GameObject):
 
 class GenericAttacker(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
-                 defense: Stat = Stat(1), speed: Stat = Stat(1), guardian: Self | None = None,
+                 defense: DefenseStat = DefenseStat(1), speed: SpeedStat = SpeedStat(1), guardian: Self | None = None,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
         super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
@@ -275,7 +275,7 @@ class GenericAttacker(Character):
 
 class GenericHealer(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.HEALER, health: int = 1,
-                 defense: Stat = Stat(1), speed: Stat = Stat(1), guardian: Self | None = None,
+                 defense: DefenseStat = DefenseStat(1), speed: SpeedStat = SpeedStat(1), guardian: Self | None = None,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
         super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
@@ -294,7 +294,7 @@ class GenericHealer(Character):
 
 class GenericTank(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.TANK, health: int = 1,
-                 defense: Stat = Stat(1), speed: Stat = Stat(1), guardian: Self | None = None,
+                 defense: DefenseStat = DefenseStat(1), speed: SpeedStat = SpeedStat(1), guardian: Self | None = None,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
         super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
@@ -313,7 +313,7 @@ class GenericTank(Character):
 
 class Leader(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
-                 defense: Stat = Stat(1), speed: Stat = Stat(1), guardian: Self | None = None,
+                 defense: DefenseStat = DefenseStat(1), speed: SpeedStat = SpeedStat(1), guardian: Self | None = None,
                  position: Vector | None = None, passive: None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
         super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)

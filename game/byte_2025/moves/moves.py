@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from game.byte_2025.moves.effects import *
-from game.common.enums import *
+from game.common.enums import MoveType, ObjectType
 
 
 class Move(AbstractMove):
@@ -98,19 +98,23 @@ class Heal(Move, AbstractHeal):
 
 class Buff(Move, AbstractBuff):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
-                 effect: Effect | None = None, stage_amount: int = 1):
+                 effect: Effect | None = None, stage_amount: int = 1, 
+                 stat_to_affect: ObjectType = ObjectType.DEFENSE_STAT):
         super().__init__(name, target_type, cost, effect)
 
-        self.stage_amount: int = stage_amount
         self.object_type = ObjectType.BUFF
         self.move_type = MoveType.BUFF
+        self.stage_amount: int = stage_amount
+        self.stat_to_affect: ObjectType = stat_to_affect
 
 
 class Debuff(Move, AbstractDebuff):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 effect: Effect | None = None, stage_amount: int = -1):
+                 effect: Effect | None = None, stage_amount: int = -1, 
+                 stat_to_affect: ObjectType = ObjectType.DEFENSE_STAT):
         super().__init__(name, target_type, cost, effect)
 
-        self.stage_amount: int = stage_amount
         self.object_type = ObjectType.DEBUFF
         self.move_type = MoveType.DEBUFF
+        self.stage_amount: int = stage_amount
+        self.stat_to_affect: ObjectType = stat_to_affect

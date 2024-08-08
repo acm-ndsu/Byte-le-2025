@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import Self
 
-from game.byte_2025.character.stat import Stat
 from game.common.enums import *
 from game.common.game_object import GameObject
 from game.config import STAGE_MAX, STAGE_MIN
@@ -107,10 +106,12 @@ class AbstractHeal(AbstractMove):
 
 
 class AbstractBuff(AbstractMove):
-    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = 1):
+    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = 1,
+                 stat_to_affect: ObjectType = ObjectType.DEFENSE_STAT):
         super().__init__(target_type)
         self.stage_amount: int = stage_amount
         self.move_type: MoveType = MoveType.BUFF
+        self.stat_to_affect: ObjectType = stat_to_affect
 
     @property
     def stage_amount(self) -> int:
@@ -128,22 +129,38 @@ class AbstractBuff(AbstractMove):
 
         self.__stage_amount: int = stage_amount
 
+    @property
+    def stat_to_affect(self) -> ObjectType:
+        return self.__stat_to_affect
+
+    @stat_to_affect.setter
+    def stat_to_affect(self, stat_to_affect: ObjectType) -> None:
+        if stat_to_affect is None or not isinstance(stat_to_affect, ObjectType):
+            raise ValueError(f'{self.__class__.__name__}.stat_to_affect must be a ObjectType. It is a(n) '
+                             f'{stat_to_affect.__class__.__name__} and has the value of {stat_to_affect}.')
+
+        self.__stat_to_affect: ObjectType = stat_to_affect
+
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['stage_amount'] = self.stage_amount
+        data['stat_to_affect'] = self.stat_to_affect
         return data
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
         self.stage_amount: int = data['stage_amount']
+        self.stat_to_affect: ObjectType = ObjectType(data['stat_to_affect'])
         return self
 
 
 class AbstractDebuff(AbstractMove):
-    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = -1):
+    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = -1, 
+                 stat_to_affect: ObjectType = ObjectType.DEFENSE_STAT):
         super().__init__(target_type)
         self.stage_amount: int = stage_amount
         self.move_type: MoveType = MoveType.DEBUFF
+        self.stat_to_affect: ObjectType = stat_to_affect
 
     @property
     def stage_amount(self) -> int:
@@ -160,13 +177,27 @@ class AbstractDebuff(AbstractMove):
                              f'{stage_amount} was given')
 
         self.__stage_amount: int = stage_amount
+        
+    @property
+    def stat_to_affect(self) -> ObjectType:
+        return self.__stat_to_affect
+
+    @stat_to_affect.setter
+    def stat_to_affect(self, stat_to_affect: ObjectType) -> None:
+        if stat_to_affect is None or not isinstance(stat_to_affect, ObjectType):
+            raise ValueError(f'{self.__class__.__name__}.stat_to_affect must be a ObjectType. It is a(n) '
+                             f'{stat_to_affect.__class__.__name__} and has the value of {stat_to_affect}.')
+
+        self.__stat_to_affect: ObjectType = stat_to_affect
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['stage_amount'] = self.stage_amount
+        data['stat_to_affect'] = self.stat_to_affect
         return data
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
         self.stage_amount: int = data['stage_amount']
+        self.stat_to_affect: ObjectType = ObjectType(data['stat_to_affect'])
         return self
