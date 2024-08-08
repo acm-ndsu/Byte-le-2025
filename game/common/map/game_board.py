@@ -396,6 +396,12 @@ class GameBoard(GameObject):
                 isinstance(self.game_map[coords].get_top(), Character) and
                 self.game_map[coords].get_top().country_type == country}
 
+    def get_positions(self) -> list[Vector]:
+        """
+        Returns list of all vector positions available on the game board (everything in bounds).
+        """
+        return [Vector(x, y) for x in range(self.map_size.x) for y in range(self.map_size.y)]
+
     def order_teams(self) -> None:
         """
         Each turn, at most two characters will take action. It will be each team's next fastest character, assuming

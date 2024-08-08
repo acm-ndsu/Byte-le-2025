@@ -36,16 +36,18 @@ class SwapController(Controller):
                 return
         new_vector: Vector = Vector.add_vectors(character.position, pos_mod)
         # If character is attempting to leave the gameboard, prevent it (there is no escape)
-        if new_vector not in characters_pos:
+        if new_vector not in world.get_positions():
             return
         # Get character to swap to if there is one
         swapped_character: Character | None = characters_pos.get(new_vector)
-        # Swap characters
+        # Swap characters First remove the acting character from the board, then, if there is a swapped character,
+        # move them, then finish moving the acting character
+        world.remove_coordinate(character.position)
         if swapped_character is not None:
             world.remove_coordinate(swapped_character.position)
             swapped_character.position = character.position
             world.place(character.position, swapped_character)
-        world.remove_coordinate(character.position)
         character.position = new_vector
         world.place(new_vector, character)
+
 
