@@ -101,7 +101,7 @@ class Moveset(GameObject):
                 return Debuff().from_json(data)
             case _:
                 raise ValueError(f'{self.__class__.__name__}.__from_json_helper was not able to convert the given '
-                                 f'ObjectType into a Move object: {data['object_type']}')
+                                 f'ObjectType into a Move object: {data["object_type"]}')
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
