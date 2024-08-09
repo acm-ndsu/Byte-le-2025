@@ -65,6 +65,16 @@ class TestCharacter(unittest.TestCase):
 
     # Test that passing in bad inputs (a string instead of an int, a None value where it's not needed, etc)
     def test_initialization_fail(self) -> None:
+        with self.assertRaises(ValueError) as e:
+            self.character.name = 123
+        self.assertTrue(str(e.exception), f'{self.character.__class__.name}.name must be a string. It is a(n) int'
+                                          f'and has the value 1')
+
+        with self.assertRaises(ValueError) as e:
+            self.character.character_type = 1
+        self.assertTrue(str(e.exception), f'{self.character.__class__.name}.name must be a CharacterType. It is '
+                                          f'a(n) int and has the value 1')
+
         # check that a negative int fails for CURRENT health
         with self.assertRaises(ValueError) as e:
             self.gen_tank.current_health = self.neg_num
@@ -91,19 +101,29 @@ class TestCharacter(unittest.TestCase):
                                                       f'an int. It is a(n) {self.none.__class__.__name__} '
                                                       f'and has the value of {self.none}', True))
 
+        # check that a None value fails for attack
+        with self.assertRaises(ValueError) as e:
+            self.gen_tank.attack = self.none
+        self.assertTrue(
+            spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.attack must be an AttackStat. It '
+                                          f'is a(n) {self.none.__class__.__name__} '
+                                          f'and has the value of {self.none}', True))
+
         # check that a None value fails for defense
         with self.assertRaises(ValueError) as e:
             self.gen_tank.defense = self.none
-        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.defense must be a Stat. It '
-                                                      f'is a(n) {self.none.__class__.__name__} '
-                                                      f'and has the value of {self.none}', True))
+        self.assertTrue(
+            spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.defense must be a DefenseStat. It '
+                                          f'is a(n) {self.none.__class__.__name__} '
+                                          f'and has the value of {self.none}', True))
 
         # check that a None value fails for speed
         with self.assertRaises(ValueError) as e:
             self.gen_tank.speed = self.none
-        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.speed must be a Stat. It '
-                                                      f'is a(n) {self.none.__class__.__name__} '
-                                                      f'and has the value of {self.none}', True))
+        self.assertTrue(
+            spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.speed must be a SpeedStat. It '
+                                          f'is a(n) {self.none.__class__.__name__} '
+                                          f'and has the value of {self.none}', True))
 
         # check that a negative int fails for special_points
         with self.assertRaises(ValueError) as e:
@@ -135,9 +155,25 @@ class TestCharacter(unittest.TestCase):
                                                       f'Character or None. It is a(n) {value.__class__.__name__} and '
                                                       f'has the value of {value}', False))
 
+        # check that a None fails for a moveset
+        with self.assertRaises(ValueError) as e:
+            self.gen_tank.moveset = self.none
+        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.moveset must be a '
+                                                      f'Moveset. It is a(n) {self.none.__class__.__name__} and has the '
+                                                      f'value of {self.none}', True))
+
+        # check that took_action has error handling
+        with self.assertRaises(ValueError) as e:
+            self.gen_tank.took_action = 1
+        self.assertTrue(
+            spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.took_action must be a bool. It '
+                                          f'is a(n) int and has the value of 1', True))
+
         # ensure passing None as the guarding works since there's currently a warning
         self.special.guardian = None
         self.assertEqual(self.special.guardian, None)
+
+
 
     def test_get_move_methods(self) -> None:
         self.assertEqual(self.gen_tank.get_na(), self.moveset.get_na())

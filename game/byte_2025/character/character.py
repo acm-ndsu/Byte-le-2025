@@ -108,7 +108,7 @@ class Character(GameObject):
     @defense.setter
     def defense(self, defense: Stat) -> None:
         if defense is None or not isinstance(defense, Stat):
-            raise ValueError(f'{self.__class__.__name__}.defense must be a Stat. It is a(n) '
+            raise ValueError(f'{self.__class__.__name__}.defense must be a DefenseStat. It is a(n) '
                              f'{defense.__class__.__name__} and has the value of {defense}')
 
         self.__defense: Stat = defense
@@ -120,7 +120,7 @@ class Character(GameObject):
     @speed.setter
     def speed(self, speed: Stat) -> None:
         if speed is None or not isinstance(speed, Stat):
-            raise ValueError(f'{self.__class__.__name__}.speed must be a Stat. '
+            raise ValueError(f'{self.__class__.__name__}.speed must be a SpeedStat. '
                              f'It is a(n) {speed.__class__.__name__} and has the value of {speed}')
 
         self.__speed: Stat = speed
@@ -159,7 +159,7 @@ class Character(GameObject):
     @moveset.setter
     def moveset(self, moveset: Moveset) -> None:
         if moveset is None or not isinstance(moveset, Moveset):
-            raise ValueError(f'{self.__class__.__name__}.moveset must be a Moveset object. It is a(n) '
+            raise ValueError(f'{self.__class__.__name__}.moveset must be a Moveset. It is a(n) '
                              f'{moveset.__class__.__name__} and has the value of {moveset}')
 
         self.__moveset: Moveset = moveset

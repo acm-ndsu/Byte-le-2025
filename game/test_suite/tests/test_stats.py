@@ -28,6 +28,14 @@ class TestStat(unittest.TestCase):
         self.assertLessEqual(self.stat, self.other_stat)
         self.assertEqual(self.stat, self.other_stat)
 
+        # test failing cases for the hashable methods
+        self.assertFalse(self.stat == 'hi')
+        self.assertFalse(self.stat < 'hi')
+        self.assertFalse(self.stat > 'hi')
+        self.assertFalse(self.stat <= 'hi')
+        self.assertFalse(self.stat >= 'hi')
+        self.assertFalse(self.stat != 'hi')
+
     def test_properties(self) -> None:
         self.assertEqual(self.stat.base_value, 5)
         self.assertEqual(self.stat.value, 5)
