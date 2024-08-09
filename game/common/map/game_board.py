@@ -304,6 +304,14 @@ class GameBoard(GameObject):
 
         return to_return
 
+    def remove_coordinate(self, coords: Vector) -> None:
+        """
+        Removes the given coordinate from the game map.
+        """
+
+        if self.is_valid_coords(coords):
+            self.game_map.pop(coords, None)
+
     def get_top(self, coords: Vector) -> GameObject | None:
         """
         Returns the last object in the GameObjectContainer (i.e, the top-most object in the stack). Returns None if
@@ -387,6 +395,12 @@ class GameBoard(GameObject):
         return {coords: character for coords, character in zip(self.game_map.keys(), objects) if
                 isinstance(self.game_map[coords].get_top(), Character) and
                 self.game_map[coords].get_top().country_type == country}
+
+    def get_in_bound_coords(self) -> list[Vector]:
+        """
+        Returns list of all vector positions available on the game board (everything in bounds).
+        """
+        return [Vector(x, y) for x in range(self.map_size.x) for y in range(self.map_size.y)]
 
     def order_teams(self) -> None:
         """
