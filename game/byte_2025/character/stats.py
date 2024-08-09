@@ -18,13 +18,14 @@ class Stat(GameObject):
     at 0, that means the modifier is at x1. When the stage increases or decreases, the modifier is adjusted
     appropriately for the calculation.
 
-    The AttackStat subclass will work a bit differently. The attack stat will simply be a modifier that is adjusted and
-    affects the damage points of an attack Move when a character deals damage to an opponent. Therefore, the base value
-    will always be 1, and when the stage and modifier properties are calculated, the value will adjust appropriately
-    as a modifier instead.
+    The AttackStat subclass will work a bit differently. The attack stat will simply be a modifier that is adjusted
+    and affects the damage points of an attack Move when a character deals damage to an opponent. Therefore,
+    the base value will always be 1 when initialized, and when the stage and modifier properties are calculated,
+    the value will adjust appropriately as a modifier instead.
 
     Example:
         AttackStat value at stage +1 = 1.5
+        AttackStat value at stage -1 = 0.667
 
     This is why the base_value and value properties are type hinted as int | float.
     """
@@ -180,27 +181,27 @@ class Stat(GameObject):
 
         With the current settings:
 
-            ========== =================== ==================
-            Stat State Fraction Multiplier Decimal Multiplier
-            ========== =================== ==================
-               -4           2/6 (1/3)             0.333
+            =========== =================== ==================
+            Stage State Fraction Multiplier Decimal Multiplier
+            =========== =================== ==================
+                -4           2/6 (1/3)             0.333
 
-               -3              2/5                 0.4
+                -3              2/5                 0.4
 
-               -2           2/4 (1/2)              0.5
+                -2           2/4 (1/2)              0.5
 
-               -1              2/3                0.667
+                -1              2/3                0.667
 
-                0               1                   1
+                 0               1                   1
 
-                1              3/2                 1.5
+                 1              3/2                 1.5
 
-                2            4/2 (2)                2
+                 2            4/2 (2)                2
 
-                3              5/2                 2.5
+                 3              5/2                 2.5
 
-                4            6/2 (3)                3
-            ========== =================== ==================
+                 4            6/2 (3)                3
+            =========== =================== ==================
         """
 
         numerator: int = NUMERATOR
@@ -219,8 +220,11 @@ class Stat(GameObject):
         self.stage = self.calculate_stage_update(stages)
         self.modifier = self.calculate_modifier()
 
-        # after adjusting the stage and modifier, calculate the new value
-        self.value = math.ceil(self.base_value * self.modifier)
+        # if the stat being modified is the attack stat, its value should always equal is modifier
+        # otherwise, if any other stat, calculate the new value by using the ceiling function
+        # always multiply the base value and modifier to easily calculate the correct result without additional rounding
+        self.value = self.base_value * self.modifier if isinstance(self, AttackStat) \
+            else math.ceil(self.base_value * self.modifier)
 
     def to_json(self) -> dict:
         data: dict = super().to_json()

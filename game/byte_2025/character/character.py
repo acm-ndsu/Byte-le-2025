@@ -213,7 +213,7 @@ class Character(GameObject):
 
     def get_opposing_country(self) -> CountryType:
         # returns the opposite country based on the given CountryType
-        return CountryType.URODA if self.country_type is CountryType.URODA else CountryType.TURPIS
+        return CountryType.URODA if self.country_type is CountryType.TURPIS else CountryType.TURPIS
 
     def to_json(self) -> dict:
         data: dict = super().to_json()

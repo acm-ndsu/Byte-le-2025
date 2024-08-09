@@ -8,13 +8,14 @@ class TestStat(unittest.TestCase):
     def setUp(self):
         self.stat = Stat(5)
         self.other_stat = Stat(1)
-        self.speed_stat = SpeedStat(5)
+        self.attack_stat = AttackStat()
         self.defense_stat = DefenseStat(5)
+        self.speed_stat = SpeedStat(5)
         self.string: str = 'hi'
         self.stage_min: int = STAGE_MIN - 1
-        self.max: int = STAGE_MAX + 1
+        self.stage_max: int = STAGE_MAX + 1
         self.modifier_min: float = 0.0
-        self.modifier_max: float = 2.1
+        self.modifier_max: float = MODIFIER_MAX + 1
 
     def test_overridden_hash_methods(self) -> None:
         self.assertNotEqual(self.stat, self.other_stat)
@@ -66,10 +67,11 @@ class TestStat(unittest.TestCase):
                                            f'{STAGE_MAX} inclusive. The value given was {self.stage_min}')
 
         with self.assertRaises(ValueError) as e:
-            self.stat.stage = self.max
+            self.stat.stage = self.stage_max
         self.assertEqual(str(e.exception), f'{self.stat.__class__.__name__}.stage must be between {STAGE_MIN} '
-                                           f'and {STAGE_MAX} inclusive. The value given was {self.max}')
+                                           f'and {STAGE_MAX} inclusive. The value given was {self.stage_max}')
 
+        # testing modifier
         with self.assertRaises(ValueError) as e:
             self.stat.modifier = self.string
         self.assertEqual(str(e.exception), f'{self.stat.__class__.__name__}.modifier must be a float. It is a(n) '
@@ -81,19 +83,27 @@ class TestStat(unittest.TestCase):
                                            f'{MODIFIER_MIN} exclusive and {MODIFIER_MAX} inclusive. The value given '
                                            f'was {self.modifier_min}')
 
+        with self.assertRaises(ValueError) as e:
+            self.stat.modifier = self.modifier_max
+        self.assertEqual(str(e.exception), f'{self.stat.__class__.__name__}.modifier must be between '
+                                           f'{MODIFIER_MIN} exclusive and {MODIFIER_MAX} inclusive. The value given '
+                                           f'was {self.modifier_max}')
+
     def test_is_maxed(self) -> None:
+        # should not be maxed after initialization
         self.assertFalse(self.stat.is_maxed())
 
         self.stat.stage = STAGE_MAX
         self.assertTrue(self.stat.is_maxed)
 
     def test_is_minimized(self) -> None:
+        # should not be minimized after initialization
         self.assertFalse(self.stat.is_minimized())
 
         self.stat.stage = STAGE_MIN
         self.assertTrue(self.stat.is_minimized())
 
-    def test_get_stage_update_from_stage_0(self) -> None:
+    def test_calculate_stage_update_from_stage_0(self) -> None:
         # max the stat
         stage: int = self.stat.calculate_stage_update(STAGE_MAX)
         self.assertEqual(stage, STAGE_MAX)
@@ -105,7 +115,7 @@ class TestStat(unittest.TestCase):
         stage = self.stat.calculate_stage_update(STAGE_MIN)
         self.assertEqual(stage, STAGE_MIN)
 
-    def test_get_stage_update_not_going_over_cap(self) -> None:
+    def test_calculate_stage_update_not_going_past_bounds(self) -> None:
         # set the stage to 2
         self.stat.stage = 2
 
@@ -120,11 +130,11 @@ class TestStat(unittest.TestCase):
         stage = self.stat.calculate_stage_update(STAGE_MIN)
         self.assertEqual(stage, STAGE_MIN)
 
-    def test_get_stage_update_passed_in_0(self):
+    def test_calculate_stage_update_passed_in_0(self):
         stage: int = self.stat.calculate_stage_update(0)
         self.assertEqual(stage, 0)
 
-    def test_get_stage_update_mid_range_values(self) -> None:
+    def test_calculate_stage_update_mid_range_values(self) -> None:
         # update from 0 -> 3
         stage: int = self.stat.calculate_stage_update(3)
         self.stat.stage = stage
@@ -135,7 +145,7 @@ class TestStat(unittest.TestCase):
         self.stat.stage = stage
         self.assertEqual(stage, -2)
 
-        # update from -2 to 0
+        # update from -2 -> 0
         stage = self.stat.calculate_stage_update(2)
         self.stat.stage = stage
         self.assertEqual(stage, 0)
@@ -161,17 +171,45 @@ class TestStat(unittest.TestCase):
         self.assertEqual(self.stat.modifier, 0.4)
         self.assertEqual(self.stat.value, 2)
 
-    def test_speed_and_defense_stats(self):
-        self.assertEqual(self.speed_stat.object_type, ObjectType.SPEED_STAT)
-        self.assertEqual(self.speed_stat.base_value, 5)
-        self.assertEqual(self.speed_stat.value, 5)
+    def test_attack_defense_and_speed_stats(self):
+        self.assertEqual(self.attack_stat.object_type, ObjectType.ATTACK_STAT)
+        self.assertEqual(self.attack_stat.base_value, 1)
+        self.assertEqual(self.attack_stat.value, 1)
 
         self.assertEqual(self.defense_stat.object_type, ObjectType.DEFENSE_STAT)
         self.assertEqual(self.defense_stat.base_value, 5)
         self.assertEqual(self.defense_stat.value, 5)
 
+        self.assertEqual(self.speed_stat.object_type, ObjectType.SPEED_STAT)
+        self.assertEqual(self.speed_stat.base_value, 5)
+        self.assertEqual(self.speed_stat.value, 5)
+
         # check the overridden hashable == operator still works
         self.assertEqual(self.defense_stat, self.speed_stat)
+
+    # the value and modifier must be equal
+    def test_modifying_attack(self):
+        # check stage 3
+        self.attack_stat.get_and_apply_modifier(3)
+
+        # a = b = c; the value must equal the modifier, and the modifier must equal 2.5
+        self.assertEqual(self.attack_stat.value, self.attack_stat.modifier)
+        self.assertEqual(self.attack_stat.modifier, 2.5)
+
+        # check stage 4
+        self.attack_stat.get_and_apply_modifier(1)
+        self.assertEqual(self.attack_stat.value, self.attack_stat.modifier)
+        self.assertEqual(self.attack_stat.modifier, 3)
+
+        # check stage -2
+        self.attack_stat.get_and_apply_modifier(-6)
+        self.assertEqual(self.attack_stat.value, self.attack_stat.modifier)
+        self.assertEqual(self.attack_stat.modifier, 0.5)
+
+        # check going back to stage 0
+        self.attack_stat.get_and_apply_modifier(2)
+        self.assertEqual(self.attack_stat.value, self.attack_stat.modifier)
+        self.assertEqual(self.attack_stat.modifier, 1)
 
     def test_json(self) -> None:
         data: dict = self.stat.to_json()
@@ -181,3 +219,27 @@ class TestStat(unittest.TestCase):
         self.assertEqual(stat.value, self.stat.value)
         self.assertEqual(stat.stage, self.stat.stage)
         self.assertEqual(stat.modifier, self.stat.modifier)
+
+        data = self.attack_stat.to_json()
+        attack_stat: AttackStat = AttackStat().from_json(data)
+        self.assertEqual(attack_stat.object_type, self.attack_stat.object_type)
+        self.assertEqual(attack_stat.base_value, self.attack_stat.base_value)
+        self.assertEqual(attack_stat.value, self.attack_stat.value)
+        self.assertEqual(attack_stat.stage, self.attack_stat.stage)
+        self.assertEqual(attack_stat.modifier, self.attack_stat.modifier)
+
+        data = self.defense_stat.to_json()
+        defense_stat: DefenseStat = DefenseStat().from_json(data)
+        self.assertEqual(defense_stat.object_type, self.defense_stat.object_type)
+        self.assertEqual(defense_stat.base_value, self.defense_stat.base_value)
+        self.assertEqual(defense_stat.value, self.defense_stat.value)
+        self.assertEqual(defense_stat.stage, self.defense_stat.stage)
+        self.assertEqual(defense_stat.modifier, self.defense_stat.modifier)
+
+        data = self.speed_stat.to_json()
+        speed_stat: SpeedStat = SpeedStat().from_json(data)
+        self.assertEqual(speed_stat.object_type, self.speed_stat.object_type)
+        self.assertEqual(speed_stat.base_value, self.speed_stat.base_value)
+        self.assertEqual(speed_stat.value, self.speed_stat.value)
+        self.assertEqual(speed_stat.stage, self.speed_stat.stage)
+        self.assertEqual(speed_stat.modifier, self.speed_stat.modifier)
