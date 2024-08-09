@@ -14,8 +14,8 @@ class TestCharacter(unittest.TestCase):
         self.gen_healer: GenericHealer = GenericHealer('Steve', CharacterType.HEALER)
         self.gen_tank: GenericTank = GenericTank('Bertha', CharacterType.TANK)
         self.leader: Leader = Leader('Phil', CharacterType.TANK)
-        self.special: Character = Character('Special', CharacterType.TANK, 10, Stat(20), Stat(10),
-                                            self.leader, Vector(0, 0))
+        self.special: Character = Character('Special', CharacterType.TANK, 10, AttackStat(), DefenseStat(20),
+                                            SpeedStat(10), self.leader, Vector(0, 0))
         self.num: int = 100
         self.neg_num: int = -1
         self.none: None = None

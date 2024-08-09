@@ -91,13 +91,13 @@ class Moveset(GameObject):
         # temp: ObjectType = ObjectType(data['object_type'])
 
         match ObjectType(data['object_type']):
-            case ObjectType.ATTACK:
+            case ObjectType.ATTACK_MOVE:
                 return Attack().from_json(data)
-            case ObjectType.HEAL:
+            case ObjectType.HEAL_MOVE:
                 return Heal().from_json(data)
-            case ObjectType.BUFF:
+            case ObjectType.BUFF_MOVE:
                 return Buff().from_json(data)
-            case ObjectType.DEBUFF:
+            case ObjectType.DEBUFF_MOVE:
                 return Debuff().from_json(data)
             case _:
                 raise ValueError(f'{self.__class__.__name__}.__from_json_helper was not able to convert the given '

@@ -82,7 +82,7 @@ class Attack(Move, AbstractAttack):
         super().__init__(name, target_type, cost, effect)
 
         self.damage_points: int = damage_points
-        self.object_type = ObjectType.ATTACK
+        self.object_type = ObjectType.ATTACK_MOVE
         self.move_type = MoveType.ATTACK
 
 
@@ -92,7 +92,7 @@ class Heal(Move, AbstractHeal):
         super().__init__(name, target_type, cost, effect)
 
         self.heal_points: int = heal_points
-        self.object_type = ObjectType.HEAL
+        self.object_type = ObjectType.HEAL_MOVE
         self.move_type = MoveType.HEAL
 
 
@@ -102,7 +102,7 @@ class Buff(Move, AbstractBuff):
                  stat_to_affect: ObjectType = ObjectType.DEFENSE_STAT):
         super().__init__(name, target_type, cost, effect)
 
-        self.object_type = ObjectType.BUFF
+        self.object_type = ObjectType.BUFF_MOVE
         self.move_type = MoveType.BUFF
         self.stage_amount: int = stage_amount
         self.stat_to_affect: ObjectType = stat_to_affect
@@ -114,7 +114,7 @@ class Debuff(Move, AbstractDebuff):
                  stat_to_affect: ObjectType = ObjectType.DEFENSE_STAT):
         super().__init__(name, target_type, cost, effect)
 
-        self.object_type = ObjectType.DEBUFF
+        self.object_type = ObjectType.DEBUFF_MOVE
         self.move_type = MoveType.DEBUFF
         self.stage_amount: int = stage_amount
         self.stat_to_affect: ObjectType = stat_to_affect

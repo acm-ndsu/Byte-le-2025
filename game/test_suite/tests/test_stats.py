@@ -36,8 +36,9 @@ class TestStat(unittest.TestCase):
         # testing base_value
         with self.assertRaises(ValueError) as e:
             self.stat.base_value = self.string
-        self.assertEqual(str(e.exception), f'{self.stat.__class__.__name__}.base_value must be an int. It is a(n) '
-                                           f'{self.string.__class__.__name__} and has a value of {self.string}')
+        self.assertEqual(str(e.exception),
+                         f'{self.stat.__class__.__name__}.base_value must be an int or float. It is a(n) '
+                         f'{self.string.__class__.__name__} and has a value of {self.string}')
 
         with self.assertRaises(ValueError) as e:
             self.stat.base_value = -1
@@ -46,12 +47,12 @@ class TestStat(unittest.TestCase):
         # testing value
         with self.assertRaises(ValueError) as e:
             self.stat.value = self.string
-        self.assertEqual(str(e.exception), f'{self.stat.__class__.__name__}.value must be an int. It is a(n) '
+        self.assertEqual(str(e.exception), f'{self.stat.__class__.__name__}.value must be an int or float. It is a(n) '
                                            f'{self.string.__class__.__name__} and has a value of {self.string}')
 
         with self.assertRaises(ValueError) as e:
             self.stat.value = -1
-        self.assertEqual(str(e.exception), f'{self.stat.__class__.__name__}.value must be a positive int')
+        self.assertEqual(str(e.exception), f'{self.stat.__class__.__name__}.value must be a positive int or float')
 
         # testing stage
         with self.assertRaises(ValueError) as e:

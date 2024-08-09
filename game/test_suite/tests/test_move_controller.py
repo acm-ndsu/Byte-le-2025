@@ -1,7 +1,7 @@
 import unittest
 
 from game.byte_2025.character.character import GenericAttacker, GenericTank
-from game.byte_2025.character.stats import DefenseStat, SpeedStat
+from game.byte_2025.character.stats import DefenseStat, SpeedStat, AttackStat
 from game.byte_2025.moves.moves import *
 from game.byte_2025.moves.moveset import Moveset
 from game.common.map.game_board import GameBoard
@@ -20,11 +20,11 @@ class TestMoveController(unittest.TestCase):
                                          Debuff('Baja Dump', TargetType.ALL_OPPS, 0, None, -1),
                                          Heal('Baja Blessing', TargetType.ALL_ALLIES, 0, None, 10)))
 
-        self.gen_attacker: GenericAttacker = GenericAttacker(health=20, defense=DefenseStat(5), speed=SpeedStat(15),
+        self.gen_attacker: GenericAttacker = GenericAttacker(health=20, attack=AttackStat(), defense=DefenseStat(5), speed=SpeedStat(15),
                                                              position=Vector(0, 1),
                                                              country_type=CountryType.URODA, moveset=self.moveset)
 
-        self.gen_tank: GenericTank = GenericTank(health=20, defense=DefenseStat(10), speed=SpeedStat(5),
+        self.gen_tank: GenericTank = GenericTank(health=20, attack=AttackStat(), defense=DefenseStat(10), speed=SpeedStat(5),
                                                  position=Vector(0, 1),
                                                  country_type=CountryType.TURPIS)
 
