@@ -170,7 +170,7 @@ class Stat(GameObject):
         # by comparing which of the two values is largest, the correctly adjusted value is returned
         return max(min_calc, max_calc)
 
-    def calculate_modifier(self) -> float:
+    def calculate_modifier(self, stage: int) -> float:
         """
         Calculates the stat's modifier by adjusting a fraction based on the stage.
 
@@ -209,17 +209,17 @@ class Stat(GameObject):
         denominator: int = DENOMINATOR
 
         # if the stage is positive, add its value to the numerator; else, add to denominator
-        if self.stage > 0:
-            numerator += self.stage
+        if stage > 0:
+            numerator += stage
         else:
             # need to use the absolute value of the negative int
-            denominator += abs(self.stage)
+            denominator += abs(stage)
 
         return round(numerator / denominator, 3)
 
     def get_and_apply_modifier(self, stages: int = 0):
         self.stage = self.calculate_stage_update(stages)
-        self.modifier = self.calculate_modifier()
+        self.modifier = self.calculate_modifier(self.stage)
 
         # if the stat being modified is the attack stat, its value should always equal is modifier
         # otherwise, if any other stat, calculate the new value by using the ceiling function

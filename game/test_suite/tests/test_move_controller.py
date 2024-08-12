@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 from game.byte_2025.character.character import GenericAttacker, GenericTank, GenericHealer
 from game.byte_2025.character.stats import DefenseStat, SpeedStat, AttackStat
-from game.byte_2025.moves.move_logic import MoveLogic
+from game.byte_2025.moves import move_logic
 from game.byte_2025.moves.moves import *
 from game.byte_2025.moves.moveset import Moveset
 from game.common.map.game_board import GameBoard
@@ -14,6 +14,9 @@ from game.utils.vector import Vector
 
 
 class TestMoveController(unittest.TestCase):
+    """
+    This is the test file for both the MoveController and the move_logic.py file since they work in tandem.
+    """
     def setUp(self):
         self.move_controller: MoveController = MoveController()
 
@@ -151,7 +154,7 @@ class TestMoveController(unittest.TestCase):
         # create a mock object to more easily test this functionality
         # will test if the handle_move_logic method was called; if not, then test succeeds
         mock: Mock = Mock()
-        MoveLogic.handle_move_logic = mock
+        move_logic.handle_move_logic = mock
 
         # remove the turpis tank from the map
         self.gameboard.remove_coordinate(self.turpis_tank.position)
@@ -164,7 +167,7 @@ class TestMoveController(unittest.TestCase):
 
     def test_no_ally_target_available(self):
         mock: Mock = Mock()
-        MoveLogic.handle_move_logic = mock
+        move_logic.handle_move_logic = mock
 
         # remove all urodan characters except the healer who is in the middle
         self.gameboard.remove_coordinate(self.uroda_attacker.position)
@@ -180,3 +183,11 @@ class TestMoveController(unittest.TestCase):
         # checks if using s2 works (heal ally down)
         self.move_controller.handle_actions(ActionType.USE_S2, self.client, self.gameboard)
         mock.assert_not_called()
+
+    # explicit move_logic tests below ---------------------------------------------------------------------
+
+    def test_calculate_modifier_effect(self):
+        # the turpis healer has speed 10; at -1 (which would be applied by the debuff), value would be 10 * 0.667 = 7
+        result: int = move_logic.calculate_modifier_effect(self.turpis_healer, self.moveset1.get_s2())
+
+        self.assertEqual(result, 7)

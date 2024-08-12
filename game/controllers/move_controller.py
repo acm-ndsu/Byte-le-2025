@@ -5,7 +5,7 @@ from game.common.enums import *
 from game.utils.vector import Vector
 from game.controllers.controller import Controller
 from game.common.team_manager import *
-from game.byte_2025.moves.move_logic import MoveLogic
+from game.byte_2025.moves.move_logic import handle_move_logic
 
 
 class MoveController(Controller):
@@ -46,7 +46,7 @@ class MoveController(Controller):
             return
 
         # call the move_logic file's method to handle the rest of the logic
-        MoveLogic.handle_move_logic(user, targets, current_move)
+        handle_move_logic(user, targets, current_move)
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """
