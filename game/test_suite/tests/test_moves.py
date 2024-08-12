@@ -127,7 +127,7 @@ class TestMove(unittest.TestCase):
         self.assertEqual(self.buff.cost, 0)
         self.assertEqual(self.buff.effect, self.debuff_effect)
         self.assertEqual(self.buff.stage_amount, 2.0)
-        self.assertEqual(self.buff.stat_to_affect, ObjectType.DEFENSE_STAT)
+        self.assertEqual(self.buff.stat_to_affect, ObjectType.ATTACK_STAT)
 
     def test_buff_setter(self) -> None:
         with self.assertRaises(ValueError) as e:

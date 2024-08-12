@@ -5,7 +5,7 @@ from game.common.enums import *
 from game.utils.vector import Vector
 from game.controllers.controller import Controller
 from game.common.team_manager import *
-from game.byte_2025.moves.move_logic import handle_move_logic
+from game.byte_2025.moves.move_logic import MoveLogic
 
 
 class MoveController(Controller):
@@ -34,6 +34,11 @@ class MoveController(Controller):
             case _:
                 return
 
+        # user cannot use the move if they don't have enough special points
+        if user.special_points < current_move.cost:
+            return
+
+        # get the possible targets based on the target type
         targets: list[Character] | list = self.__get_targets(user, current_move.target_type, world)
 
         # don't do anything if there are no available targets
@@ -41,7 +46,7 @@ class MoveController(Controller):
             return
 
         # call the move_logic file's method to handle the rest of the logic
-        handle_move_logic(user, targets, current_move)
+        MoveLogic.handle_move_logic(user, targets, current_move)
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """
@@ -55,14 +60,14 @@ class MoveController(Controller):
             case TargetType.ALLY_UP:
                 # get the position that is above the character
                 above_pos: Vector = user.position.add_to_vector(Vector(0, -1))
-                target: GameObject = world.get_objects_from(above_pos)[0]
+                target: GameObject = world.get_character_from(above_pos)
 
                 # check to make sure the target is actually a character and not a potential Wall
-                return [target] if isinstance(target, Character) else []
+                return [target] if target is not None else []
             case TargetType.ALLY_DOWN:
                 # get the position that is below the character
                 below_pos: Vector = user.position.add_to_vector(Vector(0, 1))
-                target: GameObject = world.get_top(below_pos)
+                target: GameObject = world.get_character_from(below_pos)
 
                 # check to make sure the target is actually a character and not a potential Wall
                 return [target] if isinstance(target, Character) else []
@@ -72,7 +77,7 @@ class MoveController(Controller):
             case TargetType.SINGLE_OPP:
                 # get the position that is across the character
                 above_pos: Vector = user.position.add_to_vector(Vector(1, 0))
-                target: GameObject = world.get_objects_from(above_pos)[0]
+                target: GameObject = world.get_character_from(above_pos)
 
                 # check to make sure the target is actually a character and not a potential Wall
                 return [target] if isinstance(target, Character) else []

@@ -63,6 +63,3 @@ MODIFIER_MIN = 0.25                                                 # The min mu
 
 NUMERATOR = 2                                                       # Base numerator used to calculate stat modifiers
 DENOMINATOR = 2                                                     # Base denominator used to calculate stat modifiers
-
-ATTACK_MODIFIER = 1.5                                               # A modifier used to help scale the power of attacks
-

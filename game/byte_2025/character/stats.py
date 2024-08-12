@@ -40,38 +40,39 @@ class Stat(GameObject):
         self.modifier: float = 1.0
 
     # override the hashable methods to easily compare stats
-    def __gt__(self, other: Self) -> bool:
-        if not isinstance(other, Stat):
+    def __gt__(self, other: Self | int) -> bool:
+        if not isinstance(other, Stat | int):
             return False
 
         return self.value > other.value
 
-    def __lt__(self, other: Self) -> bool:
-        if not isinstance(other, Stat):
+    def __lt__(self, other: Self | int) -> bool:
+        if not isinstance(other, Stat | int):
             return False
 
         return self.value < other.value
 
-    def __ge__(self, other: Self) -> bool:
-        if not isinstance(other, Stat):
+    def __ge__(self, other: Self | int) -> bool:
+        if not isinstance(other, Stat | int):
             return False
 
         return self.value >= other.value
 
-    def __le__(self, other: Self) -> bool:
-        if not isinstance(other, Stat):
+    def __le__(self, other: Self | int) -> bool:
+        if not isinstance(other, Stat | int):
             return False
 
         return self.value <= other.value
 
-    def __eq__(self, other: Self) -> bool:
-        if not isinstance(other, Stat):
+    def __eq__(self, other: Self | int) -> bool:
+        if not isinstance(other, Stat | int | int):
             return False
 
-        return self.value == other.value
+        # return the correct bool depending on if the 'other' value is another Stat or int; creates flexibility
+        return self.value == other.value if isinstance(other, Stat) else self.value == other
 
-    def __ne__(self, other: Self) -> bool:
-        if not isinstance(other, Stat):
+    def __ne__(self, other: Self | int) -> bool:
+        if not isinstance(other, Stat | int):
             return False
 
         return self.value != other.value
