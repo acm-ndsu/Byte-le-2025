@@ -22,19 +22,22 @@ class TestMoveController(unittest.TestCase):
 
         # WILL IMPLEMENT EFFECTS IN A NEW BRANCH; this one has a lot of major changes already; don't want a bloated PR
         self.moveset1: Moveset = Moveset((Attack('Baja Blast', TargetType.SINGLE_OPP, 0, None, 15),
-                                          Buff('Baja Slurp', TargetType.SELF, 0, HealEffect(heal_points=10), 1),
-                                          Debuff('Baja Dump', TargetType.ALL_OPPS, 0, None, -1, ObjectType.SPEED_STAT),
-                                          Heal('Baja Blessing', TargetType.ALL_ALLIES, 0, None, 10)))
+                                          Buff('Baja Slurp', TargetType.SELF, 2, HealEffect(heal_points=10), 1),
+                                          Debuff('Baja Dump', TargetType.ALL_OPPS, 3, None, -1, ObjectType.SPEED_STAT),
+                                          Heal('Baja Blessing', TargetType.ALL_ALLIES, 4, None, 10)))
 
         self.moveset2: Moveset = Moveset((Heal('Water Halo', TargetType.ALLY_UP, 0, None, 15),
                                           Attack('Inferno', TargetType.ALL_OPPS, 0, None, 15),
                                           Heal('Healing Potion', TargetType.ALLY_DOWN, 0, None, 15),
-                                          Attack('Thunder Arrow', TargetType.SINGLE_OPP, 0, None, 15)))
+                                          Debuff('Thunder Arrow', TargetType.SINGLE_OPP, 0, None, stage_amount=-1,
+                                                 stat_to_affect=ObjectType.DEFENSE_STAT)))
 
         # create uroda team
         self.uroda_attacker: GenericAttacker = GenericAttacker(health=20, attack=AttackStat(), defense=DefenseStat(5),
                                                                speed=SpeedStat(15), position=Vector(0, 0),
                                                                country_type=CountryType.URODA, moveset=self.moveset1)
+        self.uroda_attacker.special_points = 10
+
         self.uroda_healer: GenericHealer = GenericHealer(health=20, attack=AttackStat(), defense=DefenseStat(5),
                                                          speed=SpeedStat(10), position=Vector(0, 1),
                                                          country_type=CountryType.URODA, moveset=self.moveset2)
@@ -72,23 +75,27 @@ class TestMoveController(unittest.TestCase):
         self.gameboard.generate_map()
 
     def test_given_invalid_enum(self) -> None:
+        # mock the handle_move_logic method to later check if it was ever called
+        mock: Mock = Mock()
+        move_logic.handle_move_logic = mock
+
         self.move_controller.handle_actions(ActionType.SWAP_UP, self.client, self.gameboard)
 
         # check that the Generic Tank wasn't affected at all
         self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health)
 
-        # check that all stats remain the same
-        self.assertTrue(self.turpis_tank.attack == 1)
-        self.assertTrue(self.turpis_tank.defense == 10)
-        self.assertTrue(self.turpis_tank.speed == 5)
+        # test passes if the handle_move_logic method was never called
+        mock.assert_not_called()
 
     def test_opponent_takes_damage(self) -> None:
         self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
 
         # check the Generic Tank took damage
         # ceiling(15 damage * x1 modifier) - 10 defense = 5 damage dealt
-
         self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health - 5)
+
+        # attacker should have 11 special points
+        self.assertEqual(self.uroda_attacker.special_points, 11)
 
     def test_opponent_health_stays_at_0(self) -> None:
         self.turpis_tank.current_health = 1
@@ -97,7 +104,7 @@ class TestMoveController(unittest.TestCase):
         # the generic tank's health should be 0
         self.assertEqual(self.turpis_tank.current_health, 0)
 
-    def test_user_heals_self_from_effect(self) -> None:
+    def test_user_heals_entire_team(self) -> None:
         # change health to 1 to test healing
         self.uroda_attacker.current_health = 1
         self.uroda_healer.current_health = 1
@@ -109,6 +116,9 @@ class TestMoveController(unittest.TestCase):
         self.assertEqual(self.uroda_healer.current_health, 11)
         self.assertEqual(self.uroda_tank.current_health,  20)
 
+        # ensure the special points decreased
+        self.assertEqual(self.uroda_attacker.special_points, 6)
+
     def test_user_heals_over_max_health(self) -> None:
         # test if going healing over the max health doesn't go over
         self.uroda_attacker.current_health = self.uroda_attacker.max_health - 1
@@ -117,6 +127,8 @@ class TestMoveController(unittest.TestCase):
 
         # 1 HP + healing of 10 = 11
         self.assertEqual(self.uroda_attacker.max_health, self.uroda_attacker.current_health)
+
+        self.assertEqual(self.uroda_attacker.special_points, 6)
 
     def test_self_buffing(self) -> None:
         # test that a character buffing itself works while the target is themselves
@@ -127,6 +139,9 @@ class TestMoveController(unittest.TestCase):
         self.assertEqual(self.uroda_attacker.attack.modifier, 1.5)
         self.assertEqual(self.uroda_attacker.attack.value, 1.5)
 
+        # ensure the special points decreased
+        self.assertEqual(self.uroda_attacker.special_points, 8)
+
     def test_heal_ally_up(self) -> None:
         # set urodan attacker health to be at 1 HP and to have already taken their turn
         self.uroda_attacker.current_health = 1
@@ -136,6 +151,9 @@ class TestMoveController(unittest.TestCase):
 
         # 1 + 15 = 16 HP
         self.assertEqual(self.uroda_attacker.current_health, 16)
+
+        # ensure the special points increased; this is the healer, so it's special points are at 0
+        self.assertEqual(self.uroda_healer.special_points, 1)
 
     def test_heal_ally_down(self) -> None:
         # set urodan attack to have taken their turn
@@ -165,6 +183,9 @@ class TestMoveController(unittest.TestCase):
         # to ensure nothing happened, mock and check if the handle_move_logic method was called
         mock.assert_not_called()
 
+        # the urodan attacker attempted to attack in this case, so the special points should stay 10
+        self.assertEqual(self.uroda_attacker.special_points, 10)
+
     def test_no_ally_target_available(self):
         mock: Mock = Mock()
         move_logic.handle_move_logic = mock
@@ -184,6 +205,9 @@ class TestMoveController(unittest.TestCase):
         self.move_controller.handle_actions(ActionType.USE_S2, self.client, self.gameboard)
         mock.assert_not_called()
 
+        # the healer is the character that tried to act
+        self.assertEqual(self.uroda_healer.special_points, 0)
+
     # explicit move_logic tests below ---------------------------------------------------------------------
 
     def test_calculate_modifier_effect(self):
@@ -191,3 +215,18 @@ class TestMoveController(unittest.TestCase):
         result: int = move_logic.calculate_modifier_effect(self.turpis_healer, self.moveset1.get_s2())
 
         self.assertEqual(result, 7)
+
+    def test_debuff_modifier_is_applied(self):
+        # testing to ensure a debuff is applied properly from move_logic.py
+        self.uroda_attacker.took_action = True
+
+        # using the healer's debuff attack
+        self.move_controller.handle_actions(ActionType.USE_S3, self.client, self.gameboard)
+
+        # check that the turpis attacker's defense decreased
+        self.assertEqual(self.turpis_attacker.defense.stage, -1)
+
+        # ceiling(5 * 0.667) = 4
+        self.assertEqual(self.turpis_attacker.defense.value, 4)
+        self.assertEqual(self.turpis_attacker.defense.modifier, 0.667)
+

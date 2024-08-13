@@ -22,9 +22,13 @@ class MoveController(Controller):
         user: Character = client.team_manager.get_active_character()
         current_move: Move
 
+        # a bool to be passed into the handle_logic method
+        is_normal_attack: bool = False
+
         match action:
             case ActionType.USE_NA:
                 current_move: Move = user.get_na()
+                is_normal_attack = True
             case ActionType.USE_S1:
                 current_move: Move = user.get_s1()
             case ActionType.USE_S2:
@@ -46,7 +50,7 @@ class MoveController(Controller):
             return
 
         # call the move_logic file's method to handle the rest of the logic
-        handle_move_logic(user, targets, current_move)
+        handle_move_logic(user, targets, current_move, is_normal_attack)
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """

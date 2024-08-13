@@ -6,7 +6,7 @@ from game.byte_2025.moves.moves import *
 from game.common.enums import MoveType
 
 
-def handle_move_logic(user: Character, targets: list[Character], current_move: Move) -> None:
+def handle_move_logic(user: Character, targets: list[Character], current_move: Move, is_normal_attack: bool) -> None:
     """
     Handles the logic for every move type. That is, damage is applied for attacks, health is increased for healing,
     and stats are modified based on the buff/debuff
@@ -27,6 +27,10 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
             __handle_stat_modification(targets, current_move)
         case _:
             return
+
+    if is_normal_attack:
+        # add 1 to the user's special points if using a normal attack
+        user.special_points += 1
 
     # subtract the cost of using the move from the character's total special points
     user.special_points -= current_move.cost
