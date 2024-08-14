@@ -51,7 +51,9 @@ def calculate_damage(user: Character, target: Character, current_move: Attack) -
     This method can be used to plan for the competition and give competitors a way to adapt to battles.
     """
 
-    return math.ceil(current_move.damage_points * user.attack.modifier) - target.defense.value
+    attack_stage: int = user.attack.stage
+
+    return math.ceil(current_move.damage_points * user.attack.calculate_modifier(attack_stage)) - target.defense.value
 
 
 def calculate_healing(target: Character, current_move: Heal) -> int:
@@ -73,7 +75,7 @@ def calculate_healing(target: Character, current_move: Heal) -> int:
 
 def calculate_modifier_effect(target: Character, current_move: Buff | Debuff) -> int:
     """
-    Calculates and returns the potential value of the stat if the given move is used.
+    Calculates and returns the potential value of the stat if the given Buff/Debuff is used.
     """
 
     stat = __get_stat_object_to_affect(target, current_move)

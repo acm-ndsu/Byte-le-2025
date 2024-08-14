@@ -102,28 +102,28 @@ class Character(GameObject):
         self.__attack: AttackStat = attack
 
     @property
-    def defense(self) -> Stat:
+    def defense(self) -> DefenseStat:
         return self.__defense
 
     @defense.setter
-    def defense(self, defense: Stat) -> None:
-        if defense is None or not isinstance(defense, Stat):
+    def defense(self, defense: DefenseStat) -> None:
+        if defense is None or not isinstance(defense, DefenseStat):
             raise ValueError(f'{self.__class__.__name__}.defense must be a DefenseStat. It is a(n) '
                              f'{defense.__class__.__name__} and has the value of {defense}')
 
-        self.__defense: Stat = defense
+        self.__defense: DefenseStat = defense
 
     @property
-    def speed(self) -> Stat:
+    def speed(self) -> SpeedStat:
         return self.__speed
 
     @speed.setter
-    def speed(self, speed: Stat) -> None:
-        if speed is None or not isinstance(speed, Stat):
+    def speed(self, speed: SpeedStat) -> None:
+        if speed is None or not isinstance(speed, SpeedStat):
             raise ValueError(f'{self.__class__.__name__}.speed must be a SpeedStat. '
                              f'It is a(n) {speed.__class__.__name__} and has the value of {speed}')
 
-        self.__speed: Stat = speed
+        self.__speed: SpeedStat = speed
 
     @property
     def guardian(self) -> Self | None:

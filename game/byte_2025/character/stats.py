@@ -37,7 +37,6 @@ class Stat(GameObject):
         self.base_value: int | float = base_value
         self.value: int | float = base_value
         self.stage: int = 0
-        self.modifier: float = 1.0
 
     # override the hashable methods to easily compare stats
     def __gt__(self, other: Self | int) -> bool:
@@ -124,22 +123,6 @@ class Stat(GameObject):
 
         self.__stage = stage
 
-    @property
-    def modifier(self) -> float:
-        return self.__modifier
-
-    @modifier.setter
-    def modifier(self, modifier: float) -> None:
-        if modifier is None or not isinstance(modifier, float):
-            raise ValueError(f'{self.__class__.__name__}.modifier must be a float. It is a(n) '
-                             f'{modifier.__class__.__name__} and has a value of {modifier}')
-
-        if modifier < MODIFIER_MIN or modifier > MODIFIER_MAX:
-            raise ValueError(f'{self.__class__.__name__}.modifier must be between {MODIFIER_MIN} exclusive and '
-                             f'{MODIFIER_MAX} inclusive. The value given was {modifier}')
-
-        self.__modifier = modifier
-
     def is_maxed(self) -> bool:
         """
         Returns true if the stat is maxed out. This is determined by how many stages the stat has been increased by.
@@ -172,7 +155,7 @@ class Stat(GameObject):
 
     def calculate_modifier(self, stage: int) -> float:
         """
-        Calculates the stat's modifier by adjusting a fraction based on the stage.
+        Calculates the stat's potential modifier by adjusting a fraction based on the stage.
 
         Formulas:
             * (numerator + stage) / denominator if stage is positive
@@ -215,24 +198,24 @@ class Stat(GameObject):
             # need to use the absolute value of the negative int
             denominator += abs(stage)
 
+        # round the decimal to 3 decimal places
         return round(numerator / denominator, 3)
 
     def get_and_apply_modifier(self, stages: int = 0):
         self.stage = self.calculate_stage_update(stages)
-        self.modifier = self.calculate_modifier(self.stage)
+        modifier: float = self.calculate_modifier(self.stage)
 
         # if the stat being modified is the attack stat, its value should always equal is modifier
         # otherwise, if any other stat, calculate the new value by using the ceiling function
         # always multiply the base value and modifier to easily calculate the correct result without additional rounding
-        self.value = self.base_value * self.modifier if isinstance(self, AttackStat) \
-            else math.ceil(self.base_value * self.modifier)
+        self.value = self.base_value * modifier if isinstance(self, AttackStat) \
+            else math.ceil(self.base_value * modifier)
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['base_value'] = self.base_value
         data['value'] = self.value
         data['stage'] = self.stage
-        data['modifier'] = self.modifier
 
         return data
 
@@ -241,7 +224,6 @@ class Stat(GameObject):
         self.base_value = data['base_value']
         self.value = data['value']
         self.stage = data['stage']
-        self.modifier = data['modifier']
 
         return self
 

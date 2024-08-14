@@ -136,7 +136,7 @@ class TestMoveController(unittest.TestCase):
 
         # check the stat was buffed properly; default value from constructor is the attack stat
         self.assertEqual(self.uroda_attacker.attack.stage, 1)
-        self.assertEqual(self.uroda_attacker.attack.modifier, 1.5)
+        self.assertEqual(self.uroda_attacker.attack.calculate_modifier(self.uroda_attacker.attack.stage), 1.5)
         self.assertEqual(self.uroda_attacker.attack.value, 1.5)
 
         # ensure the special points decreased
@@ -228,5 +228,5 @@ class TestMoveController(unittest.TestCase):
 
         # ceiling(5 * 0.667) = 4
         self.assertEqual(self.turpis_attacker.defense.value, 4)
-        self.assertEqual(self.turpis_attacker.defense.modifier, 0.667)
+        self.assertEqual(self.turpis_attacker.defense.calculate_modifier(self.turpis_attacker.defense.stage), 0.667)
 
