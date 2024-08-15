@@ -81,8 +81,7 @@ class MoveType(Enum):
 
 class TargetType(Enum):
     SELF = auto()
-    ALLY_UP = auto()
-    ALLY_DOWN = auto()
+    ADJACENT_ALLIES = auto()
     ALL_ALLIES = auto()
     SINGLE_OPP = auto()
     ALL_OPPS = auto()

@@ -26,9 +26,9 @@ class TestMoveController(unittest.TestCase):
                                           Debuff('Baja Dump', TargetType.ALL_OPPS, 3, None, -1, ObjectType.SPEED_STAT),
                                           Heal('Baja Blessing', TargetType.ALL_ALLIES, 4, None, 10)))
 
-        self.moveset2: Moveset = Moveset((Heal('Water Halo', TargetType.ALLY_UP, 0, None, 15),
+        self.moveset2: Moveset = Moveset((Heal('Water Halo', TargetType.ADJACENT_ALLIES, 0, None, 15),
                                           Attack('Inferno', TargetType.ALL_OPPS, 0, None, 15),
-                                          Heal('Healing Potion', TargetType.ALLY_DOWN, 0, None, 15),
+                                          Heal('Healing Potion', TargetType.ADJACENT_ALLIES, 0, None, 15),
                                           Debuff('Thunder Arrow', TargetType.SINGLE_OPP, 0, None, stage_amount=-1,
                                                  stat_to_affect=ObjectType.DEFENSE_STAT)))
 
@@ -155,8 +155,9 @@ class TestMoveController(unittest.TestCase):
         # ensure the special points increased; this is the healer, so it's special points are at 0
         self.assertEqual(self.uroda_healer.special_points, 1)
 
-    def test_heal_ally_down(self) -> None:
-        # set urodan attack to have taken their turn
+    def test_heal_adjacent_allies(self) -> None:
+        # set urodan attack to have taken their turn and to be on 1 HP
+        self.uroda_attacker.current_health = 1
         self.uroda_attacker.took_action = True
 
         # set urodan tank health to be at 1 HP and to have already taken their turn
@@ -165,7 +166,10 @@ class TestMoveController(unittest.TestCase):
 
         self.move_controller.handle_actions(ActionType.USE_S2, self.client, self.gameboard)
 
-        # 1 + 15 = 16 HP
+        # Tank's health: 1 + 15 = 16 HP
+        self.assertEqual(self.uroda_tank.current_health, 16)
+
+        # attacker's health: 1 + 15 = 16 HP
         self.assertEqual(self.uroda_tank.current_health, 16)
 
     def test_no_enemy_targets_available(self) -> None:
@@ -230,3 +234,18 @@ class TestMoveController(unittest.TestCase):
         self.assertEqual(self.turpis_attacker.defense.value, 4)
         self.assertEqual(self.turpis_attacker.defense.calculate_modifier(self.turpis_attacker.defense.stage), 0.667)
 
+    def test_aoe_attack(self):
+        # the uroda healer has the AOE, so set the attack to have taken their turn
+        self.uroda_attacker.took_action = True
+
+        # set all turpis characters to be on 1 HP
+        self.turpis_attacker.current_health = 1
+        self.turpis_tank.current_health = 1
+        self.turpis_healer.current_health = 1
+
+        self.move_controller.handle_actions(ActionType.USE_S1, self.client, self.gameboard)
+
+        # check that all turpis characters have 0 HP
+        self.assertEqual(self.turpis_attacker.current_health, 0)
+        self.assertEqual(self.turpis_tank.current_health, 0)
+        self.assertEqual(self.turpis_healer.current_health, 0)

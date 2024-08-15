@@ -61,20 +61,26 @@ class MoveController(Controller):
         match target_type:
             case TargetType.SELF:
                 return [user]
-            case TargetType.ALLY_UP:
+            case TargetType.ADJACENT_ALLIES:
+                result: list = []
+
                 # get the position that is above the character
                 above_pos: Vector = user.position.add_to_vector(Vector(0, -1))
-                target: GameObject = world.get_character_from(above_pos)
-
-                # check to make sure the target is actually a character and not a potential Wall
-                return [target] if target is not None else []
-            case TargetType.ALLY_DOWN:
-                # get the position that is below the character
                 below_pos: Vector = user.position.add_to_vector(Vector(0, 1))
-                target: GameObject = world.get_character_from(below_pos)
 
-                # check to make sure the target is actually a character and not a potential Wall
-                return [target] if isinstance(target, Character) else []
+                # get the actual targets
+                above_target: GameObject = world.get_character_from(above_pos)
+                below_target: GameObject = world.get_character_from(below_pos)
+
+                # if neither character is None, add them to the list
+                if above_target is not None:
+                    result.append(above_target)
+
+                if below_target is not None:
+                    result.append(below_target)
+
+                return result
+
             case TargetType.ALL_ALLIES:
                 # get_characters() returns a dict; receives the characters by getting the dict's values as a list
                 return list(world.get_characters(user.country_type).values())
