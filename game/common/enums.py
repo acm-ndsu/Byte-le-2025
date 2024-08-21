@@ -42,10 +42,10 @@ class ObjectType(Enum):
     HEAL_MOVE = auto()
     BUFF_MOVE = auto()
     DEBUFF_MOVE = auto()
+    GUARD_MOVE = auto()
     EFFECT = auto()
     ATTACK_EFFECT = auto()
     HEAL_EFFECT = auto()
-    GUARD_EFFECT = auto()
     BUFF_EFFECT = auto()
     DEBUFF_EFFECT = auto()
 
@@ -77,6 +77,7 @@ class MoveType(Enum):
     HEAL = auto()
     BUFF = auto()
     DEBUFF = auto()
+    GUARD = auto()
 
 
 class TargetType(Enum):

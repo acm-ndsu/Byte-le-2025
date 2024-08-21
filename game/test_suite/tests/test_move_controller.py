@@ -32,6 +32,12 @@ class TestMoveController(unittest.TestCase):
                                           Debuff('Thunder Arrow', TargetType.SINGLE_OPP, 0, None, stage_amount=-1,
                                                  stat_to_affect=ObjectType.DEFENSE_STAT)))
 
+        self.moveset3: Moveset = Moveset((Guard('Baja Barrier'),
+                                          Attack('Inferno', TargetType.ALL_OPPS, 0, None, 15),
+                                          Heal('Healing Potion', TargetType.ADJACENT_ALLIES, 0, None, 15),
+                                          Debuff('Thunder Arrow', TargetType.SINGLE_OPP, 0, None, stage_amount=-1,
+                                                 stat_to_affect=ObjectType.DEFENSE_STAT)))
+
         # create uroda team
         self.uroda_attacker: GenericAttacker = GenericAttacker(health=20, attack=AttackStat(), defense=DefenseStat(5),
                                                                speed=SpeedStat(15), position=Vector(0, 0),
@@ -43,7 +49,7 @@ class TestMoveController(unittest.TestCase):
                                                          country_type=CountryType.URODA, moveset=self.moveset2)
         self.uroda_tank: GenericTank = GenericTank(health=20, attack=AttackStat(), defense=DefenseStat(10),
                                                    speed=SpeedStat(5), position=Vector(0, 2),
-                                                   country_type=CountryType.URODA)
+                                                   country_type=CountryType.URODA, moveset=self.moveset3)
 
         # create turpis team
         self.turpis_tank: GenericTank = GenericTank(health=20, attack=AttackStat(), defense=DefenseStat(10),

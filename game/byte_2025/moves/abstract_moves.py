@@ -201,3 +201,18 @@ class AbstractDebuff(AbstractMove):
         self.stage_amount: int = data['stage_amount']
         self.stat_to_affect: ObjectType = ObjectType(data['stat_to_affect'])
         return self
+
+
+class AbstractGuard(AbstractMove):
+    def __init__(self):
+        super().__init__(TargetType.ADJACENT_ALLIES)
+
+        self.move_type = MoveType.GUARD
+
+    def to_json(self) -> dict:
+        data: dict = super().to_json()
+        return data
+
+    def from_json(self, data: dict) -> Self:
+        super().from_json(data)
+        return self
