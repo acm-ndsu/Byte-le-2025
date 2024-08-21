@@ -22,9 +22,13 @@ class MoveController(Controller):
         user: Character = client.team_manager.get_active_character()
         current_move: Move
 
+        # a bool to be passed into the handle_logic method
+        is_normal_attack: bool = False
+
         match action:
             case ActionType.USE_NA:
                 current_move: Move = user.get_na()
+                is_normal_attack = True
             case ActionType.USE_S1:
                 current_move: Move = user.get_s1()
             case ActionType.USE_S2:
@@ -34,6 +38,11 @@ class MoveController(Controller):
             case _:
                 return
 
+        # user cannot use the move if they don't have enough special points
+        if user.special_points < current_move.cost:
+            return
+
+        # get the possible targets based on the target type
         targets: list[Character] | list = self.__get_targets(user, current_move.target_type, world)
 
         # don't do anything if there are no available targets
@@ -41,7 +50,7 @@ class MoveController(Controller):
             return
 
         # call the move_logic file's method to handle the rest of the logic
-        handle_move_logic(user, targets, current_move)
+        handle_move_logic(user, targets, current_move, is_normal_attack)
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """
@@ -52,27 +61,33 @@ class MoveController(Controller):
         match target_type:
             case TargetType.SELF:
                 return [user]
-            case TargetType.ALLY_UP:
+            case TargetType.ADJACENT_ALLIES:
+                result: list = []
+
                 # get the position that is above the character
                 above_pos: Vector = user.position.add_to_vector(Vector(0, -1))
-                target: GameObject = world.get_objects_from(above_pos)[0]
-
-                # check to make sure the target is actually a character and not a potential Wall
-                return [target] if isinstance(target, Character) else []
-            case TargetType.ALLY_DOWN:
-                # get the position that is below the character
                 below_pos: Vector = user.position.add_to_vector(Vector(0, 1))
-                target: GameObject = world.get_top(below_pos)
 
-                # check to make sure the target is actually a character and not a potential Wall
-                return [target] if isinstance(target, Character) else []
+                # get the actual targets
+                above_target: GameObject = world.get_character_from(above_pos)
+                below_target: GameObject = world.get_character_from(below_pos)
+
+                # if neither character is None, add them to the list
+                if above_target is not None:
+                    result.append(above_target)
+
+                if below_target is not None:
+                    result.append(below_target)
+
+                return result
+
             case TargetType.ALL_ALLIES:
                 # get_characters() returns a dict; receives the characters by getting the dict's values as a list
                 return list(world.get_characters(user.country_type).values())
             case TargetType.SINGLE_OPP:
                 # get the position that is across the character
                 above_pos: Vector = user.position.add_to_vector(Vector(1, 0))
-                target: GameObject = world.get_objects_from(above_pos)[0]
+                target: GameObject = world.get_character_from(above_pos)
 
                 # check to make sure the target is actually a character and not a potential Wall
                 return [target] if isinstance(target, Character) else []

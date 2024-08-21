@@ -1,7 +1,7 @@
 import ast
 import random
 
-from game.byte_2025.character import *
+from game.byte_2025.character.character import *
 from game.common.enums import *
 from game.common.game_object import GameObject
 from game.common.map.game_object_container import GameObjectContainer
@@ -395,6 +395,25 @@ class GameBoard(GameObject):
         return {coords: character for coords, character in zip(self.game_map.keys(), objects) if
                 isinstance(self.game_map[coords].get_top(), Character) and
                 self.game_map[coords].get_top().country_type == country}
+
+    def get_character_from(self, coords: Vector) -> Character | None:
+        """
+        Returns a Character object from the given coordinate. If no character is at the coordinate, return None. If
+        a different object is at the current location, this will also return None since it only looks for Character
+        objects.
+
+        Example:
+            * A Wall object is at the given coordinate of (0, 1). This would return None
+            * A Character object is at the given coordinate of (1, 0) and would be returned
+        """
+        # return None if the coordinates are not in the map
+        if coords not in self.game_map:
+            return
+
+        obj: GameObject = self.game_map[coords].get_top()
+
+        # return the object if it's an instance of Character, else return None
+        return obj if isinstance(obj, Character) else None
 
     def get_in_bound_coords(self) -> list[Vector]:
         """

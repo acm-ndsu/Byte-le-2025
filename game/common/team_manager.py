@@ -1,6 +1,6 @@
 from typing import Self
 
-from game.byte_2025.character import Character, CharacterType
+from game.byte_2025.character.character import Character, CharacterType
 from game.common.enums import ObjectType, CountryType
 from game.common.game_object import GameObject
 

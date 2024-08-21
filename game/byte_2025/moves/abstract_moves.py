@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from abc import abstractmethod
 from typing import Self
+
 from game.common.enums import *
 from game.common.game_object import GameObject
+from game.config import STAGE_MAX, STAGE_MIN
 
 
 class AbstractMove(GameObject):
@@ -105,56 +106,98 @@ class AbstractHeal(AbstractMove):
 
 
 class AbstractBuff(AbstractMove):
-    def __init__(self, target_type: TargetType = TargetType.SELF, buff_amount: float = 1.25):
+    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = 1,
+                 stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
         super().__init__(target_type)
-        self.buff_amount: float = buff_amount
+        self.stage_amount: int = stage_amount
         self.move_type: MoveType = MoveType.BUFF
+        self.stat_to_affect: ObjectType = stat_to_affect
 
     @property
-    def buff_amount(self) -> float:
-        return self.__buff_amount
+    def stage_amount(self) -> int:
+        return self.__stage_amount
 
-    @buff_amount.setter
-    def buff_amount(self, buff_amount: float) -> None:
-        if buff_amount is None or not isinstance(buff_amount, float):
-            raise ValueError(f'{self.__class__.__name__}.buff_amount must be a float. It is a(n) '
-                             f'{buff_amount.__class__.__name__} and has the value of {buff_amount}.')
-        self.__buff_amount: float = buff_amount
+    @stage_amount.setter
+    def stage_amount(self, stage_amount: int) -> None:
+        if stage_amount is None or not isinstance(stage_amount, int):
+            raise ValueError(f'{self.__class__.__name__}.stage_amount must be an int. It is a(n) '
+                             f'{stage_amount.__class__.__name__} and has the value of {stage_amount}.')
+
+        if stage_amount <= 0 or stage_amount > STAGE_MAX:
+            raise ValueError(f'{self.__class__.__name__}.stage_amount must be > 0 and <= {STAGE_MAX}. The value '
+                             f'{stage_amount} was given')
+
+        self.__stage_amount: int = stage_amount
+
+    @property
+    def stat_to_affect(self) -> ObjectType:
+        return self.__stat_to_affect
+
+    @stat_to_affect.setter
+    def stat_to_affect(self, stat_to_affect: ObjectType) -> None:
+        if stat_to_affect is None or not isinstance(stat_to_affect, ObjectType):
+            raise ValueError(f'{self.__class__.__name__}.stat_to_affect must be a ObjectType. It is a(n) '
+                             f'{stat_to_affect.__class__.__name__} and has the value of {stat_to_affect}.')
+
+        self.__stat_to_affect: ObjectType = stat_to_affect
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
-        data['buff_amount'] = self.buff_amount
+        data['stage_amount'] = self.stage_amount
+        data['stat_to_affect'] = self.stat_to_affect
         return data
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
-        self.buff_amount: int = data['buff_amount']
+        self.stage_amount: int = data['stage_amount']
+        self.stat_to_affect: ObjectType = ObjectType(data['stat_to_affect'])
         return self
 
 
 class AbstractDebuff(AbstractMove):
-    def __init__(self, target_type: TargetType = TargetType.SELF, debuff_amount: float = 0.75):
+    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = -1, 
+                 stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
         super().__init__(target_type)
-        self.debuff_amount: float = debuff_amount
+        self.stage_amount: int = stage_amount
         self.move_type: MoveType = MoveType.DEBUFF
+        self.stat_to_affect: ObjectType = stat_to_affect
 
     @property
-    def debuff_amount(self) -> float:
-        return self.__debuff_amount
+    def stage_amount(self) -> int:
+        return self.__stage_amount
 
-    @debuff_amount.setter
-    def debuff_amount(self, debuff_amount: float) -> None:
-        if debuff_amount is None or not isinstance(debuff_amount, float):
-            raise ValueError(f'{self.__class__.__name__}.debuff_amount must be a float. It is a(n) '
-                             f'{debuff_amount.__class__.__name__} and has the value of {debuff_amount}.')
-        self.__debuff_amount: float = debuff_amount
+    @stage_amount.setter
+    def stage_amount(self, stage_amount: int) -> None:
+        if stage_amount is None or not isinstance(stage_amount, int):
+            raise ValueError(f'{self.__class__.__name__}.stage_amount must be an int. It is a(n) '
+                             f'{stage_amount.__class__.__name__} and has the value of {stage_amount}.')
+
+        if stage_amount < STAGE_MIN or stage_amount > -1:
+            raise ValueError(f'{self.__class__.__name__}.stage_amount must be >= {STAGE_MIN} and < 0 . The value '
+                             f'{stage_amount} was given')
+
+        self.__stage_amount: int = stage_amount
+        
+    @property
+    def stat_to_affect(self) -> ObjectType:
+        return self.__stat_to_affect
+
+    @stat_to_affect.setter
+    def stat_to_affect(self, stat_to_affect: ObjectType) -> None:
+        if stat_to_affect is None or not isinstance(stat_to_affect, ObjectType):
+            raise ValueError(f'{self.__class__.__name__}.stat_to_affect must be a ObjectType. It is a(n) '
+                             f'{stat_to_affect.__class__.__name__} and has the value of {stat_to_affect}.')
+
+        self.__stat_to_affect: ObjectType = stat_to_affect
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
-        data['debuff_amount'] = self.debuff_amount
+        data['stage_amount'] = self.stage_amount
+        data['stat_to_affect'] = self.stat_to_affect
         return data
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
-        self.debuff_amount: int = data['debuff_amount']
+        self.stage_amount: int = data['stage_amount']
+        self.stat_to_affect: ObjectType = ObjectType(data['stat_to_affect'])
         return self

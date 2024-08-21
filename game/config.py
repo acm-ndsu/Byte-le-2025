@@ -54,3 +54,12 @@ class Debug:                    # Keeps track of the current debug level of the 
     level = DebugLevel.NONE
 
 # Other Settings Here --------------------------------------------------------------------------------------------------
+
+STAGE_MAX = 4                                                       # The max amount of stages a Stat can increase
+STAGE_MIN = -4                                                      # The minimum amount of stages a Stat can decrease
+
+MODIFIER_MAX = 3.0                                                  # The max multiplier that can be applied to a Stat
+MODIFIER_MIN = 0.333                                                # The min multiplier that can be applied to a Stat
+
+NUMERATOR = 2                                                       # Base numerator used to calculate stat modifiers
+DENOMINATOR = 2                                                     # Base denominator used to calculate stat modifiers

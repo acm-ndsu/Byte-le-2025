@@ -1,6 +1,6 @@
 import unittest
 
-from game.byte_2025.character import *
+from game.byte_2025.character.character import *
 from game.common.enums import ObjectType, CountryType
 from game.common.map.wall import Wall
 from game.common.team_manager import TeamManager
@@ -34,13 +34,13 @@ class TestGameBoard(unittest.TestCase):
             Vector(1, 3): [self.attacker],
         }
 
-        self.ga1: GenericAttacker = GenericAttacker(speed=6)
-        self.gh1: GenericHealer = GenericHealer(speed=3)
-        self.gt1: GenericTank = GenericTank(speed=2)
+        self.ga1: GenericAttacker = GenericAttacker(speed=SpeedStat(6))
+        self.gh1: GenericHealer = GenericHealer(speed=SpeedStat(3))
+        self.gt1: GenericTank = GenericTank(speed=SpeedStat(2))
 
-        self.ga2: GenericAttacker = GenericAttacker(speed=5)
-        self.gh2: GenericHealer = GenericHealer(speed=4)
-        self.gt2: GenericTank = GenericTank(speed=1)
+        self.ga2: GenericAttacker = GenericAttacker(speed=SpeedStat(5))
+        self.gh2: GenericHealer = GenericHealer(speed=SpeedStat(4))
+        self.gt2: GenericTank = GenericTank(speed=SpeedStat(1))
 
         self.uroda_team: list[Character] = [self.ga1, self.gh1, self.gt1]
         self.turpis_team: list[Character] = [self.ga2, self.gh2, self.gt2]

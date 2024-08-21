@@ -1,6 +1,6 @@
 import unittest
 
-from game.byte_2025.character import *
+from game.byte_2025.character.character import *
 from game.common.action import *
 from game.common.team_manager import TeamManager
 
@@ -9,10 +9,14 @@ class TestTeamManager(unittest.TestCase):
     """
     Test for Team Manager class
     """
+
     def setUp(self):
-        self.character1: Character = Leader('Agles', CharacterType.TANK, 100, 10, 5)
-        self.character2: Character = GenericAttacker('Grog', health=50, defense=5, speed=15)
-        self.character3: Character = GenericHealer('Eden', health=60, defense=15, speed=10)
+        self.character1: Character = Leader('Agles', CharacterType.TANK, 100, AttackStat(), DefenseStat(10),
+                                            SpeedStat(5))
+        self.character2: Character = GenericAttacker('Grog', health=50, attack=AttackStat(), defense=DefenseStat(5),
+                                                     speed=SpeedStat(15))
+        self.character3: Character = GenericHealer('Eden', health=60, attack=AttackStat(), defense=DefenseStat(15),
+                                                   speed=SpeedStat(10))
         self.team_manager: TeamManager = TeamManager()
         self.team_manager2: TeamManager = TeamManager([self.character1, self.character2, self.character3],
                                                       CountryType.TURPIS)

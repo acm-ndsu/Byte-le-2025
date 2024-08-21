@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Self
+from game.byte_2025.character.stats import *
 from game.byte_2025.moves.moves import *
 from game.byte_2025.moves.moveset import Moveset
 from game.common.enums import ObjectType, CharacterType, RankType
@@ -18,7 +18,8 @@ class Character(GameObject):
     """
 
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
-                 defense: int = 1, speed: int = 1, guardian: Self | None = None,
+                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
+                 speed: SpeedStat = SpeedStat(1), guardian: Self | None = None,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
         super().__init__()
@@ -27,8 +28,9 @@ class Character(GameObject):
         self.character_type: CharacterType = character_type
         self.current_health: int = health
         self.max_health: int = health
-        self.defense: int = defense
-        self.speed: int = speed
+        self.attack: AttackStat = attack
+        self.defense: DefenseStat = defense
+        self.speed: SpeedStat = speed
         self.rank: RankType = RankType.GENERIC
         self.guardian: Self | None = guardian
         self.moveset: Moveset = moveset
@@ -88,32 +90,40 @@ class Character(GameObject):
         self.__max_health: int = max_health
 
     @property
-    def defense(self) -> int:
+    def attack(self) -> AttackStat:
+        return self.__attack
+
+    @attack.setter
+    def attack(self, attack: AttackStat) -> None:
+        if attack is None or not isinstance(attack, AttackStat):
+            raise ValueError(f'{self.__class__.__name__}.attack must be an AttackStat. It is a(n) '
+                             f'{attack.__class__.__name__} and has the value of {attack}')
+
+        self.__attack: AttackStat = attack
+
+    @property
+    def defense(self) -> DefenseStat:
         return self.__defense
 
     @defense.setter
-    def defense(self, defense: int) -> None:
-        if defense is None or not isinstance(defense, int):
-            raise ValueError(f'{self.__class__.__name__}.defense must be an int. It is a(n) '
+    def defense(self, defense: DefenseStat) -> None:
+        if defense is None or not isinstance(defense, DefenseStat):
+            raise ValueError(f'{self.__class__.__name__}.defense must be a DefenseStat. It is a(n) '
                              f'{defense.__class__.__name__} and has the value of {defense}')
-        if defense < 0:
-            raise ValueError(f'{self.__class__.__name__}.defense must be a positive int.')
 
-        self.__defense: int = defense
+        self.__defense: DefenseStat = defense
 
     @property
-    def speed(self) -> int:
+    def speed(self) -> SpeedStat:
         return self.__speed
 
     @speed.setter
-    def speed(self, speed: int) -> None:
-        if speed is None or not isinstance(speed, int):
-            raise ValueError(f'{self.__class__.__name__}.speed must be an int. '
+    def speed(self, speed: SpeedStat) -> None:
+        if speed is None or not isinstance(speed, SpeedStat):
+            raise ValueError(f'{self.__class__.__name__}.speed must be a SpeedStat. '
                              f'It is a(n) {speed.__class__.__name__} and has the value of {speed}')
-        if speed < 0:
-            raise ValueError(f'{self.__class__.__name__}.speed must be a positive int.')
 
-        self.__speed: int = speed
+        self.__speed: SpeedStat = speed
 
     @property
     def guardian(self) -> Self | None:
@@ -149,7 +159,7 @@ class Character(GameObject):
     @moveset.setter
     def moveset(self, moveset: Moveset) -> None:
         if moveset is None or not isinstance(moveset, Moveset):
-            raise ValueError(f'{self.__class__.__name__}.moveset must be a Moveset object. It is a(n) '
+            raise ValueError(f'{self.__class__.__name__}.moveset must be a Moveset. It is a(n) '
                              f'{moveset.__class__.__name__} and has the value of {moveset}')
 
         self.__moveset: Moveset = moveset
@@ -203,7 +213,7 @@ class Character(GameObject):
 
     def get_opposing_country(self) -> CountryType:
         # returns the opposite country based on the given CountryType
-        return CountryType.URODA if self.country_type is CountryType.URODA else CountryType.TURPIS
+        return CountryType.URODA if self.country_type is CountryType.TURPIS else CountryType.TURPIS
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
@@ -211,8 +221,9 @@ class Character(GameObject):
         data['character_type'] = self.character_type
         data['current_health'] = self.current_health
         data['max_health'] = self.max_health
-        data['defense'] = self.defense
-        data['speed'] = self.speed
+        data['attack'] = self.attack.to_json()
+        data['defense'] = self.defense.to_json()
+        data['speed'] = self.speed.to_json()
         data['rank'] = self.rank
         data['guardian'] = self.guardian.to_json() if self.guardian is not None else None
         data['moveset'] = self.moveset.to_json()
@@ -245,8 +256,9 @@ class Character(GameObject):
         self.character_type: CharacterType = CharacterType(data['character_type'])
         self.current_health: int = data['current_health']
         self.max_health: int = data['max_health']
-        self.defense: int = data['defense']
-        self.speed: int = data['speed']
+        self.attack: AttackStat = AttackStat().from_json(data['attack'])
+        self.defense: DefenseStat = DefenseStat().from_json(data['defense'])
+        self.speed: SpeedStat = SpeedStat().from_json(data['speed'])
         self.rank: RankType = RankType(data['rank'])
         self.guardian: Character = None if data['guardian'] is None else self.__from_json_helper(data['guardian'])
         self.moveset: Moveset = Moveset().from_json(data['moveset'])
@@ -260,15 +272,16 @@ class Character(GameObject):
 
 class GenericAttacker(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
-                 defense: int = 1, speed: int = 1, guardian: Self | None = None,
+                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
+                 speed: SpeedStat = SpeedStat(1), guardian: Self | None = None,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
-        super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
+        super().__init__(name, character_type, health, attack, defense, speed,
+                         guardian, position, country_type, moveset)
 
         self.object_type: ObjectType = ObjectType.GENERIC_ATTACKER
         self.character_type: CharacterType = CharacterType.ATTACKER
         self.rank: RankType = RankType.GENERIC
-        self.country_type: CountryType = country_type
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -280,15 +293,16 @@ class GenericAttacker(Character):
 
 class GenericHealer(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.HEALER, health: int = 1,
-                 defense: int = 1, speed: int = 1, guardian: Self | None = None,
+                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
+                 speed: SpeedStat = SpeedStat(1), guardian: Self | None = None,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
-        super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
+        super().__init__(name, character_type, health, attack, defense, speed,
+                         guardian, position, country_type, moveset)
 
         self.object_type: ObjectType = ObjectType.GENERIC_HEALER
         self.character_type: CharacterType = CharacterType.HEALER
         self.rank: RankType = RankType.GENERIC
-        self.country_type: CountryType = country_type
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -300,15 +314,16 @@ class GenericHealer(Character):
 
 class GenericTank(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.TANK, health: int = 1,
-                 defense: int = 1, speed: int = 1, guardian: Self | None = None,
+                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
+                 speed: SpeedStat = SpeedStat(1), guardian: Self | None = None,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
-        super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
+        super().__init__(name, character_type, health, attack, defense, speed,
+                         guardian, position, country_type, moveset)
 
         self.object_type: ObjectType = ObjectType.GENERIC_TANK
         self.character_type: CharacterType = CharacterType.TANK
         self.rank: RankType = RankType.GENERIC
-        self.country_type: CountryType = country_type
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -320,10 +335,12 @@ class GenericTank(Character):
 
 class Leader(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
-                 defense: int = 1, speed: int = 1, guardian: Self | None = None,
+                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
+                 speed: SpeedStat = SpeedStat(1), guardian: Self | None = None,
                  position: Vector | None = None, passive: None = None, country_type: CountryType = CountryType.URODA,
                  moveset: Moveset = Moveset()):
-        super().__init__(name, character_type, health, defense, speed, guardian, position, country_type, moveset)
+        super().__init__(name, character_type, health, attack, defense, speed,
+                         guardian, position, country_type, moveset)
 
         self.object_type: ObjectType = ObjectType.LEADER
         self.rank: RankType = RankType.LEADER

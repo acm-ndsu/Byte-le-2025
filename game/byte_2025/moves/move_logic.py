@@ -1,26 +1,21 @@
-from game.byte_2025.character import Character
+import math
+
+from game.byte_2025.character.character import Character
+from game.byte_2025.character.stats import Stat
 from game.byte_2025.moves.moves import *
 from game.common.enums import MoveType
 
-"""
-This is a file that will contain static methods to help perform the logic behind each type of move.
-"""
 
-
-def handle_move_logic(user: Character, targets: list[Character], current_move: Move) -> None:
+def handle_move_logic(user: Character, targets: list[Character], current_move: Move, is_normal_attack: bool) -> None:
     """
     Handles the logic for every move type. That is, damage is applied for attacks, health is increased for healing,
     and stats are modified based on the buff/debuff
     """
 
-    # user cannot use the move if they don't have enough special points
-    if user.special_points < current_move.cost:
-        return
-
     match current_move.move_type:
         case MoveType.ATTACK:
             current_move: Attack
-            __calc_and_apply_damage(targets, current_move)
+            __calc_and_apply_damage(user, targets, current_move)
         case MoveType.HEAL:
             current_move: Heal
             __apply_heal_points(targets, current_move)
@@ -33,24 +28,32 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
         case _:
             return
 
+    if is_normal_attack:
+        # add 1 to the user's special points if using a normal attack
+        user.special_points += 1
+
     # subtract the cost of using the move from the character's total special points
     user.special_points -= current_move.cost
 
     # Need to activate effect if applicable
-    # effect activation will be implemented on the Stat branch since I'll be able to fully implement it
+    # effect activation will be implemented on the Effect branch since I'll be able to fully implement it
 
 
-def calculate_damage(target: Character, current_move: Attack) -> int:
+def calculate_damage(user: Character, target: Character, current_move: Attack) -> int:
     """
     Calculates the damage done by using the following formula:
 
-        damage_points * buff/debuff modifier - target defense
+        ceiling(damage_points * attack stat modifier) - target's defense stat
+
+    The ceiling function is applied to the (damage_points * attack stat modifier) part of the formula to do the
+    most damage possible.
 
     This method can be used to plan for the competition and give competitors a way to adapt to battles.
     """
 
-    # NOTE: the formula doesn't have the modifier yet because the stat system needs to be changed; will happen soon
-    return current_move.damage_points - target.defense
+    attack_stage: int = user.attack.stage
+
+    return math.ceil(current_move.damage_points * user.attack.calculate_modifier(attack_stage)) - target.defense.value
 
 
 def calculate_healing(target: Character, current_move: Heal) -> int:
@@ -70,23 +73,26 @@ def calculate_healing(target: Character, current_move: Heal) -> int:
     return min(current_move.heal_points, target.max_health - target.current_health)
 
 
-def calculate_modifier_effect(target: Character, modifier: float) -> int:
+def calculate_modifier_effect(target: Character, current_move: Buff | Debuff) -> int:
     """
-    Calculates and returns the value of the stat if the modifier can be applied.
+    Calculates and returns the potential value of the stat if the given Buff/Debuff is used.
     """
 
-    # will be implemented in the Stat branch
-    pass
+    stat = __get_stat_object_to_affect(target, current_move)
+    modifier: float = stat.calculate_modifier(current_move.stage_amount)
+
+    # return the calculation done without applying it to the character
+    return math.ceil(stat.base_value * modifier)
 
 
-def __calc_and_apply_damage(targets: list[Character], current_move: Attack):
+def __calc_and_apply_damage(user: Character, targets: list[Character], current_move: Attack):
     """
     Calculates the damage to deal for every target and applies it to the target's health.
     """
 
     for target in targets:
         # get the damage to be dealt
-        damage_to_deal: int = calculate_damage(target, current_move)
+        damage_to_deal: int = calculate_damage(user, target, current_move)
 
         # reduces the target's health while preventing it from going below 0 (the setter will throw an error if < 0)
         if target.current_health - damage_to_deal < 0:
@@ -110,12 +116,28 @@ def __apply_heal_points(targets: list[Character], current_move: Heal) -> None:
 
         target.current_health = target.current_health + adjusted_healing_amount
 
-        # if target.current_health + heal_amount > target.max_health:
-        #     target.current_health = target.max_health
-        # else:
-        #     target.current_health = target.current_health + heal_amount
-
 
 def __handle_stat_modification(targets: list[Character], current_move: Buff | Debuff) -> None:
-    # Will be implemented with the updated stat system
-    pass
+    """
+    Gets the modification needed from the current_move and applies it to every target's corresponding stat.
+    """
+
+    stat: Stat
+
+    for target in targets:
+        stat = __get_stat_object_to_affect(target, current_move)
+        stat.apply_modifier(current_move.stage_amount)
+
+
+def __get_stat_object_to_affect(target: Character, current_move: Buff | Debuff) -> Stat:
+    """
+    A helper method that returns the Stat object to buff/debuff based on the current_move's stat_to_affect.
+    """
+
+    match current_move.stat_to_affect:
+        case ObjectType.ATTACK_STAT:
+            return target.attack
+        case ObjectType.DEFENSE_STAT:
+            return target.defense
+        case ObjectType.SPEED_STAT:
+            return target.speed

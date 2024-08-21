@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from game.byte_2025.moves.effects import *
-from game.common.enums import *
+from game.common.enums import MoveType, ObjectType
 
 
 class Move(AbstractMove):
@@ -82,7 +82,7 @@ class Attack(Move, AbstractAttack):
         super().__init__(name, target_type, cost, effect)
 
         self.damage_points: int = damage_points
-        self.object_type = ObjectType.ATTACK
+        self.object_type = ObjectType.ATTACK_MOVE
         self.move_type = MoveType.ATTACK
 
 
@@ -92,25 +92,29 @@ class Heal(Move, AbstractHeal):
         super().__init__(name, target_type, cost, effect)
 
         self.heal_points: int = heal_points
-        self.object_type = ObjectType.HEAL
+        self.object_type = ObjectType.HEAL_MOVE
         self.move_type = MoveType.HEAL
 
 
 class Buff(Move, AbstractBuff):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
-                 effect: Effect | None = None, buff_amount: float = 1.25):
+                 effect: Effect | None = None, stage_amount: int = 1, 
+                 stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
         super().__init__(name, target_type, cost, effect)
 
-        self.buff_amount: float = buff_amount
-        self.object_type = ObjectType.BUFF
+        self.object_type = ObjectType.BUFF_MOVE
         self.move_type = MoveType.BUFF
+        self.stage_amount: int = stage_amount
+        self.stat_to_affect: ObjectType = stat_to_affect
 
 
 class Debuff(Move, AbstractDebuff):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 effect: Effect | None = None, debuff_amount: float = 0.75):
+                 effect: Effect | None = None, stage_amount: int = -1, 
+                 stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
         super().__init__(name, target_type, cost, effect)
 
-        self.debuff_amount: float = debuff_amount
-        self.object_type = ObjectType.DEBUFF
+        self.object_type = ObjectType.DEBUFF_MOVE
         self.move_type = MoveType.DEBUFF
+        self.stage_amount: int = stage_amount
+        self.stat_to_affect: ObjectType = stat_to_affect
