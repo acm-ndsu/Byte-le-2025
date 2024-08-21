@@ -201,7 +201,7 @@ class Stat(GameObject):
         # round the decimal to 3 decimal places
         return round(numerator / denominator, 3)
 
-    def get_and_apply_modifier(self, stages: int = 0):
+    def apply_modifier(self, stages: int = 0) -> None:
         self.stage = self.calculate_stage_update(stages)
         modifier: float = self.calculate_modifier(self.stage)
 

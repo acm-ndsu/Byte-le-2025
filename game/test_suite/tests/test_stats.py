@@ -141,22 +141,22 @@ class TestStat(unittest.TestCase):
 
     def test_get_and_apply_modifier(self) -> None:
         # at stage 3 (modifier = 2.5), the stat's value will become 13 due to ceiling function
-        self.stat.get_and_apply_modifier(3)
+        self.stat.apply_modifier(3)
         self.assertEqual(self.stat.calculate_modifier(self.stat.stage), 2.5)
         self.assertEqual(self.stat.value, 13)
 
         # at stage 4 (modifier = 3.0), the stat's value will become 15
-        self.stat.get_and_apply_modifier(1)  # use +1 since it's at +3 already
+        self.stat.apply_modifier(1)  # use +1 since it's at +3 already
         self.assertEqual(self.stat.calculate_modifier(self.stat.stage), 3.0)
         self.assertEqual(self.stat.value, 15)
 
         # at stage -4 (modifier = 0.333), the stat's value will become 2 due to ceiling function
-        self.stat.get_and_apply_modifier(-8)  # use -8 since it's at +4 already
+        self.stat.apply_modifier(-8)  # use -8 since it's at +4 already
         self.assertEqual(self.stat.calculate_modifier(self.stat.stage), 0.333)
         self.assertEqual(self.stat.value, 2)
 
         # at stage -3 (modifier 0.4), the stat's value will become 2 still
-        self.stat.get_and_apply_modifier(1)  # use +1 since it's at -4 already
+        self.stat.apply_modifier(1)  # use +1 since it's at -4 already
         self.assertEqual(self.stat.calculate_modifier(self.stat.stage), 0.4)
         self.assertEqual(self.stat.value, 2)
 
@@ -179,24 +179,24 @@ class TestStat(unittest.TestCase):
     # the value and modifier must be equal
     def test_modifying_attack(self):
         # check stage 3
-        self.attack_stat.get_and_apply_modifier(3)
+        self.attack_stat.apply_modifier(3)
 
         # a = b = c; the value must equal the modifier, and the modifier must equal 2.5
         self.assertEqual(self.attack_stat.value, 2.5)
         self.assertEqual(self.attack_stat.calculate_modifier(self.attack_stat.stage), 2.5)
 
         # check stage 4
-        self.attack_stat.get_and_apply_modifier(1)
+        self.attack_stat.apply_modifier(1)
         self.assertEqual(self.attack_stat.value, 3)
         self.assertEqual(self.attack_stat.calculate_modifier(self.attack_stat.stage), 3)
 
         # check stage -2
-        self.attack_stat.get_and_apply_modifier(-6)
+        self.attack_stat.apply_modifier(-6)
         self.assertEqual(self.attack_stat.value, 0.5)
         self.assertEqual(self.attack_stat.calculate_modifier(self.attack_stat.stage), 0.5)
 
         # check going back to stage 0
-        self.attack_stat.get_and_apply_modifier(2)
+        self.attack_stat.apply_modifier(2)
         self.assertEqual(self.attack_stat.value, 1)
         self.assertEqual(self.attack_stat.calculate_modifier(self.attack_stat.stage), 1)
 

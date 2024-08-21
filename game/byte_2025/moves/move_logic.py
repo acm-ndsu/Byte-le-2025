@@ -36,7 +36,7 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
     user.special_points -= current_move.cost
 
     # Need to activate effect if applicable
-    # effect activation will be implemented on the Stat branch since I'll be able to fully implement it
+    # effect activation will be implemented on the Effect branch since I'll be able to fully implement it
 
 
 def calculate_damage(user: Character, target: Character, current_move: Attack) -> int:
@@ -126,7 +126,7 @@ def __handle_stat_modification(targets: list[Character], current_move: Buff | De
 
     for target in targets:
         stat = __get_stat_object_to_affect(target, current_move)
-        stat.get_and_apply_modifier(current_move.stage_amount)
+        stat.apply_modifier(current_move.stage_amount)
 
 
 def __get_stat_object_to_affect(target: Character, current_move: Buff | Debuff) -> Stat:
