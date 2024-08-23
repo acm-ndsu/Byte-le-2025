@@ -35,23 +35,20 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
     # subtract the cost of using the move from the character's total special points
     user.special_points -= current_move.cost
 
-    # Need to activate effect if applicable
-    # effect activation will be implemented on the Effect branch since I'll be able to fully implement it
-
 
 def handle_effect_logic(user: Character, targets: list[Character], current_effect: Effect) -> None:
     match current_effect.move_type:
         case MoveType.ATTACK:
-            current_effect: Attack
+            current_effect: AttackEffect
             __calc_and_apply_damage(user, targets, current_effect)
         case MoveType.HEAL:
-            current_effect: Heal
+            current_effect: HealEffect
             __apply_heal_points(targets, current_effect)
         case MoveType.BUFF:
-            current_effect: Buff
+            current_effect: BuffEffect
             __handle_stat_modification(targets, current_effect)
         case MoveType.DEBUFF:
-            current_effect: Debuff
+            current_effect: DebuffEffect
             __handle_stat_modification(targets, current_effect)
         case _:
             return

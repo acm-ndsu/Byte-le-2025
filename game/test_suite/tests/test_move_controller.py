@@ -17,20 +17,25 @@ class TestMoveController(unittest.TestCase):
     """
     This is the test file for both the MoveController and the move_logic.py file since they work in tandem.
     """
+
     def setUp(self):
         self.move_controller: MoveController = MoveController()
 
-        # WILL IMPLEMENT EFFECTS IN A NEW BRANCH; this one has a lot of major changes already; don't want a bloated PR
+        self.attack_effect: AttackEffect = AttackEffect(TargetType.SELF, 15)
+        self.heal_effect: HealEffect = HealEffect(TargetType.ADJACENT_ALLIES, 10)
+        self.buff_effect: BuffEffect = BuffEffect(TargetType.ALL_OPPS, 1, ObjectType.SPEED_STAT)
+        self.debuff_effect: DebuffEffect = DebuffEffect(TargetType.ALL_ALLIES, -1, ObjectType.SPEED_STAT)
+
         self.moveset1: Moveset = Moveset((Attack('Baja Blast', TargetType.SINGLE_OPP, 0, None, 15),
                                           Buff('Baja Slurp', TargetType.SELF, 2, HealEffect(heal_points=10), 1),
                                           Debuff('Baja Dump', TargetType.ALL_OPPS, 3, None, -1, ObjectType.SPEED_STAT),
                                           Heal('Baja Blessing', TargetType.ALL_ALLIES, 4, None, 10)))
 
-        self.moveset2: Moveset = Moveset((Heal('Water Halo', TargetType.ADJACENT_ALLIES, 0, None, 15),
-                                          Attack('Inferno', TargetType.ALL_OPPS, 0, None, 15),
-                                          Heal('Healing Potion', TargetType.ADJACENT_ALLIES, 0, None, 15),
-                                          Debuff('Thunder Arrow', TargetType.SINGLE_OPP, 0, None, stage_amount=-1,
-                                                 stat_to_affect=ObjectType.DEFENSE_STAT)))
+        self.moveset2: Moveset = Moveset((Heal('Water Halo', TargetType.ADJACENT_ALLIES, 0, self.attack_effect, 15),
+                                          Attack('Inferno', TargetType.ALL_OPPS, 0, self.heal_effect, 15),
+                                          Heal('Healing Potion', TargetType.ADJACENT_ALLIES, 0, self.buff_effect, 15),
+                                          Debuff('Thunder Arrow', TargetType.SINGLE_OPP, 0, self.debuff_effect,
+                                                 stage_amount=-1, stat_to_affect=ObjectType.DEFENSE_STAT)))
 
         # create uroda team
         self.uroda_attacker: GenericAttacker = GenericAttacker(health=20, attack=AttackStat(), defense=DefenseStat(5),
@@ -114,7 +119,7 @@ class TestMoveController(unittest.TestCase):
         # 1 HP + healing of 10 = 11
         self.assertEqual(self.uroda_attacker.current_health, 11)
         self.assertEqual(self.uroda_healer.current_health, 11)
-        self.assertEqual(self.uroda_tank.current_health,  20)
+        self.assertEqual(self.uroda_tank.current_health, 20)
 
         # ensure the special points decreased
         self.assertEqual(self.uroda_attacker.special_points, 6)
@@ -249,3 +254,48 @@ class TestMoveController(unittest.TestCase):
         self.assertEqual(self.turpis_attacker.current_health, 0)
         self.assertEqual(self.turpis_tank.current_health, 0)
         self.assertEqual(self.turpis_healer.current_health, 0)
+
+    def test_attack_effect(self) -> None:
+        # the uroda healer has the effects to test, so let it be its turn
+        self.uroda_attacker.took_action = True
+
+        self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
+
+        # the attack effect damages the user. 20 health - 10 damage = 10 remaining health
+        self.assertEqual(self.uroda_healer.current_health, 10)
+
+    def test_healing_effect(self) -> None:
+        # the uroda healer has the effects to test, so let it be its turn
+        self.uroda_attacker.took_action = True
+
+        # set the allies' health to be 1 to test healing effect
+        self.uroda_attacker.current_health = 1
+        self.uroda_tank.current_health = 1
+
+        self.move_controller.handle_actions(ActionType.USE_S1, self.client, self.gameboard)
+
+        # the healing effect heals 10 health
+        self.assertEqual(self.uroda_attacker.current_health, 11)
+        self.assertEqual(self.uroda_tank.current_health, 11)
+
+    def test_buff_effect(self) -> None:
+        # the uroda healer has the effects to test, so let it be its turn
+        self.uroda_attacker.took_action = True
+
+        self.move_controller.handle_actions(ActionType.USE_S2, self.client, self.gameboard)
+
+        # the buff effect boosts all opponents' speed stats by 1 stage
+        self.assertEqual(self.turpis_attacker.speed.stage, 1)
+        self.assertEqual(self.turpis_healer.speed.stage, 1)
+        self.assertEqual(self.turpis_tank.speed.stage, 1)
+
+    def test_debuff_effect(self) -> None:
+        # the uroda healer has the effects to test, so let it be its turn
+        self.uroda_attacker.took_action = True
+
+        self.move_controller.handle_actions(ActionType.USE_S3, self.client, self.gameboard)
+
+        # the debuff effect decreases all allies' speed stats by -1
+        self.assertEqual(self.uroda_attacker.speed.stage, -1)
+        self.assertEqual(self.uroda_healer.speed.stage, -1)
+        self.assertEqual(self.uroda_tank.speed.stage, -1)
