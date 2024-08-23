@@ -39,7 +39,25 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
     # effect activation will be implemented on the Effect branch since I'll be able to fully implement it
 
 
-def calculate_damage(user: Character, target: Character, current_move: Attack) -> int:
+def handle_effect_logic(user: Character, targets: list[Character], current_effect: Effect) -> None:
+    match current_effect.move_type:
+        case MoveType.ATTACK:
+            current_effect: Attack
+            __calc_and_apply_damage(user, targets, current_effect)
+        case MoveType.HEAL:
+            current_effect: Heal
+            __apply_heal_points(targets, current_effect)
+        case MoveType.BUFF:
+            current_effect: Buff
+            __handle_stat_modification(targets, current_effect)
+        case MoveType.DEBUFF:
+            current_effect: Debuff
+            __handle_stat_modification(targets, current_effect)
+        case _:
+            return
+
+
+def calculate_damage(user: Character, target: Character, current_move: AbstractAttack) -> int:
     """
     Calculates the damage done by using the following formula:
 
@@ -56,7 +74,7 @@ def calculate_damage(user: Character, target: Character, current_move: Attack) -
     return math.ceil(current_move.damage_points * user.attack.calculate_modifier(attack_stage)) - target.defense.value
 
 
-def calculate_healing(target: Character, current_move: Heal) -> int:
+def calculate_healing(target: Character, current_move: AbstractHeal) -> int:
     """
     Calculates the healing done to the target by determining the smallest amount of healing possible. The numbers
     compared are the heal_points and the difference between the target's max health and current health.
@@ -73,7 +91,7 @@ def calculate_healing(target: Character, current_move: Heal) -> int:
     return min(current_move.heal_points, target.max_health - target.current_health)
 
 
-def calculate_modifier_effect(target: Character, current_move: Buff | Debuff) -> int:
+def calculate_modifier_effect(target: Character, current_move: AbstractBuff | AbstractDebuff) -> int:
     """
     Calculates and returns the potential value of the stat if the given Buff/Debuff is used.
     """
@@ -85,7 +103,7 @@ def calculate_modifier_effect(target: Character, current_move: Buff | Debuff) ->
     return math.ceil(stat.base_value * modifier)
 
 
-def __calc_and_apply_damage(user: Character, targets: list[Character], current_move: Attack):
+def __calc_and_apply_damage(user: Character, targets: list[Character], current_move: AbstractAttack):
     """
     Calculates the damage to deal for every target and applies it to the target's health.
     """
@@ -101,7 +119,7 @@ def __calc_and_apply_damage(user: Character, targets: list[Character], current_m
             target.current_health -= damage_to_deal
 
 
-def __apply_heal_points(targets: list[Character], current_move: Heal) -> None:
+def __apply_heal_points(targets: list[Character], current_move: AbstractHeal) -> None:
     """
     For every target in the list of targets, apply the heal amount to their current health. If the addition
     causes the current health to become larger than the character's max health, set it to be the max health.
@@ -117,7 +135,7 @@ def __apply_heal_points(targets: list[Character], current_move: Heal) -> None:
         target.current_health = target.current_health + adjusted_healing_amount
 
 
-def __handle_stat_modification(targets: list[Character], current_move: Buff | Debuff) -> None:
+def __handle_stat_modification(targets: list[Character], current_move: AbstractBuff | AbstractDebuff) -> None:
     """
     Gets the modification needed from the current_move and applies it to every target's corresponding stat.
     """
@@ -129,7 +147,7 @@ def __handle_stat_modification(targets: list[Character], current_move: Buff | De
         stat.apply_modifier(current_move.stage_amount)
 
 
-def __get_stat_object_to_affect(target: Character, current_move: Buff | Debuff) -> Stat:
+def __get_stat_object_to_affect(target: Character, current_move: AbstractBuff | AbstractDebuff) -> Stat:
     """
     A helper method that returns the Stat object to buff/debuff based on the current_move's stat_to_affect.
     """

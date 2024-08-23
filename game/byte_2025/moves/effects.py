@@ -17,7 +17,7 @@ class Effect(AbstractMove):
 
 
 class AttackEffect(AbstractAttack, Effect):
-    def __init__(self, target_type: TargetType = TargetType.SELF, damage_points: int = 0):
+    def __init__(self, target_type: TargetType = TargetType.SELF, damage_points: int = 1):
         super().__init__(target_type, damage_points)
         self.object_type = ObjectType.ATTACK_EFFECT
 
@@ -29,12 +29,14 @@ class HealEffect(AbstractHeal, Effect):
 
 
 class BuffEffect(AbstractBuff, Effect):
-    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = 1):
-        super().__init__(target_type, stage_amount)
+    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = 1,
+                 stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
+        super().__init__(target_type, stage_amount, stat_to_affect)
         self.object_type = ObjectType.BUFF_EFFECT
 
 
 class DebuffEffect(AbstractDebuff, Effect):
-    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = -1):
-        super().__init__(target_type, stage_amount)
+    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = -1,
+                 stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
+        super().__init__(target_type, stage_amount, stat_to_affect)
         self.object_type = ObjectType.DEBUFF_EFFECT
