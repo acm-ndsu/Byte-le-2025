@@ -36,7 +36,6 @@ class ObjectType(Enum):
     ATTACK_STAT = auto()
     DEFENSE_STAT = auto()
     SPEED_STAT = auto()
-    ABSTRACT_MOVE = auto()
     MOVE = auto()
     ATTACK_MOVE = auto()
     HEAL_MOVE = auto()

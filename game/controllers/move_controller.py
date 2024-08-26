@@ -5,7 +5,7 @@ from game.common.enums import *
 from game.utils.vector import Vector
 from game.controllers.controller import Controller
 from game.common.team_manager import *
-from game.byte_2025.moves.move_logic import handle_move_logic
+from game.byte_2025.moves.move_logic import handle_move_logic, handle_effect_logic
 
 
 class MoveController(Controller):
@@ -51,6 +51,13 @@ class MoveController(Controller):
 
         # call the move_logic file's method to handle the rest of the logic
         handle_move_logic(user, targets, current_move, is_normal_attack)
+
+        # if the current move has an effect, get the targets for it and apply the same logic
+        if current_move.effect is not None:
+            # get the possible targets based on the effect's target type
+            targets: list[Character] | list = self.__get_targets(user, current_move.effect.target_type, world)
+
+            handle_effect_logic(user, targets, current_move.effect)
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """

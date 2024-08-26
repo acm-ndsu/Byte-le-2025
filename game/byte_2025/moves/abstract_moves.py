@@ -10,7 +10,6 @@ from game.config import STAGE_MAX, STAGE_MIN
 class AbstractMove(GameObject):
     def __init__(self, target_type: TargetType = TargetType.SELF):
         super().__init__()
-        self.object_type = ObjectType.ABSTRACT_MOVE
         self.move_type = MoveType.MOVE
         self.target_type = target_type
 

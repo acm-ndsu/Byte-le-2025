@@ -78,7 +78,7 @@ class Move(AbstractMove):
 
 class Attack(Move, AbstractAttack):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 effect: Move | None = None, damage_points: int = 0):
+                 effect: Effect | None = None, damage_points: int = 0):
         super().__init__(name, target_type, cost, effect)
 
         self.damage_points: int = damage_points
@@ -88,7 +88,7 @@ class Attack(Move, AbstractAttack):
 
 class Heal(Move, AbstractHeal):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
-                 effect: Move | None = None, heal_points: int = 0):
+                 effect: Effect | None = None, heal_points: int = 0):
         super().__init__(name, target_type, cost, effect)
 
         self.heal_points: int = heal_points
