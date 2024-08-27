@@ -26,8 +26,8 @@ class MoveController(Controller):
         is_normal_attack: bool = False
 
         match action:
-            case ActionType.USE_NA:
-                current_move: Move = user.get_na()
+            case ActionType.USE_NM:
+                current_move: Move = user.get_nm()
                 is_normal_attack = True
             case ActionType.USE_S1:
                 current_move: Move = user.get_s1()

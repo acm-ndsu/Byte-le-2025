@@ -100,7 +100,7 @@ class RankType(Enum):
 
 class ActionType(Enum):
     NONE = auto()
-    USE_NA = auto()
+    USE_NM = auto()
     USE_S1 = auto()
     USE_S2 = auto()
     USE_S3 = auto()

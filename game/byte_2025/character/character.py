@@ -199,8 +199,8 @@ class Character(GameObject):
                              f'It is a(n) {country_type.__class__.__name__} and has the value of {country_type}')
         self.__country_type: CountryType = country_type
 
-    def get_na(self):
-        return self.moveset.get_na()
+    def get_nm(self):
+        return self.moveset.get_nm()
 
     def get_s1(self):
         return self.moveset.get_s1()

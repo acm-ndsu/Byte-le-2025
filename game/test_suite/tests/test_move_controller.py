@@ -104,7 +104,7 @@ class TestMoveController(unittest.TestCase):
         mock.assert_not_called()
 
     def test_opponent_takes_damage(self) -> None:
-        self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
         # check the Generic Tank took damage
         # ceiling(15 damage * x1 modifier) - 10 defense = 5 damage dealt
         self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health - 5)
@@ -114,7 +114,7 @@ class TestMoveController(unittest.TestCase):
 
     def test_opponent_health_stays_at_0(self) -> None:
         self.turpis_tank.current_health = 1
-        self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
 
         # the generic tank's health should be 0
         self.assertEqual(self.turpis_tank.current_health, 0)
@@ -162,7 +162,7 @@ class TestMoveController(unittest.TestCase):
         self.uroda_attacker.current_health = 1
         self.uroda_attacker.took_action = True
 
-        self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
 
         # 1 + 15 = 16 HP
         self.assertEqual(self.uroda_attacker.current_health, 16)
@@ -197,7 +197,7 @@ class TestMoveController(unittest.TestCase):
         self.gameboard.remove_coordinate(self.turpis_tank.position)
 
         # attempt to attack a target
-        self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
 
         # to ensure nothing happened, mock and check if the handle_move_logic method was called
         mock.assert_not_called()
@@ -217,7 +217,7 @@ class TestMoveController(unittest.TestCase):
 
         # attempt to use moves that target an ally above and below, and ensure the `handle_actions` method wasn't called
         # checks if using the normal attack worked (heal ally up)
-        self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
         mock.assert_not_called()
 
         # checks if using s2 works (heal ally down)
@@ -238,7 +238,7 @@ class TestMoveController(unittest.TestCase):
         self.turpis_tank.took_action = True
         self.turpis_healer.special_points = 10
 
-        self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
 
         # Test if they are now guarded
         self.assertEqual(self.uroda_healer.guardian, self.uroda_tank)
@@ -257,7 +257,7 @@ class TestMoveController(unittest.TestCase):
         self.turpis_healer.took_action = True
 
         # Test guarding single damage to healer and guardian being set to None
-        self.move_controller.handle_actions(ActionType.USE_NA, self.client2, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.client2, self.gameboard)
 
         self.assertEqual(self.uroda_healer.current_health, self.uroda_healer.max_health)
         self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
@@ -275,7 +275,7 @@ class TestMoveController(unittest.TestCase):
         self.swap_controller.handle_actions(ActionType.SWAP_UP, self.client, self.gameboard)
 
         # Test guard for allies
-        self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
 
         self.assertEquals(self.uroda_attacker.guardian, self.uroda_tank)
         self.assertEquals(self.uroda_healer.guardian, self.uroda_tank)
@@ -345,7 +345,7 @@ class TestMoveController(unittest.TestCase):
         # the uroda healer has the effects to test, so let it be its turn
         self.uroda_attacker.took_action = True
 
-        self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
 
         # the attack effect damages the user. 20 health - 10 damage = 10 remaining health
         self.assertEqual(self.uroda_healer.current_health, 10)

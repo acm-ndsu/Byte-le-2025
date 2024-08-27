@@ -60,7 +60,7 @@ class Moveset(GameObject):
         # set the new dictionary
         self.__moves = moves
 
-    def get_na(self) -> Move:
+    def get_nm(self) -> Move:
         return self.moves['NA']
 
     def get_s1(self) -> Move:
