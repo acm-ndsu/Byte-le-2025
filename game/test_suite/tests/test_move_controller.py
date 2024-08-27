@@ -10,6 +10,7 @@ from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import TeamManager
 from game.controllers.move_controller import MoveController
+from game.controllers.swap_controller import SwapController
 from game.utils.vector import Vector
 
 
@@ -20,6 +21,7 @@ class TestMoveController(unittest.TestCase):
 
     def setUp(self):
         self.move_controller: MoveController = MoveController()
+        self.swap_controller: SwapController = SwapController()
 
         self.attack_effect: AttackEffect = AttackEffect(TargetType.SELF, 15)
         self.heal_effect: HealEffect = HealEffect(TargetType.ADJACENT_ALLIES, 10)
@@ -37,8 +39,8 @@ class TestMoveController(unittest.TestCase):
                                           Debuff('Thunder Arrow', TargetType.SINGLE_OPP, 0, self.debuff_effect,
                                                  stage_amount=-1, stat_to_affect=ObjectType.DEFENSE_STAT)))
 
-        self.moveset3: Moveset = Moveset((Guard('Baja Barrier'),
-                                          Attack('Inferno', TargetType.ALL_OPPS, 0, None, 15),
+        self.moveset3: Moveset = Moveset((Guard('Baja Barrier', 0),
+                                          Attack('Break Bone', TargetType.SINGLE_OPP, 0, None, 15),
                                           Heal('Healing Potion', TargetType.ADJACENT_ALLIES, 0, None, 15),
                                           Debuff('Thunder Arrow', TargetType.SINGLE_OPP, 0, None, stage_amount=-1,
                                                  stat_to_affect=ObjectType.DEFENSE_STAT)))
@@ -59,13 +61,13 @@ class TestMoveController(unittest.TestCase):
         # create turpis team
         self.turpis_tank: GenericTank = GenericTank(health=20, attack=AttackStat(), defense=DefenseStat(10),
                                                     speed=SpeedStat(5), position=Vector(1, 0),
-                                                    country_type=CountryType.TURPIS)
+                                                    country_type=CountryType.TURPIS, moveset=self.moveset3)
         self.turpis_attacker: GenericAttacker = GenericAttacker(health=20, attack=AttackStat(), defense=DefenseStat(5),
                                                                 speed=SpeedStat(15), position=Vector(1, 1),
-                                                                country_type=CountryType.TURPIS)
+                                                                country_type=CountryType.TURPIS, moveset=self.moveset1)
         self.turpis_healer: GenericHealer = GenericHealer(health=20, attack=AttackStat(), defense=DefenseStat(5),
                                                           speed=SpeedStat(10), position=Vector(1, 2),
-                                                          country_type=CountryType.TURPIS)
+                                                          country_type=CountryType.TURPIS, moveset=self.moveset2)
 
         # Uroda on the left, Turpis on the right;
         # Left side from top to bottom: Urodan healer, attacker, tank
@@ -80,7 +82,10 @@ class TestMoveController(unittest.TestCase):
         # create a Player object with a TeamManager
         self.uroda_team_manager: TeamManager = TeamManager([self.uroda_attacker, self.uroda_healer, self.uroda_tank],
                                                            CountryType.URODA)
+        self.turpis_team_manager: TeamManager = TeamManager([self.turpis_attacker, self.turpis_healer, self.turpis_tank],
+                                                            CountryType.TURPIS)
         self.client: Player = Player(team_manager=self.uroda_team_manager)
+        self.client2: Player = Player(team_manager=self.turpis_team_manager)
 
         self.gameboard: GameBoard = GameBoard(locations=self.locations, map_size=Vector(2, 3))
         self.gameboard.generate_map()
@@ -100,7 +105,6 @@ class TestMoveController(unittest.TestCase):
 
     def test_opponent_takes_damage(self) -> None:
         self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
-
         # check the Generic Tank took damage
         # ceiling(15 damage * x1 modifier) - 10 defense = 5 damage dealt
         self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health - 5)
@@ -201,7 +205,7 @@ class TestMoveController(unittest.TestCase):
         # the urodan attacker attempted to attack in this case, so the special points should stay 10
         self.assertEqual(self.uroda_attacker.special_points, 10)
 
-    def test_no_ally_target_available(self):
+    def test_no_ally_target_available(self) -> None:
         mock: Mock = Mock()
         move_logic.handle_move_logic = mock
 
@@ -223,15 +227,91 @@ class TestMoveController(unittest.TestCase):
         # the healer is the character that tried to act
         self.assertEqual(self.uroda_healer.special_points, 0)
 
+    # Guard move testing
+    # Tests guarding, damage when guarding (single attack and AOE), etc.
+
+    def test_guard_bottom(self) -> None:
+        # Should guard character in center, which is the healer
+        self.uroda_attacker.took_action = True
+        self.uroda_healer.took_action = True
+        self.turpis_attacker.took_action = True
+        self.turpis_tank.took_action = True
+        self.turpis_healer.special_points = 10
+
+        self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
+
+        # Test if they are now guarded
+        self.assertEqual(self.uroda_healer.guardian, self.uroda_tank)
+
+        # Deal AOE damage and test if it hits guarded and guardian
+        self.move_controller.handle_actions(ActionType.USE_S1, self.client2, self.gameboard)
+
+        self.assertNotEquals(self.uroda_healer.current_health, self.uroda_healer.max_health)
+        self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
+        self.assertEqual(self.uroda_healer.guardian, self.uroda_tank)
+
+        # Reset health and change took_actions
+        self.uroda_healer.current_health = self.uroda_healer.max_health
+        self.uroda_tank.current_health = self.uroda_tank.max_health
+        self.turpis_attacker.took_action = False
+        self.turpis_healer.took_action = True
+
+        # Test guarding single damage to healer and guardian being set to None
+        self.move_controller.handle_actions(ActionType.USE_NA, self.client2, self.gameboard)
+
+        self.assertEqual(self.uroda_healer.current_health, self.uroda_healer.max_health)
+        self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
+        self.assertEquals(self.uroda_healer.guardian, None)
+
+    def test_guard_center(self) -> None:
+        # Should guard both characters, top and bottom
+        self.uroda_attacker.took_action = True
+        self.uroda_healer.took_action = True
+        self.turpis_attacker.took_action = True
+        self.turpis_tank.took_action = True
+        self.turpis_healer.special_points = 10
+
+        # Swap uroda tank into center position
+        self.swap_controller.handle_actions(ActionType.SWAP_UP, self.client, self.gameboard)
+
+        # Test guard for allies
+        self.move_controller.handle_actions(ActionType.USE_NA, self.client, self.gameboard)
+
+        self.assertEquals(self.uroda_attacker.guardian, self.uroda_tank)
+        self.assertEquals(self.uroda_healer.guardian, self.uroda_tank)
+
+        # Deal AOE damage and test if it hits guarded and guardian
+        self.move_controller.handle_actions(ActionType.USE_S1, self.client2, self.gameboard)
+
+        self.assertNotEquals(self.uroda_attacker.current_health, self.uroda_attacker.max_health)
+        self.assertNotEquals(self.uroda_healer.current_health, self.uroda_healer.max_health)
+        self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
+
+        # Reset health and change took_actions
+        self.uroda_attacker.current_health = self.uroda_attacker.max_health
+        self.uroda_healer.current_health = self.uroda_healer.max_health
+        self.uroda_tank.current_health = self.uroda_tank.max_health
+        self.turpis_tank.took_action = False
+        self.turpis_healer.took_action = True
+
+        # Test guarding single damage to attacker, guardian set to None
+        self.move_controller.handle_actions(ActionType.USE_S1, self.client2, self.gameboard)
+
+        self.assertEqual(self.uroda_attacker.current_health, self.uroda_attacker.max_health)
+        self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
+        self.assertEqual(self.uroda_attacker.guardian, None)
+        self.assertEqual(self.uroda_healer.guardian, self.uroda_tank)
+
+
     # explicit move_logic tests below ---------------------------------------------------------------------
 
-    def test_calculate_modifier_effect(self):
+    def test_calculate_modifier_effect(self) -> None:
         # the turpis healer has speed 10; at -1 (which would be applied by the debuff), value would be 10 * 0.667 = 7
         result: int = move_logic.calculate_modifier_effect(self.turpis_healer, self.moveset1.get_s2())
 
         self.assertEqual(result, 7)
 
-    def test_debuff_modifier_is_applied(self):
+    def test_debuff_modifier_is_applied(self) -> None:
         # testing to ensure a debuff is applied properly from move_logic.py
         self.uroda_attacker.took_action = True
 
@@ -245,7 +325,7 @@ class TestMoveController(unittest.TestCase):
         self.assertEqual(self.turpis_attacker.defense.value, 4)
         self.assertEqual(self.turpis_attacker.defense.calculate_modifier(self.turpis_attacker.defense.stage), 0.667)
 
-    def test_aoe_attack(self):
+    def test_aoe_attack(self) -> None:
         # the uroda healer has the AOE, so set the attack to have taken their turn
         self.uroda_attacker.took_action = True
 

@@ -11,7 +11,6 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
     Handles the logic for every move type. That is, damage is applied for attacks, health is increased for healing,
     and stats are modified based on the buff/debuff
     """
-
     match current_move.move_type:
         case MoveType.ATTACK:
             current_move: Attack
@@ -171,8 +170,6 @@ def __assign_guardian(guardian: GenericTank | Leader, targets: list[Character]):
     if guardian.character_type is not CharacterType.TANK:
         return
 
+    # Assign all targets their new guardian
     for target in targets:
-        if target.guardian is not None:
-            continue
-
         target.guardian = guardian
