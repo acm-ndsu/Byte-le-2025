@@ -25,6 +25,10 @@ class SwapController(Controller):
     def handle_actions(self, action: ActionType, client: Player, world: GameBoard) -> None:
         characters_pos: dict[Vector, Character] = world.get_characters(client.team_manager.country)
         active_character: Character = client.team_manager.get_active_character()
+
+        # Set active_character's took_action to True as their turn has started
+        active_character.took_action = True
+
         pos_mod: Vector
 
         # Determine pos_mod based on swapping up or down

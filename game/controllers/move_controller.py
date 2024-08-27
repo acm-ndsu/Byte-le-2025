@@ -20,6 +20,10 @@ class MoveController(Controller):
         special points were gained, the move will be used; otherwise, nothing will happen.
         """
         user: Character = client.team_manager.get_active_character()
+
+        # Set user's took_action to True as they have started their action
+        user.took_action = True
+
         current_move: Move
 
         # a bool to be passed into the handle_logic method

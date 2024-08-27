@@ -221,6 +221,7 @@ class TestMoveController(unittest.TestCase):
         mock.assert_not_called()
 
         # checks if using s2 works (heal ally down)
+        self.uroda_healer.took_action = False
         self.move_controller.handle_actions(ActionType.USE_S2, self.client, self.gameboard)
         mock.assert_not_called()
 
@@ -275,6 +276,7 @@ class TestMoveController(unittest.TestCase):
         self.swap_controller.handle_actions(ActionType.SWAP_UP, self.client, self.gameboard)
 
         # Test guard for allies
+        self.uroda_tank.took_action = False
         self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
 
         self.assertEquals(self.uroda_attacker.guardian, self.uroda_tank)
