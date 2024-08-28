@@ -84,8 +84,8 @@ class TestMoveController(unittest.TestCase):
                                                            CountryType.URODA)
         self.turpis_team_manager: TeamManager = TeamManager([self.turpis_attacker, self.turpis_healer, self.turpis_tank],
                                                             CountryType.TURPIS)
-        self.client: Player = Player(team_manager=self.uroda_team_manager)
-        self.client2: Player = Player(team_manager=self.turpis_team_manager)
+        self.uroda_client: Player = Player(team_manager=self.uroda_team_manager)
+        self.turpis_client: Player = Player(team_manager=self.turpis_team_manager)
 
         self.gameboard: GameBoard = GameBoard(locations=self.locations, map_size=Vector(2, 3))
         self.gameboard.generate_map()
@@ -95,7 +95,7 @@ class TestMoveController(unittest.TestCase):
         mock: Mock = Mock()
         move_logic.handle_move_logic = mock
 
-        self.move_controller.handle_actions(ActionType.SWAP_UP, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.SWAP_UP, self.uroda_client, self.gameboard)
 
         # check that the Generic Tank wasn't affected at all
         self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health)
@@ -104,7 +104,7 @@ class TestMoveController(unittest.TestCase):
         mock.assert_not_called()
 
     def test_opponent_takes_damage(self) -> None:
-        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
         # check the Generic Tank took damage
         # ceiling(15 damage * x1 modifier) - 10 defense = 5 damage dealt
         self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health - 5)
@@ -114,7 +114,7 @@ class TestMoveController(unittest.TestCase):
 
     def test_opponent_health_stays_at_0(self) -> None:
         self.turpis_tank.current_health = 1
-        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
         # the generic tank's health should be 0
         self.assertEqual(self.turpis_tank.current_health, 0)
@@ -124,7 +124,7 @@ class TestMoveController(unittest.TestCase):
         self.uroda_attacker.current_health = 1
         self.uroda_healer.current_health = 1
 
-        self.move_controller.handle_actions(ActionType.USE_S3, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S3, self.uroda_client, self.gameboard)
 
         # 1 HP + healing of 10 = 11
         self.assertEqual(self.uroda_attacker.current_health, 11)
@@ -138,7 +138,7 @@ class TestMoveController(unittest.TestCase):
         # test if going healing over the max health doesn't go over
         self.uroda_attacker.current_health = self.uroda_attacker.max_health - 1
 
-        self.move_controller.handle_actions(ActionType.USE_S3, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S3, self.uroda_client, self.gameboard)
 
         # 1 HP + healing of 10 = 11
         self.assertEqual(self.uroda_attacker.max_health, self.uroda_attacker.current_health)
@@ -147,7 +147,7 @@ class TestMoveController(unittest.TestCase):
 
     def test_self_buffing(self) -> None:
         # test that a character buffing itself works while the target is themselves
-        self.move_controller.handle_actions(ActionType.USE_S1, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S1, self.uroda_client, self.gameboard)
 
         # check the stat was buffed properly; default value from constructor is the attack stat
         self.assertEqual(self.uroda_attacker.attack.stage, 1)
@@ -162,7 +162,7 @@ class TestMoveController(unittest.TestCase):
         self.uroda_attacker.current_health = 1
         self.uroda_attacker.took_action = True
 
-        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
         # 1 + 15 = 16 HP
         self.assertEqual(self.uroda_attacker.current_health, 16)
@@ -179,7 +179,7 @@ class TestMoveController(unittest.TestCase):
         self.uroda_tank.current_health = 1
         self.uroda_tank.took_action = True
 
-        self.move_controller.handle_actions(ActionType.USE_S2, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S2, self.uroda_client, self.gameboard)
 
         # Tank's health: 1 + 15 = 16 HP
         self.assertEqual(self.uroda_tank.current_health, 16)
@@ -197,7 +197,7 @@ class TestMoveController(unittest.TestCase):
         self.gameboard.remove_coordinate(self.turpis_tank.position)
 
         # attempt to attack a target
-        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
         # to ensure nothing happened, mock and check if the handle_move_logic method was called
         mock.assert_not_called()
@@ -217,12 +217,12 @@ class TestMoveController(unittest.TestCase):
 
         # attempt to use moves that target an ally above and below, and ensure the `handle_actions` method wasn't called
         # checks if using the normal attack worked (heal ally up)
-        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
         mock.assert_not_called()
 
         # checks if using s2 works (heal ally down)
         self.uroda_healer.took_action = False
-        self.move_controller.handle_actions(ActionType.USE_S2, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S2, self.uroda_client, self.gameboard)
         mock.assert_not_called()
 
         # the healer is the character that tried to act
@@ -230,22 +230,20 @@ class TestMoveController(unittest.TestCase):
 
     # Guard move testing
     # Tests guarding, damage when guarding (single attack and AOE), etc.
-
     def test_guard_bottom(self) -> None:
         # Should guard character in center, which is the healer
         self.uroda_attacker.took_action = True
         self.uroda_healer.took_action = True
         self.turpis_attacker.took_action = True
-        self.turpis_tank.took_action = True
         self.turpis_healer.special_points = 10
 
-        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
         # Test if they are now guarded
         self.assertEqual(self.uroda_healer.guardian, self.uroda_tank)
 
         # Deal AOE damage and test if it hits guarded and guardian
-        self.move_controller.handle_actions(ActionType.USE_S1, self.client2, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S1, self.turpis_client, self.gameboard)
 
         self.assertNotEquals(self.uroda_healer.current_health, self.uroda_healer.max_health)
         self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
@@ -258,7 +256,7 @@ class TestMoveController(unittest.TestCase):
         self.turpis_healer.took_action = True
 
         # Test guarding single damage to healer and guardian being set to None
-        self.move_controller.handle_actions(ActionType.USE_NM, self.client2, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.turpis_client, self.gameboard)
 
         self.assertEqual(self.uroda_healer.current_health, self.uroda_healer.max_health)
         self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
@@ -273,17 +271,17 @@ class TestMoveController(unittest.TestCase):
         self.turpis_healer.special_points = 10
 
         # Swap uroda tank into center position
-        self.swap_controller.handle_actions(ActionType.SWAP_UP, self.client, self.gameboard)
+        self.swap_controller.handle_actions(ActionType.SWAP_UP, self.uroda_client, self.gameboard)
 
         # Test guard for allies
         self.uroda_tank.took_action = False
-        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
         self.assertEquals(self.uroda_attacker.guardian, self.uroda_tank)
         self.assertEquals(self.uroda_healer.guardian, self.uroda_tank)
 
         # Deal AOE damage and test if it hits guarded and guardian
-        self.move_controller.handle_actions(ActionType.USE_S1, self.client2, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S1, self.turpis_client, self.gameboard)
 
         self.assertNotEquals(self.uroda_attacker.current_health, self.uroda_attacker.max_health)
         self.assertNotEquals(self.uroda_healer.current_health, self.uroda_healer.max_health)
@@ -297,7 +295,7 @@ class TestMoveController(unittest.TestCase):
         self.turpis_healer.took_action = True
 
         # Test guarding single damage to attacker, guardian set to None
-        self.move_controller.handle_actions(ActionType.USE_S1, self.client2, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S1, self.turpis_client, self.gameboard)
 
         self.assertEqual(self.uroda_attacker.current_health, self.uroda_attacker.max_health)
         self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
@@ -318,7 +316,7 @@ class TestMoveController(unittest.TestCase):
         self.uroda_attacker.took_action = True
 
         # using the healer's debuff attack
-        self.move_controller.handle_actions(ActionType.USE_S3, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S3, self.uroda_client, self.gameboard)
 
         # check that the turpis attacker's defense decreased
         self.assertEqual(self.turpis_attacker.defense.stage, -1)
@@ -336,7 +334,7 @@ class TestMoveController(unittest.TestCase):
         self.turpis_tank.current_health = 1
         self.turpis_healer.current_health = 1
 
-        self.move_controller.handle_actions(ActionType.USE_S1, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S1, self.uroda_client, self.gameboard)
 
         # check that all turpis characters have 0 HP
         self.assertEqual(self.turpis_attacker.current_health, 0)
@@ -347,7 +345,7 @@ class TestMoveController(unittest.TestCase):
         # the uroda healer has the effects to test, so let it be its turn
         self.uroda_attacker.took_action = True
 
-        self.move_controller.handle_actions(ActionType.USE_NM, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
         # the attack effect damages the user. 20 health - 10 damage = 10 remaining health
         self.assertEqual(self.uroda_healer.current_health, 10)
@@ -360,7 +358,7 @@ class TestMoveController(unittest.TestCase):
         self.uroda_attacker.current_health = 1
         self.uroda_tank.current_health = 1
 
-        self.move_controller.handle_actions(ActionType.USE_S1, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S1, self.uroda_client, self.gameboard)
 
         # the healing effect heals 10 health
         self.assertEqual(self.uroda_attacker.current_health, 11)
@@ -370,7 +368,7 @@ class TestMoveController(unittest.TestCase):
         # the uroda healer has the effects to test, so let it be its turn
         self.uroda_attacker.took_action = True
 
-        self.move_controller.handle_actions(ActionType.USE_S2, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S2, self.uroda_client, self.gameboard)
 
         # the buff effect boosts all opponents' speed stats by 1 stage
         self.assertEqual(self.turpis_attacker.speed.stage, 1)
@@ -381,7 +379,7 @@ class TestMoveController(unittest.TestCase):
         # the uroda healer has the effects to test, so let it be its turn
         self.uroda_attacker.took_action = True
 
-        self.move_controller.handle_actions(ActionType.USE_S3, self.client, self.gameboard)
+        self.move_controller.handle_actions(ActionType.USE_S3, self.uroda_client, self.gameboard)
 
         # the debuff effect decreases all allies' speed stats by -1
         self.assertEqual(self.uroda_attacker.speed.stage, -1)
