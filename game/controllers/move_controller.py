@@ -20,14 +20,18 @@ class MoveController(Controller):
         special points were gained, the move will be used; otherwise, nothing will happen.
         """
         user: Character = client.team_manager.get_active_character()
+
+        # Set user's took_action to True as they have started their action
+        user.took_action = True
+
         current_move: Move
 
         # a bool to be passed into the handle_logic method
         is_normal_attack: bool = False
 
         match action:
-            case ActionType.USE_NA:
-                current_move: Move = user.get_na()
+            case ActionType.USE_NM:
+                current_move: Move = user.get_nm()
                 is_normal_attack = True
             case ActionType.USE_S1:
                 current_move: Move = user.get_s1()
@@ -87,17 +91,30 @@ class MoveController(Controller):
                     result.append(below_target)
 
                 return result
-
             case TargetType.ALL_ALLIES:
                 # get_characters() returns a dict; receives the characters by getting the dict's values as a list
                 return list(world.get_characters(user.country_type).values())
             case TargetType.SINGLE_OPP:
-                # get the position that is across the character
-                above_pos: Vector = user.position.add_to_vector(Vector(1, 0))
-                target: GameObject = world.get_character_from(above_pos)
 
-                # check to make sure the target is actually a character and not a potential Wall
-                return [target] if isinstance(target, Character) else []
+                # adjusts the vector value based on who is attacking, so it attacks across from the user
+                adjustment_vector: Vector = Vector(1, 0) if user.country_type is CountryType.URODA else Vector(-1, 0)
+
+                # get the position that is across the character
+                across_pos: Vector = user.position.add_to_vector(adjustment_vector)
+                target: Character | None = world.get_character_from(across_pos)
+
+                # if the target doesn't exist then return an empty list
+                if target is None:
+                    return []
+
+                # if the target.guardian doesn't exist, then it returns the target, otherwise it returns the guardian
+                # return [target.guardian] if target.guardian is not None else [target]
+                if target.guardian is None:
+                    return [target]
+
+                guardian: list[Character] = [target.guardian]
+                target.guardian = None
+                return guardian
             case TargetType.ALL_OPPS:
                 # get_characters() returns a dict; receives the characters by getting the dict's values as a list
                 # gets all characters opposite the user's country_type

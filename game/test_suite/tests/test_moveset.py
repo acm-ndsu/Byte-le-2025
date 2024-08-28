@@ -15,8 +15,8 @@ class TestMoveset(unittest.TestCase):
         self.moveset = Moveset((self.na, self.s1, self.s2, self.s3))
         self.other_moveset = Moveset((self.na1, self.s1, self.s2, self.s3))
 
-    def test_get_na(self) -> None:
-        self.assertEqual(self.moveset.get_na(), self.na)
+    def test_get_nm(self) -> None:
+        self.assertEqual(self.moveset.get_nm(), self.na)
 
     def test_get_s1(self) -> None:
         self.assertEqual(self.moveset.get_s1(), self.s1)
@@ -38,8 +38,8 @@ class TestMoveset(unittest.TestCase):
         self.assertTrue(self.moveset == self.none)
 
     def test_equals_method_with_mismatching_effects(self) -> None:
-        self.moveset.get_na().effect = DebuffEffect()
-        self.other_moveset.get_na().effect = BuffEffect()
+        self.moveset.get_nm().effect = DebuffEffect()
+        self.other_moveset.get_nm().effect = BuffEffect()
         self.assertFalse(self.moveset == self.other_moveset)
 
     def test_json(self) -> None:

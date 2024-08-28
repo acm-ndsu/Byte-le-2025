@@ -176,7 +176,7 @@ class TestCharacter(unittest.TestCase):
 
 
     def test_get_move_methods(self) -> None:
-        self.assertEqual(self.gen_tank.get_na(), self.moveset.get_na())
+        self.assertEqual(self.gen_tank.get_nm(), self.moveset.get_nm())
         self.assertEqual(self.gen_tank.get_s1(), self.moveset.get_s1())
         self.assertEqual(self.gen_tank.get_s2(), self.moveset.get_s2())
         self.assertEqual(self.gen_tank.get_s3(), self.moveset.get_s3())

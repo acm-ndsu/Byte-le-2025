@@ -98,7 +98,7 @@ class Heal(Move, AbstractHeal):
 
 class Buff(Move, AbstractBuff):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
-                 effect: Effect | None = None, stage_amount: int = 1, 
+                 effect: Effect | None = None, stage_amount: int = 1,
                  stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
         super().__init__(name, target_type, cost, effect)
 
@@ -110,7 +110,7 @@ class Buff(Move, AbstractBuff):
 
 class Debuff(Move, AbstractDebuff):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 effect: Effect | None = None, stage_amount: int = -1, 
+                 effect: Effect | None = None, stage_amount: int = -1,
                  stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
         super().__init__(name, target_type, cost, effect)
 
@@ -118,3 +118,11 @@ class Debuff(Move, AbstractDebuff):
         self.move_type = MoveType.DEBUFF
         self.stage_amount: int = stage_amount
         self.stat_to_affect: ObjectType = stat_to_affect
+
+
+class Guard(Move):
+    def __init__(self, name: str = '', cost: int = 1):
+        super().__init__(name, TargetType.ADJACENT_ALLIES, cost)
+
+        self.object_type = ObjectType.GUARD_MOVE
+        self.move_type = MoveType.GUARD
