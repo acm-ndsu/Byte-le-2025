@@ -39,6 +39,19 @@ class Character(GameObject):
         self.took_action: bool = False
         self.country_type: CountryType = country_type
 
+    def __eq__(self, other: Self | int) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+
+        # return if all the attributes match for the two characters
+        return (self.name == other.name and self.object_type == other.object_type and
+                self.character_type == other.character_type and self.current_health == other.current_health and
+                self.max_health == other.max_health and self.attack == other.attack and
+                self.defense == other.defense and self.speed == other.speed and self.rank == other.rank and
+                self.guardian == other.guardian and self.moveset == other.moveset and
+                self.special_points == other.special_points and self.position == other.position and
+                self.took_action == other.took_action and self.country_type == other.country_type)
+
     @property
     def name(self) -> str:
         return self.__name

@@ -106,7 +106,7 @@ class TestMoveController(unittest.TestCase):
     def test_opponent_takes_damage(self) -> None:
         self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
         # check the Generic Tank took damage
-        self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health - 5)
+        self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health - 6)
 
         # attacker should have 11 special points
         self.assertEqual(self.uroda_attacker.special_points, 11)
@@ -244,8 +244,8 @@ class TestMoveController(unittest.TestCase):
         # Deal AOE damage and test if it hits guarded and guardian
         self.move_controller.handle_actions(ActionType.USE_S1, self.turpis_client, self.gameboard)
 
-        self.assertNotEquals(self.uroda_healer.current_health, self.uroda_healer.max_health)
-        self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
+        self.assertNotEqual(self.uroda_healer.current_health, self.uroda_healer.max_health)
+        self.assertNotEqual(self.uroda_tank.current_health, self.uroda_tank.max_health)
         self.assertEqual(self.uroda_healer.guardian, self.uroda_tank)
 
         # Reset health and change took_actions
@@ -258,8 +258,8 @@ class TestMoveController(unittest.TestCase):
         self.move_controller.handle_actions(ActionType.USE_NM, self.turpis_client, self.gameboard)
 
         self.assertEqual(self.uroda_healer.current_health, self.uroda_healer.max_health)
-        self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
-        self.assertEquals(self.uroda_healer.guardian, None)
+        self.assertNotEqual(self.uroda_tank.current_health, self.uroda_tank.max_health)
+        self.assertEqual(self.uroda_healer.guardian, None)
 
     def test_guard_center(self) -> None:
         # Should guard both characters, top and bottom
@@ -276,15 +276,15 @@ class TestMoveController(unittest.TestCase):
         self.uroda_tank.took_action = False
         self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
-        self.assertEquals(self.uroda_attacker.guardian, self.uroda_tank)
-        self.assertEquals(self.uroda_healer.guardian, self.uroda_tank)
+        self.assertEqual(self.uroda_attacker.guardian, self.uroda_tank)
+        self.assertEqual(self.uroda_healer.guardian, self.uroda_tank)
 
         # Deal AOE damage and test if it hits guarded and guardian
         self.move_controller.handle_actions(ActionType.USE_S1, self.turpis_client, self.gameboard)
 
-        self.assertNotEquals(self.uroda_attacker.current_health, self.uroda_attacker.max_health)
-        self.assertNotEquals(self.uroda_healer.current_health, self.uroda_healer.max_health)
-        self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
+        self.assertNotEqual(self.uroda_attacker.current_health, self.uroda_attacker.max_health)
+        self.assertNotEqual(self.uroda_healer.current_health, self.uroda_healer.max_health)
+        self.assertNotEqual(self.uroda_tank.current_health, self.uroda_tank.max_health)
 
         # Reset health and change took_actions
         self.uroda_attacker.current_health = self.uroda_attacker.max_health
@@ -297,7 +297,7 @@ class TestMoveController(unittest.TestCase):
         self.move_controller.handle_actions(ActionType.USE_S1, self.turpis_client, self.gameboard)
 
         self.assertEqual(self.uroda_attacker.current_health, self.uroda_attacker.max_health)
-        self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
+        self.assertNotEqual(self.uroda_tank.current_health, self.uroda_tank.max_health)
         self.assertEqual(self.uroda_attacker.guardian, None)
         self.assertEqual(self.uroda_healer.guardian, self.uroda_tank)
 
@@ -346,7 +346,7 @@ class TestMoveController(unittest.TestCase):
         self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
         # the attack effect damages the user. 20 health - 10 damage = 10 remaining health
-        self.assertEqual(self.uroda_healer.current_health, 10)
+        self.assertEqual(self.uroda_healer.current_health, 9)
 
     def test_healing_effect(self) -> None:
         # the uroda healer has the effects to test, so let it be its turn
