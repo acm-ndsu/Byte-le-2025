@@ -106,7 +106,6 @@ class TestMoveController(unittest.TestCase):
     def test_opponent_takes_damage(self) -> None:
         self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
         # check the Generic Tank took damage
-        # ceiling(15 damage * x1 modifier) - 10 defense = 5 damage dealt
         self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health - 5)
 
         # attacker should have 11 special points
@@ -301,7 +300,6 @@ class TestMoveController(unittest.TestCase):
         self.assertNotEquals(self.uroda_tank.current_health, self.uroda_tank.max_health)
         self.assertEqual(self.uroda_attacker.guardian, None)
         self.assertEqual(self.uroda_healer.guardian, self.uroda_tank)
-
 
     # explicit move_logic tests below ---------------------------------------------------------------------
 
