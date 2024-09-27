@@ -1,9 +1,8 @@
-import math
 from typing import Self
 
 from game.common.enums import ObjectType
 from game.common.game_object import GameObject
-from game.config import STAGE_MAX, STAGE_MIN, MODIFIER_MAX, MODIFIER_MIN, NUMERATOR, DENOMINATOR
+from game.config import STAT_MINIMUM, ATTACK_MAXIMUM, DEFENSE_MAXIMUM, SPEED_MAXIMUM
 
 
 class Stat(GameObject):
@@ -36,7 +35,6 @@ class Stat(GameObject):
         self.object_type = ObjectType.STAT
         self.base_value: int | float = base_value
         self.value: int | float = base_value
-        self.stage: int = 0
 
     # override the hashable methods to easily compare stats
     def __gt__(self, other: Self | int) -> bool:
@@ -106,116 +104,23 @@ class Stat(GameObject):
 
         self.__value = value
 
-    @property
-    def stage(self) -> int:
-        return self.__stage
+    def is_maxed(self):
+        ...
 
-    @stage.setter
-    def stage(self, stage: int) -> None:
-        if stage is None or not isinstance(stage, int):
-            raise ValueError(f'{self.__class__.__name__}.stage must be an int. It is a(n) '
-                             f'{stage.__class__.__name__} and has a value of {stage}')
+    def is_minimized(self):
+        return self.value == STAT_MINIMUM
 
-        if stage < STAGE_MIN or stage > STAGE_MAX:
-            raise ValueError(
-                f'{self.__class__.__name__}.stage must be between {STAGE_MIN} and {STAGE_MAX} inclusive. '
-                f'The value given was {stage}')
-
-        self.__stage = stage
-
-    def is_maxed(self) -> bool:
+    def apply_modification(self, modification_amount: int) -> None:
         """
-        Returns true if the stat is maxed out. This is determined by how many stages the stat has been increased by.
-        A stat is maxed out if at +4.
+        This method will add the modification amount from either a buff or debuff. If it goes below the stat minimum,
+        it will set it to that minimum. The same applies to the maximum.
         """
-        return self.stage == STAGE_MAX
-
-    def is_minimized(self) -> bool:
-        """
-        Returns true if the stat is minimized. This is determined by how many stages the stat has been decreased by.
-        A stat is minimized if at self.__min.
-        """
-        return self.stage == STAGE_MIN
-
-    def calculate_stage_update(self, stages: int = 0) -> int:
-        """
-        Given the amount of stages to increase or decrease the stats stages, it will return what the stat's stage
-        will be example to.
-        """
-
-        # the following cleanly calculates what the stage value will be using value comparisons without if statements
-        # gets the largest value that is still in range of the value of STAGE_MAX
-        max_calc: int = min(STAGE_MAX, self.stage + stages)
-
-        # gets the smallest value that is still in range of the value of STAGE_MIN
-        min_calc: int = min(STAGE_MIN, self.stage - stages)
-
-        # by comparing which of the two values is largest, the correctly adjusted value is returned
-        return max(min_calc, max_calc)
-
-    def calculate_modifier(self, stage: int) -> float:
-        """
-        Calculates the stat's potential modifier by adjusting a fraction based on the stage.
-
-        Formulas:
-            * (numerator + stage) / denominator if stage is positive
-            * numerator / (denominator + stage) if stage is negative
-
-        This allows for the stat's value to appropriately scale in both directions.
-
-        With the current settings:
-
-            =========== =================== ==================
-            Stage State Fraction Multiplier Decimal Multiplier
-            =========== =================== ==================
-                -4           2/6 (1/3)             0.333
-
-                -3              2/5                 0.4
-
-                -2           2/4 (1/2)              0.5
-
-                -1              2/3                0.667
-
-                 0               1                   1
-
-                 1              3/2                 1.5
-
-                 2            4/2 (2)                2
-
-                 3              5/2                 2.5
-
-                 4            6/2 (3)                3
-            =========== =================== ==================
-        """
-
-        numerator: int = NUMERATOR
-        denominator: int = DENOMINATOR
-
-        # if the stage is positive, add its value to the numerator; else, add to denominator
-        if stage > 0:
-            numerator += stage
-        else:
-            # need to use the absolute value of the negative int
-            denominator += abs(stage)
-
-        # round the decimal to 3 decimal places
-        return round(numerator / denominator, 3)
-
-    def apply_modifier(self, stages: int = 0) -> None:
-        self.stage = self.calculate_stage_update(stages)
-        modifier: float = self.calculate_modifier(self.stage)
-
-        # if the stat being modified is the attack stat, its value should always equal is modifier
-        # otherwise, if any other stat, calculate the new value by using the ceiling function
-        # always multiply the base value and modifier to easily calculate the correct result without additional rounding
-        self.value = self.base_value * modifier if isinstance(self, AttackStat) \
-            else math.ceil(self.base_value * modifier)
+        ...
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['base_value'] = self.base_value
         data['value'] = self.value
-        data['stage'] = self.stage
 
         return data
 
@@ -223,7 +128,6 @@ class Stat(GameObject):
         super().from_json(data)
         self.base_value = data['base_value']
         self.value = data['value']
-        self.stage = data['stage']
 
         return self
 
@@ -233,14 +137,53 @@ class AttackStat(Stat):
         super().__init__(base_value)
         self.object_type = ObjectType.ATTACK_STAT
 
+    def is_maxed(self):
+        return self.value == ATTACK_MAXIMUM
+
+    def apply_modification(self, modification_amount: int) -> None:
+        final_value: int = self.value + modification_amount
+
+        if final_value > ATTACK_MAXIMUM:
+            self.value = ATTACK_MAXIMUM
+        elif final_value < STAT_MINIMUM:
+            self.value = STAT_MINIMUM
+        else:
+            self.value = final_value
+
 
 class DefenseStat(Stat):
     def __init__(self, base_value: int = 1):
         super().__init__(base_value)
         self.object_type = ObjectType.DEFENSE_STAT
 
+    def is_maxed(self):
+        return self.value == DEFENSE_MAXIMUM
+
+    def apply_modification(self, modification_amount: int) -> None:
+        final_value: int = self.value + modification_amount
+
+        if final_value > DEFENSE_MAXIMUM:
+            self.value = DEFENSE_MAXIMUM
+        elif final_value < STAT_MINIMUM:
+            self.value = STAT_MINIMUM
+        else:
+            self.value = final_value
+
 
 class SpeedStat(Stat):
     def __init__(self, base_value: int = 1):
         super().__init__(base_value)
         self.object_type = ObjectType.SPEED_STAT
+
+    def is_maxed(self):
+        return self.value == SPEED_MAXIMUM
+
+    def apply_modification(self, modification_amount: int) -> None:
+        final_value: int = self.value + modification_amount
+
+        if final_value > SPEED_MAXIMUM:
+            self.value = SPEED_MAXIMUM
+        elif final_value < STAT_MINIMUM:
+            self.value = STAT_MINIMUM
+        else:
+            self.value = final_value

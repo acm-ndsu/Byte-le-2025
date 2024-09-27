@@ -1,7 +1,7 @@
 import unittest
 
-from game.byte_2025.character.character import *
-from game.byte_2025.moves.effects import HealEffect
+from game.commander_clash.character.character import *
+from game.commander_clash.moves.effects import HealEffect
 from game.common.enums import CharacterType
 from game.test_suite.utils import spell_check
 from game.utils.vector import Vector

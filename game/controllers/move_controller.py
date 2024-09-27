@@ -1,11 +1,11 @@
-from game.byte_2025.moves.moves import Move
+from game.commander_clash.moves.moves import Move
 from game.common.player import Player
 from game.common.map.game_board import GameBoard
 from game.common.enums import *
 from game.utils.vector import Vector
 from game.controllers.controller import Controller
 from game.common.team_manager import *
-from game.byte_2025.moves.move_logic import handle_move_logic, handle_effect_logic
+from game.commander_clash.moves.move_logic import handle_move_logic, handle_effect_logic
 
 
 class MoveController(Controller):

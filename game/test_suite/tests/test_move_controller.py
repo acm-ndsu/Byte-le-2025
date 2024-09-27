@@ -1,11 +1,11 @@
 import unittest
 from unittest.mock import Mock
 
-from game.byte_2025.character.character import GenericAttacker, GenericTank, GenericHealer
-from game.byte_2025.character.stats import DefenseStat, SpeedStat, AttackStat
-from game.byte_2025.moves import move_logic
-from game.byte_2025.moves.moves import *
-from game.byte_2025.moves.moveset import Moveset
+from game.commander_clash.character.character import GenericAttacker, GenericTank, GenericHealer
+from game.commander_clash.character.stats import DefenseStat, SpeedStat, AttackStat
+from game.commander_clash.moves import move_logic
+from game.commander_clash.moves.moves import *
+from game.commander_clash.moves.moveset import Moveset
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import TeamManager
@@ -23,51 +23,56 @@ class TestMoveController(unittest.TestCase):
         self.move_controller: MoveController = MoveController()
         self.swap_controller: SwapController = SwapController()
 
-        self.attack_effect: AttackEffect = AttackEffect(TargetType.SELF, 15)
+        self.attack_effect: AttackEffect = AttackEffect(TargetType.SELF, 10)
         self.heal_effect: HealEffect = HealEffect(TargetType.ADJACENT_ALLIES, 10)
         self.buff_effect: BuffEffect = BuffEffect(TargetType.ALL_OPPS, 1, ObjectType.SPEED_STAT)
         self.debuff_effect: DebuffEffect = DebuffEffect(TargetType.ALL_ALLIES, -1, ObjectType.SPEED_STAT)
 
-        self.moveset1: Moveset = Moveset((Attack('Baja Blast', TargetType.SINGLE_OPP, 0, None, 15),
-                                          Buff('Baja Slurp', TargetType.SELF, 2, HealEffect(heal_points=10), 1),
-                                          Debuff('Baja Dump', TargetType.ALL_OPPS, 3, None, -1, ObjectType.SPEED_STAT),
-                                          Heal('Baja Blessing', TargetType.ALL_ALLIES, 4, None, 10)))
+        self.attacker_moveset: Moveset = Moveset((Attack('Baja Blast', TargetType.SINGLE_OPP, 0, None, 5),
+                                                  Buff('Baja Slurp', TargetType.SELF, 2, HealEffect(heal_points=10), 5),
+                                                  Debuff('Baja Dump', TargetType.ALL_OPPS, 3, None, -1,
+                                                         ObjectType.SPEED_STAT),
+                                                  Heal('Baja Blessing', TargetType.ALL_ALLIES, 4, None, 10)))
 
-        self.moveset2: Moveset = Moveset((Heal('Water Halo', TargetType.ADJACENT_ALLIES, 0, self.attack_effect, 15),
-                                          Attack('Inferno', TargetType.ALL_OPPS, 0, self.heal_effect, 15),
-                                          Heal('Healing Potion', TargetType.ADJACENT_ALLIES, 0, self.buff_effect, 15),
-                                          Debuff('Thunder Arrow', TargetType.SINGLE_OPP, 0, self.debuff_effect,
-                                                 stage_amount=-1, stat_to_affect=ObjectType.DEFENSE_STAT)))
+        self.healer_moveset: Moveset = Moveset(
+            (Heal('Water Halo', TargetType.ADJACENT_ALLIES, 0, self.attack_effect, 15),
+             Attack('Inferno', TargetType.ALL_OPPS, 0, self.heal_effect, 15),
+             Heal('Healing Potion', TargetType.ADJACENT_ALLIES, 0, self.buff_effect, 15),
+             Debuff('Thunder Arrow', TargetType.SINGLE_OPP, 0, self.debuff_effect,
+                    debuff_amount=-1, stat_to_affect=ObjectType.DEFENSE_STAT)))
 
-        self.moveset3: Moveset = Moveset((Guard('Baja Barrier', 0),
-                                          Attack('Break Bone', TargetType.SINGLE_OPP, 0, None, 15),
-                                          Heal('Healing Potion', TargetType.ADJACENT_ALLIES, 0, None, 15),
-                                          Debuff('Thunder Arrow', TargetType.SINGLE_OPP, 0, None, stage_amount=-1,
-                                                 stat_to_affect=ObjectType.DEFENSE_STAT)))
+        self.tank_moveset: Moveset = Moveset((Guard('Baja Barrier', 0),
+                                              Attack('Break Bone', TargetType.SINGLE_OPP, 0, None, 15),
+                                              Heal('Healing Potion', TargetType.ADJACENT_ALLIES, 0, None, 15),
+                                              Debuff('Thunder Arrow', TargetType.SINGLE_OPP, 0, None, debuff_amount=-1,
+                                                     stat_to_affect=ObjectType.DEFENSE_STAT)))
 
         # create uroda team
-        self.uroda_attacker: GenericAttacker = GenericAttacker(health=20, attack=AttackStat(), defense=DefenseStat(5),
+        self.uroda_attacker: GenericAttacker = GenericAttacker(health=20, attack=AttackStat(15), defense=DefenseStat(5),
                                                                speed=SpeedStat(15), position=Vector(0, 0),
-                                                               country_type=CountryType.URODA, moveset=self.moveset1)
+                                                               country_type=CountryType.URODA,
+                                                               moveset=self.attacker_moveset)
         self.uroda_attacker.special_points = 10
 
-        self.uroda_healer: GenericHealer = GenericHealer(health=20, attack=AttackStat(), defense=DefenseStat(5),
+        self.uroda_healer: GenericHealer = GenericHealer(health=20, attack=AttackStat(5), defense=DefenseStat(5),
                                                          speed=SpeedStat(10), position=Vector(0, 1),
-                                                         country_type=CountryType.URODA, moveset=self.moveset2)
-        self.uroda_tank: GenericTank = GenericTank(health=20, attack=AttackStat(), defense=DefenseStat(10),
+                                                         country_type=CountryType.URODA, moveset=self.healer_moveset)
+        self.uroda_tank: GenericTank = GenericTank(health=20, attack=AttackStat(10), defense=DefenseStat(10),
                                                    speed=SpeedStat(5), position=Vector(0, 2),
-                                                   country_type=CountryType.URODA, moveset=self.moveset3)
+                                                   country_type=CountryType.URODA, moveset=self.tank_moveset)
 
         # create turpis team
-        self.turpis_tank: GenericTank = GenericTank(health=20, attack=AttackStat(), defense=DefenseStat(10),
-                                                    speed=SpeedStat(5), position=Vector(1, 0),
-                                                    country_type=CountryType.TURPIS, moveset=self.moveset3)
-        self.turpis_attacker: GenericAttacker = GenericAttacker(health=20, attack=AttackStat(), defense=DefenseStat(5),
+        self.turpis_attacker: GenericAttacker = GenericAttacker(health=20, attack=AttackStat(15),
+                                                                defense=DefenseStat(5),
                                                                 speed=SpeedStat(15), position=Vector(1, 1),
-                                                                country_type=CountryType.TURPIS, moveset=self.moveset1)
-        self.turpis_healer: GenericHealer = GenericHealer(health=20, attack=AttackStat(), defense=DefenseStat(5),
+                                                                country_type=CountryType.TURPIS,
+                                                                moveset=self.attacker_moveset)
+        self.turpis_tank: GenericTank = GenericTank(health=20, attack=AttackStat(10), defense=DefenseStat(10),
+                                                    speed=SpeedStat(5), position=Vector(1, 0),
+                                                    country_type=CountryType.TURPIS, moveset=self.tank_moveset)
+        self.turpis_healer: GenericHealer = GenericHealer(health=20, attack=AttackStat(5), defense=DefenseStat(5),
                                                           speed=SpeedStat(10), position=Vector(1, 2),
-                                                          country_type=CountryType.TURPIS, moveset=self.moveset2)
+                                                          country_type=CountryType.TURPIS, moveset=self.healer_moveset)
 
         # Uroda on the left, Turpis on the right;
         # Left side from top to bottom: Urodan healer, attacker, tank
@@ -82,8 +87,9 @@ class TestMoveController(unittest.TestCase):
         # create a Player object with a TeamManager
         self.uroda_team_manager: TeamManager = TeamManager([self.uroda_attacker, self.uroda_healer, self.uroda_tank],
                                                            CountryType.URODA)
-        self.turpis_team_manager: TeamManager = TeamManager([self.turpis_attacker, self.turpis_healer, self.turpis_tank],
-                                                            CountryType.TURPIS)
+        self.turpis_team_manager: TeamManager = TeamManager(
+            [self.turpis_attacker, self.turpis_healer, self.turpis_tank],
+            CountryType.TURPIS)
         self.uroda_client: Player = Player(team_manager=self.uroda_team_manager)
         self.turpis_client: Player = Player(team_manager=self.turpis_team_manager)
 
@@ -105,14 +111,18 @@ class TestMoveController(unittest.TestCase):
 
     def test_opponent_takes_damage(self) -> None:
         self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
-        # check the Generic Tank took damage
-        self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health - 6)
 
-        # attacker should have 11 special points
+        # The uroda attacker is attacking the turpis tank
+        # check the Generic Tank took damage: ceil((15 + 5) * (1 - 10 / 100)) = 18
+        self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health - 18)
+
+        # uroda attacker should have 11 special points
         self.assertEqual(self.uroda_attacker.special_points, 11)
 
     def test_opponent_health_stays_at_0(self) -> None:
         self.turpis_tank.current_health = 1
+
+        # The uroda attacker is attacking the turpis tank
         self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
         # the generic tank's health should be 0
@@ -146,12 +156,11 @@ class TestMoveController(unittest.TestCase):
 
     def test_self_buffing(self) -> None:
         # test that a character buffing itself works while the target is themselves
+        # uroda attack buffs themselves
         self.move_controller.handle_actions(ActionType.USE_S1, self.uroda_client, self.gameboard)
 
         # check the stat was buffed properly; default value from constructor is the attack stat
-        self.assertEqual(self.uroda_attacker.attack.stage, 1)
-        self.assertEqual(self.uroda_attacker.attack.calculate_modifier(self.uroda_attacker.attack.stage), 1.5)
-        self.assertEqual(self.uroda_attacker.attack.value, 1.5)
+        self.assertEqual(self.uroda_attacker.attack.value, 20)
 
         # ensure the special points decreased
         self.assertEqual(self.uroda_attacker.special_points, 8)
@@ -304,8 +313,8 @@ class TestMoveController(unittest.TestCase):
     # explicit move_logic tests below ---------------------------------------------------------------------
 
     def test_calculate_modifier_effect(self) -> None:
-        # the turpis healer has speed 10; at -1 (which would be applied by the debuff), value would be 10 * 0.667 = 7
-        result: int = move_logic.calculate_modifier_effect(self.turpis_healer, self.moveset1.get_s2())
+        # the turpis healer has speed 10; after debuff, the predicted value should be
+        result: int = move_logic.calculate_modifier_effect(self.turpis_healer, self.attacker_moveset.get_s2())
 
         self.assertEqual(result, 7)
 
@@ -346,7 +355,7 @@ class TestMoveController(unittest.TestCase):
         self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
         # the attack effect damages the user. 20 health - 10 damage = 10 remaining health
-        self.assertEqual(self.uroda_healer.current_health, 9)
+        self.assertEqual(self.uroda_healer.current_health, 10)
 
     def test_healing_effect(self) -> None:
         # the uroda healer has the effects to test, so let it be its turn

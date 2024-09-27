@@ -1,7 +1,7 @@
 import unittest
 
-from game.byte_2025.moves.moves import *
-from game.byte_2025.moves.moveset import Moveset
+from game.commander_clash.moves.moves import *
+from game.commander_clash.moves.moveset import Moveset
 
 
 class TestMoveset(unittest.TestCase):

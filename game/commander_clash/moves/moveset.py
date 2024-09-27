@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from game.byte_2025.moves.moves import *
+from game.commander_clash.moves.moves import *
 from game.common.game_object import GameObject
 
 
