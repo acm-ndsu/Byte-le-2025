@@ -44,13 +44,16 @@ class Character(GameObject):
             return False
 
         # return if all the attributes match for the two characters
-        return (self.name == other.name and self.object_type == other.object_type and
-                self.character_type == other.character_type and self.current_health == other.current_health and
-                self.max_health == other.max_health and self.attack == other.attack and
-                self.defense == other.defense and self.speed == other.speed and self.rank == other.rank and
-                self.guardian == other.guardian and self.moveset == other.moveset and
-                self.special_points == other.special_points and self.position == other.position and
-                self.took_action == other.took_action and self.country_type == other.country_type)
+        # to any future devs looking at this, I, Ian King, sincerely apologize for this amalgamation
+        # it was either this or other gross code :( I was short on time, and I was tired
+        # forgive me please, and do better than this...
+        return (self.name == other.name and self.object_type == other.object_type
+                and self.character_type == other.character_type and self.current_health == other.current_health
+                and self.max_health == other.max_health and self.attack == other.attack
+                and self.defense == other.defense and self.speed == other.speed and self.rank == other.rank
+                and self.guardian == other.guardian and self.moveset == other.moveset
+                and self.special_points == other.special_points and self.position == other.position
+                and self.took_action == other.took_action and self.country_type == other.country_type)
 
     @property
     def name(self) -> str:
