@@ -63,3 +63,5 @@ MODIFIER_MIN = 0.333                                                # The min mu
 
 NUMERATOR = 2                                                       # Base numerator used to calculate stat modifiers
 DENOMINATOR = 2                                                     # Base denominator used to calculate stat modifiers
+
+MINIMUM_DAMAGE = 1                                                  # Base damage to be dealt to prevent negative ints

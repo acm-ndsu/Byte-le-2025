@@ -1,7 +1,5 @@
-from typing import Self
-
-from game.byte_2025.character.character import Character, CharacterType
-from game.common.enums import ObjectType, CountryType
+from game.byte_2025.character.character import *
+from game.common.enums import ObjectType, CountryType, CharacterType
 from game.common.game_object import GameObject
 
 
@@ -104,14 +102,35 @@ class TeamManager(GameObject):
     # To and From Json
     def to_json(self) -> dict:
         data: dict = super().to_json()
-        data['team'] = self.team
+        data['team'] = [character.to_json() for character in self.team]
         data['country'] = self.country
         data['score'] = self.score
         return data
 
+    def __from_json_helper(self, data: dict) -> Character:
+        temp: ObjectType = ObjectType(data['object_type'])
+
+        match temp:
+            case ObjectType.CHARACTER:
+                return Character().from_json(data)
+            case ObjectType.GENERIC_ATTACKER:
+                return GenericAttacker().from_json(data)
+            case ObjectType.GENERIC_HEALER:
+                return GenericHealer().from_json(data)
+            case ObjectType.GENERIC_TANK:
+                return GenericTank().from_json(data)
+            case ObjectType.LEADER:
+                return Leader().from_json(data)
+            case _:
+                raise ValueError(
+                    f'The object type of the object is not handled properly. The object type passed in is {temp}.')
+
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
-        self.team = data['team']
+
+        # converts each json object in the 'team' to be a Character object and creates a list with them
+        self.team = [self.__from_json_helper(obj) for obj in data['team']] if len(data['team']) > 0 else []
+
         self.country = data['country']
         self.score = data['score']
         return self

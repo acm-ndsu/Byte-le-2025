@@ -229,8 +229,8 @@ class Stat(GameObject):
 
 
 class AttackStat(Stat):
-    def __init__(self):
-        super().__init__(1)
+    def __init__(self, base_value: int = 1):
+        super().__init__(base_value)
         self.object_type = ObjectType.ATTACK_STAT
 
 

@@ -61,7 +61,7 @@ def calculate_damage(user: Character, target: Character, current_move: AbstractA
     """
     Calculates the damage done by using the following formula:
 
-        ceiling(damage_points * attack stat modifier) - target's defense stat
+        ceiling((user's attack stat - target's defense stat) + current move's damage points)
 
     The ceiling function is applied to the (damage_points * attack stat modifier) part of the formula to do the
     most damage possible.
@@ -69,9 +69,10 @@ def calculate_damage(user: Character, target: Character, current_move: AbstractA
     This method can be used to plan for the competition and give competitors a way to adapt to battles.
     """
 
-    attack_stage: int = user.attack.stage
+    damage: int = math.ceil((user.attack.value - target.defense.value) + current_move.damage_points)
 
-    return math.ceil(current_move.damage_points * user.attack.calculate_modifier(attack_stage)) - target.defense.value
+    # if damage amount is less than 1, return 1 as the minimum damage; otherwise, return the damage
+    return 1 if damage < 1 else damage
 
 
 def calculate_healing(target: Character, current_move: AbstractHeal) -> int:
