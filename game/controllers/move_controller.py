@@ -1,8 +1,5 @@
-from game.commander_clash.moves.moves import Move
 from game.common.player import Player
 from game.common.map.game_board import GameBoard
-from game.common.enums import *
-from game.utils.vector import Vector
 from game.controllers.controller import Controller
 from game.common.team_manager import *
 from game.commander_clash.moves.move_logic import handle_move_logic, handle_effect_logic
@@ -37,8 +34,6 @@ class MoveController(Controller):
                 current_move: Move = user.get_s1()
             case ActionType.USE_S2:
                 current_move: Move = user.get_s2()
-            case ActionType.USE_S3:
-                current_move: Move = user.get_s3()
             case _:
                 return
 
@@ -91,7 +86,7 @@ class MoveController(Controller):
                     result.append(below_target)
 
                 return result
-            case TargetType.ALL_ALLIES:
+            case TargetType.ENTIRE_TEAM:
                 # get_characters() returns a dict; receives the characters by getting the dict's values as a list
                 return list(world.get_characters(user.country_type).values())
             case TargetType.SINGLE_OPP:

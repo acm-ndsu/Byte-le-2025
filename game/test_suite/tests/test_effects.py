@@ -15,8 +15,8 @@ class TestEffects(unittest.TestCase):
     def setUp(self):
         self.effect: Effect = Effect()
         self.attack_effect: AttackEffect = AttackEffect(target_type=TargetType.SINGLE_OPP, damage_points=10)
-        self.heal_effect: HealEffect = HealEffect(target_type=TargetType.ALL_ALLIES, heal_points=5)
-        self.buff_effect: BuffEffect = BuffEffect(target_type=TargetType.ALL_ALLIES, buff_amount=1)
+        self.heal_effect: HealEffect = HealEffect(target_type=TargetType.ENTIRE_TEAM, heal_points=5)
+        self.buff_effect: BuffEffect = BuffEffect(target_type=TargetType.ENTIRE_TEAM, buff_amount=1)
         self.debuff_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SINGLE_OPP, debuff_amount=-1)
 
     def test_base_init(self) -> None:

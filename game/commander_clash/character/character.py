@@ -224,9 +224,6 @@ class Character(GameObject):
     def get_s2(self):
         return self.moveset.get_s2()
 
-    def get_s3(self):
-        return self.moveset.get_s3()
-
     def get_opposing_country(self) -> CountryType:
         # returns the opposite country based on the given CountryType
         return CountryType.URODA if self.country_type is CountryType.TURPIS else CountryType.TURPIS

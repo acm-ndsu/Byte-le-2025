@@ -97,18 +97,6 @@ def calculate_healing(target: Character, current_move: AbstractHeal) -> int:
     return min(current_move.heal_points, target.max_health - target.current_health)
 
 
-def calculate_modifier_effect(target: Character, current_move: AbstractBuff | AbstractDebuff) -> int:
-    """
-    Calculates and returns the potential value of the stat if the given Buff/Debuff is used.
-    """
-
-    stat = __get_stat_object_to_affect(target, current_move)
-
-    # return the calculation done without applying it to the character
-    return stat.value + current_move.buff_amount if isinstance(current_move, AbstractBuff) \
-        else stat.value + current_move.debuff_amount
-
-
 def __calc_and_apply_damage(user: Character, targets: list[Character], current_move: AbstractAttack):
     """
     Calculates the damage to deal for every target and applies it to the target's health.
@@ -150,7 +138,8 @@ def __handle_stat_modification(targets: list[Character], current_move: AbstractB
 
     for target in targets:
         stat = __get_stat_object_to_affect(target, current_move)
-        stat.apply_modification(current_move.buff_amount)
+        stat.apply_modification(current_move.buff_amount) if isinstance(current_move, AbstractBuff) else \
+            stat.apply_modification(current_move.debuff_amount)
 
 
 def __get_stat_object_to_affect(target: Character, current_move: AbstractBuff | AbstractDebuff) -> Stat:

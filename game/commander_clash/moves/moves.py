@@ -87,7 +87,7 @@ class Attack(Move, AbstractAttack):
 
 
 class Heal(Move, AbstractHeal):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
+    def __init__(self, name: str = '', target_type: TargetType = TargetType.ENTIRE_TEAM, cost: int = 0,
                  effect: Effect | None = None, heal_points: int = 0):
         super().__init__(name, target_type, cost, effect)
 
@@ -97,7 +97,7 @@ class Heal(Move, AbstractHeal):
 
 
 class Buff(Move, AbstractBuff):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
+    def __init__(self, name: str = '', target_type: TargetType = TargetType.ENTIRE_TEAM, cost: int = 0,
                  effect: Effect | None = None, buff_amount: int = 1,
                  stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
         super().__init__(name, target_type, cost, effect)

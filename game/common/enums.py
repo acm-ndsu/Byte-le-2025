@@ -82,7 +82,7 @@ class MoveType(Enum):
 class TargetType(Enum):
     SELF = auto()
     ADJACENT_ALLIES = auto()
-    ALL_ALLIES = auto()
+    ENTIRE_TEAM = auto()
     SINGLE_OPP = auto()
     ALL_OPPS = auto()
 
@@ -103,7 +103,6 @@ class ActionType(Enum):
     USE_NM = auto()
     USE_S1 = auto()
     USE_S2 = auto()
-    USE_S3 = auto()
     GUARD_UP = auto()
     GUARD_DOWN = auto()
     SWAP_UP = auto()

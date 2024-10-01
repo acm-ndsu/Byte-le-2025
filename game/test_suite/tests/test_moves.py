@@ -20,7 +20,7 @@ class TestMove(unittest.TestCase):
         self.debuff_effect: DebuffEffect = DebuffEffect()
         self.attack: Attack = Attack(name='Basic Attack', damage_points=1)
         self.heal: Heal = Heal(name='Basic Heal', heal_points=1)
-        self.buff: Buff = Buff('Big Buff', target_type=TargetType.ALL_ALLIES, buff_amount=2,
+        self.buff: Buff = Buff('Big Buff', target_type=TargetType.ENTIRE_TEAM, buff_amount=2,
                                effect=self.debuff_effect)
         self.debuff: Debuff = Debuff(name='Big Debuff', cost=2, debuff_amount=-2, effect=self.attack_effect,
                                      stat_to_affect=ObjectType.SPEED_STAT)
@@ -68,7 +68,7 @@ class TestMove(unittest.TestCase):
     def test_heal_init(self) -> None:
         self.assertEqual(self.heal.name, 'Basic Heal')
         self.assertEqual(self.heal.move_type, MoveType.HEAL)
-        self.assertEqual(self.heal.target_type, TargetType.ALL_ALLIES)
+        self.assertEqual(self.heal.target_type, TargetType.ENTIRE_TEAM)
         self.assertEqual(self.heal.cost, 0)
         self.assertEqual(self.heal.effect, None)
         self.assertEqual(self.heal.heal_points, 1)
@@ -86,7 +86,7 @@ class TestMove(unittest.TestCase):
     def test_buff_init(self) -> None:
         self.assertEqual(self.buff.name, 'Big Buff')
         self.assertEqual(self.buff.move_type, MoveType.BUFF)
-        self.assertEqual(self.buff.target_type, TargetType.ALL_ALLIES)
+        self.assertEqual(self.buff.target_type, TargetType.ENTIRE_TEAM)
         self.assertEqual(self.buff.buff_amount, 2)
         self.assertEqual(self.buff.cost, 0)
         self.assertEqual(self.buff.effect, self.debuff_effect)
