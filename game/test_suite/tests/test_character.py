@@ -1,7 +1,7 @@
 import unittest
 
-from game.byte_2025.character.character import *
-from game.byte_2025.moves.effects import HealEffect
+from game.commander_clash.character.character import *
+from game.commander_clash.moves.effects import HealEffect
 from game.common.enums import CharacterType
 from game.test_suite.utils import spell_check
 from game.utils.vector import Vector
@@ -22,8 +22,7 @@ class TestCharacter(unittest.TestCase):
 
         self.moves = (Attack('Baja Blast', TargetType.ALL_OPPS, 0, None, 5),
                       Buff('Baja Slurp', TargetType.SELF, 1, HealEffect(heal_points=10), 1),
-                      Debuff('Baja Dump', TargetType.ALL_OPPS, 2, None, -1),
-                      Heal('Baja Blessing', TargetType.ALL_ALLIES, 3, None, 10))
+                      Debuff('Baja Dump', TargetType.ALL_OPPS, 2, None, -1))
 
         self.moveset: Moveset = Moveset(self.moves)
 
@@ -179,7 +178,6 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.gen_tank.get_nm(), self.moveset.get_nm())
         self.assertEqual(self.gen_tank.get_s1(), self.moveset.get_s1())
         self.assertEqual(self.gen_tank.get_s2(), self.moveset.get_s2())
-        self.assertEqual(self.gen_tank.get_s3(), self.moveset.get_s3())
 
     def test_get_opposing_country(self):
         # character is Turpis; gen_attacker is Uroda

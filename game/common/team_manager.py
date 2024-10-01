@@ -1,4 +1,4 @@
-from game.byte_2025.character.character import *
+from game.commander_clash.character.character import *
 from game.common.enums import ObjectType, CountryType, CharacterType
 from game.common.game_object import GameObject
 

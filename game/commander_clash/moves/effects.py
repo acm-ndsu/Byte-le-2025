@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from game.byte_2025.moves.abstract_moves import *
+from game.commander_clash.moves.abstract_moves import *
 from game.common.enums import TargetType
 
 
@@ -29,14 +29,14 @@ class HealEffect(AbstractHeal, Effect):
 
 
 class BuffEffect(AbstractBuff, Effect):
-    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = 1,
+    def __init__(self, target_type: TargetType = TargetType.SELF, buff_amount: int = 1,
                  stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
-        super().__init__(target_type, stage_amount, stat_to_affect)
+        super().__init__(target_type, buff_amount, stat_to_affect)
         self.object_type = ObjectType.BUFF_EFFECT
 
 
 class DebuffEffect(AbstractDebuff, Effect):
-    def __init__(self, target_type: TargetType = TargetType.SELF, stage_amount: int = -1,
+    def __init__(self, target_type: TargetType = TargetType.SELF, debuff_amount: int = -1,
                  stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
-        super().__init__(target_type, stage_amount, stat_to_affect)
+        super().__init__(target_type, debuff_amount, stat_to_affect)
         self.object_type = ObjectType.DEBUFF_EFFECT

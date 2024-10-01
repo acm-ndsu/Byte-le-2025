@@ -55,13 +55,12 @@ class Debug:                    # Keeps track of the current debug level of the 
 
 # Other Settings Here --------------------------------------------------------------------------------------------------
 
-STAGE_MAX = 4                                                       # The max amount of stages a Stat can increase
-STAGE_MIN = -4                                                      # The minimum amount of stages a Stat can decrease
+HEALTH_MODIFIER = 4                                                 # The modfier to increase a character's health
 
-MODIFIER_MAX = 3.0                                                  # The max multiplier that can be applied to a Stat
-MODIFIER_MIN = 0.333                                                # The min multiplier that can be applied to a Stat
+STAT_MINIMUM = 0                                                    # The lowest number a stat can reach
 
-NUMERATOR = 2                                                       # Base numerator used to calculate stat modifiers
-DENOMINATOR = 2                                                     # Base denominator used to calculate stat modifiers
+ATTACK_MAXIMUM = 100                                                # The highest the Attack stat can reach
+DEFENSE_MAXIMUM = 75                                                # The highest the Defense stat can reach
+SPEED_MAXIMUM = 100                                                 # The highest the Speed stat can reach
 
 MINIMUM_DAMAGE = 1                                                  # Base damage to be dealt to prevent negative ints

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from game.byte_2025.moves.moves import *
+from game.commander_clash.moves.moves import *
 from game.common.game_object import GameObject
 
 
@@ -11,7 +11,7 @@ class Moveset(GameObject):
     from other classes, making the code more robust.
     """
 
-    def __init__(self, moves: tuple[Move, Move, Move, Move] = (Attack(), Buff(), Debuff(), Heal())):
+    def __init__(self, moves: tuple[Move, Move, Move] = (Attack(), Buff(), Debuff())):
         super().__init__()
         self.object_type: ObjectType = ObjectType.MOVESET
         self.moves: dict[str, Move] = self.__tuple_to_dict(moves)
@@ -69,17 +69,14 @@ class Moveset(GameObject):
     def get_s2(self) -> Move:
         return self.moves['S2']
 
-    def get_s3(self) -> Move:
-        return self.moves['S3']
-
     def as_dict(self) -> dict[str, Move]:
         return self.__moves
 
-    def __tuple_to_dict(self, moves: tuple[Move, Move, Move, Move]) -> dict[str, Move]:
+    def __tuple_to_dict(self, moves: tuple[Move, Move, Move]) -> dict[str, Move]:
         """
         Helper method to make the dict for the moveset.
         """
-        keys: tuple[str, str, str, str] = ('NA', 'S1', 'S2', 'S3')
+        keys: tuple[str, str, str] = ('NA', 'S1', 'S2')
         return dict(zip(keys, moves))
 
     def to_json(self) -> dict:

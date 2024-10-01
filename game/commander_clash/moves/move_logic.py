@@ -1,8 +1,9 @@
 import math
 
-from game.byte_2025.character.character import Character, GenericTank, Leader
-from game.byte_2025.character.stats import Stat
-from game.byte_2025.moves.moves import *
+from game.config import MINIMUM_DAMAGE
+from game.commander_clash.character.character import Character, GenericTank, Leader
+from game.commander_clash.character.stats import Stat
+from game.commander_clash.moves.moves import *
 from game.common.enums import MoveType
 
 
@@ -69,10 +70,14 @@ def calculate_damage(user: Character, target: Character, current_move: AbstractA
     This method can be used to plan for the competition and give competitors a way to adapt to battles.
     """
 
-    damage: int = math.ceil((user.attack.value - target.defense.value) + current_move.damage_points)
+    # If it's an AttackEffect, the base damage should be applied and nothing else; no damage calculation needed for this
+    if isinstance(current_move, AttackEffect):
+        return current_move.damage_points
+
+    damage: int = math.ceil((user.attack.value + current_move.damage_points) * (1 - target.defense.value / 100))
 
     # if damage amount is less than 1, return 1 as the minimum damage; otherwise, return the damage
-    return 1 if damage < 1 else damage
+    return MINIMUM_DAMAGE if damage < MINIMUM_DAMAGE else damage
 
 
 def calculate_healing(target: Character, current_move: AbstractHeal) -> int:
@@ -90,18 +95,6 @@ def calculate_healing(target: Character, current_move: AbstractHeal) -> int:
     """
 
     return min(current_move.heal_points, target.max_health - target.current_health)
-
-
-def calculate_modifier_effect(target: Character, current_move: AbstractBuff | AbstractDebuff) -> int:
-    """
-    Calculates and returns the potential value of the stat if the given Buff/Debuff is used.
-    """
-
-    stat = __get_stat_object_to_affect(target, current_move)
-    modifier: float = stat.calculate_modifier(current_move.stage_amount)
-
-    # return the calculation done without applying it to the character
-    return math.ceil(stat.base_value * modifier)
 
 
 def __calc_and_apply_damage(user: Character, targets: list[Character], current_move: AbstractAttack):
@@ -145,7 +138,8 @@ def __handle_stat_modification(targets: list[Character], current_move: AbstractB
 
     for target in targets:
         stat = __get_stat_object_to_affect(target, current_move)
-        stat.apply_modifier(current_move.stage_amount)
+        stat.apply_modification(current_move.buff_amount) if isinstance(current_move, AbstractBuff) else \
+            stat.apply_modification(current_move.debuff_amount)
 
 
 def __get_stat_object_to_affect(target: Character, current_move: AbstractBuff | AbstractDebuff) -> Stat:

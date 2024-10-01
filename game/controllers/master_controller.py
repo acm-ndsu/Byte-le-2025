@@ -1,7 +1,7 @@
 from copy import deepcopy
 import random
 
-from game.byte_2025.character.character import Character
+from game.commander_clash.character.character import Character
 from game.common.action import Action
 from game.common.team_manager import TeamManager
 from game.common.enums import *

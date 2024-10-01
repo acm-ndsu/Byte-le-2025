@@ -1,6 +1,6 @@
 import unittest
 
-from game.byte_2025.character.character import Character
+from game.commander_clash.character.character import Character
 from game.common.game_object import GameObject
 from game.common.map.game_board import GameBoard
 from game.controllers.swap_controller import SwapController

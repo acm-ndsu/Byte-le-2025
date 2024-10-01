@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from game.byte_2025.moves.effects import *
+from game.commander_clash.moves.effects import *
 from game.common.enums import MoveType, ObjectType
 
 
@@ -87,7 +87,7 @@ class Attack(Move, AbstractAttack):
 
 
 class Heal(Move, AbstractHeal):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
+    def __init__(self, name: str = '', target_type: TargetType = TargetType.ENTIRE_TEAM, cost: int = 0,
                  effect: Effect | None = None, heal_points: int = 0):
         super().__init__(name, target_type, cost, effect)
 
@@ -97,26 +97,26 @@ class Heal(Move, AbstractHeal):
 
 
 class Buff(Move, AbstractBuff):
-    def __init__(self, name: str = '', target_type: TargetType = TargetType.ALL_ALLIES, cost: int = 0,
-                 effect: Effect | None = None, stage_amount: int = 1,
+    def __init__(self, name: str = '', target_type: TargetType = TargetType.ENTIRE_TEAM, cost: int = 0,
+                 effect: Effect | None = None, buff_amount: int = 1,
                  stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
         super().__init__(name, target_type, cost, effect)
 
         self.object_type = ObjectType.BUFF_MOVE
         self.move_type = MoveType.BUFF
-        self.stage_amount: int = stage_amount
+        self.buff_amount: int = buff_amount
         self.stat_to_affect: ObjectType = stat_to_affect
 
 
 class Debuff(Move, AbstractDebuff):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
-                 effect: Effect | None = None, stage_amount: int = -1,
+                 effect: Effect | None = None, debuff_amount: int = -1,
                  stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
         super().__init__(name, target_type, cost, effect)
 
         self.object_type = ObjectType.DEBUFF_MOVE
         self.move_type = MoveType.DEBUFF
-        self.stage_amount: int = stage_amount
+        self.debuff_amount: int = debuff_amount
         self.stat_to_affect: ObjectType = stat_to_affect
 
 

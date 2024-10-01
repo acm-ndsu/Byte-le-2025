@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from game.byte_2025.character.stats import *
-from game.byte_2025.moves.moves import *
-from game.byte_2025.moves.moveset import Moveset
+from game.commander_clash.character.stats import *
+from game.commander_clash.moves.moves import *
+from game.commander_clash.moves.moveset import Moveset
 from game.common.enums import ObjectType, CharacterType, RankType
 from game.common.game_object import GameObject
 from game.utils.vector import Vector
@@ -223,9 +223,6 @@ class Character(GameObject):
 
     def get_s2(self):
         return self.moveset.get_s2()
-
-    def get_s3(self):
-        return self.moveset.get_s3()
 
     def get_opposing_country(self) -> CountryType:
         # returns the opposite country based on the given CountryType

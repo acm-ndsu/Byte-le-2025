@@ -1,7 +1,7 @@
 import unittest
 
-from game.byte_2025.moves.moves import *
-from game.byte_2025.moves.moveset import Moveset
+from game.commander_clash.moves.moves import *
+from game.commander_clash.moves.moveset import Moveset
 
 
 class TestMoveset(unittest.TestCase):
@@ -12,8 +12,8 @@ class TestMoveset(unittest.TestCase):
         self.s2: Debuff = Debuff('Special 2')
         self.s3: Heal = Heal('Special 3')
         self.none: None = None
-        self.moveset = Moveset((self.na, self.s1, self.s2, self.s3))
-        self.other_moveset = Moveset((self.na1, self.s1, self.s2, self.s3))
+        self.moveset = Moveset((self.na, self.s1, self.s2))
+        self.other_moveset = Moveset((self.na1, self.s1, self.s2))
 
     def test_get_nm(self) -> None:
         self.assertEqual(self.moveset.get_nm(), self.na)
@@ -23,9 +23,6 @@ class TestMoveset(unittest.TestCase):
 
     def test_get_s2(self) -> None:
         self.assertEqual(self.moveset.get_s2(), self.s2)
-
-    def test_get_s3(self) -> None:
-        self.assertEqual(self.moveset.get_s3(), self.s3)
 
     def test_equals_method(self) -> None:
         self.assertTrue(self.moveset == self.other_moveset)
@@ -46,7 +43,7 @@ class TestMoveset(unittest.TestCase):
         data: dict = self.moveset.to_json()
         other_moveset: Moveset = Moveset().from_json(data)
 
-        self.assertEqual(['NA', 'S1', 'S2', 'S3'], list(self.moveset.moves.keys()))
+        self.assertEqual(['NA', 'S1', 'S2'], list(self.moveset.moves.keys()))
 
         for move, other_move in zip(self.moveset.moves.values(), other_moveset.moves.values()):
             self.assertEqual(move.object_type, other_move.object_type)
