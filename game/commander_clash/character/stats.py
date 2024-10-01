@@ -104,7 +104,10 @@ class Stat(GameObject):
 
         self.__value = value
 
-    def is_maxed(self):
+    def is_maxed(self) -> None:
+        """
+        Returns true if the stat is maxed out. This is determined by the individual stat's max amount.
+        """
         ...
 
     def is_minimized(self):
