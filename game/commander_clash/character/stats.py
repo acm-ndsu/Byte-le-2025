@@ -115,18 +115,7 @@ class Stat(GameObject):
         This method will add the modification amount from either a buff or debuff. If it goes below the stat minimum,
         it will set it to that minimum. The same applies to the maximum.
         """
-        final_value: int = self.value + modification_amount
-
-        # uses a dictionary instead of nested if-elif-else methods; look it up, it's cool!
-        if isinstance(Self, AttackStat):
-            self.value = {final_value > ATTACK_MAXIMUM: ATTACK_MAXIMUM,
-                          final_value < STAT_MINIMUM: STAT_MINIMUM}.get(True, final_value)
-        elif isinstance(Self, DefenseStat):
-            self.value = {final_value > DEFENSE_MAXIMUM: DEFENSE_MAXIMUM,
-                          final_value < STAT_MINIMUM: STAT_MINIMUM}.get(True, final_value)
-        else:
-            self.value = {final_value > SPEED_MAXIMUM: SPEED_MAXIMUM,
-                          final_value < STAT_MINIMUM: STAT_MINIMUM}.get(True, final_value)
+        ...
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
@@ -170,6 +159,16 @@ class DefenseStat(Stat):
     def is_maxed(self):
         return self.value == DEFENSE_MAXIMUM
 
+    def apply_modification(self, modification_amount: int) -> None:
+        final_value: int = self.value + modification_amount
+
+        if final_value > DEFENSE_MAXIMUM:
+            self.value = DEFENSE_MAXIMUM
+        elif final_value < STAT_MINIMUM:
+            self.value = STAT_MINIMUM
+        else:
+            self.value = final_value
+
 
 class SpeedStat(Stat):
     def __init__(self, base_value: int = 1):
@@ -178,3 +177,13 @@ class SpeedStat(Stat):
 
     def is_maxed(self):
         return self.value == SPEED_MAXIMUM
+
+    def apply_modification(self, modification_amount: int) -> None:
+        final_value: int = self.value + modification_amount
+
+        if final_value > SPEED_MAXIMUM:
+            self.value = SPEED_MAXIMUM
+        elif final_value < STAT_MINIMUM:
+            self.value = STAT_MINIMUM
+        else:
+            self.value = final_value
