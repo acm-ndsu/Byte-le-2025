@@ -1,8 +1,8 @@
-from game.common.player import Player
-from game.common.map.game_board import GameBoard
-from game.controllers.controller import Controller
-from game.common.team_manager import *
 from game.commander_clash.moves.move_logic import handle_move_logic, handle_effect_logic
+from game.common.map.game_board import GameBoard
+from game.common.player import Player
+from game.common.team_manager import *
+from game.controllers.controller import Controller
 
 
 class MoveController(Controller):
@@ -62,7 +62,8 @@ class MoveController(Controller):
             handle_effect_logic(user, targets, current_move.effect)
 
             # add any additional characters to defeated_characters
-            defeated_characters += [target for target in targets if target.is_defeated()]
+            defeated_characters += [target for target in targets if
+                                    target not in defeated_characters and target.is_defeated()]
 
         # for all defeated characters, set their state to 'defeated;' remove them at start of next turn
         for defeated_char in defeated_characters:

@@ -372,3 +372,47 @@ class TestMoveController(unittest.TestCase):
         self.assertEqual(self.uroda_attacker.speed.value, 14)
         self.assertEqual(self.uroda_healer.speed.value, 9)
         self.assertEqual(self.uroda_tank.speed.value, 4)
+
+    def test_defeated_character_3_in_list(self):
+        # set the entire opposing team to be on 1 HP
+        self.turpis_attacker.current_health = 1
+        self.turpis_tank.current_health = 1
+        self.turpis_healer.current_health = 1
+
+        # the healer has an AOE, so let it be their turn
+        self.uroda_attacker.took_action = True
+
+        self.move_controller.handle_actions(ActionType.USE_S1, self.uroda_client, self.gameboard)
+
+        self.assertEqual(self.turpis_attacker.state, 'defeated')
+        self.assertEqual(self.turpis_tank.state, 'defeated')
+        self.assertEqual(self.turpis_healer.state, 'defeated')
+
+    def test_defeated_character_2_in_list(self):
+        # set the opposing team members to be on 1 HP
+        self.turpis_attacker.current_health = 1
+        self.turpis_tank.current_health = 1
+
+        # the healer has an AOE, so let it be their turn
+        self.uroda_attacker.took_action = True
+
+        self.move_controller.handle_actions(ActionType.USE_S1, self.uroda_client, self.gameboard)
+
+        self.assertEqual(self.turpis_attacker.state, 'defeated')
+        self.assertEqual(self.turpis_tank.state, 'defeated')
+
+        # healer state should be 'attacked' since it didn't die
+        self.assertEqual(self.turpis_healer.state, 'attacked')
+
+    def test_defeated_character_1_in_list(self):
+        # set opposing team member to be on 1 HP
+        self.turpis_attacker.current_health = 1
+
+        # the healer has an AOE, so let it be their turn
+        self.uroda_attacker.took_action = True
+
+        self.move_controller.handle_actions(ActionType.USE_S1, self.uroda_client, self.gameboard)
+
+        self.assertEqual(self.turpis_attacker.state, 'defeated')
+        self.assertEqual(self.turpis_tank.state, 'attacked')
+        self.assertEqual(self.turpis_healer.state, 'attacked')
