@@ -14,15 +14,20 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
     """
     match current_move.move_type:
         case MoveType.ATTACK:
+            user.state = 'attacking'
+            __assign_target_states(targets, 'attacked')
             current_move: Attack
             __calc_and_apply_damage(user, targets, current_move)
         case MoveType.HEAL:
+            __assign_target_states(targets, 'healing')
             current_move: Heal
             __apply_heal_points(targets, current_move)
         case MoveType.BUFF:
+            __assign_target_states(targets, 'buffing')
             current_move: Buff
             __handle_stat_modification(targets, current_move)
         case MoveType.DEBUFF:
+            __assign_target_states(targets, 'debuffing')
             current_move: Debuff
             __handle_stat_modification(targets, current_move)
         case MoveType.GUARD:
@@ -168,3 +173,8 @@ def __assign_guardian(guardian: GenericTank | Leader, targets: list[Character]):
     # Assign all targets their new guardian
     for target in targets:
         target.guardian = guardian
+
+
+def __assign_target_states(targets: list[Character], state: str) -> None:
+    for target in targets:
+        target.state = state

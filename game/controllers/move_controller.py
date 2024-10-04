@@ -1,8 +1,8 @@
-from game.common.player import Player
-from game.common.map.game_board import GameBoard
-from game.controllers.controller import Controller
-from game.common.team_manager import *
 from game.commander_clash.moves.move_logic import handle_move_logic, handle_effect_logic
+from game.common.map.game_board import GameBoard
+from game.common.player import Player
+from game.common.team_manager import *
+from game.controllers.controller import Controller
 
 
 class MoveController(Controller):
@@ -51,12 +51,23 @@ class MoveController(Controller):
         # call the move_logic file's method to handle the rest of the logic
         handle_move_logic(user, targets, current_move, is_normal_attack)
 
+        # a collection of the defeated characters is created
+        defeated_characters: list[Character] = [target for target in targets if target.is_defeated()]
+
         # if the current move has an effect, get the targets for it and apply the same logic
         if current_move.effect is not None:
             # get the possible targets based on the effect's target type
             targets: list[Character] | list = self.__get_targets(user, current_move.effect.target_type, world)
 
             handle_effect_logic(user, targets, current_move.effect)
+
+            # add any additional characters to defeated_characters
+            defeated_characters += [target for target in targets if
+                                    target not in defeated_characters and target.is_defeated()]
+
+        # for all defeated characters, set their state to 'defeated;' remove them at start of next turn
+        for defeated_char in defeated_characters:
+            defeated_char.state = 'defeated'
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """
