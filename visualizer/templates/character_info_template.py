@@ -29,7 +29,7 @@ class CharacterInfoTemplate(InfoTemplate):
         #
         # self.attack_stat_text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
         #                         position=Vector.add_vectors(topleft, Vector(y=145, x=100)))
-        # 
+        #
         # self.defense_stat = DefenseStat(top_left=Vector.add_vectors(topleft, Vector(y=200, x=50)))
         # self.defense_stat.add(self.render_list)
         #
@@ -47,10 +47,11 @@ class CharacterInfoTemplate(InfoTemplate):
         # self.attack_stat.text = str(len([item for item in inventory if item.get('object_type', 1) == 13]))
         # self.defense_stat.text = str(len([item for item in inventory if item.get('object_type', 1) == 11]))
         # self.speed_stat.text = str(len([item for item in inventory if item.get('object_type', 1) == 12]))
+        ...
 
     def render(self) -> None:
         super().render()
-        self.health_bar_text.render()
-        self.attack_stat_text.render()
-        self.defense_stat_text.render()
-        self.speed_stat_text.render()
+        # self.health_bar_text.render()
+        # self.attack_stat_text.render()
+        # self.defense_stat_text.render()
+        # self.speed_stat_text.render()
