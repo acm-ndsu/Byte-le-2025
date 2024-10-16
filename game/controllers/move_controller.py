@@ -3,6 +3,7 @@ from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import *
 from game.controllers.controller import Controller
+from game.config import DEFEATED_SCORE
 
 
 class MoveController(Controller):
@@ -69,7 +70,7 @@ class MoveController(Controller):
         for defeated_char in defeated_characters:
             defeated_char.is_dead = True
             defeated_char.state = 'defeated'
-            client.team_manager.score = 100
+            client.team_manager.score += DEFEATED_SCORE
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """
