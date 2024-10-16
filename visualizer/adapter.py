@@ -4,9 +4,6 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 from game.config import *
 from typing import Callable, Any
-from visualizer.bytesprites.exampleTileBS import TileBytespriteFactoryExample
-from visualizer.bytesprites.exampleWallBS import WallBytespriteFactoryExample
-from visualizer.bytesprites.exampleBS import AvatarBytespriteFactoryExample
 from game.utils.vector import Vector
 from visualizer.utils.text import Text
 from visualizer.bytesprites.bytesprite import ByteSprite
@@ -94,9 +91,6 @@ class Adapter:
         :return: dict[int, Callable[[pygame.Surface], ByteSprite]]
         """
         return {
-            4: AvatarBytespriteFactoryExample.create_bytesprite,
-            7: TileBytespriteFactoryExample.create_bytesprite,
-            8: WallBytespriteFactoryExample.create_bytesprite,
         }
 
     def render(self) -> None:

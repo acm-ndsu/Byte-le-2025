@@ -63,7 +63,7 @@ class Config:
     __NUMBER_OF_FRAMES_PER_TURN: int = 4
     __TILE_SIZE: int = 16
     __SCALE: int = 5
-    __SCREEN_SIZE: Vector = Vector(x=1366, y=768)  # width, height
+    __SCREEN_SIZE: Vector = Vector(x=1920, y=1080)  # width, height
     __FRAME_RATE: int = 12
     __BACKGROUND_COLOR: (int, int, int) = 0, 0, 0
     __GAME_BOARD_MARGIN_LEFT: int = 440

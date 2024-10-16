@@ -7,16 +7,11 @@ from visualizer.utils.text import Text
 
 class CharacterInfoTemplate(InfoTemplate):
     def __init__(self, screen: pygame.Surface, topleft: Vector, size: Vector, font: str, color: str,
-                 country: int) -> None:
+                 country: int, character: int) -> None:
         super().__init__(screen, topleft, size, font, color)
 
         # self.backdrop: CharacterInfoBackdrop = CharacterInfoBackdrop(top_left=topleft)
         # self.backdrop.add(self.render_list)
-        #
-        # self.country = country
-        # self.country_text: Text = Text(screen, text=f'{"Uroda" if country == 1 else "Turpis"}',
-        #                                font_size=32, font_name=self.font, color=self.color,
-        #                                position=Vector.add_vectors(topleft, Vector(y=25, x=25)))
         #
         # self.health_bar = HealthBar(top_left=Vector.add_vectors(topleft, Vector(y=100, x=50)))
         # self.health_bar.add(self.render_list)
