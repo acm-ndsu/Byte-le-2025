@@ -99,6 +99,12 @@ class TeamManager(GameObject):
             if not character.took_action:
                 return character
 
+    def everyone_is_dead(self) -> bool:
+        return all([character.is_dead for character in self.team])
+
+    def everyone_took_action(self) -> bool:
+        return all([character.took_action for character in self.team])
+
     # To and From Json
     def to_json(self) -> dict:
         data: dict = super().to_json()

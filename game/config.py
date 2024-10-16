@@ -15,7 +15,7 @@ TQDM_UNITS = " turns"                               # units TQDM takes in the ba
 
 MAX_SECONDS_PER_TURN = 0.1                          # max number of basic operations clients have for their turns
 
-MAX_NUMBER_OF_ACTIONS_PER_TURN = 2                  # max number of actions per turn is currently set to 2
+MAX_NUMBER_OF_ACTIONS_PER_TURN = 1                  # max number of actions per turn is currently set to 1
 
 MIN_CLIENTS_START = None                            # minimum number of clients required to start running the game; should be None when SET_NUMBER_OF_CLIENTS is used
 MAX_CLIENTS_START = None                            # maximum number of clients required to start running the game; should be None when SET_NUMBER_OF_CLIENTS is used
@@ -64,3 +64,7 @@ DEFENSE_MAXIMUM = 75                                                # The highes
 SPEED_MAXIMUM = 100                                                 # The highest the Speed stat can reach
 
 MINIMUM_DAMAGE = 1                                                  # Base damage to be dealt to prevent negative ints
+
+DEFEATED_SCORE = 100                                                # The points to award for each defeated character
+WIN_SCORE = 200                                                     # The points to award for winning a game
+DIFFERENTIAL_BONUS = 150                                            # The points to award for each alive character on the winning team
