@@ -15,7 +15,7 @@ class TestCharacter(unittest.TestCase):
         self.gen_tank: GenericTank = GenericTank('Bertha', CharacterType.TANK)
         self.leader: Leader = Leader('Phil', CharacterType.TANK)
         self.special: Character = Character('Special', CharacterType.TANK, 10, AttackStat(), DefenseStat(20),
-                                            SpeedStat(10), self.leader, Vector(0, 0))
+                                            SpeedStat(10), Vector(0, 0))
         self.num: int = 100
         self.neg_num: int = -1
         self.none: None = None
@@ -59,7 +59,6 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.special.defense.value, 20)
         self.assertEqual(self.special.speed.base_value, 10)
         self.assertEqual(self.special.speed.value, 10)
-        self.assertEqual(self.special.guardian, self.leader)
         self.assertEqual(self.special.position, Vector(0, 0))
 
     # Test that passing in bad inputs (a string instead of an int, a None value where it's not needed, etc)
@@ -147,13 +146,6 @@ class TestCharacter(unittest.TestCase):
                                                       f'or None. It is a(n) {value.__class__.__name__} and has the '
                                                       f'value of {value}', False))
 
-        # check that the Character's guardian has to be a Character of None
-        with self.assertRaises(ValueError) as e:
-            self.gen_tank.guardian = value
-        self.assertTrue(spell_check(str(e.exception), f'{self.gen_tank.__class__.__name__}.guardian must be a '
-                                                      f'Character or None. It is a(n) {value.__class__.__name__} and '
-                                                      f'has the value of {value}', False))
-
         # check that a None fails for a moveset
         with self.assertRaises(ValueError) as e:
             self.gen_tank.moveset = self.none
@@ -198,10 +190,10 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.rank, self.character.rank)
         self.assertEqual(char.special_points, self.character.special_points)
         self.assertEqual(char.position, None)
-        self.assertEqual(char.guardian, None)
         self.assertTrue(char.moveset == self.character.moveset)
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
+        self.assertEqual(char.is_dead, self.character.is_dead)
 
     def test_to_json_gen_atk(self) -> None:
         data: dict = self.gen_attacker.to_json()
@@ -217,10 +209,10 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.rank, self.gen_attacker.rank)
         self.assertEqual(char.special_points, self.gen_attacker.special_points)
         self.assertEqual(char.position, None)
-        self.assertEqual(char.guardian, None)
         self.assertTrue(char.moveset == self.gen_attacker.moveset)
         self.assertEqual(char.took_action, self.gen_attacker.took_action)
         self.assertEqual(char.country_type, self.gen_attacker.country_type)
+        self.assertEqual(char.is_dead, self.gen_attacker.is_dead)
 
     def test_to_json_gen_heal(self) -> None:
         data: dict = self.gen_healer.to_json()
@@ -236,10 +228,10 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.rank, self.gen_healer.rank)
         self.assertEqual(char.special_points, self.gen_healer.special_points)
         self.assertEqual(char.position, None)
-        self.assertEqual(char.guardian, None)
         self.assertTrue(char.moveset == self.gen_healer.moveset)
         self.assertEqual(char.took_action, self.gen_healer.took_action)
         self.assertEqual(char.country_type, self.gen_healer.country_type)
+        self.assertEqual(char.is_dead, self.gen_healer.is_dead)
 
     def test_to_json_gen_tank(self) -> None:
         data: dict = self.gen_tank.to_json()
@@ -255,9 +247,9 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.rank, self.gen_tank.rank)
         self.assertEqual(char.special_points, self.gen_tank.special_points)
         self.assertEqual(char.position, None)
-        self.assertEqual(char.guardian, None)
         self.assertEqual(char.took_action, self.gen_tank.took_action)
         self.assertEqual(char.country_type, self.gen_tank.country_type)
+        self.assertEqual(char.is_dead, self.gen_tank.is_dead)
         self.assertTrue(char.moveset == self.gen_tank.moveset)
 
     def test_to_json_leader(self) -> None:
@@ -274,7 +266,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.rank, self.leader.rank)
         self.assertEqual(char.special_points, self.leader.special_points)
         self.assertEqual(char.position, None)
-        self.assertEqual(char.guardian, None)
         self.assertEqual(char.moveset, self.leader.moveset)
         self.assertEqual(char.took_action, self.leader.took_action)
         self.assertEqual(char.country_type, self.leader.country_type)
+        self.assertEqual(char.is_dead, self.leader.is_dead)

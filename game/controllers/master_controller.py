@@ -1,18 +1,16 @@
-from copy import deepcopy
 import random
+from copy import deepcopy
 
 from game.commander_clash.character.character import Character
-from game.common.action import Action
-from game.common.team_manager import TeamManager
 from game.common.enums import *
-from game.common.player import Player
-import game.config as config   # this is for turns
-from game.utils.thread import CommunicationThread
-from game.controllers.swap_controller import SwapController
-from game.controllers.controller import Controller
 from game.common.map.game_board import GameBoard
+from game.common.player import Player
+from game.common.team_manager import TeamManager
 from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN
-from game.utils.vector import Vector 
+from game.controllers.controller import Controller
+from game.controllers.move_controller import MoveController
+from game.controllers.swap_controller import SwapController
+from game.utils.vector import Vector
 
 
 class MasterController(Controller):
@@ -45,6 +43,7 @@ class MasterController(Controller):
             This method creates a dictionary that stores a list of the clients' JSON files. This represents the final
             results of the game.
     """
+
     def __init__(self):
         super().__init__()
         self.game_over: bool = False
@@ -53,6 +52,7 @@ class MasterController(Controller):
         self.turn: int = 1
         self.current_world_data: dict = None
         self.swap_controller: SwapController = SwapController()
+        self.move_controller: MoveController = MoveController()
 
     # Receives all clients for the purpose of giving them the objects they will control
     def give_clients_objects(self, clients: list[Player], world: dict):
@@ -100,31 +100,37 @@ class MasterController(Controller):
         client.actions = turn_actions
 
         # Create deep copies of all objects sent to the player
-        current_world = deepcopy(self.current_world_data["game_board"])    # what is current world and copy avatar
-        copy_avatar = deepcopy(client.team_manager)
+        current_world = GameBoard().from_json(self.current_world_data['game_board'].to_json())  # deepcopy(self.current_world_data["game_board"])  # what is current world and copy avatar
+        copy_team_manager = TeamManager().from_json(client.team_manager.to_json())  # deepcopy(client.team_manager)
         # Obfuscate data in objects that that player should not be able to see
         # Currently world data isn't obfuscated at all
-        args = (self.turn, turn_actions, current_world, copy_avatar)
+        args = (self.turn, turn_actions, current_world, copy_team_manager)
         return args
 
     # Perform the main logic that happens per turn
     def turn_logic(self, clients: list[Player], turn):
         for client in clients:
+            # set each character's state to 'idle' in the client's team manager
+            for character in client.team_manager.team:
+                character.state = 'idle'
+
+                # if everyone took their action in the given team manager, set their took_action bool to False
+                if client.team_manager.everyone_took_action():
+                    character.took_action = False
+
+            # if the client did not provide any actions, just continue
+            if len(client.actions) == 0:
+                continue
+
+            # attempt to perform the action for the given ActionType
             for i in range(MAX_NUMBER_OF_ACTIONS_PER_TURN):
                 try:
-                    self.movement_controller.handle_actions(client.actions[i], client, self.current_world_data["game_board"])
+                    self.swap_controller.handle_actions(client.actions[i], client,
+                                                        self.current_world_data["game_board"])
+                    self.move_controller.handle_actions(client.actions[i], client,
+                                                        self.current_world_data["game_board"])
                 except IndexError:
                     pass
-
-        # checks event logic at the end of round
-        # self.handle_events(clients)
-
-    # comment out for now, nothing is in place for event types yet
-    # def handle_events(self, clients):
-        # If it is time to run an event, master controller picks an event to run
-        # if self.turn == self.event_times[0] or self.turn == self.event_times[1]:
-        #    self.current_world_data["game_map"].generate_event(EventType.example, EventType.example)
-        # event type.example is just a placeholder for now
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):

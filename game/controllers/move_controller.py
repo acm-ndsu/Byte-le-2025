@@ -3,6 +3,7 @@ from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import *
 from game.controllers.controller import Controller
+from game.config import DEFEATED_SCORE
 
 
 class MoveController(Controller):
@@ -52,7 +53,7 @@ class MoveController(Controller):
         handle_move_logic(user, targets, current_move, is_normal_attack)
 
         # a collection of the defeated characters is created
-        defeated_characters: list[Character] = [target for target in targets if target.is_defeated()]
+        defeated_characters: list[Character] = [target for target in targets if target.current_health == 0]
 
         # if the current move has an effect, get the targets for it and apply the same logic
         if current_move.effect is not None:
@@ -63,11 +64,13 @@ class MoveController(Controller):
 
             # add any additional characters to defeated_characters
             defeated_characters += [target for target in targets if
-                                    target not in defeated_characters and target.is_defeated()]
+                                    target not in defeated_characters and target.current_health == 0]
 
         # for all defeated characters, set their state to 'defeated;' remove them at start of next turn
         for defeated_char in defeated_characters:
+            defeated_char.is_dead = True
             defeated_char.state = 'defeated'
+            client.team_manager.score += DEFEATED_SCORE
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """
@@ -109,18 +112,7 @@ class MoveController(Controller):
                 across_pos: Vector = user.position.add_to_vector(adjustment_vector)
                 target: Character | None = world.get_character_from(across_pos)
 
-                # if the target doesn't exist then return an empty list
-                if target is None:
-                    return []
-
-                # if the target.guardian doesn't exist, then it returns the target, otherwise it returns the guardian
-                # return [target.guardian] if target.guardian is not None else [target]
-                if target.guardian is None:
-                    return [target]
-
-                guardian: list[Character] = [target.guardian]
-                target.guardian = None
-                return guardian
+                return [target] if target is not None else []
             case TargetType.ALL_OPPS:
                 # get_characters() returns a dict; receives the characters by getting the dict's values as a list
                 # gets all characters opposite the user's country_type
