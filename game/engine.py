@@ -21,7 +21,7 @@ from game.commander_clash.validate_team import validate_team_selection as valida
 
 class Engine:
     def __init__(self, quiet_mode=False):
-        self.clients = list()
+        self.clients: list[Player] = list()
         self.master_controller = MasterController()
         self.tick_number = 0
 
@@ -40,7 +40,12 @@ class Engine:
                 f = open(os.devnull, 'w')
                 sys.stdout = f
             self.load()
-            self.boot()
+            self.boot()  # clients are appended in this method
+
+            # a boolean representing if either team was defeated
+            team_is_defeated: bool = (self.clients[0].team_manager.everyone_is_dead() or
+                                      self.clients[1].team_manager.everyone_is_dead())
+
             for self.current_world_key in tqdm(
                     self.master_controller.game_loop_logic(),
                     bar_format=TQDM_BAR_FORMAT,
@@ -49,7 +54,9 @@ class Engine:
                 self.pre_tick()
                 self.tick()
                 self.post_tick()
-                if self.tick_number >= MAX_TICKS:
+
+                # if the tick exceeds the max OR if any team is completely defeated, break the game loop
+                if self.tick_number >= MAX_TICKS or team_is_defeated:
                     break
         except Exception as e:
             print(f"Exception raised during runtime: {str(e)}")

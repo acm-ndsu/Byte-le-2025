@@ -14,12 +14,6 @@ class UserClient:
             for arg in args:
                 logging.debug(f'{self.__class__.__name__}: {arg}')
 
-    # def team_name(self) -> str:
-    #     """
-    #     Returns the team name.
-    #     """
-    #     return "No_Team_Name_Available"
-
     def team_data(self) -> tuple[str, tuple[SelectLeader, SelectGeneric, SelectGeneric]]:
         """
         Returns a tuple representing the desired leader and generic characters.
