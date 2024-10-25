@@ -24,12 +24,15 @@ class TeamInfoTemplate(InfoTemplate):
                                        position=Vector.add_vectors(self.topleft, Vector(y=25, x=25)))
 
         # Character Info Templates instantiated here
-        self.character1 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(y=70, x=10)), Vector(y=240, x=530),
-                              self.font, self.color, self.country, 0)
-        self.character2 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(y=330, x=10)), Vector(y=240, x=530),
-                              self.font, self.color, self.country, 1)
-        self.character3 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(y=590, x=10)), Vector(y=240, x=530),
-                              self.font, self.color, self.country, 2)
+        self.character1 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(y=70, x=10)),
+                                                Vector(y=240, x=530),
+                                                self.font, self.color, self.country, 0)
+        self.character2 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(y=330, x=10)),
+                                                Vector(y=240, x=530),
+                                                self.font, self.color, self.country, 1)
+        self.character3 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(y=590, x=10)),
+                                                Vector(y=240, x=530),
+                                                self.font, self.color, self.country, 2)
 
     def recalc_animation(self, turn_log: dict) -> None:
         team_name: str = [client['team_name']

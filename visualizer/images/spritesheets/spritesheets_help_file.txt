@@ -1,0 +1,5 @@
+This file is for sprite sheet .png files, which are organized as:
+- columns: each frame in the animation
+- rows: each state for the bytesprite to have
+
+Images in this folder are used by the bytesprites in the bytesprites folder.
