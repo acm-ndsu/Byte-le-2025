@@ -26,7 +26,6 @@ class Player(GameObject):
         self.file_name: str | None = None
         self.team_name: str | None = team_name
         self.code: UserClient | None = code
-        # self.action: Action = action
         self.actions: list[ActionType] = actions
         self.team_manager: TeamManager | None = team_manager
 

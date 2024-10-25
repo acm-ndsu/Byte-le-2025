@@ -9,8 +9,6 @@ from game.utils.vector import Vector
 
 
 class Character(GameObject):
-    # PASSIVE NEEDS TO BE ABILITY | NONE
-
     """
     This is the superclass of all Character instances. Characters will have 3 stats (health, defense, speed);
     pre-determined moves that will allow for attacking, healing, buffing, and debuffing; and other properties that will
@@ -268,7 +266,30 @@ class Character(GameObject):
         return self
 
 
-class GenericAttacker(Character):
+class Generic(Character):
+    """
+    A class used to help with inheritance and polymorphism for the Generic Characters. This will not have any
+    functionality.
+    """
+
+    def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
+                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
+                 speed: SpeedStat = SpeedStat(1), position: Vector | None = None,
+                 country_type: CountryType = CountryType.URODA, moveset: Moveset = Moveset()):
+        super().__init__(name, character_type, health, attack, defense, speed,
+                         position, country_type, moveset)
+
+        self.rank: RankType = RankType.GENERIC
+
+    def to_json(self) -> dict:
+        return super().to_json()
+
+    def from_json(self, data: dict) -> Self:
+        super().from_json(data)
+        return self
+
+
+class GenericAttacker(Generic):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
                  attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
                  speed: SpeedStat = SpeedStat(1), position: Vector | None = None,
@@ -278,7 +299,6 @@ class GenericAttacker(Character):
 
         self.object_type: ObjectType = ObjectType.GENERIC_ATTACKER
         self.character_type: CharacterType = CharacterType.ATTACKER
-        self.rank: RankType = RankType.GENERIC
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -288,7 +308,7 @@ class GenericAttacker(Character):
         return self
 
 
-class GenericHealer(Character):
+class GenericHealer(Generic):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.HEALER, health: int = 1,
                  attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
                  speed: SpeedStat = SpeedStat(1), position: Vector | None = None,
@@ -298,7 +318,6 @@ class GenericHealer(Character):
 
         self.object_type: ObjectType = ObjectType.GENERIC_HEALER
         self.character_type: CharacterType = CharacterType.HEALER
-        self.rank: RankType = RankType.GENERIC
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -308,7 +327,7 @@ class GenericHealer(Character):
         return self
 
 
-class GenericTank(Character):
+class GenericTank(Generic):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.TANK, health: int = 1,
                  attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
                  speed: SpeedStat = SpeedStat(1), position: Vector | None = None,
@@ -318,7 +337,6 @@ class GenericTank(Character):
 
         self.object_type: ObjectType = ObjectType.GENERIC_TANK
         self.character_type: CharacterType = CharacterType.TANK
-        self.rank: RankType = RankType.GENERIC
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -338,14 +356,11 @@ class Leader(Character):
 
         self.object_type: ObjectType = ObjectType.LEADER
         self.rank: RankType = RankType.LEADER
-        self.passive: None = None
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
-        data['passive'] = self.passive
         return data
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
-        self.passive = data['passive']
         return self
