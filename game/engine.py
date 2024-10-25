@@ -16,6 +16,7 @@ from game.utils.helpers import write_json_file
 from game.utils.thread import Thread, CommunicationThread
 from game.utils.validation import verify_code, verify_num_clients
 from game.client.user_client import UserClient
+from game.commander_clash.validate_team import validate_team_selection as validate
 
 
 class Engine:
@@ -105,7 +106,7 @@ class Engine:
                 thr = None
                 try:
                     # Retrieve team name
-                    thr = CommunicationThread(player.code.team_name, list(), str)
+                    thr = CommunicationThread(player.code.team_data, list(), str)
                     thr.start()
                     thr.join(0.01)  # Shouldn't take long to get a string
 
@@ -119,8 +120,17 @@ class Engine:
                 finally:
                     # Note: I keep the above thread for both naming conventions to check for client errors
                     try:
+                        # set the file name
                         player.file_name = filename
-                        player.team_name = thr.retrieve_value()
+
+                        # get the team data from the thread's value
+                        team_data = thr.retrieve_value()
+
+                        # use index 0 to access the team name from `team_data`
+                        player.team_name = team_data[0]
+
+                        # use index 1 to access the tuple of character selection enums from `team_data`
+                        player.team_manager.team = validate(team_data[1])
                     except Exception as e:
                         player.functional = False
                         player.error = f"{str(e)}\n{traceback.print_exc()}"

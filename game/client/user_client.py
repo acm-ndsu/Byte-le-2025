@@ -14,8 +14,17 @@ class UserClient:
             for arg in args:
                 logging.debug(f'{self.__class__.__name__}: {arg}')
 
-    def team_name(self):
-        return "No_Team_Name_Available"
+    # def team_name(self) -> str:
+    #     """
+    #     Returns the team name.
+    #     """
+    #     return "No_Team_Name_Available"
+
+    def team_data(self) -> tuple[str, tuple[SelectLeader, SelectGeneric, SelectGeneric]]:
+        """
+        Returns a tuple representing the desired leader and generic characters.
+        """
+        return 'No_Team_Name_Available', (SelectLeader.ANAHITA, SelectGeneric.GEN_ATTACKER, SelectGeneric.GEN_ATTACKER)
 
     def take_turn(self, turn, actions, world, avatar):
         raise NotImplementedError("Implement this in subclass")
