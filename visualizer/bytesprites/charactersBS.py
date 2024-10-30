@@ -31,7 +31,7 @@ class CharactersBS(ByteSpriteFactory):
         return spritesheets[offset]
 
 
-# Seperate create bytesprite methods for each of the characters
+# Separate create bytesprite methods for each of the characters
     @staticmethod
     def create_anahita_bytesprite(screen: pyg.Surface) -> ByteSprite:
         return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/anahitaSS.png'), 10, 4,
