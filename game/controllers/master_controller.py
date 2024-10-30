@@ -149,18 +149,17 @@ class MasterController(Controller):
         client1: Player = clients[0]
         client2: Player = clients[1]
 
+        # add the differential bonus to both teams (150 * # of alive characters)
+        client1.team_manager.score += DIFFERENTIAL_BONUS * len(client1.team_manager.team)
+        client2.team_manager.score += DIFFERENTIAL_BONUS * len(client2.team_manager.team)
+
         # client1 is the winner if client2's team is all dead
         winner: Player | None = client1 if client2.team_manager.everyone_is_dead() else \
             client2 if client1.team_manager.everyone_is_dead() else None
 
-        # if there is a clear winner (one team was defeated),
-        # add the winning score and the differential bonus to the winner
+        # if there is a clear winner (one team was defeated), add the winning score to the winner
         if winner is not None:
-            # add the score to the winner
             winner.team_manager.score += WIN_SCORE
-
-            # add the differential bonus to the winner's score (150 * # of alive characters)
-            winner.team_manager.score += DIFFERENTIAL_BONUS * len(winner.team_manager.team)
 
         data['players'] = list()
 
