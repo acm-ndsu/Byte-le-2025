@@ -1,14 +1,18 @@
 import os
-
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 from game.config import *
 from typing import Callable, Any
+
 from game.utils.vector import Vector
+from visualizer.config import Config
+from visualizer.bytesprites.charactersBS import CharactersBS
+from visualizer.templates.scoreboard_template import ScoreboardTemplate
 from visualizer.utils.text import Text
 from visualizer.bytesprites.bytesprite import ByteSprite
-from visualizer.templates.menu_templates import Basic, MenuTemplate
+from visualizer.templates.menu_template import Basic, MenuTemplate
 from visualizer.templates.playback_template import PlaybackTemplate, PlaybackButtons
+
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 
 class Adapter:
@@ -19,10 +23,14 @@ class Adapter:
 
     def __init__(self, screen):
         self.screen: pygame.Surface = screen
+        self.config: Config = Config()
         self.bytesprites: list[ByteSprite] = []
         self.populate_bytesprite: pygame.sprite.Group = pygame.sprite.Group()
-        self.menu: MenuTemplate = Basic(screen, 'Basic Title')
-        self.playback: PlaybackTemplate = PlaybackTemplate(screen)
+        self.menu: MenuTemplate = Basic(screen, self.config.FONT, self.config.FONT_COLOR_ALT,
+                                        self.config.BUTTON_COLORS, 'Commander Clash')
+        self.scoreboard = ScoreboardTemplate(screen, Vector(), Vector(y=100, x=1366), self.config.FONT,
+                                             self.config.FONT_COLOR)
+        self.playback: PlaybackTemplate = PlaybackTemplate(screen, self.config.FONT, self.config.BUTTON_COLORS)
         self.turn_number: int = 0
         self.turn_max: int = MAX_TICKS
 
@@ -76,21 +84,27 @@ class Adapter:
         """
         ...
 
+    # re-renders the animation
     def recalc_animation(self, turn_log: dict) -> None:
         """
         This method is called every time the turn changes
         :param turn_log: A dictionary containing the entire turn state
         :return: None
         """
+        self.scoreboard.recalc_animation(turn_log)
         self.turn_number = turn_log['tick']
 
-    def populate_bytesprite_factories(self) -> dict[int, Callable[[pygame.Surface], ByteSprite]]:
+    def populate_bytesprite_factories(self) -> dict[int: Callable[[pygame.Surface], ByteSprite]]:
         """
         Instantiate all bytesprites for each objectType and add them here using the value of ObjectType as the key
         and the factory function as the value
         :return: dict[int, Callable[[pygame.Surface], ByteSprite]]
         """
         return {
+            12: CharactersBS.create_bytesprite,
+            13: CharactersBS.create_bytesprite,
+            14: CharactersBS.create_bytesprite,
+            15: CharactersBS.create_bytesprite,
         }
 
     def render(self) -> None:
@@ -99,11 +113,17 @@ class Adapter:
         during the playback phase.
         :return: None
         """
-        text = Text(self.screen, f'{self.turn_number} / {self.turn_max}', 48)
-        text.rect.center = Vector(*self.screen.get_rect().midtop).add_y(50).as_tuple()
+        # self.button.render()
+        # any logic for rendering text, buttons, and other visuals
+        text = Text(self.screen, f'{self.turn_number:3d} / {self.turn_max:3d}', 48, color=self.config.FONT_COLOR,
+                    font_name=self.config.FONT)
+        text.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().midtop), Vector(0, 50)).as_tuple()
         text.render()
+
+        self.scoreboard.render()
         self.playback.playback_render()
 
+    # is used in post render - post render is used to clear the playback buttons
     def clean_up(self) -> None:
         """
         This method is called after rendering each frame.
@@ -131,7 +151,7 @@ class Adapter:
 
     def results_render(self) -> None:
         """
-        This renders the end screen for the visualizer
+        This renders the results for the game / the end screen
         :return:
         """
         self.menu.results_render()

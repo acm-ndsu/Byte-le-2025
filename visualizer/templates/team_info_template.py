@@ -15,9 +15,6 @@ class TeamInfoTemplate(InfoTemplate):
         and instantiates the character info templates
         """
 
-        # self.backdrop: TeamInfoBackdrop = TeamInfoBackdrop(top_left=topleft)
-        # self.backdrop.add(self.render_list)
-        #
         self.country = country
         self.country_text: Text = Text(screen, text=f'{"Uroda" if country == 1 else "Turpis"}',
                                        font_size=32, font_name=self.font, color=self.color,
