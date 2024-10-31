@@ -71,8 +71,8 @@ class Config:
     __GAME_BOARD_MARGIN_LEFT: int = 574
     __GAME_BOARD_MARGIN_TOP: int = 324
     __VISUALIZE_HELD_ITEMS: bool = False
-    __FONT: str = os.path.join(os.getcwd(), 'visualizer', 'wizzta.otf')
-    __FONT_ALT: str = os.path.join(os.getcwd(), 'visualizer' 'FantaisieArtistque.otf')
+    __FONT: str = os.path.join(os.getcwd(), 'visualizer', 'fonts', 'wizzta.ttf')
+    __FONT_ALT: str = os.path.join(os.getcwd(), 'visualizer' 'fonts', 'FantaisieArtistique.otf')
     __FONT_COLOR: str = '#000000'
     __FONT_COLOR_ALT: str = '#FFFFFF'
     __BUTTON_COLORS: ButtonColors = ButtonColors(
