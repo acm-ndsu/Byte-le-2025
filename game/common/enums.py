@@ -54,13 +54,19 @@ class CountryType(Enum):
     TURPIS = auto()
 
 
-class Draft(Enum):
+class SelectLeader(Enum):
     ANAHITA = auto()
     BERRY = auto()
     FULTRA = auto()
     NINLIL = auto()
     CALMUS = auto()
     IRWIN = auto()
+
+
+class SelectGeneric(Enum):
+    GEN_ATTACKER = auto()
+    GEN_HEALER = auto()
+    GEN_TANK = auto()
 
 
 class Place(Enum):
@@ -103,7 +109,5 @@ class ActionType(Enum):
     USE_NM = auto()
     USE_S1 = auto()
     USE_S2 = auto()
-    GUARD_UP = auto()
-    GUARD_DOWN = auto()
     SWAP_UP = auto()
     SWAP_DOWN = auto()

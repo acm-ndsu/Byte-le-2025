@@ -16,11 +16,12 @@ from game.utils.helpers import write_json_file
 from game.utils.thread import Thread, CommunicationThread
 from game.utils.validation import verify_code, verify_num_clients
 from game.client.user_client import UserClient
+from game.commander_clash.validate_team import validate_team_selection as validate
 
 
 class Engine:
     def __init__(self, quiet_mode=False):
-        self.clients = list()
+        self.clients: list[Player] = list()
         self.master_controller = MasterController()
         self.tick_number = 0
 
@@ -39,7 +40,12 @@ class Engine:
                 f = open(os.devnull, 'w')
                 sys.stdout = f
             self.load()
-            self.boot()
+            self.boot()  # clients are appended in this method
+
+            # a boolean representing if either team was defeated
+            team_is_defeated: bool = (self.clients[0].team_manager.everyone_is_dead() or
+                                      self.clients[1].team_manager.everyone_is_dead())
+
             for self.current_world_key in tqdm(
                     self.master_controller.game_loop_logic(),
                     bar_format=TQDM_BAR_FORMAT,
@@ -48,7 +54,9 @@ class Engine:
                 self.pre_tick()
                 self.tick()
                 self.post_tick()
-                if self.tick_number >= MAX_TICKS:
+
+                # if the tick exceeds the max OR if any team is completely defeated, break the game loop
+                if self.tick_number >= MAX_TICKS or team_is_defeated:
                     break
         except Exception as e:
             print(f"Exception raised during runtime: {str(e)}")
@@ -105,7 +113,7 @@ class Engine:
                 thr = None
                 try:
                     # Retrieve team name
-                    thr = CommunicationThread(player.code.team_name, list(), str)
+                    thr = CommunicationThread(player.code.team_data, list(), str)
                     thr.start()
                     thr.join(0.01)  # Shouldn't take long to get a string
 
@@ -119,8 +127,17 @@ class Engine:
                 finally:
                     # Note: I keep the above thread for both naming conventions to check for client errors
                     try:
+                        # set the file name
                         player.file_name = filename
-                        player.team_name = thr.retrieve_value()
+
+                        # get the team data from the thread's value
+                        team_data = thr.retrieve_value()
+
+                        # use index 0 to access the team name from `team_data`
+                        player.team_name = team_data[0]
+
+                        # use index 1 to access the tuple of character selection enums from `team_data`
+                        player.team_manager.team = validate(team_data[1])
                     except Exception as e:
                         player.functional = False
                         player.error = f"{str(e)}\n{traceback.print_exc()}"

@@ -6,7 +6,7 @@ from game.common.enums import *
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import TeamManager
-from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN
+from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN, WIN_SCORE, DIFFERENTIAL_BONUS
 from game.controllers.controller import Controller
 from game.controllers.move_controller import MoveController
 from game.controllers.swap_controller import SwapController
@@ -146,7 +146,23 @@ class MasterController(Controller):
     def return_final_results(self, clients: list[Player], turn):
         data = dict()
 
+        client1: Player = clients[0]
+        client2: Player = clients[1]
+
+        # add the differential bonus to both teams (150 * # of alive characters)
+        client1.team_manager.score += DIFFERENTIAL_BONUS * len(client1.team_manager.team)
+        client2.team_manager.score += DIFFERENTIAL_BONUS * len(client2.team_manager.team)
+
+        # client1 is the winner if client2's team is all dead
+        winner: Player | None = client1 if client2.team_manager.everyone_is_dead() else \
+            client2 if client1.team_manager.everyone_is_dead() else None
+
+        # if there is a clear winner (one team was defeated), add the winning score to the winner
+        if winner is not None:
+            winner.team_manager.score += WIN_SCORE
+
         data['players'] = list()
+
         # Determine results
         for client in clients:
             data['players'].append(client.to_json())

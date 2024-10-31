@@ -164,7 +164,10 @@ class TestCharacter(unittest.TestCase):
         self.special.guardian = None
         self.assertEqual(self.special.guardian, None)
 
-
+    def test_generics(self) -> None:
+        self.assertTrue(isinstance(self.gen_tank, Generic))
+        self.assertTrue(isinstance(self.gen_attacker, Generic))
+        self.assertTrue(isinstance(self.gen_healer, Generic))
 
     def test_get_move_methods(self) -> None:
         self.assertEqual(self.gen_tank.get_nm(), self.moveset.get_nm())
