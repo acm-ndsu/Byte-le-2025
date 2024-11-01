@@ -357,9 +357,9 @@ class GenericTrash(Generic):
         self.character_type: CharacterType = CharacterType.ATTACKER
 
         # set the moveset here since it'll remain consistent
-        self.moveset = (Debuff('Trashed Attack', TargetType.SELF, 0, None, -5, ObjectType.ATTACK_STAT),
-                        Debuff('Trashed Defense', TargetType.SELF, 0, None, -5, ObjectType.DEFENSE_STAT),
-                        Debuff('Trashed Speed', TargetType.SELF, 0, None, -5, ObjectType.SPEED_STAT))
+        self.moveset = Moveset((Debuff('Trashed Attack', TargetType.SELF, 0, None, -5, ObjectType.ATTACK_STAT),
+                                Debuff('Trashed Defense', TargetType.SELF, 0, None, -5, ObjectType.DEFENSE_STAT),
+                                Debuff('Trashed Speed', TargetType.SELF, 0, None, -5, ObjectType.SPEED_STAT)))
 
     def to_json(self) -> dict:
         return super().to_json()
