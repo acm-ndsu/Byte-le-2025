@@ -1,5 +1,4 @@
-from game.commander_clash.character.character import Leader, GenericAttacker, GenericTank, GenericHealer
-
+from game.commander_clash.character.character import Leader, GenericAttacker, GenericTank, GenericHealer, GenericTrash
 
 """
 This file is used to create the different leaders and generic characters. In this file, all attributes of a character 
@@ -41,3 +40,8 @@ def generate_generic_healer() -> GenericHealer:
 
 def generate_generic_tank() -> GenericTank:
     return GenericTank(name='Generic Tank')
+
+
+def generate_generic_trash() -> GenericTrash:
+    # all default values are appropriate for this character, so no need to provide anything else
+    return GenericTrash()
