@@ -7,10 +7,12 @@ from game.utils.vector import Vector
 from visualizer.config import Config
 from visualizer.bytesprites.charactersBS import CharactersBS
 from visualizer.templates.scoreboard_template import ScoreboardTemplate
+from visualizer.templates.team_info_template import TeamInfoTemplate
 from visualizer.utils.text import Text
 from visualizer.bytesprites.bytesprite import ByteSprite
 from visualizer.templates.menu_template import Basic, MenuTemplate
 from visualizer.templates.playback_template import PlaybackTemplate, PlaybackButtons
+
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
@@ -28,9 +30,13 @@ class Adapter:
         self.populate_bytesprite: pygame.sprite.Group = pygame.sprite.Group()
         self.menu: MenuTemplate = Basic(screen, self.config.FONT, self.config.FONT_COLOR_ALT,
                                         self.config.BUTTON_COLORS, 'Commander Clash')
-        self.scoreboard = ScoreboardTemplate(screen, Vector(), Vector(y=100, x=1366), self.config.FONT,
+        self.scoreboard = ScoreboardTemplate(screen, Vector(y=13, x=38), Vector(y=40, x=1200), self.config.FONT,
                                              self.config.FONT_COLOR)
         self.playback: PlaybackTemplate = PlaybackTemplate(screen, self.config.FONT, self.config.BUTTON_COLORS)
+        self.urodaTeam: TeamInfoTemplate = TeamInfoTemplate(screen, Vector(y=67, x=0), Vector(y=586, x=426),
+                                                            self.config.FONT, self.config.FONT_COLOR, 1)
+        self.turpisTeam: TeamInfoTemplate = TeamInfoTemplate(screen, Vector(y=67, x=854), Vector(y=586, x=426),
+                                                             self.config.FONT, self.config.FONT_COLOR, 2)
         self.turn_number: int = 0
         self.turn_max: int = MAX_TICKS
 

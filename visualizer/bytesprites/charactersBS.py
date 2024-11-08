@@ -34,46 +34,46 @@ class CharactersBS(ByteSpriteFactory):
 # Separate create bytesprite methods for each of the characters
     @staticmethod
     def create_anahita_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/anahitaSS.png'), 10, 4,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/anahitaSS.png'), 7, 16,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_berry_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/berrySS.png'), 10, 4,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/berrySS.png'), 7, 16,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_calmus_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/calmusSS.png'), 10, 4,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/calmusSS.png'), 7, 16,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))\
 
 
     @staticmethod
     def create_fultra_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/fultraSS.png'), 10, 4,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/fultraSS.png'), 7, 16,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_irwin_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/irwinSS.png'), 10, 4,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/irwinSS.png'), 7, 16,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_ninlil_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/ninlilSS.png'), 10, 4,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/ninlilSS.png'), 7, 16,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_gen_attacker_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/gen_attackerSS.png'), 10, 4,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/gen_attackerSS.png'), 7, 12,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_gen_healer_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/gen_healerSS.png'), 10, 4,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/gen_healerSS.png'), 7, 13,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_tank_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/gen_tankSS.png'), 10, 4,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/gen_tankSS.png'), 7, 14,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
