@@ -15,7 +15,7 @@ class Character(GameObject):
     help with the game mechanics.
     """
 
-    def __init__(self, name: str = 'Missing Character', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
+    def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
                  attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
                  speed: SpeedStat = SpeedStat(1), position: Vector | None = None,
                  country_type: CountryType = CountryType.URODA, moveset: Moveset = Moveset()):
@@ -347,7 +347,7 @@ class GenericTank(Generic):
 
 
 class GenericTrash(Generic):
-    def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER,
+    def __init__(self, name: str = 'Missing Character', character_type: CharacterType = CharacterType.ATTACKER,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA):
         # No matter what, the stats should be set to 1, even the health
         super().__init__(name, character_type, 1, AttackStat(1), DefenseStat(1), SpeedStat(1),
