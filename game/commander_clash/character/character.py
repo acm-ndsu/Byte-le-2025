@@ -15,7 +15,7 @@ class Character(GameObject):
     help with the game mechanics.
     """
 
-    def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
+    def __init__(self, name: str = 'Missing Character', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
                  attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
                  speed: SpeedStat = SpeedStat(1), position: Vector | None = None,
                  country_type: CountryType = CountryType.URODA, moveset: Moveset = Moveset()):
