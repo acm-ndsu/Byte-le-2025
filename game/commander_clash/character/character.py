@@ -346,6 +346,29 @@ class GenericTank(Generic):
         return self
 
 
+class GenericTrash(Generic):
+    def __init__(self, name: str = 'Missing Character', character_type: CharacterType = CharacterType.ATTACKER,
+                 position: Vector | None = None, country_type: CountryType = CountryType.URODA):
+        # No matter what, the stats should be set to 1, even the health
+        super().__init__(name, character_type, 1, AttackStat(1), DefenseStat(1), SpeedStat(1),
+                         position, country_type)
+
+        self.object_type: ObjectType = ObjectType.GENERIC_TRASH
+        self.character_type: CharacterType = CharacterType.ATTACKER
+
+        # set the moveset here since it'll remain consistent
+        self.moveset = Moveset((Debuff('Trashed Attack', TargetType.SELF, 0, None, -5, ObjectType.ATTACK_STAT),
+                                Debuff('Trashed Defense', TargetType.SELF, 0, None, -5, ObjectType.DEFENSE_STAT),
+                                Debuff('Trashed Speed', TargetType.SELF, 0, None, -5, ObjectType.SPEED_STAT)))
+
+    def to_json(self) -> dict:
+        return super().to_json()
+
+    def from_json(self, data: dict) -> Self:
+        super().from_json(data)
+        return self
+
+
 class Leader(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
                  attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),

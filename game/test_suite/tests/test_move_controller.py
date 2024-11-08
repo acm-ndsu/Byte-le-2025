@@ -48,7 +48,7 @@ class TestMoveController(unittest.TestCase):
                                                                speed=SpeedStat(15), position=Vector(0, 0),
                                                                country_type=CountryType.URODA,
                                                                moveset=self.attacker_moveset)
-        self.uroda_attacker.special_points = 10
+        self.uroda_attacker.special_points = 4
 
         self.uroda_healer: GenericHealer = GenericHealer(health=20, attack=AttackStat(5), defense=DefenseStat(5),
                                                          speed=SpeedStat(10), position=Vector(0, 1),
@@ -112,8 +112,8 @@ class TestMoveController(unittest.TestCase):
         # check the Generic Tank took damage: ceil((15 + 5) * (1 - 10 / 100)) = 18
         self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health - 18)
 
-        # uroda attacker should have 11 special points
-        self.assertEqual(self.uroda_attacker.special_points, 11)
+        # uroda attacker should have 5 special points
+        self.assertEqual(self.uroda_attacker.special_points, 5)
 
     def test_opponent_health_stays_at_0(self) -> None:
         self.turpis_tank.current_health = 1
@@ -154,7 +154,7 @@ class TestMoveController(unittest.TestCase):
         self.assertEqual(self.uroda_attacker.attack.value, 16)
 
         # ensure the special points decreased
-        self.assertEqual(self.uroda_attacker.special_points, 8)
+        self.assertEqual(self.uroda_attacker.special_points, 2)
 
     def test_heal_ally_up(self) -> None:
         # set urodan attacker health to be at 1 HP and to have already taken their turn
@@ -202,8 +202,8 @@ class TestMoveController(unittest.TestCase):
         # to ensure nothing happened, mock and check if the handle_move_logic method was called
         mock.assert_not_called()
 
-        # the urodan attacker attempted to attack in this case, so the special points should stay 10
-        self.assertEqual(self.uroda_attacker.special_points, 10)
+        # the urodan attacker attempted to attack in this case, so the special points should stay 4
+        self.assertEqual(self.uroda_attacker.special_points, 4)
 
     def test_no_ally_target_available(self) -> None:
         mock: Mock = Mock()

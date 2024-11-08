@@ -1,4 +1,4 @@
-from game.commander_clash.character.character import Generic
+from game.commander_clash.character.character import Generic, Character
 from game.commander_clash.character_generation import *
 from game.common.enums import SelectLeader, SelectGeneric
 
@@ -12,9 +12,14 @@ def validate_team_selection(
 
     leader, gen1, gen2 = [__convert_to_character(enum) for enum in enums]
 
-    return (leader if isinstance(leader, Leader) else generate_generic_attacker(),
-            gen1 if isinstance(gen1, Generic) else generate_generic_attacker(),
-            gen2 if isinstance(gen2, Generic) else generate_generic_attacker())
+    # if the leader is the same class as both generics (e.g., Tank, Tank, Tank), the leader must be replaced with trash
+    # this should only be done if the leader is an actual Leader object
+    if leader.character_type == gen1.character_type == gen2.character_type and isinstance(leader, Leader):
+        leader = GenericTrash()
+
+    return (leader if isinstance(leader, Leader) else generate_generic_trash(),
+            gen1 if isinstance(gen1, Generic) else generate_generic_trash(),
+            gen2 if isinstance(gen2, Generic) else generate_generic_trash())
 
 
 def __convert_to_character(enum: SelectGeneric | SelectLeader):

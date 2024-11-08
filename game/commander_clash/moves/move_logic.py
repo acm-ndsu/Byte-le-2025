@@ -1,6 +1,6 @@
 import math
 
-from game.config import MINIMUM_DAMAGE
+from game.config import MINIMUM_DAMAGE, SPECIAL_POINT_LIMIT
 from game.commander_clash.character.character import Character, GenericTank, Leader
 from game.commander_clash.character.stats import Stat
 from game.commander_clash.moves.moves import *
@@ -38,8 +38,9 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
             return
 
     if is_normal_attack:
-        # add 1 to the user's special points if using a normal attack
-        user.special_points += 1
+        # add 1 to the user's special points if using a normal attack and not at the Special Point limit
+        next_sp: int = user.special_points + 1
+        user.special_points = next_sp if next_sp <= SPECIAL_POINT_LIMIT else user.special_points
 
     # subtract the cost of using the move from the character's total special points
     user.special_points -= current_move.cost
