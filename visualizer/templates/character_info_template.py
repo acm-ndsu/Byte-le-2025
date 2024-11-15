@@ -13,13 +13,13 @@ class CharacterInfoTemplate(InfoTemplate):
         # self.backdrop: CharacterInfoBackdrop = CharacterInfoBackdrop(top_left=topleft)
         # self.backdrop.add(self.render_list)
         #
-        # self.characterProfile: CharacterProfile = CharacterProfile(top_left=Vector.add_vectors(topleft, Vector(x=22, y=23)))
-        # self.characterProfile.add(self.render_list)
+        # self.headshot: Headshot = CharacterProfile(top_left=Vector.add_vectors(topleft, Vector(x=22, y=23)))
+        # self.headshot.add(self.render_list)
         #
-        # self.health_bar: HealthBar = HealthBar(top_left=Vector.add_vectors(topleft, Vector(x=96, y=23)))
-        # self.health_bar.add(self.render_list)
+        # self.hp_bar: HPBar = HPBar(top_left=Vector.add_vectors(topleft, Vector(x=96, y=23)))
+        # self.hp_bar.add(self.render_list)
         #
-        self.health_bar_text: Text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
+        self.hp_bar_text: Text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
                                              position=Vector.add_vectors(topleft, Vector(x=303, y=23)))
 
         # self.sp_bar = SPBar(top_left=Vector.add_vectors(topleft, Vector(x=96, y=62)))
@@ -57,7 +57,7 @@ class CharacterInfoTemplate(InfoTemplate):
 
     def render(self) -> None:
         super().render()
-        self.health_bar_text.render()
+        self.hp_bar_text.render()
         self.sp_bar_text.render()
         self.attack_stat_text.render()
         self.defense_stat_text.render()
