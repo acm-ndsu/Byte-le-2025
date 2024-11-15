@@ -3,7 +3,7 @@ from __future__ import annotations
 from game.commander_clash.character.stats import *
 from game.commander_clash.moves.moves import *
 from game.commander_clash.moves.moveset import Moveset
-from game.common.enums import ObjectType, CharacterType, RankType
+from game.common.enums import ObjectType, CharacterType, RankType, CountryType
 from game.common.game_object import GameObject
 from game.utils.vector import Vector
 
@@ -16,8 +16,8 @@ class Character(GameObject):
     """
 
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
-                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
-                 speed: SpeedStat = SpeedStat(1), position: Vector | None = None,
+                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(),
+                 speed: SpeedStat = SpeedStat(), position: Vector | None = None,
                  country_type: CountryType = CountryType.URODA, moveset: Moveset = Moveset()):
         super().__init__()
         self.name: str = name
@@ -28,7 +28,7 @@ class Character(GameObject):
         self.attack: AttackStat = attack
         self.defense: DefenseStat = defense
         self.speed: SpeedStat = speed
-        self.rank: RankType = RankType.GENERIC
+        self.rank_type: RankType = RankType.GENERIC
         self.moveset: Moveset = moveset
         self.special_points: int = 0
         self.position: Vector | None = position
@@ -47,7 +47,7 @@ class Character(GameObject):
         return (self.name == other.name and self.object_type == other.object_type
                 and self.character_type == other.character_type and self.current_health == other.current_health
                 and self.max_health == other.max_health and self.attack == other.attack
-                and self.defense == other.defense and self.speed == other.speed and self.rank == other.rank
+                and self.defense == other.defense and self.speed == other.speed and self.rank_type == other.rank_type
                 and self.moveset == other.moveset
                 and self.special_points == other.special_points and self.position == other.position
                 and self.took_action == other.took_action and self.country_type == other.country_type)
@@ -230,18 +230,18 @@ class Character(GameObject):
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['name'] = self.name
-        data['character_type'] = self.character_type
+        data['character_type'] = self.character_type.value
         data['current_health'] = self.current_health
         data['max_health'] = self.max_health
         data['attack'] = self.attack.to_json()
         data['defense'] = self.defense.to_json()
         data['speed'] = self.speed.to_json()
-        data['rank'] = self.rank
+        data['rank_type'] = self.rank_type.value
         data['moveset'] = self.moveset.to_json()
         data['special_points'] = self.special_points
         data['position'] = self.position.to_json() if self.position is not None else None
         data['took_action'] = self.took_action
-        data['country_type'] = self.__country_type
+        data['country_type'] = self.__country_type.value
         data['is_dead'] = self.is_dead
 
         return data
@@ -255,7 +255,7 @@ class Character(GameObject):
         self.attack: AttackStat = AttackStat().from_json(data['attack'])
         self.defense: DefenseStat = DefenseStat().from_json(data['defense'])
         self.speed: SpeedStat = SpeedStat().from_json(data['speed'])
-        self.rank: RankType = RankType(data['rank'])
+        self.rank_type: RankType = RankType(data['rank_type'])
         self.moveset: Moveset = Moveset().from_json(data['moveset'])
         self.special_points: int = data['special_points']
         self.position: Vector | None = None if data['position'] is None else Vector().from_json(data['position'])
@@ -273,8 +273,8 @@ class Generic(Character):
     """
 
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
-                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
-                 speed: SpeedStat = SpeedStat(1), position: Vector | None = None,
+                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(),
+                 speed: SpeedStat = SpeedStat(), position: Vector | None = None,
                  country_type: CountryType = CountryType.URODA, moveset: Moveset = Moveset()):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)
@@ -291,8 +291,8 @@ class Generic(Character):
 
 class GenericAttacker(Generic):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
-                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
-                 speed: SpeedStat = SpeedStat(1), position: Vector | None = None,
+                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(),
+                 speed: SpeedStat = SpeedStat(), position: Vector | None = None,
                  country_type: CountryType = CountryType.URODA, moveset: Moveset = Moveset()):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)
@@ -310,8 +310,8 @@ class GenericAttacker(Generic):
 
 class GenericHealer(Generic):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.HEALER, health: int = 1,
-                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
-                 speed: SpeedStat = SpeedStat(1), position: Vector | None = None,
+                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(),
+                 speed: SpeedStat = SpeedStat(), position: Vector | None = None,
                  country_type: CountryType = CountryType.URODA, moveset: Moveset = Moveset()):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)
@@ -329,8 +329,8 @@ class GenericHealer(Generic):
 
 class GenericTank(Generic):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.TANK, health: int = 1,
-                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
-                 speed: SpeedStat = SpeedStat(1), position: Vector | None = None,
+                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(),
+                 speed: SpeedStat = SpeedStat(), position: Vector | None = None,
                  country_type: CountryType = CountryType.URODA, moveset: Moveset = Moveset()):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)
@@ -371,8 +371,8 @@ class GenericTrash(Generic):
 
 class Leader(Character):
     def __init__(self, name: str = '', character_type: CharacterType = CharacterType.ATTACKER, health: int = 1,
-                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(1),
-                 speed: SpeedStat = SpeedStat(1), position: Vector | None = None,
+                 attack: AttackStat = AttackStat(), defense: DefenseStat = DefenseStat(),
+                 speed: SpeedStat = SpeedStat(), position: Vector | None = None,
                  country_type: CountryType = CountryType.URODA, moveset: Moveset = Moveset()):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)

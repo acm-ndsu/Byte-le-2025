@@ -109,7 +109,7 @@ class TeamManager(GameObject):
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['team'] = [character.to_json() for character in self.team]
-        data['country'] = self.country
+        data['country'] = self.country.value
         data['score'] = self.score
         return data
 

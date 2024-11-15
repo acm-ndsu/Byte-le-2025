@@ -1,4 +1,5 @@
-from game.common.action import Action
+from __future__ import annotations
+from typing import Self
 from game.common.game_object import GameObject
 from game.common.team_manager import TeamManager
 from game.common.enums import *
@@ -109,7 +110,7 @@ class Player(GameObject):
                 f'{self.__class__.__name__}.object_type must be ObjectType. It is a(n) {object_type.__class__.__name__} and has the value of {object_type}.')
         self.__object_type = object_type
 
-    def to_json(self):
+    def to_json(self) -> dict:
         data = super().to_json()
 
         data['functional'] = self.functional
@@ -121,7 +122,7 @@ class Player(GameObject):
 
         return data
 
-    def from_json(self, data):
+    def from_json(self, data) -> Self:
         super().from_json(data)
 
         self.functional = data['functional']
@@ -129,19 +130,11 @@ class Player(GameObject):
         self.team_name = data['team_name']
         self.file_name = data['file_name']
 
-        self.actions: list[ActionType] = [ObjectType(action) for action in data['actions']]
-        team_manager: TeamManager | None = data['team_manager']
+        self.actions: list[ActionType] = [ActionType(action) for action in data['actions']]
+        team_manager: dict | None = data['team_manager']
         if team_manager is None:
             self.team_manager = None
             return self
-        # match case for action
-        # match action['object_type']:
-        #     case ObjectType.ACTION:
-        #         self.action = Action().from_json(data['action'])
-        #     case None:
-        #         self.action = None
-        #     case _:  # checks if it is anything else
-        #         raise Exception(f'Could not parse action: {self.action}')
 
         # match case for team_manager
         match ObjectType(team_manager['object_type']):
@@ -152,8 +145,6 @@ class Player(GameObject):
             case _:
                 raise Exception(f'Could not parse team_manager: {self.team_manager}')
         return self
-        # self.action = Action().from_json(data['action']) if data['action'] is not None else None
-        # self.team_manager = team_manager().from_json(data['team_manager']) if data['team_manager'] is not None else None
 
     # to String
     def __str__(self):

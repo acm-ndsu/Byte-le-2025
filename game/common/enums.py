@@ -16,38 +16,38 @@ class DebugLevel(Enum):
 
 
 class ObjectType(Enum):
-    NONE = auto()
-    ACTION = auto()
-    PLAYER = auto()
-    TEAMMANAGER = auto()
-    GAMEBOARD = auto()
-    VECTOR = auto()
-    TILE = auto()
-    WALL = auto()
-    OCCUPIABLE = auto()
-    GAME_OBJECT_CONTAINER = auto()
-    CHARACTER = auto()
-    GENERIC_ATTACKER = auto()
-    GENERIC_HEALER = auto()
-    GENERIC_TANK = auto()
-    GENERIC_TRASH = auto()
-    LEADER = auto()
-    MOVESET = auto()
-    STAT = auto()
-    ATTACK_STAT = auto()
-    DEFENSE_STAT = auto()
-    SPEED_STAT = auto()
-    MOVE = auto()
-    ATTACK_MOVE = auto()
-    HEAL_MOVE = auto()
-    BUFF_MOVE = auto()
-    DEBUFF_MOVE = auto()
-    GUARD_MOVE = auto()
-    EFFECT = auto()
-    ATTACK_EFFECT = auto()
-    HEAL_EFFECT = auto()
-    BUFF_EFFECT = auto()
-    DEBUFF_EFFECT = auto()
+    NONE = 1
+    ACTION = 2
+    PLAYER = 3
+    TEAMMANAGER = 4
+    GAMEBOARD = 5
+    VECTOR = 6
+    TILE = 7
+    WALL = 8
+    OCCUPIABLE = 9
+    GAME_OBJECT_CONTAINER = 10
+    CHARACTER = 11
+    GENERIC_ATTACKER = 12
+    GENERIC_HEALER = 13
+    GENERIC_TANK = 14
+    GENERIC_TRASH = 15
+    LEADER = 16
+    MOVESET = 17
+    STAT = 18
+    ATTACK_STAT = 19
+    DEFENSE_STAT = 20
+    SPEED_STAT = 21
+    MOVE = 22
+    ATTACK_MOVE = 23
+    HEAL_MOVE = 24
+    BUFF_MOVE = 25
+    DEBUFF_MOVE = 26
+    GUARD_MOVE = 27
+    EFFECT = 28
+    ATTACK_EFFECT = 29
+    HEAL_EFFECT = 30
+    BUFF_EFFECT = 31
+    DEBUFF_EFFECT = 32
 
 
 class CountryType(Enum):
@@ -68,13 +68,6 @@ class SelectGeneric(Enum):
     GEN_ATTACKER = auto()
     GEN_HEALER = auto()
     GEN_TANK = auto()
-
-
-class Place(Enum):
-    LEADER = auto()
-    ATTACKER = auto()
-    HEALER = auto()
-    TANK = auto()
 
 
 class MoveType(Enum):

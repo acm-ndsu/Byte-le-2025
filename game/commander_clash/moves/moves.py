@@ -62,15 +62,18 @@ class Move(AbstractMove):
         if data['effect'] is None:
             self.effect: Effect | None = None
         else:
-            if data['effect']['move_type'] == MoveType.MOVE:
+            # convert the int from the JSON to the proper MoveType enum
+            move_type: MoveType = MoveType(data['effect']['move_type'])
+
+            if move_type == MoveType.MOVE:
                 self.effect: Effect | None = Effect().from_json(data['effect'])
-            elif data['effect']['move_type'] == MoveType.ATTACK:
+            elif move_type == MoveType.ATTACK:
                 self.effect: AttackEffect | None = AttackEffect().from_json(data['effect'])
-            elif data['effect']['move_type'] == MoveType.HEAL:
+            elif move_type == MoveType.HEAL:
                 self.effect: HealEffect | None = HealEffect().from_json(data['effect'])
-            elif data['effect']['move_type'] == MoveType.BUFF:
+            elif move_type == MoveType.BUFF:
                 self.effect: BuffEffect | None = BuffEffect().from_json(data['effect'])
-            elif data['effect']['move_type'] == MoveType.DEBUFF:
+            elif move_type == MoveType.DEBUFF:
                 self.effect: DebuffEffect | None = DebuffEffect().from_json(data['effect'])
 
         return self

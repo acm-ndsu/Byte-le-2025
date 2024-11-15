@@ -1,8 +1,6 @@
-import game.common.map.game_board
 from game.common.player import Player
 from game.common.map.game_board import GameBoard
-from game.common.enums import *
-from game.utils.vector import Vector
+from game.common.enums import ActionType
 from game.controllers.controller import Controller
 from game.common.team_manager import *
 

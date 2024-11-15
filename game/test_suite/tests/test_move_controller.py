@@ -9,6 +9,7 @@ from game.commander_clash.moves.moveset import Moveset
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import TeamManager
+from game.common.enums import CountryType, ActionType
 from game.controllers.move_controller import MoveController
 from game.controllers.swap_controller import SwapController
 from game.utils.vector import Vector
