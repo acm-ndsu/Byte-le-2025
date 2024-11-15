@@ -9,10 +9,10 @@ When developing the game, add any extra enums as necessary.
 
 
 class DebugLevel(Enum):
-    NONE = auto()
-    CLIENT = auto()
-    CONTROLLER = auto()
-    ENGINE = auto()
+    NONE = 1
+    CLIENT = 2
+    CONTROLLER = 3
+    ENGINE = 4
 
 
 class ObjectType(Enum):
@@ -51,57 +51,57 @@ class ObjectType(Enum):
 
 
 class CountryType(Enum):
-    URODA = auto()
-    TURPIS = auto()
+    URODA = 1
+    TURPIS = 2
 
 
 class SelectLeader(Enum):
-    ANAHITA = auto()
-    BERRY = auto()
-    FULTRA = auto()
-    NINLIL = auto()
-    CALMUS = auto()
-    IRWIN = auto()
+    ANAHITA = 1
+    BERRY = 2
+    FULTRA = 3
+    NINLIL = 4
+    CALMUS = 5
+    IRWIN = 6
 
 
 class SelectGeneric(Enum):
-    GEN_ATTACKER = auto()
-    GEN_HEALER = auto()
-    GEN_TANK = auto()
+    GEN_ATTACKER = 1
+    GEN_HEALER = 2
+    GEN_TANK = 3
 
 
 class MoveType(Enum):
-    MOVE = auto()
-    ATTACK = auto()
-    HEAL = auto()
-    BUFF = auto()
-    DEBUFF = auto()
-    GUARD = auto()
+    MOVE = 1
+    ATTACK = 2
+    HEAL = 3
+    BUFF = 4
+    DEBUFF = 5
+    GUARD = 6
 
 
 class TargetType(Enum):
-    SELF = auto()
-    ADJACENT_ALLIES = auto()
-    ENTIRE_TEAM = auto()
-    SINGLE_OPP = auto()
-    ALL_OPPS = auto()
+    SELF = 1
+    ADJACENT_ALLIES = 2
+    ENTIRE_TEAM = 3
+    SINGLE_OPP = 4
+    ALL_OPPS = 5
 
 
 class CharacterType(Enum):
-    ATTACKER = auto()
-    HEALER = auto()
-    TANK = auto()
+    ATTACKER = 1
+    HEALER = 2
+    TANK = 3
 
 
 class RankType(Enum):
-    GENERIC = auto()
-    LEADER = auto()
+    GENERIC = 1
+    LEADER = 2
 
 
 class ActionType(Enum):
-    NONE = auto()
-    USE_NM = auto()
-    USE_S1 = auto()
-    USE_S2 = auto()
-    SWAP_UP = auto()
-    SWAP_DOWN = auto()
+    NONE = 1
+    USE_NM = 2
+    USE_S1 = 3
+    USE_S2 = 4
+    SWAP_UP = 5
+    SWAP_DOWN = 6

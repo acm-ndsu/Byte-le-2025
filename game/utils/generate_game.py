@@ -1,4 +1,7 @@
 import random
+
+from game.commander_clash.generation.char_position_generation import generate_character_positions
+from game.commander_clash.generation.character_generation import *
 from game.common.team_manager import TeamManager
 from game.utils.vector import Vector
 from game.config import *
@@ -17,7 +20,10 @@ def generate(seed: int = random.randint(0, 1000000000)):
 
     print(f'Generating game map... seed: {seed}')
 
-    temp: GameBoard = GameBoard(seed, map_size=Vector(6, 6), walled=False)
+    locations = generate_character_positions(TeamManager([generate_berry(), generate_generic_attacker(),
+                                                         generate_generic_attacker()]))
+
+    temp: GameBoard = GameBoard(seed, map_size=Vector(6, 6), walled=False, locations=locations)
     temp.generate_map()
     data: dict = {'game_board': temp.to_json()}
     # for x in range(1, MAX_TICKS + 1):

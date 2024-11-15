@@ -10,6 +10,7 @@ from tqdm import tqdm
 
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
+from game.common.team_manager import TeamManager
 from game.config import *
 from game.controllers.master_controller import MasterController
 from game.utils.helpers import write_json_file
@@ -71,6 +72,12 @@ class Engine:
         sys.path.insert(0, current_dir)
         sys.path.insert(0, f'{current_dir}/{CLIENT_DIRECTORY}')
 
+        # a reference for the team manager to use later
+        team_manager: TeamManager = TeamManager()
+
+        # a list to contain all the team managers created
+        team_managers: list[TeamManager] = []
+
         # Find and load clients in
         for filename in os.listdir(CLIENT_DIRECTORY):
             try:
@@ -111,9 +118,10 @@ class Engine:
 
                 player.code = obj
                 thr = None
+
                 try:
                     # Retrieve team name
-                    thr = CommunicationThread(player.code.team_data, list(), str)
+                    thr = CommunicationThread(player.code.team_data, list(), tuple)
                     thr.start()
                     thr.join(0.01)  # Shouldn't take long to get a string
 
@@ -137,7 +145,15 @@ class Engine:
                         player.team_name = team_data[0]
 
                         # use index 1 to access the tuple of character selection enums from `team_data`
-                        player.team_manager.team = validate(team_data[1])
+                        team_manager.team = validate(team_data[1])
+                        team_managers.append(team_manager)
+
+                        # # give the game board access to the player's team manager
+                        # if team_manager.country == CountryType.URODA:
+                        #     self.world.uroda_team_manager = team_manager
+                        # else:
+                        #     self.world.turpis_team_manager = team_manager
+
                     except Exception as e:
                         player.functional = False
                         player.error = f"{str(e)}\n{traceback.print_exc()}"
@@ -159,10 +175,11 @@ class Engine:
             # Sort clients based on name, for the client runner
             self.clients.sort(key=lambda clnt: clnt.team_name, reverse=True)
             # Finally, request master controller to establish clients with basic objects
+            print(f'TEAM MANAGER BEFORE GIVING CLIENTS: {team_manager}', f'TEAMS: {team_managers}\n\n\n\n\n\n')
             if SET_NUMBER_OF_CLIENTS_START == 1:
-                self.master_controller.give_clients_objects(self.clients[0], self.world)
+                self.master_controller.give_clients_objects(self.clients[0], self.world, team_managers)
             else:
-                self.master_controller.give_clients_objects(self.clients, self.world)
+                self.master_controller.give_clients_objects(self.clients, self.world, team_managers)
 
     # Loads in the world
     def load(self):

@@ -24,7 +24,7 @@ class Client(UserClient):
         order (e.g., (Generic, Leader, Leader)), whichever selection is incorrect will be swapped with a default value
         of Generic Attacker.
         """
-        return 'Team 2', (SelectLeader.BERRY, SelectGeneric.GEN_ATTACKER, SelectGeneric.GEN_ATTACKER)
+        return 'Team 2', (SelectLeader.BERRY, SelectGeneric.GEN_TANK, SelectGeneric.GEN_TANK)
 
     def first_turn_init(self, team_manager: TeamManager):
         """

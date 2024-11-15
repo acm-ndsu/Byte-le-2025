@@ -55,9 +55,8 @@ class MasterController(Controller):
         self.move_controller: MoveController = MoveController()
 
     # Receives all clients for the purpose of giving them the objects they will control
-    def give_clients_objects(self, clients: list[Player], world: dict):
-        # starting_positions would set done in generate game
-
+    def give_clients_objects(self, clients: list[Player], world: dict, team_managers: list[TeamManager]):
+        # starting_positions should be set in generate game
         gb: GameBoard = world['game_board']
 
         # get the two teams from the gameboard
