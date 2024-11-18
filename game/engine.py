@@ -151,13 +151,6 @@ class Engine:
                         team_manager.team = validate(team_data[1])
                         team_managers.append(team_manager)
 
-                        # assign countries to the team managers
-                        if client_files_found == 0:
-                            team_manager.country = CountryType.URODA
-                            client_files_found += 1
-                        else:
-                            team_manager.country = CountryType.TURPIS
-
                         player.team_manager = team_manager
 
                         # with access to the team managers, write them to the json file

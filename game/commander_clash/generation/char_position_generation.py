@@ -15,7 +15,7 @@ def generate_character_positions(team_managers: list[TeamManager]) -> dict:
 
         # add the characters in the following order: Generic, Leader, Generic
         locations.update({Vector(x_pos, 0): [generics[0]]})
-        locations.update({Vector(x_pos, 0): [leader]})
-        locations.update({Vector(x_pos, 0): [generics[1]]})
+        locations.update({Vector(x_pos, 1): [leader]})
+        locations.update({Vector(x_pos, 2): [generics[1]]})
 
     return locations

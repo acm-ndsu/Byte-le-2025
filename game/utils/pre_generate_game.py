@@ -17,8 +17,12 @@ def pre_generate():
     example of this would be if the user needs to choose a character to use before the map is generated. This is done to
     honor the control flow of the engine, to create some abstraction from the engine file, and to also ensure the
     `generate()` method in the `generate_game.py` file is only called once.
+
     This method *must* be called in the `generate()` method in the `generate_game.py` file before any other logic
     specified in that method. This method can return or receive whatever information is necessary for the game created.
+
+    The code used below is very similar to the engine file. This is executed here since it simplifies the engine's code
+    and can be done separately for generation
     """
 
     # Insert path of where clients are expected to be inside where python will look
@@ -31,8 +35,11 @@ def pre_generate():
     clients: list[Player] = []
     world = dict()
 
+    # an int used to keep track of which client file is being used to assign country values
+    client_files_found: int = 0
+
     # Find and load clients in
-    for iteration, filename in enumerate(os.listdir(CLIENT_DIRECTORY)):
+    for filename in os.listdir(CLIENT_DIRECTORY):
         # create a new team manager to use later
         team_manager: TeamManager = TeamManager()
 
@@ -86,6 +93,13 @@ def pre_generate():
 
                     # use index 1 to access the tuple of character selection enums from `team_data`
                     team_manager.team = validate(team_data[1])
+
+                    # assign countries to the team managers
+                    if client_files_found == 0:
+                        team_manager.country = CountryType.URODA
+                        client_files_found += 1
+                    else:
+                        team_manager.country = CountryType.TURPIS
 
                     team_managers.append(team_manager)
                 except Exception as e:

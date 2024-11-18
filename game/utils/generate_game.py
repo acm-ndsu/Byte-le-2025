@@ -20,6 +20,8 @@ def generate(seed: int = random.randint(0, 1000000000)):
     """
 
     print(f'Generating game map... seed: {seed}')
+
+    # get the locations of the characters necessary from the pre_generation methodc
     locations: dict[Vector, list[GameObject]] = pre_generate()
 
     temp: GameBoard = GameBoard(seed, map_size=Vector(6, 6), walled=False, locations=locations)
