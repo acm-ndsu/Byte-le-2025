@@ -17,14 +17,14 @@ class Client(UserClient):
     def __init__(self):
         super().__init__()
 
-    def team_data(self) -> tuple[str, tuple[SelectLeader, SelectGeneric, SelectGeneric]]:
+    def team_data(self) -> tuple[str, tuple[SelectGeneric, SelectLeader, SelectGeneric]]:
         """
         Returns your team name and a tuple of enums representing the characters you want for your team.
         The tuple of the team must be ordered as (Leader, Generic, Generic). If an enum is not placed in the correct
         order (e.g., (Generic, Leader, Leader)), whichever selection is incorrect will be swapped with a default value
         of Generic Attacker.
         """
-        return 'Team 1', (SelectLeader.ANAHITA, SelectGeneric.GEN_ATTACKER, SelectGeneric.GEN_ATTACKER)
+        return 'Team 1', (SelectGeneric.GEN_ATTACKER, SelectLeader.ANAHITA, SelectGeneric.GEN_ATTACKER)
 
     def first_turn_init(self, team_manager: TeamManager):
         """

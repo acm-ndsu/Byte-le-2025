@@ -29,12 +29,27 @@ SET_NUMBER_OF_CLIENTS_CONTINUE = 2                  # required number of clients
 
 ALLOWED_MODULES = ["game.client.user_client",       # modules that clients are specifically allowed to access
                    "game.common.enums",
-                   "math",
+                   "game.common.map.game_board",
+                   "game.common.map.tile",
+                   "game.common.map.wall",
+                   "game.common.map.game_board",
+                   "game.common.team_manager",
+                   "game.commander_clash.character.character",
+                   "game.commander_clash.character.stats",
+                   "game.commander_clash.moves.effects",
+                   "game.commander_clash.moves.moves",
+                   "game.commander_clash.moves.moveset",
+                   "game.utils.vector",
+                   "typing",
                    "numpy",
                    "scipy",
                    "pandas",
                    "itertools",
                    "functools",
+                   "random",
+                   "heapq",
+                   "sympy",
+                   "math",
                    ]
 
 RESULTS_FILE_NAME = "results.json"                                  # Name and extension of results file

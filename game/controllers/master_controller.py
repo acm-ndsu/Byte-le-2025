@@ -10,6 +10,7 @@ from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN, WIN_SCORE, DIFFERENTIAL_
 from game.controllers.controller import Controller
 from game.controllers.move_controller import MoveController
 from game.controllers.swap_controller import SwapController
+from game.utils.generate_game import generate
 from game.utils.vector import Vector
 
 
@@ -57,17 +58,12 @@ class MasterController(Controller):
     # Receives all clients for the purpose of giving them the objects they will control
     def give_clients_objects(self, clients: list[Player], world: dict, team_managers: list[TeamManager]):
         # starting_positions should be set in generate game
-        gb: GameBoard = world['game_board']
-
-        # get the two teams from the gameboard
-        uroda_team: dict[Vector, Character] = gb.get_characters(CountryType.URODA)
-        turpis_team: dict[Vector, Character] = gb.get_characters(CountryType.TURPIS)
+        # gb: GameBoard = world['game_board']
 
         # create a new TeamManager for every Player object
-        # the first Player is assigned the Uroda team, and then second is assigned Turpis
+        # the first Player is assigned the Uroda team; the second is assigned Turpis
         for iteration, client in enumerate(clients):
-            client.team_manager = TeamManager()
-            client.team_manager.team = uroda_team if iteration == 0 else turpis_team
+            client.team_manager = team_managers[iteration]
 
     # Generator function. Given a key:value pair where the key is the identifier for the current world and the value is
     # the state of the world, returns the key that will give the appropriate world information
@@ -86,7 +82,7 @@ class MasterController(Controller):
         self.current_world_data = world
 
         if turn == 1:
-            random.seed(world['game_board'].seed)
+            random.seed(world['game_board']['seed'])
             # self.event_times = random.randrange(162, 172), random.randrange(329, 339)
 
     # Receive a specific client and send them what they get per turn. Also obfuscates necessary objects.
@@ -99,7 +95,7 @@ class MasterController(Controller):
         client.actions = turn_actions
 
         # Create deep copies of all objects sent to the player
-        current_world = GameBoard().from_json(self.current_world_data['game_board'].to_json())  # deepcopy(self.current_world_data["game_board"])  # what is current world and copy avatar
+        current_world = GameBoard().from_json(self.current_world_data['game_board'])  # deepcopy(self.current_world_data["game_board"])  # what is current world and copy avatar
         copy_team_manager = TeamManager().from_json(client.team_manager.to_json())  # deepcopy(client.team_manager)
         # Obfuscate data in objects that that player should not be able to see
         # Currently world data isn't obfuscated at all
@@ -137,7 +133,7 @@ class MasterController(Controller):
         data['tick'] = turn
         data['clients'] = [client.to_json() for client in clients]
         # Add things that should be thrown into the turn logs here
-        data['game_board'] = self.current_world_data["game_board"].to_json()
+        data['game_board'] = self.current_world_data["game_board"]
 
         return data
 

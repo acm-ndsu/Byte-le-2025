@@ -8,6 +8,8 @@ from datetime import datetime
 
 from tqdm import tqdm
 
+from game.client.user_client import UserClient
+from game.commander_clash.validate_team import validate_team_selection as validate
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import TeamManager
@@ -16,8 +18,6 @@ from game.controllers.master_controller import MasterController
 from game.utils.helpers import write_json_file
 from game.utils.thread import Thread, CommunicationThread
 from game.utils.validation import verify_code, verify_num_clients
-from game.client.user_client import UserClient
-from game.commander_clash.validate_team import validate_team_selection as validate
 
 
 class Engine:
@@ -72,14 +72,17 @@ class Engine:
         sys.path.insert(0, current_dir)
         sys.path.insert(0, f'{current_dir}/{CLIENT_DIRECTORY}')
 
-        # a reference for the team manager to use later
-        team_manager: TeamManager = TeamManager()
-
         # a list to contain all the team managers created
         team_managers: list[TeamManager] = []
 
+        # an int used to keep track of which client file is being used to assign country values
+        client_files_found: int = 0
+
         # Find and load clients in
         for filename in os.listdir(CLIENT_DIRECTORY):
+            # create a new team manager to use later
+            team_manager: TeamManager = TeamManager()
+
             try:
                 filename = filename.replace('.py', '')
 
@@ -148,11 +151,30 @@ class Engine:
                         team_manager.team = validate(team_data[1])
                         team_managers.append(team_manager)
 
-                        # # give the game board access to the player's team manager
-                        # if team_manager.country == CountryType.URODA:
-                        #     self.world.uroda_team_manager = team_manager
-                        # else:
-                        #     self.world.turpis_team_manager = team_manager
+                        # assign countries to the team managers
+                        if client_files_found == 0:
+                            team_manager.country = CountryType.URODA
+                            client_files_found += 1
+                        else:
+                            team_manager.country = CountryType.TURPIS
+
+                        player.team_manager = team_manager
+
+                        # with access to the team managers, write them to the json file
+                        with open(GAME_MAP_FILE) as json_file:
+                            world = json.load(json_file)
+
+                            uroda_team_manager = world['game_board']['uroda_team_manager']
+                            turpis_team_manager = world['game_board']['turpis_team_manager']
+
+                            if CLIENT_KEYWORD in filename and uroda_team_manager is None:
+                                world['game_board']['uroda_team_manager'] = team_manager.to_json()
+                            elif CLIENT_KEYWORD in filename and turpis_team_manager is None:
+                                world['game_board']['turpis_team_manager'] = team_manager.to_json()
+
+                            # Write game map to file
+                            write_json_file(world, GAME_MAP_FILE)
+                            self.world = world
 
                     except Exception as e:
                         player.functional = False
@@ -175,7 +197,6 @@ class Engine:
             # Sort clients based on name, for the client runner
             self.clients.sort(key=lambda clnt: clnt.team_name, reverse=True)
             # Finally, request master controller to establish clients with basic objects
-            print(f'TEAM MANAGER BEFORE GIVING CLIENTS: {team_manager}', f'TEAMS: {team_managers}\n\n\n\n\n\n')
             if SET_NUMBER_OF_CLIENTS_START == 1:
                 self.master_controller.give_clients_objects(self.clients[0], self.world, team_managers)
             else:

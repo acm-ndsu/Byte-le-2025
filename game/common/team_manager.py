@@ -25,7 +25,7 @@ class TeamManager(GameObject):
     ignored, but reminder to exercise caution when adjusting the Character class for this reason.
     '''
 
-    def __init__(self, team: list[Character] = [Character(), Character(), Character()],
+    def __init__(self, team: list[Character] = [GenericTrash(), GenericTrash(), GenericTrash()],
                  country: CountryType = CountryType.URODA):
         super().__init__()
         self.object_type: ObjectType = ObjectType.TEAMMANAGER
@@ -119,6 +119,8 @@ class TeamManager(GameObject):
         match temp:
             case ObjectType.CHARACTER:
                 return Character().from_json(data)
+            case ObjectType.GENERIC_TRASH:
+                return GenericTrash().from_json(data)
             case ObjectType.GENERIC_ATTACKER:
                 return GenericAttacker().from_json(data)
             case ObjectType.GENERIC_HEALER:
