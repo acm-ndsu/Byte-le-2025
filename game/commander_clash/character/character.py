@@ -6,6 +6,7 @@ from game.commander_clash.moves.moveset import Moveset
 from game.common.enums import ObjectType, CharacterType, RankType, CountryType
 from game.common.game_object import GameObject
 from game.utils.vector import Vector
+from game.config import HEALTH_MODIFIER
 
 
 class Character(GameObject):
@@ -23,8 +24,8 @@ class Character(GameObject):
         self.name: str = name
         self.object_type: ObjectType = ObjectType.CHARACTER
         self.character_type: CharacterType = character_type
-        self.current_health: int = health
-        self.max_health: int = health
+        self.current_health: int = health * HEALTH_MODIFIER
+        self.max_health: int = health * HEALTH_MODIFIER
         self.attack: AttackStat = attack
         self.defense: DefenseStat = defense
         self.speed: SpeedStat = speed
