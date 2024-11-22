@@ -85,17 +85,20 @@ def generate_fultra() -> Leader:
 
 def generate_ninlil() -> Leader:
     # NEVER DISCUSSED NINLIL'S MOVESET OR STATS
-    nm: Attack = Attack(name='Axe Slash', target_type=TargetType.SINGLE_OPP, damage_points=1)
+    nm: Attack = Attack(name='Axe Slash', target_type=TargetType.SINGLE_OPP, effect=None, damage_points=5)
 
-    s1: Attack = Attack(name='Axe Slash Again', target_type=TargetType.SELF, cost=2, damage_points=3)
+    s1_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-3,
+                                           stat_to_affect=ObjectType.SPEED_STAT)
+    s1: Attack = Attack(name='Axe Slash Again', target_type=TargetType.SINGLE_OPP, cost=2, effect=s1_effect, damage_points=10)
 
-    # Discuss damage_points for this one
-    s2: Attack = Attack(name='3x Slashes', target_type=TargetType.SINGLE_OPP, cost=5, damage_points=5)
+    s2_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-5,
+                                           stat_to_affect=ObjectType.SPEED_STAT)
+    s2: Attack = Attack(name='3x Slashes', target_type=TargetType.SINGLE_OPP, cost=5, effect=s2_effect, damage_points=15)
 
-    hp: int = 50
-    atk: AttackStat = AttackStat(50)
-    defense: DefenseStat = DefenseStat(50)
-    spd: SpeedStat = SpeedStat(35)
+    hp: int = 46
+    atk: AttackStat = AttackStat(47)
+    defense: DefenseStat = DefenseStat(37)
+    spd: SpeedStat = SpeedStat(30)
 
     moves: Moveset = Moveset((nm, s1, s2))
 
