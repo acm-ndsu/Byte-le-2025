@@ -9,6 +9,7 @@ from datetime import datetime
 from tqdm import tqdm
 
 from game.client.user_client import UserClient
+from game.commander_clash.generation.char_position_generation import assign_and_write_positions
 from game.commander_clash.validate_team import validate_team_selection as validate
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
@@ -149,9 +150,21 @@ class Engine:
 
                         # use index 1 to access the tuple of character selection enums from `team_data`
                         team_manager.team = validate(team_data[1])
+
+                        # give the team manager the player's team name to help with assignment
+                        team_manager.team_name = player.team_name
+
                         team_managers.append(team_manager)
 
                         player.team_manager = team_manager
+
+                        if client_files_found == 0:
+                            team_manager.country = CountryType.URODA
+                        elif client_files_found == 1:
+                            team_manager.country = CountryType.TURPIS
+
+                        # increment the num of files found; statement is only reached when a client file is found
+                        client_files_found += 1
 
                         # with access to the team managers, write them to the json file
                         with open(GAME_MAP_FILE) as json_file:
@@ -162,8 +175,10 @@ class Engine:
 
                             if CLIENT_KEYWORD in filename and uroda_team_manager is None:
                                 world['game_board']['uroda_team_manager'] = team_manager.to_json()
+                                world['game_board']['uroda_team_manager']['country'] = CountryType.URODA.value
                             elif CLIENT_KEYWORD in filename and turpis_team_manager is None:
                                 world['game_board']['turpis_team_manager'] = team_manager.to_json()
+                                world['game_board']['turpis_team_manager']['country'] = CountryType.TURPIS.value
 
                             # Write game map to file
                             write_json_file(world, GAME_MAP_FILE)
@@ -177,6 +192,9 @@ class Engine:
                 print(f"{traceback.print_exc()}")
                 player.functional = False
 
+        # give the characters in the team managers their positions
+        assign_and_write_positions(team_managers)
+
         # Verify correct number of clients have connected to start
         func_clients = [client for client in self.clients if client.functional]
         client_num_correct = verify_num_clients(func_clients,
@@ -189,6 +207,8 @@ class Engine:
         else:
             # Sort clients based on name, for the client runner
             self.clients.sort(key=lambda clnt: clnt.team_name, reverse=True)
+            # Sort the team managers by the team name to ensure they are with the correct team
+            team_managers.sort(key=lambda tm: tm.team_name, reverse=True)
             # Finally, request master controller to establish clients with basic objects
             if SET_NUMBER_OF_CLIENTS_START == 1:
                 self.master_controller.give_clients_objects(self.clients[0], self.world, team_managers)
@@ -265,8 +285,13 @@ class Engine:
 
             thr.join(time_remaining)
 
+        client: Player
+        thr: Thread
         # Go through each thread and check if they are still alive
         for client, thr in zip(self.clients, threads):
+            # Load actions into player
+            client.actions = thr.result if thr.result is not None else []
+
             # If thread is no longer alive, mark it as non-functional, preventing it from receiving future turns
             if thr.is_alive():
                 client.functional = False

@@ -230,15 +230,13 @@ class GameBoard(GameObject):
         # Dictionary Init
         self.game_map = self.__map_init()
 
-    # FIX ME TO PLACE ALL CHARACTERS FROM EACH TEAM MANAGER
-
     def __map_init(self) -> dict[Vector, GameObjectContainer]:
         output: dict[Vector, GameObjectContainer] = dict()
 
-        # Update all Avatar positions if they are to be placed on the map
+        # Update all Character positions if they are to be placed on the map
         for vec, objs in self.locations.items():
             for obj in objs:
-                if isinstance(obj, TeamManager):
+                if isinstance(obj, Character):
                     obj.position = vec
 
         if self.walled:
@@ -252,6 +250,7 @@ class GameBoard(GameObject):
 
         # convert locations dict to go_container
         output.update({vec: GameObjectContainer(objs) for vec, objs in self.locations.items()})
+
         return output
 
     def get(self, coords: Vector) -> GameObjectContainer | None:

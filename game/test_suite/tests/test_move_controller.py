@@ -135,7 +135,7 @@ class TestMoveController(unittest.TestCase):
         # 1 HP + healing of 10 = 11
         self.assertEqual(self.uroda_attacker.current_health, 11)
         self.assertEqual(self.uroda_healer.current_health, 11)
-        self.assertEqual(self.uroda_tank.current_health, 20)
+        self.assertEqual(self.uroda_tank.current_health, 80)
 
     def test_user_heals_over_max_health(self) -> None:
         # test if going healing over the max health doesn't go over
@@ -264,7 +264,7 @@ class TestMoveController(unittest.TestCase):
         self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
         # the attack effect damages the user. 20 health - 10 damage = 10 remaining health
-        self.assertEqual(self.uroda_healer.current_health, 10)
+        self.assertEqual(self.uroda_healer.current_health, 70)
 
     def test_healing_effect(self) -> None:
         # the uroda attacker has the effects to test

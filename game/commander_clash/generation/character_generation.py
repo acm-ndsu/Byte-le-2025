@@ -84,16 +84,15 @@ def generate_fultra() -> Leader:
 
 
 def generate_ninlil() -> Leader:
-    # NEVER DISCUSSED NINLIL'S MOVESET OR STATS
-    nm: Attack = Attack(name='Axe Slash', target_type=TargetType.SINGLE_OPP, effect=None, damage_points=5)
+    nm: Attack = Attack(name='Little Angy', target_type=TargetType.SINGLE_OPP, effect=None, damage_points=5)
 
     s1_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-3,
                                            stat_to_affect=ObjectType.SPEED_STAT)
-    s1: Attack = Attack(name='Axe Slash Again', target_type=TargetType.SINGLE_OPP, cost=2, effect=s1_effect, damage_points=10)
+    s1: Attack = Attack(name='Smol Rage', target_type=TargetType.SINGLE_OPP, cost=2, effect=s1_effect, damage_points=10)
 
     s2_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-5,
                                            stat_to_affect=ObjectType.SPEED_STAT)
-    s2: Attack = Attack(name='3x Slashes', target_type=TargetType.SINGLE_OPP, cost=5, effect=s2_effect, damage_points=15)
+    s2: Attack = Attack(name='Tiny Titan', target_type=TargetType.SINGLE_OPP, cost=5, effect=s2_effect, damage_points=15)
 
     hp: int = 46
     atk: AttackStat = AttackStat(47)

@@ -26,12 +26,13 @@ class TeamManager(GameObject):
     '''
 
     def __init__(self, team: list[Character] = [GenericTrash(), GenericTrash(), GenericTrash()],
-                 country: CountryType = CountryType.URODA):
+                 country: CountryType = CountryType.URODA, team_name: str = ''):
         super().__init__()
         self.object_type: ObjectType = ObjectType.TEAMMANAGER
         self.team: list[Character] = team
         self.country = country
         self.score: int = 0
+        self.team_name: str = team_name
 
     # Getters and Setters
     @property
@@ -77,6 +78,18 @@ class TeamManager(GameObject):
                              f'and has the value of {score}.')
         self.__score: int = score
 
+    @property
+    def team_name(self) -> str | None:
+        return self.__team_name
+
+    @team_name.setter
+    def team_name(self, team_name: str | None) -> None:
+        if team_name is not None and not isinstance(team_name, str):
+            raise ValueError(
+                f'{self.__class__.__name__}.team_name must be a String or None. It is a(n) '
+                f'{team_name.__class__.__name__} and has the value of {team_name}.')
+        self.__team_name = team_name
+
     # Method to sort team based on character speed, fastest to slowest (descending order)
     def speed_sort(self) -> None:
         """
@@ -109,8 +122,9 @@ class TeamManager(GameObject):
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['team'] = [character.to_json() for character in self.team]
-        data['country'] = self.country.value
+        data['country_type'] = self.country.value
         data['score'] = self.score
+        data['team_name'] = self.team_name
         return data
 
     def __from_json_helper(self, data: dict) -> Character:
@@ -139,6 +153,7 @@ class TeamManager(GameObject):
         # converts each json object in the 'team' to be a Character object and creates a list with them
         self.team = [self.__from_json_helper(obj) for obj in data['team']] if len(data['team']) > 0 else []
 
-        self.country = CountryType(data['country'])
+        self.country = CountryType(data['country_type'])
         self.score = data['score']
+        self.team_name = data['team_name']
         return self

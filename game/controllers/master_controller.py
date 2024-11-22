@@ -99,6 +99,7 @@ class MasterController(Controller):
         copy_team_manager = TeamManager().from_json(client.team_manager.to_json())  # deepcopy(client.team_manager)
         # Obfuscate data in objects that that player should not be able to see
         # Currently world data isn't obfuscated at all
+
         args = (self.turn, turn_actions, current_world, copy_team_manager)
         return args
 
@@ -117,13 +118,19 @@ class MasterController(Controller):
             if len(client.actions) == 0:
                 continue
 
+            gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
+
+            # ensure the team is ordered by speed at all times
+            client.team_manager.speed_sort()
+
             # attempt to perform the action for the given ActionType
             for i in range(MAX_NUMBER_OF_ACTIONS_PER_TURN):
                 try:
-                    self.swap_controller.handle_actions(client.actions[i], client,
-                                                        self.current_world_data["game_board"])
-                    self.move_controller.handle_actions(client.actions[i], client,
-                                                        self.current_world_data["game_board"])
+                    # print(f'Active character expected for client {client.team_name}: '
+                    #       f'{client.team_manager.get_active_character().name}\n')
+                    self.swap_controller.handle_actions(client.actions[i], client, gameboard)
+                    self.move_controller.handle_actions(client.actions[i], client, gameboard)
+                    # print(f'Characters to not have taken turn: {[char.name for char in client.team_manager.team if not char.took_action]}')
                 except IndexError:
                     pass
 

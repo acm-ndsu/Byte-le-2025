@@ -54,7 +54,9 @@ class TestCharacter(unittest.TestCase):
         # test that all the parameters are set properly with the constructor
         self.assertEqual(self.special.name, 'Special')
         self.assertEqual(self.special.character_type, CharacterType.TANK)
-        self.assertEqual(self.special.current_health, 10)
+
+        # health is 10 * HEALTH_MODIFIER from config
+        self.assertEqual(self.special.current_health, 40)
         self.assertEqual(self.special.defense.base_value, 20)
         self.assertEqual(self.special.defense.value, 20)
         self.assertEqual(self.special.speed.base_value, 10)

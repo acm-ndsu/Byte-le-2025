@@ -3,7 +3,7 @@ import sys
 import traceback
 
 from game.client.user_client import UserClient
-from game.commander_clash.generation.char_position_generation import generate_character_positions
+from game.commander_clash.generation.char_position_generation import generate_locations_dict
 from game.commander_clash.validate_team import validate_team_selection as validate
 from game.common.player import Player
 from game.common.team_manager import TeamManager
@@ -107,4 +107,4 @@ def pre_generate():
         except Exception as e:
             print(f"Bad client for {filename}: exception: {e}")
 
-    return generate_character_positions(team_managers)
+    return generate_locations_dict(team_managers)
