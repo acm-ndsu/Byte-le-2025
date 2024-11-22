@@ -20,9 +20,6 @@ class MoveController(Controller):
         """
         user: Character = client.team_manager.get_active_character()
 
-        # Set user's took_action to True as they have started their action
-        user.took_action = True
-
         current_move: Move
 
         # a bool to be passed into the handle_logic method
@@ -38,6 +35,9 @@ class MoveController(Controller):
                 current_move: Move = user.get_s2()
             case _:
                 return
+
+        # Set user's took_action to True as they have started their action
+        user.took_action = True
 
         # user cannot use the move if they don't have enough special points
         if user.special_points < current_move.cost:

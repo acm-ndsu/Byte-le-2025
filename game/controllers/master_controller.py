@@ -1,7 +1,5 @@
 import random
-from copy import deepcopy
 
-from game.commander_clash.character.character import Character
 from game.common.enums import *
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
@@ -10,8 +8,6 @@ from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN, WIN_SCORE, DIFFERENTIAL_
 from game.controllers.controller import Controller
 from game.controllers.move_controller import MoveController
 from game.controllers.swap_controller import SwapController
-from game.utils.generate_game import generate
-from game.utils.vector import Vector
 
 
 class MasterController(Controller):
@@ -95,7 +91,8 @@ class MasterController(Controller):
         client.actions = turn_actions
 
         # Create deep copies of all objects sent to the player
-        current_world = GameBoard().from_json(self.current_world_data['game_board'])  # deepcopy(self.current_world_data["game_board"])  # what is current world and copy avatar
+        current_world = GameBoard().from_json(self.current_world_data[
+                                                  'game_board'])  # deepcopy(self.current_world_data["game_board"])  # what is current world and copy avatar
         copy_team_manager = TeamManager().from_json(client.team_manager.to_json())  # deepcopy(client.team_manager)
         # Obfuscate data in objects that that player should not be able to see
         # Currently world data isn't obfuscated at all
@@ -110,10 +107,6 @@ class MasterController(Controller):
             for character in client.team_manager.team:
                 character.state = 'idle'
 
-                # if everyone took their action in the given team manager, set their took_action bool to False
-                if client.team_manager.everyone_took_action():
-                    character.took_action = False
-
             # if the client did not provide any actions, just continue
             if len(client.actions) == 0:
                 continue
@@ -126,13 +119,15 @@ class MasterController(Controller):
             # attempt to perform the action for the given ActionType
             for i in range(MAX_NUMBER_OF_ACTIONS_PER_TURN):
                 try:
-                    # print(f'Active character expected for client {client.team_name}: '
-                    #       f'{client.team_manager.get_active_character().name}\n')
                     self.swap_controller.handle_actions(client.actions[i], client, gameboard)
                     self.move_controller.handle_actions(client.actions[i], client, gameboard)
-                    # print(f'Characters to not have taken turn: {[char.name for char in client.team_manager.team if not char.took_action]}')
                 except IndexError:
                     pass
+
+            # if everyone took their action in the given team manager, set their took_action bool to False
+            if client.team_manager.everyone_took_action():
+                for character in client.team_manager.team:
+                    character.took_action = False
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):
