@@ -169,7 +169,7 @@ def generate_generic_attacker() -> GenericAttacker:
     spd: SpeedStat = SpeedStat(35)
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
-    return GenericAttacker(name='Generic Attacker', character_type=CharacterType.ATTACKER, health=hp, attack=atk,
+    return GenericAttacker(name='Attacker', character_type=CharacterType.ATTACKER, health=hp, attack=atk,
                            defense=defense,
                            speed=spd, moveset=moves)
 
@@ -189,7 +189,7 @@ def generate_generic_healer() -> GenericHealer:
     spd: SpeedStat = SpeedStat(41)
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
-    return GenericHealer(name='Generic Healer', character_type=CharacterType.HEALER, health=hp, attack=atk,
+    return GenericHealer(name='Healer', character_type=CharacterType.HEALER, health=hp, attack=atk,
                          defense=defense,
                          speed=spd, moveset=moves)
 
@@ -211,7 +211,7 @@ def generate_generic_tank() -> GenericTank:
     spd: SpeedStat = SpeedStat(36)
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
-    return GenericTank(name='Generic Tank', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
+    return GenericTank(name='Tank', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
                        speed=spd, moveset=moves)
 
 

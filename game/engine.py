@@ -9,7 +9,8 @@ from datetime import datetime
 from tqdm import tqdm
 
 from game.client.user_client import UserClient
-from game.commander_clash.generation.char_position_generation import assign_and_write_positions
+from game.commander_clash.character.character import Generic
+from game.commander_clash.generation.char_position_generation import update_character_info
 from game.commander_clash.validate_team import validate_team_selection as validate
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
@@ -159,14 +160,17 @@ class Engine:
                         player.team_manager = team_manager
 
                         if client_files_found == 0:
-                            team_manager.country = CountryType.URODA
+                            team_manager.country_type = CountryType.URODA
                         elif client_files_found == 1:
-                            team_manager.country = CountryType.TURPIS
+                            team_manager.country_type = CountryType.TURPIS
 
                         # increment the num of files found; statement is only reached when a client file is found
                         client_files_found += 1
 
-                        # with access to the team managers, write them to the json file
+                        # ensure the team is ordered by speed before being written
+                        team_manager.speed_sort()
+
+                        # with access to a new team manager, write it to the json file
                         with open(GAME_MAP_FILE) as json_file:
                             world = json.load(json_file)
 
@@ -193,7 +197,7 @@ class Engine:
                 player.functional = False
 
         # give the characters in the team managers their positions
-        assign_and_write_positions(team_managers)
+        update_character_info(team_managers)
 
         # Verify correct number of clients have connected to start
         func_clients = [client for client in self.clients if client.functional]

@@ -96,10 +96,10 @@ def pre_generate():
 
                     # assign countries to the team managers
                     if client_files_found == 0:
-                        team_manager.country = CountryType.URODA
+                        team_manager.country_type = CountryType.URODA
                         client_files_found += 1
                     else:
-                        team_manager.country = CountryType.TURPIS
+                        team_manager.country_type = CountryType.TURPIS
 
                     team_managers.append(team_manager)
                 except Exception as e:

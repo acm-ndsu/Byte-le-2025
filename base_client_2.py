@@ -24,14 +24,14 @@ class Client(UserClient):
         order (e.g., (Generic, Leader, Leader)), whichever selection is incorrect will be swapped with a default value
         of Generic Attacker.
         """
-        return 'Berry Defense', (SelectGeneric.GEN_TANK, SelectLeader.BERRY, SelectGeneric.GEN_TANK)
+        return 'Fultra Fury', (SelectGeneric.GEN_TANK, SelectLeader.FULTRA, SelectGeneric.GEN_TANK)
 
     def first_turn_init(self, team_manager: TeamManager):
         """
         This is where you can put setup for things that should happen at the beginning of the first turn. This can be
         edited as needed.
         """
-        self.country = team_manager.country
+        self.country = team_manager.country_type
         self.my_team = team_manager.team
         self.current_state = State.HEALTHY
 

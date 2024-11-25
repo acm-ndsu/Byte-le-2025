@@ -21,7 +21,7 @@ class SwapController(Controller):
         super().__init__()
 
     def handle_actions(self, action: ActionType, client: Player, world: GameBoard) -> None:
-        characters_pos: dict[Vector, Character] = world.get_characters(client.team_manager.country)
+        characters_pos: dict[Vector, Character] = world.get_characters(client.team_manager.country_type)
         active_character: Character = client.team_manager.get_active_character()
 
         pos_mod: Vector

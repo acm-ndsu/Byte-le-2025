@@ -12,7 +12,7 @@ def generate_locations_dict(team_managers: list[TeamManager]) -> dict:
     locations: dict = dict()
 
     for team_manager in team_managers:
-        x_pos: int = team_manager.country.value - 1
+        x_pos: int = team_manager.country_type.value - 1
 
         # get the leader and generic instances from the team manager
         leader: Leader = next(char for char in team_manager.team if isinstance(char, Leader))
@@ -23,20 +23,32 @@ def generate_locations_dict(team_managers: list[TeamManager]) -> dict:
         locations.update({Vector(x_pos, 1): [leader]})
         locations.update({Vector(x_pos, 2): [generics[1]]})
 
+        # add the country name to the character's name if it's a generic to help with identification
+        for character in team_manager.team:
+            if isinstance(character, Generic):
+                country_name: str = team_manager.country_type.name
+                country_name = country_name[0].upper() + country_name[1:].lower()
+                character.name = f'{country_name} {character.name}'
+
     return locations
 
 
-def assign_and_write_positions(team_managers: list[TeamManager]):
+def update_character_info(team_managers: list[TeamManager]):
+    """
+    Gives all characters in the team managers their country affiliation and positions.
+    """
     with open(GAME_MAP_FILE) as json_file:
         world = json.load(json_file)
 
         for team_manager in team_managers:
-            x_pos: int = team_manager.country.value - 1
+            x_pos: int = team_manager.country_type.value - 1
 
             for y_pos, character in enumerate(team_manager.team):
+                # update the character position and country type
                 character.position = Vector(x_pos, y_pos)
+                character.country_type = team_manager.country_type
 
-            if team_manager.country == CountryType.URODA:
+            if team_manager.country_type == CountryType.URODA:
                 world['game_board']['uroda_team_manager'] = team_manager.to_json()
             else:
                 world['game_board']['turpis_team_manager'] = team_manager.to_json()

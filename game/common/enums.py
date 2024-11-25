@@ -42,12 +42,11 @@ class ObjectType(Enum):
     HEAL_MOVE = 24
     BUFF_MOVE = 25
     DEBUFF_MOVE = 26
-    GUARD_MOVE = 27
-    EFFECT = 28
-    ATTACK_EFFECT = 29
-    HEAL_EFFECT = 30
-    BUFF_EFFECT = 31
-    DEBUFF_EFFECT = 32
+    EFFECT = 27
+    ATTACK_EFFECT = 28
+    HEAL_EFFECT = 29
+    BUFF_EFFECT = 30
+    DEBUFF_EFFECT = 31
 
 
 class CountryType(Enum):
@@ -76,7 +75,6 @@ class MoveType(Enum):
     HEAL = 3
     BUFF = 4
     DEBUFF = 5
-    GUARD = 6
 
 
 class TargetType(Enum):

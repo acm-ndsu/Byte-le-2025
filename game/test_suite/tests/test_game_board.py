@@ -45,8 +45,8 @@ class TestGameBoard(unittest.TestCase):
         self.uroda_team: list[Character] = [self.ga1, self.gh1, self.gt1]
         self.turpis_team: list[Character] = [self.ga2, self.gh2, self.gt2]
 
-        uroda_manager: TeamManager = TeamManager(country=CountryType.URODA, team=self.uroda_team)
-        turpis_manager: TeamManager = TeamManager(country=CountryType.TURPIS, team=self.turpis_team)
+        uroda_manager: TeamManager = TeamManager(country_type=CountryType.URODA, team=self.uroda_team)
+        turpis_manager: TeamManager = TeamManager(country_type=CountryType.TURPIS, team=self.turpis_team)
 
         self.game_board: GameBoard = GameBoard(1, Vector(3, 3), self.locations, False,
                                                uroda_team_manager=uroda_manager,
@@ -213,9 +213,9 @@ class TestGameBoard(unittest.TestCase):
         self.assertEqual(self.game_board.uroda_team_manager.object_type, temp.uroda_team_manager.object_type)
         self.assertEqual(self.game_board.uroda_team_manager.team, temp.uroda_team_manager.team)
         self.assertEqual(self.game_board.uroda_team_manager.score, temp.uroda_team_manager.score)
-        self.assertEqual(self.game_board.uroda_team_manager.country, temp.uroda_team_manager.country)
+        self.assertEqual(self.game_board.uroda_team_manager.country_type, temp.uroda_team_manager.country_type)
 
         self.assertEqual(self.game_board.turpis_team_manager.object_type, temp.turpis_team_manager.object_type)
         self.assertEqual(self.game_board.turpis_team_manager.team, temp.turpis_team_manager.team)
         self.assertEqual(self.game_board.turpis_team_manager.score, temp.turpis_team_manager.score)
-        self.assertEqual(self.game_board.turpis_team_manager.country, temp.turpis_team_manager.country)
+        self.assertEqual(self.game_board.turpis_team_manager.country_type, temp.turpis_team_manager.country_type)

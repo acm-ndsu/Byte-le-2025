@@ -113,9 +113,6 @@ class MasterController(Controller):
 
             gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
 
-            # ensure the team is ordered by speed at all times
-            client.team_manager.speed_sort()
-
             # attempt to perform the action for the given ActionType
             for i in range(MAX_NUMBER_OF_ACTIONS_PER_TURN):
                 try:
@@ -128,6 +125,9 @@ class MasterController(Controller):
             if client.team_manager.everyone_took_action():
                 for character in client.team_manager.team:
                     character.took_action = False
+
+                    # ensure the team is ordered by speed after everyone took their turn
+                    client.team_manager.speed_sort()
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):

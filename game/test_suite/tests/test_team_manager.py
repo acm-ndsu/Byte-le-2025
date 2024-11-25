@@ -86,7 +86,7 @@ class TestTeamManager(unittest.TestCase):
         team_manager: TeamManager = TeamManager().from_json(data)
         self.assertEqual(team_manager.object_type, self.team_manager.object_type)
         # self.assertEqual(team_manager.team, self.team_manager.team)
-        self.assertEqual(team_manager.country, self.team_manager.country)
+        self.assertEqual(team_manager.country_type, self.team_manager.country_type)
         self.assertEqual(team_manager.score, self.team_manager.score)
 
         [self.assertTrue(team_manager.team[x] == self.team_manager.team[x]) for
@@ -96,7 +96,7 @@ class TestTeamManager(unittest.TestCase):
         data: dict = self.team_manager2.to_json()
         team_manager2: TeamManager = TeamManager().from_json(data)
         self.assertEqual(team_manager2.object_type, self.team_manager2.object_type)
-        self.assertEqual(team_manager2.country, self.team_manager2.country)
+        self.assertEqual(team_manager2.country_type, self.team_manager2.country_type)
         self.assertEqual(team_manager2.score, self.team_manager2.score)
 
         [self.assertTrue(team_manager2.team[x] == self.team_manager2.team[x]) for

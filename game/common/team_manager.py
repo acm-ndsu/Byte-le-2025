@@ -26,11 +26,11 @@ class TeamManager(GameObject):
     '''
 
     def __init__(self, team: list[Character] = [GenericTrash(), GenericTrash(), GenericTrash()],
-                 country: CountryType = CountryType.URODA, team_name: str = ''):
+                 country_type: CountryType = CountryType.URODA, team_name: str = ''):
         super().__init__()
         self.object_type: ObjectType = ObjectType.TEAMMANAGER
         self.team: list[Character] = team
-        self.country = country
+        self.country_type = country_type
         self.score: int = 0
         self.team_name: str = team_name
 
@@ -122,7 +122,7 @@ class TeamManager(GameObject):
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['team'] = [character.to_json() for character in self.team]
-        data['country_type'] = self.country.value
+        data['country_type'] = self.country_type.value
         data['score'] = self.score
         data['team_name'] = self.team_name
         return data
@@ -153,7 +153,7 @@ class TeamManager(GameObject):
         # converts each json object in the 'team' to be a Character object and creates a list with them
         self.team = [self.__from_json_helper(obj) for obj in data['team']] if len(data['team']) > 0 else []
 
-        self.country = CountryType(data['country_type'])
+        self.country_type = CountryType(data['country_type'])
         self.score = data['score']
         self.team_name = data['team_name']
         return self
