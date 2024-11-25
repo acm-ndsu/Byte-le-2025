@@ -6,7 +6,7 @@ from game.commander_clash.moves.moveset import Moveset
 from game.common.enums import ObjectType, CharacterType, RankType, CountryType
 from game.common.game_object import GameObject
 from game.utils.vector import Vector
-from game.config import HEALTH_MODIFIER
+from game.config import HEALTH_MODIFIER, GENERIC_TRASH_NAME
 
 
 class Character(GameObject):
@@ -348,7 +348,7 @@ class GenericTank(Generic):
 
 
 class GenericTrash(Generic):
-    def __init__(self, name: str = 'Missing Character', character_type: CharacterType = CharacterType.ATTACKER,
+    def __init__(self, name: str = GENERIC_TRASH_NAME, character_type: CharacterType = CharacterType.ATTACKER,
                  position: Vector | None = None, country_type: CountryType = CountryType.URODA):
         # No matter what, the stats should be set to 1, even the health
         super().__init__(name, character_type, 1, AttackStat(1), DefenseStat(1), SpeedStat(1),

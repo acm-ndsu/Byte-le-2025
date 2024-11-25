@@ -85,3 +85,5 @@ MINIMUM_DAMAGE = 1                                                  # Base damag
 DEFEATED_SCORE = 100                                                # The points to award for each defeated character
 WIN_SCORE = 200                                                     # The points to award for winning a game
 DIFFERENTIAL_BONUS = 150                                            # The points to award for each alive character on the winning team
+
+GENERIC_TRASH_NAME = 'Missing Character'                            # A name used for Generic Trash to convey a proper message to the players

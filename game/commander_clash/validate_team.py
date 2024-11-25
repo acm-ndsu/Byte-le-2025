@@ -26,11 +26,19 @@ def validate_team_selection(
     if not isinstance(leader, Leader):
         leader = GenericTrash()
 
+    characters: list[Character] = [gen1, leader, gen2]
+
+    # make the names unique
+    __differentiate_names(characters)
+
     # return a list of the characters in the order they would appear in the GameBoard
-    return [gen1, leader, gen2]
+    return characters
 
 
 def __convert_to_character(enum: SelectGeneric | SelectLeader):
+    """
+    A helper method that calls the appropriate character generation mehtod based on the given enum.
+    """
     match enum:
         case SelectLeader.ANAHITA:
             return generate_anahita()
@@ -50,3 +58,20 @@ def __convert_to_character(enum: SelectGeneric | SelectLeader):
             return generate_generic_healer()
         case SelectGeneric.GEN_TANK:
             return generate_generic_tank()
+
+
+def __differentiate_names(characters: list[Character]) -> None:
+    """
+    A helper method that will append an incrementing int to a character's name if there is a duplicate. The number
+    starts at 2.
+    """
+
+    num: int = 2
+    names: list[str] = []
+
+    for character in characters:
+        if character.name in names:
+            character.name += f' ({num})'
+            num += 1
+
+        names.append(character.name)

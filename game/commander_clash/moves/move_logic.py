@@ -4,7 +4,7 @@ from game.config import MINIMUM_DAMAGE, SPECIAL_POINT_LIMIT
 from game.commander_clash.character.character import Character, GenericTank, Leader
 from game.commander_clash.character.stats import Stat
 from game.commander_clash.moves.moves import *
-from game.common.enums import MoveType
+from game.common.enums import MoveType, CharacterType
 
 
 def handle_move_logic(user: Character, targets: list[Character], current_move: Move, is_normal_attack: bool) -> None:
@@ -112,11 +112,15 @@ def __calc_and_apply_damage(user: Character, targets: list[Character], current_m
         # get the damage to be dealt
         damage_to_deal: int = calculate_damage(user, target, current_move)
 
+        print(f'Target {target.name} before: {target.current_health}/{target.max_health}')
+
         # reduces the target's health while preventing it from going below 0 (the setter will throw an error if < 0)
         if target.current_health - damage_to_deal < 0:
             target.current_health = 0
         else:
             target.current_health -= damage_to_deal
+
+        print(f'Target {target.name} AFTER: {target.current_health}/{target.max_health}\n')
 
 
 def __apply_heal_points(targets: list[Character], current_move: AbstractHeal) -> None:

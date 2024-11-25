@@ -3,6 +3,7 @@ import unittest
 from game.commander_clash.character.character import Generic, Leader, GenericAttacker, GenericTrash, Character
 from game.commander_clash.validate_team import validate_team_selection as validate
 from game.common.enums import SelectLeader, SelectGeneric
+from game.config import GENERIC_TRASH_NAME
 
 
 class TestValidateTeam(unittest.TestCase):
@@ -32,27 +33,42 @@ class TestValidateTeam(unittest.TestCase):
         team: list[Character] = validate(self.invalid_team)
         self.assertTrue(all([isinstance(character, GenericTrash) for character in team]))
 
+        # check that any duplicate characters have an identifying int next to their name by using the last character
+        self.assertTrue(team[0].name[-1], GENERIC_TRASH_NAME[-1])
+        self.assertTrue(team[1].name[-1], 2)
+        self.assertTrue(team[2].name[-1], 3)
+
     def test_team_of_one_character_type(self) -> None:
         # if a player tries to make a team with all one character type (e.g., Tank, Tank, Tank), the leader should be
         # replaced with Generic Trash
         self.invalid_team: tuple[SelectGeneric, SelectLeader, SelectGeneric] = (SelectGeneric.GEN_ATTACKER,
                                                                                 SelectLeader.FULTRA,
                                                                                 SelectGeneric.GEN_ATTACKER)
-        result: list[Character] = validate(self.invalid_team)
+        team: list[Character] = validate(self.invalid_team)
 
         # ensure the leader is generic trash and that the other two generics didn't change
-        self.assertTrue(isinstance(result[0], GenericAttacker))
-        self.assertTrue(isinstance(result[1], GenericTrash))
-        self.assertTrue(isinstance(result[2], GenericAttacker))
+        self.assertTrue(isinstance(team[0], GenericAttacker))
+        self.assertTrue(isinstance(team[1], GenericTrash))
+        self.assertTrue(isinstance(team[2], GenericAttacker))
+
+        # check that any duplicate characters have an identifying int next to their name by using the last character
+        self.assertTrue(team[0].name, 'Generic Attacker')
+        self.assertTrue(team[1].name, GENERIC_TRASH_NAME)
+        self.assertTrue(team[2].name[-1], 2)
 
     def test_team_of_one_character_type_with_invalid_leader(self) -> None:
         # if given a full team of generics, only the character in the leader slot should change to generic trash
         self.valid_team: tuple[SelectGeneric, SelectGeneric, SelectGeneric] = (SelectGeneric.GEN_ATTACKER,
                                                                                SelectGeneric.GEN_ATTACKER,
                                                                                SelectGeneric.GEN_ATTACKER)
-        result: tuple[GenericTrash, Generic, Generic] = validate(self.valid_team)
+        team: tuple[GenericTrash, Generic, Generic] = validate(self.valid_team)
 
         # ensure the leader is generic trash and that the other two generics didn't change
-        self.assertTrue(isinstance(result[0], GenericAttacker))
-        self.assertTrue(isinstance(result[1], GenericTrash))
-        self.assertTrue(isinstance(result[2], GenericAttacker))
+        self.assertTrue(isinstance(team[0], GenericAttacker))
+        self.assertTrue(isinstance(team[1], GenericTrash))
+        self.assertTrue(isinstance(team[2], GenericAttacker))
+
+        # check that any duplicate characters have an identifying int next to their name by using the last character
+        self.assertTrue(team[0].name, 'Generic Attacker')
+        self.assertTrue(team[1].name, GENERIC_TRASH_NAME)
+        self.assertTrue(team[2].name[-1], 2)
