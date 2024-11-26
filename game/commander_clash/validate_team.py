@@ -71,7 +71,7 @@ def __differentiate_names(characters: list[Character]) -> None:
 
     for character in characters:
         if character.name in names:
-            character.name += f' ({num})'
+            character.name += f' {num}'
             num += 1
 
         names.append(character.name)

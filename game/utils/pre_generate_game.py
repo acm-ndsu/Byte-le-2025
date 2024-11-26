@@ -5,13 +5,15 @@ import traceback
 from game.client.user_client import UserClient
 from game.commander_clash.generation.char_position_generation import generate_locations_dict
 from game.commander_clash.validate_team import validate_team_selection as validate
+from game.common.game_object import GameObject
 from game.common.player import Player
 from game.common.team_manager import TeamManager
 from game.config import *
 from game.utils.thread import CommunicationThread
+from game.utils.vector import Vector
 
 
-def pre_generate():
+def pre_generate() -> tuple[dict[Vector, list[GameObject]], list[TeamManager]]:
     """
     This method will be used to handle any logic that needs to occur BEFORE the actual generation of the game map. An
     example of this would be if the user needs to choose a character to use before the map is generated. This is done to
@@ -91,6 +93,9 @@ def pre_generate():
                     # get the team data from the thread's value
                     team_data = thr.retrieve_value()
 
+                    # use index 0 to access the team name from `team_data`
+                    player.team_name = team_data[0]
+
                     # use index 1 to access the tuple of character selection enums from `team_data`
                     team_manager.team = validate(team_data[1])
 
@@ -101,10 +106,16 @@ def pre_generate():
                     else:
                         team_manager.country_type = CountryType.TURPIS
 
+                    for char in team_manager.team:
+                        char.country_type = team_manager.country_type
+
+                    # give the team manager the player's team name for organization later in the engine.py file
+                    team_manager.team_name = player.team_name
+
                     team_managers.append(team_manager)
                 except Exception as e:
                     print(f"{str(e)}\n{traceback.print_exc()}")
         except Exception as e:
             print(f"Bad client for {filename}: exception: {e}")
 
-    return generate_locations_dict(team_managers)
+    return generate_locations_dict(team_managers), team_managers

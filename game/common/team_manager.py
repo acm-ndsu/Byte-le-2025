@@ -112,6 +112,14 @@ class TeamManager(GameObject):
             if not character.took_action:
                 return character
 
+    def update_character(self, character: Character) -> None:
+        """
+        Updates the team with the given character to record any changes if the character is in the TeamManager's team.
+        """
+        for index in range(len(self.team)):
+            if self.team[index] is character:
+                self.team[index] = character
+
     def everyone_is_dead(self) -> bool:
         return all([character.is_dead for character in self.team])
 

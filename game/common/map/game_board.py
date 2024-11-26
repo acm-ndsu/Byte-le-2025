@@ -209,6 +209,29 @@ class GameBoard(GameObject):
 
         self.__walled = walled
 
+    def get_team_manager(self, country_type: CountryType = CountryType.URODA) -> TeamManager | None:
+        """
+        Returns a TeamManager based on the given CountryType. Returns None if the managers are None or an
+        invalid enum is given.
+        """
+        if self.uroda_team_manager is None or self.turpis_team_manager is None:
+            return None
+
+        return self.uroda_team_manager if country_type == CountryType.URODA else \
+            self.turpis_team_manager if country_type == CountryType.TURPIS else None
+
+    def get_opposing_team_manager(self, country_type: CountryType = CountryType.URODA) -> TeamManager | None:
+        """
+        Returns the opponent's TeamManager based on the given CountryType. Returns None if the managers are None or an
+        invalid enum is given.
+        """
+
+        if self.uroda_team_manager is None and self.turpis_team_manager is None:
+            return None
+
+        return self.uroda_team_manager if country_type == CountryType.TURPIS else \
+            self.turpis_team_manager if country_type == CountryType.URODA else None
+
     def get_ordered_teams_as_list(self) -> list[Character]:
         """
         Returns a list that will have the exact order every character will take their turn in. Returns a list

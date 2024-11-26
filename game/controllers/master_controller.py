@@ -53,11 +53,7 @@ class MasterController(Controller):
 
     # Receives all clients for the purpose of giving them the objects they will control
     def give_clients_objects(self, clients: list[Player], world: dict, team_managers: list[TeamManager]):
-        # starting_positions should be set in generate game
-        # gb: GameBoard = world['game_board']
-
-        # create a new TeamManager for every Player object
-        # the first Player is assigned the Uroda team; the second is assigned Turpis
+        # the clients and their team managers will match up, so assign the client their correct team manager
         for iteration, client in enumerate(clients):
             client.team_manager = team_managers[iteration]
 

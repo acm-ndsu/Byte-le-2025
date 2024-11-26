@@ -20,6 +20,12 @@ class MoveController(Controller):
         """
         user: Character = client.team_manager.get_active_character()
 
+        # the game board's reference to the client's team manager
+        gb_client_team_manager: TeamManager = world.get_team_manager(user.country_type)
+
+        # the game board's reference to the opposing client's team manager
+        gb_opponent_team_manager: TeamManager = world.get_opposing_team_manager(client.team_manager.country_type)
+
         current_move: Move
 
         # a bool to be passed into the handle_logic method
@@ -44,27 +50,30 @@ class MoveController(Controller):
             return
 
         # get the possible targets based on the target type
-        targets: list[Character] | list = self.__get_targets(user, current_move.target_type, world)
+        primary_targets: list[Character] | list = self.__get_targets(user, current_move.target_type, world)
 
         # don't do anything if there are no available targets
-        if len(targets) == 0:
+        if len(primary_targets) == 0:
             return
 
         # call the move_logic file's method to handle the rest of the logic
-        handle_move_logic(user, targets, current_move, is_normal_attack)
+        handle_move_logic(user, primary_targets, current_move, is_normal_attack)
 
         # a collection of the defeated characters is created
-        defeated_characters: list[Character] = [target for target in targets if target.current_health == 0]
+        defeated_characters: list[Character] = [target for target in primary_targets if target.current_health == 0]
+
+        # a reference to the targets specifically for the secondary effect
+        effect_targets: list[Character] | list = []
 
         # if the current move has an effect, get the targets for it and apply the same logic
         if current_move.effect is not None:
             # get the possible targets based on the effect's target type
-            targets: list[Character] | list = self.__get_targets(user, current_move.effect.target_type, world)
+            effect_targets: list[Character] | list = self.__get_targets(user, current_move.effect.target_type, world)
 
-            handle_effect_logic(user, targets, current_move.effect)
+            handle_effect_logic(user, effect_targets, current_move.effect)
 
             # add any additional characters to defeated_characters
-            defeated_characters += [target for target in targets if
+            defeated_characters += [target for target in effect_targets if
                                     target not in defeated_characters and target.current_health == 0]
 
         # for all defeated characters, set their state to 'defeated;' remove them at start of next turn
@@ -72,6 +81,18 @@ class MoveController(Controller):
             defeated_char.is_dead = True
             defeated_char.state = 'defeated'
             client.team_manager.score += DEFEATED_SCORE
+
+        # update the game board managers so the json reflects any changes from all affected characters
+        self.__update_game_board_managers(gb_client_team_manager, gb_opponent_team_manager, primary_targets + effect_targets)
+
+        print([f'Target {target.name} BACK in MoveController: '
+               f'{target.current_health}/{target.max_health}' for target in primary_targets])
+
+        print(f'Uroda TM GB references: {[(char.name, char.current_health, char.max_health) for char in world.uroda_team_manager.team]}\nTurpis TM GB references: '
+              f'{[(char.name, char.current_health, char.max_health) for char in world.turpis_team_manager.team]}',
+              end='\n\n')
+
+        # input('Continue >')
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """
@@ -120,3 +141,14 @@ class MoveController(Controller):
                 return list(world.get_characters(user.get_opposing_country()).values())
             case _:
                 return []
+
+    def __update_game_board_managers(self, client_team_manager: TeamManager, opponent_team_manager: TeamManager,
+                                     targets: list[Character]) -> None:
+        for character in targets:
+            # figure out which team manager the character belongs to
+            manager_to_use: TeamManager = client_team_manager if \
+                character.country_type == client_team_manager.country_type else opponent_team_manager
+
+            # set the character in the team manager to be the target
+            # this helps when writing the gameboard to json, so it receives the proper updates
+            manager_to_use.update_character(character)
