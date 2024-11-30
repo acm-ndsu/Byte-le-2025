@@ -125,13 +125,34 @@ class MasterController(Controller):
                     # ensure the team is ordered by speed after everyone took their turn
                     client.team_manager.speed_sort()
 
+            # update the current world json by setting it to the game board's updated state
+            self.current_world_data['game_board'] = gameboard.to_json()
+
+            # i can't figure out why the json doesn't work right; set each client's team manager to be in the gameboard
+            # if client.team_manager.country_type == CountryType.URODA:
+            #     self.current_world_data['game_board']['uroda_team_manager'] = client.team_manager.to_json()
+            # else:
+            #     self.current_world_data['game_board']['turpis_team_manager'] = client.team_manager.to_json()
+
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):
         data = dict()
         data['tick'] = turn
         data['clients'] = [client.to_json() for client in clients]
+
+        # for client in clients:
+        #     print(f'\n\nClient json:\n{client.to_json()}\n\n')
+        #     input('\n\ncontinue >')
+
+        # print(f'\nEntire json before creating logs\n{self.current_world_data}\n')
+        # input('\n\ncontinue >')
+        #
+        # print(f'\nGameboard uroda TM before creating logs:\n{self.current_world_data["game_board"]['uroda_team_manager']}\n')
+        # print(f'\nGameboard turpis TM before creating logs:\n{self.current_world_data["game_board"]['turpis_team_manager']}\n')
+        # input('\n\ncontinue >')
+
         # Add things that should be thrown into the turn logs here
-        data['game_board'] = self.current_world_data["game_board"]
+        data['game_board'] = self.current_world_data['game_board']
 
         return data
 

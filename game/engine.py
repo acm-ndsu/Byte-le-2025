@@ -338,8 +338,8 @@ class Engine:
         else:
             self.master_controller.turn_logic(self.clients, self.tick_number)
 
-        print(f'Teams at end of tick(): {[[(char.name, char.current_health, char.max_health) for 
-                                           char in client.team_manager.team] for client in self.clients]}')
+        # print(f'Teams at end of tick(): {[[(char.name, char.current_health, char.max_health) for
+        #                                    char in client.team_manager.team] for client in self.clients]}')
 
     # Does any actions that need to happen after the game logic, then creates the game log for the turn
     def post_tick(self):

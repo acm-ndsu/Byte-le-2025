@@ -18,10 +18,11 @@ class MoveController(Controller):
         Given the correct enum, the matching move will be selected from the current character's moveset. If enough
         special points were gained, the move will be used; otherwise, nothing will happen.
         """
-        user: Character = client.team_manager.get_active_character()
 
         # the game board's reference to the client's team manager
-        gb_client_team_manager: TeamManager = world.get_team_manager(user.country_type)
+        gb_client_team_manager: TeamManager = world.get_team_manager(client.team_manager.country_type)
+
+        user: Character = gb_client_team_manager.get_active_character()
 
         # the game board's reference to the opposing client's team manager
         gb_opponent_team_manager: TeamManager = world.get_opposing_team_manager(client.team_manager.country_type)
@@ -83,16 +84,14 @@ class MoveController(Controller):
             client.team_manager.score += DEFEATED_SCORE
 
         # update the game board managers so the json reflects any changes from all affected characters
-        self.__update_game_board_managers(gb_client_team_manager, gb_opponent_team_manager, primary_targets + effect_targets)
+        self.__update_game_board_managers(world, primary_targets + effect_targets)
 
         print([f'Target {target.name} BACK in MoveController: '
                f'{target.current_health}/{target.max_health}' for target in primary_targets])
 
         print(f'Uroda TM GB references: {[(char.name, char.current_health, char.max_health) for char in world.uroda_team_manager.team]}\nTurpis TM GB references: '
-              f'{[(char.name, char.current_health, char.max_health) for char in world.turpis_team_manager.team]}',
-              end='\n\n')
+              f'{[(char.name, char.current_health, char.max_health) for char in world.turpis_team_manager.team]}')
 
-        # input('Continue >')
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """
@@ -142,13 +141,42 @@ class MoveController(Controller):
             case _:
                 return []
 
-    def __update_game_board_managers(self, client_team_manager: TeamManager, opponent_team_manager: TeamManager,
-                                     targets: list[Character]) -> None:
-        for character in targets:
+    def __update_game_board_managers(self, world: GameBoard, targets: list[Character]) -> None:
+        """
+        Using the list of targets, update the game board's references to the team managers so the characters' changes
+        are
+        """
+
+        # print('\n\nCharacter health stats before updating gameboard managers')
+        # for char in targets:
+        #     print(f'From target list: {char.name}: {char.current_health}/{char.max_health}')
+        #
+        # for char in world.uroda_team_manager.team:
+        #     print(f'\nFrom GB uroda team manager list: {char.name}: {char.current_health}/{char.max_health}')
+        #
+        # for char in world.turpis_team_manager.team:
+        #     print(f'\nFrom GB turpis team manager list: {char.name}: {char.current_health}/{char.max_health}')
+        #
+        # input('\ncontinue >')
+
+        for char in targets:
             # figure out which team manager the character belongs to
-            manager_to_use: TeamManager = client_team_manager if \
-                character.country_type == client_team_manager.country_type else opponent_team_manager
+            manager_to_use: TeamManager = world.uroda_team_manager if \
+                char.country_type == CountryType.URODA else world.turpis_team_manager
 
             # set the character in the team manager to be the target
             # this helps when writing the gameboard to json, so it receives the proper updates
-            manager_to_use.update_character(character)
+            manager_to_use.update_character(char)
+
+        # print('Character health stats AFTER updating gameboard managers')
+        #
+        # for char in targets:
+        #     print(f'From target list: {char.name}: {char.current_health}/{char.max_health}')
+        #
+        # for char in world.uroda_team_manager.team:
+        #     print(f'\nFrom GB uroda team manager list: {char.name}: {char.current_health}/{char.max_health}')
+        #
+        # for char in world.turpis_team_manager.team:
+        #     print(f'\nFrom GB turpis team manager list: {char.name}: {char.current_health}/{char.max_health}')
+        #
+        # input('continue >')

@@ -108,7 +108,7 @@ def __calc_and_apply_damage(user: Character, targets: list[Character], current_m
         # get the damage to be dealt
         damage_to_deal: int = calculate_damage(user, target, current_move)
 
-        print(f'Target {target.name} before: {target.current_health}/{target.max_health}')
+        print(f'Target {target.name} before calculation: {target.current_health}/{target.max_health}')
 
         # reduces the target's health while preventing it from going below 0 (the setter will throw an error if < 0)
         if target.current_health - damage_to_deal < 0:
@@ -116,7 +116,7 @@ def __calc_and_apply_damage(user: Character, targets: list[Character], current_m
         else:
             target.current_health -= damage_to_deal
 
-        print(f'Target {target.name} AFTER: {target.current_health}/{target.max_health}\n')
+        print(f'Target {target.name} AFTER calculation: {target.current_health}/{target.max_health}')
 
 
 def __apply_heal_points(targets: list[Character], current_move: AbstractHeal) -> None:

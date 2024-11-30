@@ -116,8 +116,11 @@ class TeamManager(GameObject):
         """
         Updates the team with the given character to record any changes if the character is in the TeamManager's team.
         """
+        print(f'\nUpdating character {character.name} for team {[char.name for char in self.team]}')
+
         for index in range(len(self.team)):
-            if self.team[index] is character:
+            # if the given character is found based on the unique name the character has, update it in the team manager
+            if self.team[index].name == character.name:
                 self.team[index] = character
 
     def everyone_is_dead(self) -> bool:
