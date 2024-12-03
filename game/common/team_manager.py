@@ -205,6 +205,9 @@ class TeamManager(GameObject):
         # converts each json object in the 'team' to be a Character object and creates a list with them
         self.team = [self.__from_json_helper(obj) for obj in data['team']] if len(data['team']) > 0 else []
 
+        self.dead_team = [self.__from_json_helper(obj)
+                          for obj in data['dead_team']] if len(data['dead_team']) > 0 else []
+
         self.country_type = CountryType(data['country_type'])
         self.score = data['score']
         self.team_name = data['team_name']

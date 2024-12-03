@@ -107,7 +107,7 @@ class MasterController(Controller):
 
             # if the team is defeated, move on
             if client.team_manager.everyone_is_defeated():
-                continue
+                break
 
             # attempt to perform the action for the given ActionType
             for i in range(MAX_NUMBER_OF_ACTIONS_PER_TURN):
@@ -117,22 +117,26 @@ class MasterController(Controller):
                 except IndexError:
                     pass
 
-            # if client.team_manager.everyone_took_action():
-            #     print(f'Everyone took action on turn {turn}!')
-            #     input('continue >')
+            # update the gameboard's team manager references
+            gameboard.update_team_managers()
 
             # to ensure the clients receive the updates for their characters, loop over the two and reassign their
             # team managers to be the game board references
             # call the variable client_ to not get confused with the outer for loop
             # this for loop needs to happen every turn
             for client_ in clients:
+                # get the client's score before it is overwritten
+                client_score: int = client_.team_manager.score
+
                 if client_.team_manager.country_type == CountryType.URODA:
                     client_.team_manager = gameboard.uroda_team_manager
                 else:
                     client_.team_manager = gameboard.turpis_team_manager
 
-            # organize the dead characters in the team manager's reference
-            client.team_manager.organize_dead_characters()
+                client_.team_manager.score = client_score
+
+                # remove any dead characters off the game map
+                gameboard.remove_dead(client.team_manager.dead_team)
 
             # if everyone took their action in the given team manager, set their took_action bool to False
             if client.team_manager.everyone_took_action():

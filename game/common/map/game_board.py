@@ -332,8 +332,14 @@ class GameBoard(GameObject):
         contain the `to_place` object instead. No coordinates are removed in this way
         """
         goc: GameObjectContainer = GameObjectContainer([to_place])
-
         self.game_map[coords] = goc
+
+    def remove_dead(self, dead: list[Character]) -> None:
+        """
+        Removes the given dead characters off the game map.
+        """
+        for char in dead:
+            self.remove(char.position, char.object_type)
 
     def remove_coordinate(self, coords: Vector) -> None:
         """
