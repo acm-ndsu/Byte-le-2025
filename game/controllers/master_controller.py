@@ -125,10 +125,8 @@ class MasterController(Controller):
                     # ensure the team is ordered by speed after everyone took their turn
                     client.team_manager.speed_sort()
 
-            if client.team_manager.country_type == CountryType.URODA:
-                client.team_manager = gameboard.uroda_team_manager
-            else:
-                client.team_manager = gameboard.turpis_team_manager
+            # update the game board's team manager references to reflect the changes that happened this turn
+            gameboard.update_team_managers()
 
             # to ensure the clients receive the updates for their characters, loop over the two and reassign their
             # team managers to be the game board references

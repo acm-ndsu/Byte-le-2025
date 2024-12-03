@@ -150,7 +150,7 @@ def generate_irwin() -> Leader:
                   speed=spd, moveset=moves)
 
 
-def generate_generic_attacker() -> GenericAttacker:
+def generate_generic_attacker(name: str = 'Attacker') -> GenericAttacker:
     # We first make the secondary effect for readability
     # We then create the primary move and add the secondary effect to it
     nm: Attack = Attack(name='Poke', target_type=TargetType.SINGLE_OPP, damage_points=5)
@@ -169,12 +169,12 @@ def generate_generic_attacker() -> GenericAttacker:
     spd: SpeedStat = SpeedStat(35)
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
-    return GenericAttacker(name='Attacker', character_type=CharacterType.ATTACKER, health=hp, attack=atk,
+    return GenericAttacker(name=name, character_type=CharacterType.ATTACKER, health=hp, attack=atk,
                            defense=defense,
                            speed=spd, moveset=moves)
 
 
-def generate_generic_healer() -> GenericHealer:
+def generate_generic_healer(name: str = 'Healer') -> GenericHealer:
     nm: Attack = Attack(name='Kick', target_type=TargetType.SINGLE_OPP, damage_points=1)
 
     s1: Heal = Heal(name='First Aid', target_type=TargetType.SELF, cost=0, heal_points=10)
@@ -189,12 +189,12 @@ def generate_generic_healer() -> GenericHealer:
     spd: SpeedStat = SpeedStat(41)
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
-    return GenericHealer(name='Healer', character_type=CharacterType.HEALER, health=hp, attack=atk,
+    return GenericHealer(name=name, character_type=CharacterType.HEALER, health=hp, attack=atk,
                          defense=defense,
                          speed=spd, moveset=moves)
 
 
-def generate_generic_tank() -> GenericTank:
+def generate_generic_tank(name: str = 'Tank') -> GenericTank:
     nm: Attack = Attack(name='Slap', target_type=TargetType.SINGLE_OPP, damage_points=2)
 
     s1: Attack = Attack(name='Slam', target_type=TargetType.ALL_OPPS, cost=2, damage_points=4)
@@ -211,7 +211,7 @@ def generate_generic_tank() -> GenericTank:
     spd: SpeedStat = SpeedStat(36)
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
-    return GenericTank(name='Tank', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
+    return GenericTank(name=name, character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
                        speed=spd, moveset=moves)
 
 

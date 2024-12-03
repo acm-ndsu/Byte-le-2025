@@ -326,6 +326,16 @@ class GameBoard(GameObject):
 
         return to_return
 
+    def replace(self, coords: Vector, to_place: GameObject) -> None:
+        """
+        Replaces the GameObjectContainer at the given coordinate with a new GameObjectContainer. The new one will
+        contain the `to_place` object instead. No coordinates are removed in this way
+        """
+        goc: GameObjectContainer = GameObjectContainer([to_place])
+
+        self.game_map[coords] = goc
+
+
     def remove_coordinate(self, coords: Vector) -> None:
         """
         Removes the given coordinate from the game map.
@@ -417,6 +427,38 @@ class GameBoard(GameObject):
         return {coords: character for coords, character in zip(self.game_map.keys(), objects) if
                 isinstance(self.game_map[coords].get_top(), Character) and
                 self.game_map[coords].get_top().country_type == country}
+
+    def update_team_managers(self) -> None:
+        """
+        Updates the team manager references stored by updating each character in their respective team manager based on
+        the updates to the references on the game map.
+        That is, when a character is modified, their reference on the game map is modified, not the game board's
+        team manager references. So, we need to loop to update the characters properly.
+        """
+
+        characters: list[Character] = []
+
+        # using a method that already exists, get any potential characters from every spot on the game map
+        for coord in self.game_map.keys():
+            characters.append(self.get_top(coord))
+
+        # remove any potential None values from the list of characters
+        characters = [character for character in characters if character is not None]
+
+        for character in characters:
+            manager_to_use: TeamManager
+
+            if character.country_type == CountryType.URODA:
+                manager_to_use = self.uroda_team_manager
+            else:
+                manager_to_use = self.turpis_team_manager
+
+            # update the character
+            manager_to_use.update_character(character)
+
+    def update_character_on_map(self, character: Character) -> None:
+        # remove the old instance of the character from the map
+        self.replace(character.position, character)
 
     def get_character_from(self, coords: Vector) -> Character | None:
         """

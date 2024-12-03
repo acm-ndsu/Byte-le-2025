@@ -123,6 +123,14 @@ class TeamManager(GameObject):
             if self.team[index].name == character.name:
                 self.team[index] = character
 
+    def get_character(self, name: str = '') -> Character | None:
+        """
+        Returns a Character based off the given name. If the name is not found in the team, returns None.
+        """
+        for char in self.team:
+            if char.name == name:
+                return char
+
     def everyone_is_defeated(self) -> bool:
         return all([character.is_dead for character in self.team])
 

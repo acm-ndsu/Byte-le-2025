@@ -88,6 +88,9 @@ class MoveController(Controller):
             defeated_char.state = 'defeated'
             client.team_manager.score += DEFEATED_SCORE
 
+        # update the user on the game map
+        world.replace(user.position, user)
+
         # update the game board managers so the json reflects any changes from all affected characters
         # self.__update_character_references(world, primary_targets + effect_targets, client, gb_opponent_team_manager)
         # self.__update_game_board_managers(world, primary_targets + effect_targets)
