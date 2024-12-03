@@ -117,6 +117,10 @@ class MasterController(Controller):
                 except IndexError:
                     pass
 
+            # if client.team_manager.everyone_took_action():
+            #     print(f'Everyone took action on turn {turn}!')
+            #     input('continue >')
+
             # if everyone took their action in the given team manager, set their took_action bool to False
             if client.team_manager.everyone_took_action():
                 for character in client.team_manager.team:
