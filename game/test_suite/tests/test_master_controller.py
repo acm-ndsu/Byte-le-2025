@@ -80,3 +80,17 @@ class TestMasterController(unittest.TestCase):
         self.assertTrue(turpis_active_char.took_action)
         self.assertFalse(self.team_manager2.team[1].took_action)
         self.assertFalse(self.team_manager2.team[2].took_action)
+
+    def test_resetting_took_action_bool(self) -> None:
+        # let every character perform an action normally
+        for char in self.team_manager1.team:
+            self.master_controller.turn_logic([self.client1, self.client2], 0)
+
+        # if all characters took their turn, every character's took action bool should be false
+        self.assertFalse(self.client1.team_manager.team[0].took_action)
+        self.assertFalse(self.client1.team_manager.team[1].took_action)
+        self.assertFalse(self.client1.team_manager.team[2].took_action)
+
+        self.assertFalse(self.client2.team_manager.team[0].took_action)
+        self.assertFalse(self.client2.team_manager.team[1].took_action)
+        self.assertFalse(self.client2.team_manager.team[2].took_action)

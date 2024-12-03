@@ -28,7 +28,7 @@ class MoveController(Controller):
         user: Character = gb_client_team_manager.get_active_character()
 
         # the game board's reference to the opposing client's team manager
-        gb_opponent_team_manager: TeamManager = world.get_opposing_team_manager(client.team_manager.country_type)
+        # gb_opponent_team_manager: TeamManager = world.get_opposing_team_manager(client.team_manager.country_type)
 
         current_move: Move
 
@@ -48,8 +48,6 @@ class MoveController(Controller):
 
         # Set user's took_action to True as they have started their action
         user.took_action = True
-
-        print(f'Starting {user.name} turn' if user is not None else f'{client.team_name}\'s active character is none')
 
         # user cannot use the move if they don't have enough special points
         if user.special_points < current_move.cost:

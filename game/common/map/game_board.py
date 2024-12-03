@@ -335,7 +335,6 @@ class GameBoard(GameObject):
 
         self.game_map[coords] = goc
 
-
     def remove_coordinate(self, coords: Vector) -> None:
         """
         Removes the given coordinate from the game map.
@@ -455,6 +454,10 @@ class GameBoard(GameObject):
 
             # update the character
             manager_to_use.update_character(character)
+
+        # update the game board's team manager references to reflect the changes that happened this turn
+        self.uroda_team_manager.organize_dead_characters()
+        self.turpis_team_manager.organize_dead_characters()
 
     def update_character_on_map(self, character: Character) -> None:
         # remove the old instance of the character from the map

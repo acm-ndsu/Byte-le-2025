@@ -121,17 +121,6 @@ class MasterController(Controller):
             #     print(f'Everyone took action on turn {turn}!')
             #     input('continue >')
 
-            # if everyone took their action in the given team manager, set their took_action bool to False
-            if client.team_manager.everyone_took_action():
-                for character in client.team_manager.team:
-                    character.took_action = False
-
-                    # ensure the team is ordered by speed after everyone took their turn
-                    client.team_manager.speed_sort()
-
-            # update the game board's team manager references to reflect the changes that happened this turn
-            gameboard.update_team_managers()
-
             # to ensure the clients receive the updates for their characters, loop over the two and reassign their
             # team managers to be the game board references
             # call the variable client_ to not get confused with the outer for loop
@@ -141,6 +130,17 @@ class MasterController(Controller):
                     client_.team_manager = gameboard.uroda_team_manager
                 else:
                     client_.team_manager = gameboard.turpis_team_manager
+
+            # organize the dead characters in the team manager's reference
+            client.team_manager.organize_dead_characters()
+
+            # if everyone took their action in the given team manager, set their took_action bool to False
+            if client.team_manager.everyone_took_action():
+                for character in client.team_manager.team:
+                    character.took_action = False
+
+                # ensure the team is ordered by speed after everyone took their turn
+                client.team_manager.speed_sort()
 
             # update the current world json by setting it to the game board's updated state
             self.current_world_data['game_board'] = gameboard.to_json()

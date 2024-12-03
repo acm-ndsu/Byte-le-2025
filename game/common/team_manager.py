@@ -33,6 +33,7 @@ class TeamManager(GameObject):
         self.country_type = country_type
         self.score: int = 0
         self.team_name: str = team_name
+        self.dead_team: list[Character] = []
 
     # Getters and Setters
     @property
@@ -90,6 +91,25 @@ class TeamManager(GameObject):
                 f'{team_name.__class__.__name__} and has the value of {team_name}.')
         self.__team_name = team_name
 
+    @property
+    def dead_team(self) -> list[Character]:
+        return self.__dead_team
+
+    @dead_team.setter
+    def dead_team(self, dead_team: list[Character]) -> None:
+        if dead_team is None or not isinstance(dead_team, list):
+            if dead_team is None or not isinstance(dead_team, list):
+                raise ValueError(
+                    f'{self.__class__.__name__}.team must be a list[Character]. It is a(n) {dead_team.__class__.__name__} '
+                    f'and has the value of {dead_team}.')
+            for i in dead_team:
+                if i is None or not isinstance(i, Character):
+                    raise ValueError(
+                        f'{self.__class__.__name__}.team must be a list[Character]. It contains a(n) '
+                        f'{i.__class__.__name__} with the value {i}.')
+                
+        self.__dead_team = dead_team
+
     # Method to sort team based on character speed, fastest to slowest (descending order)
     def speed_sort(self) -> None:
         """
@@ -114,6 +134,9 @@ class TeamManager(GameObject):
             if not character.took_action and not character.is_dead:
                 return character
 
+        print(f'Team Manager {self.team_name} has no active character. Current characters: '
+              f'{[(char.name, char.took_action, char.special_points) for char in self.team]}')
+
     def update_character(self, character: Character) -> None:
         """
         Updates the team with the given character to record any changes if the character is in the TeamManager's team.
@@ -131,6 +154,15 @@ class TeamManager(GameObject):
             if char.name == name:
                 return char
 
+    def organize_dead_characters(self) -> None:
+        """
+        Moves any characters in the team manager from the team reference to the dead_team reference
+        """
+        for character in self.team:
+            if character.is_dead:
+                self.dead_team.append(character)
+                self.team.remove(character)
+
     def everyone_is_defeated(self) -> bool:
         return all([character.is_dead for character in self.team])
 
@@ -141,6 +173,7 @@ class TeamManager(GameObject):
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['team'] = [character.to_json() for character in self.team]
+        data['dead_team'] = [character.to_json() for character in self.dead_team]
         data['country_type'] = self.country_type.value
         data['score'] = self.score
         data['team_name'] = self.team_name

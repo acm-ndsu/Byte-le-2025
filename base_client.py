@@ -57,9 +57,9 @@ class Client(UserClient):
         active_character = team_manager.get_active_character()
 
         # determine if the current character is healthy
-        self.current_state = State.HEALTHY if self.get_health_percentage(active_character) >= 0.50 else State.UNHEALTHY
+        current_state = State.HEALTHY if self.get_health_percentage(active_character) >= 0.50 else State.UNHEALTHY
 
-        if self.current_state == State.HEALTHY:
+        if current_state == State.HEALTHY:
             # if the current character from the team is healthy, use its Normal Move
             actions = [ActionType.USE_NM]
         else:
