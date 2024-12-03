@@ -103,11 +103,11 @@ class MasterController(Controller):
             for character in client.team_manager.team:
                 character.state = 'idle'
 
-            # if the client did not provide any actions, just continue
-            if len(client.actions) == 0:
-                continue
-
             gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
+
+            # if the team is defeated, move on
+            if client.team_manager.everyone_is_defeated():
+                continue
 
             # attempt to perform the action for the given ActionType
             for i in range(MAX_NUMBER_OF_ACTIONS_PER_TURN):
@@ -125,14 +125,23 @@ class MasterController(Controller):
                     # ensure the team is ordered by speed after everyone took their turn
                     client.team_manager.speed_sort()
 
+            if client.team_manager.country_type == CountryType.URODA:
+                client.team_manager = gameboard.uroda_team_manager
+            else:
+                client.team_manager = gameboard.turpis_team_manager
+
+            # to ensure the clients receive the updates for their characters, loop over the two and reassign their
+            # team managers to be the game board references
+            # call the variable client_ to not get confused with the outer for loop
+            # this for loop needs to happen every turn
+            for client_ in clients:
+                if client_.team_manager.country_type == CountryType.URODA:
+                    client_.team_manager = gameboard.uroda_team_manager
+                else:
+                    client_.team_manager = gameboard.turpis_team_manager
+
             # update the current world json by setting it to the game board's updated state
             self.current_world_data['game_board'] = gameboard.to_json()
-
-            # i can't figure out why the json doesn't work right; set each client's team manager to be in the gameboard
-            # if client.team_manager.country_type == CountryType.URODA:
-            #     self.current_world_data['game_board']['uroda_team_manager'] = client.team_manager.to_json()
-            # else:
-            #     self.current_world_data['game_board']['turpis_team_manager'] = client.team_manager.to_json()
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):
@@ -168,8 +177,8 @@ class MasterController(Controller):
         client2.team_manager.score += DIFFERENTIAL_BONUS * len(client2.team_manager.team)
 
         # client1 is the winner if client2's team is all dead
-        winner: Player | None = client1 if client2.team_manager.everyone_is_dead() else \
-            client2 if client1.team_manager.everyone_is_dead() else None
+        winner: Player | None = client1 if client2.team_manager.everyone_is_defeated() else \
+            client2 if client1.team_manager.everyone_is_defeated() else None
 
         # if there is a clear winner (one team was defeated), add the winning score to the winner
         if winner is not None:

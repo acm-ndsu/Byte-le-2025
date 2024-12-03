@@ -280,7 +280,7 @@ class Generic(Character):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)
 
-        self.rank: RankType = RankType.GENERIC
+        self.rank_type: RankType = RankType.GENERIC
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -379,7 +379,7 @@ class Leader(Character):
                          position, country_type, moveset)
 
         self.object_type: ObjectType = ObjectType.LEADER
-        self.rank: RankType = RankType.LEADER
+        self.rank_type: RankType = RankType.LEADER
 
     def to_json(self) -> dict:
         data: dict = super().to_json()

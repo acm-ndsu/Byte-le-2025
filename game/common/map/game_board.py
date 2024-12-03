@@ -443,6 +443,15 @@ class GameBoard(GameObject):
         """
         return [Vector(x, y) for x in range(self.map_size.x) for y in range(self.map_size.y)]
 
+    def remove_dead_characters(self, dead_chars: list[Character]) -> None:
+        """
+        Removes all dead characters from the map and their respective team managers
+        """
+        for char in dead_chars:
+            self.remove(char.position, char.object_type)
+            character_team_manager: TeamManager = self.get_team_manager(char.country_type)
+            character_team_manager.team.remove(char)
+
     def order_teams(self) -> None:
         """
         Each turn, at most two characters will take action. It will be each team's next fastest character, assuming

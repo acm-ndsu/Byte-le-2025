@@ -45,10 +45,6 @@ class Engine:
             self.load()
             self.boot()  # clients are appended in this method
 
-            # a boolean representing if either team was defeated
-            team_is_defeated: bool = (self.clients[0].team_manager.everyone_is_dead() or
-                                      self.clients[1].team_manager.everyone_is_dead())
-
             for self.current_world_key in tqdm(
                     self.master_controller.game_loop_logic(),
                     bar_format=TQDM_BAR_FORMAT,
@@ -57,6 +53,10 @@ class Engine:
                 self.pre_tick()
                 self.tick()
                 self.post_tick()
+
+                # a boolean representing if either team was defeated
+                team_is_defeated: bool = (self.clients[0].team_manager.everyone_is_defeated() or
+                                          self.clients[1].team_manager.everyone_is_defeated())
 
                 # if the tick exceeds the max OR if any team is completely defeated, break the game loop
                 if self.tick_number >= MAX_TICKS or team_is_defeated:

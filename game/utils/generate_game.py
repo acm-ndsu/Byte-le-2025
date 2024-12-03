@@ -37,6 +37,10 @@ def generate(seed: int = random.randint(0, 1000000000)):
         else:
             data['game_board']['turpis_team_manager'] = team_manager.to_json()
 
+    # order the speed of the teams before they are given
+    temp.uroda_team_manager.speed_sort()
+    temp.turpis_team_manager.speed_sort()
+
     # Verify logs location exists
     if not os.path.exists(GAME_MAP_DIR):
         os.mkdir(GAME_MAP_DIR)

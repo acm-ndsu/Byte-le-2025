@@ -13,11 +13,14 @@ class MoveController(Controller):
     it will access that move and call its `use()` method to attempt to activate it.
     """
 
-    def handle_actions(self, action: ActionType, client: Player, world: GameBoard) -> None:
+    def handle_actions(self, action: ActionType = ActionType.NONE, client: Player = Player(),
+                       world: GameBoard = GameBoard()) -> None:
         """
         Given the correct enum, the matching move will be selected from the current character's moveset. If enough
         special points were gained, the move will be used; otherwise, nothing will happen.
         """
+
+        # user: Character = client.team_manager.get_active_character()
 
         # the game board's reference to the client's team manager
         gb_client_team_manager: TeamManager = world.get_team_manager(client.team_manager.country_type)
@@ -45,6 +48,8 @@ class MoveController(Controller):
 
         # Set user's took_action to True as they have started their action
         user.took_action = True
+
+        print(f'Starting {user.name} turn' if user is not None else f'{client.team_name}\'s active character is none')
 
         # user cannot use the move if they don't have enough special points
         if user.special_points < current_move.cost:
@@ -84,13 +89,15 @@ class MoveController(Controller):
             client.team_manager.score += DEFEATED_SCORE
 
         # update the game board managers so the json reflects any changes from all affected characters
-        self.__update_game_board_managers(world, primary_targets + effect_targets)
+        # self.__update_character_references(world, primary_targets + effect_targets, client, gb_opponent_team_manager)
+        # self.__update_game_board_managers(world, primary_targets + effect_targets)
+        # world.remove_dead_characters(defeated_characters)
 
-        print([f'Target {target.name} BACK in MoveController: '
-               f'{target.current_health}/{target.max_health}' for target in primary_targets])
-
-        print(f'Uroda TM GB references: {[(char.name, char.current_health, char.max_health) for char in world.uroda_team_manager.team]}\nTurpis TM GB references: '
-              f'{[(char.name, char.current_health, char.max_health) for char in world.turpis_team_manager.team]}')
+        # print([f'Target {target.name} BACK in MoveController: '
+        #        f'{target.current_health}/{target.max_health}' for target in primary_targets])
+        #
+        # print(f'Uroda TM GB references: {[(char.name, char.current_health, char.max_health) for char in world.uroda_team_manager.team]}\nTurpis TM GB references: '
+        #       f'{[(char.name, char.current_health, char.max_health) for char in world.turpis_team_manager.team]}')
 
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
@@ -147,18 +154,6 @@ class MoveController(Controller):
         are
         """
 
-        # print('\n\nCharacter health stats before updating gameboard managers')
-        # for char in targets:
-        #     print(f'From target list: {char.name}: {char.current_health}/{char.max_health}')
-        #
-        # for char in world.uroda_team_manager.team:
-        #     print(f'\nFrom GB uroda team manager list: {char.name}: {char.current_health}/{char.max_health}')
-        #
-        # for char in world.turpis_team_manager.team:
-        #     print(f'\nFrom GB turpis team manager list: {char.name}: {char.current_health}/{char.max_health}')
-        #
-        # input('\ncontinue >')
-
         for char in targets:
             # figure out which team manager the character belongs to
             manager_to_use: TeamManager = world.uroda_team_manager if \
@@ -168,15 +163,33 @@ class MoveController(Controller):
             # this helps when writing the gameboard to json, so it receives the proper updates
             manager_to_use.update_character(char)
 
-        # print('Character health stats AFTER updating gameboard managers')
-        #
-        # for char in targets:
-        #     print(f'From target list: {char.name}: {char.current_health}/{char.max_health}')
-        #
-        # for char in world.uroda_team_manager.team:
-        #     print(f'\nFrom GB uroda team manager list: {char.name}: {char.current_health}/{char.max_health}')
-        #
-        # for char in world.turpis_team_manager.team:
-        #     print(f'\nFrom GB turpis team manager list: {char.name}: {char.current_health}/{char.max_health}')
-        #
-        # input('continue >')
+    def __update_character_references(self, world: GameBoard, targets: list[Character],
+                                      user_team_manager: TeamManager = TeamManager(),
+                                      opposing_team_manager: TeamManager = TeamManager()) -> None:
+        """
+        A lot happens in the game, and there are many references to a single character (on the game map, the client's
+        team manager, and a copy of that team manager the Game Board contains). Every change needs to be reflected in
+        these three spots to keep the game logic consistent.
+        """
+
+        gb_manager_to_use: TeamManager
+        client_to_use: Player
+
+        for char in targets:
+            # figure out which team manager the character belongs to
+            gb_manager_to_use = world.uroda_team_manager if \
+                char.country_type == CountryType.URODA else world.turpis_team_manager
+
+            # figure out which client the character belongs to
+            client_to_use = user_team_manager if user_team_manager.team.country_type == char.country_type else opposing_team_manager
+
+            # update the character in the gameboard's team manager's reference
+            gb_manager_to_use.update_character(char)
+
+            # find the character in the client's team manager and update it
+            char_index: int = client_to_use.team_manager.team.index(char)
+            client_to_use.team_manager.team[char_index] = char
+
+            # update the character in the game map
+            game_map_character: Character = world.get_character_from(char.position)
+            game_map_character = char
