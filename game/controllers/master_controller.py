@@ -107,7 +107,7 @@ class MasterController(Controller):
 
             # if the team is defeated, move on
             if client.team_manager.everyone_is_defeated():
-                break
+                continue
 
             # attempt to perform the action for the given ActionType
             for i in range(MAX_NUMBER_OF_ACTIONS_PER_TURN):
@@ -117,7 +117,7 @@ class MasterController(Controller):
                 except IndexError:
                     pass
 
-            # update the gameboard's team manager references
+            # update the game board's team manager references
             gameboard.update_team_managers()
 
             # to ensure the clients receive the updates for their characters, loop over the two and reassign their
@@ -154,17 +154,6 @@ class MasterController(Controller):
         data = dict()
         data['tick'] = turn
         data['clients'] = [client.to_json() for client in clients]
-
-        # for client in clients:
-        #     print(f'\n\nClient json:\n{client.to_json()}\n\n')
-        #     input('\n\ncontinue >')
-
-        # print(f'\nEntire json before creating logs\n{self.current_world_data}\n')
-        # input('\n\ncontinue >')
-        #
-        # print(f'\nGameboard uroda TM before creating logs:\n{self.current_world_data["game_board"]['uroda_team_manager']}\n')
-        # print(f'\nGameboard turpis TM before creating logs:\n{self.current_world_data["game_board"]['turpis_team_manager']}\n')
-        # input('\n\ncontinue >')
 
         # Add things that should be thrown into the turn logs here
         data['game_board'] = self.current_world_data['game_board']

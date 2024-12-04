@@ -89,21 +89,6 @@ class MoveController(Controller):
         # update the user on the game map
         world.replace(user.position, user)
 
-        # # remove any dead characters off the game map
-        # world.remove_dead(defeated_characters)
-
-        # update the game board managers so the json reflects any changes from all affected characters
-        # self.__update_character_references(world, primary_targets + effect_targets, client, gb_opponent_team_manager)
-        # self.__update_game_board_managers(world, primary_targets + effect_targets)
-        # world.remove_dead_characters(defeated_characters)
-
-        # print([f'Target {target.name} BACK in MoveController: '
-        #        f'{target.current_health}/{target.max_health}' for target in primary_targets])
-        #
-        # print(f'Uroda TM GB references: {[(char.name, char.current_health, char.max_health) for char in world.uroda_team_manager.team]}\nTurpis TM GB references: '
-        #       f'{[(char.name, char.current_health, char.max_health) for char in world.turpis_team_manager.team]}')
-
-
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """
         Helper method that determines the necessary targets for a character. Will return a list of Character objects
