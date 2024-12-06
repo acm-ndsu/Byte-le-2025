@@ -25,13 +25,15 @@ class TeamManager(GameObject):
     ignored, but reminder to exercise caution when adjusting the Character class for this reason.
     '''
 
-    def __init__(self, team: list[Character] = [Character(), Character(), Character()],
-                 country: CountryType = CountryType.URODA):
+    def __init__(self, team: list[Character] = [GenericTrash(), GenericTrash(), GenericTrash()],
+                 country_type: CountryType = CountryType.URODA, team_name: str = ''):
         super().__init__()
         self.object_type: ObjectType = ObjectType.TEAMMANAGER
         self.team: list[Character] = team
-        self.country = country
+        self.country_type = country_type
         self.score: int = 0
+        self.team_name: str = team_name
+        self.dead_team: list[Character] = []
 
     # Getters and Setters
     @property
@@ -77,6 +79,37 @@ class TeamManager(GameObject):
                              f'and has the value of {score}.')
         self.__score: int = score
 
+    @property
+    def team_name(self) -> str | None:
+        return self.__team_name
+
+    @team_name.setter
+    def team_name(self, team_name: str | None) -> None:
+        if team_name is not None and not isinstance(team_name, str):
+            raise ValueError(
+                f'{self.__class__.__name__}.team_name must be a String or None. It is a(n) '
+                f'{team_name.__class__.__name__} and has the value of {team_name}.')
+        self.__team_name = team_name
+
+    @property
+    def dead_team(self) -> list[Character]:
+        return self.__dead_team
+
+    @dead_team.setter
+    def dead_team(self, dead_team: list[Character]) -> None:
+        if dead_team is None or not isinstance(dead_team, list):
+            if dead_team is None or not isinstance(dead_team, list):
+                raise ValueError(
+                    f'{self.__class__.__name__}.team must be a list[Character]. It is a(n) {dead_team.__class__.__name__} '
+                    f'and has the value of {dead_team}.')
+            for i in dead_team:
+                if i is None or not isinstance(i, Character):
+                    raise ValueError(
+                        f'{self.__class__.__name__}.team must be a list[Character]. It contains a(n) '
+                        f'{i.__class__.__name__} with the value {i}.')
+                
+        self.__dead_team = dead_team
+
     # Method to sort team based on character speed, fastest to slowest (descending order)
     def speed_sort(self) -> None:
         """
@@ -96,10 +129,40 @@ class TeamManager(GameObject):
         Returns the first character in the team that hasn't taken its turn.
         """
         for character in self.team:
-            if not character.took_action:
+            if not character.took_action and not character.is_dead:
                 return character
 
-    def everyone_is_dead(self) -> bool:
+        print(f'Team Manager {self.team_name} has no active character. Current characters: '
+              f'{[(char.name, char.took_action, char.special_points) for char in self.team]}\n'
+              f'Everyone took action: {self.everyone_took_action()}')
+
+    def update_character(self, character: Character) -> None:
+        """
+        Updates the team with the given character to record any changes if the character is in the TeamManager's team.
+        """
+        for index in range(len(self.team)):
+            # if the given character is found based on the unique name the character has, update it in the team manager
+            if self.team[index].name == character.name:
+                self.team[index] = character
+
+    def get_character(self, name: str = '') -> Character | None:
+        """
+        Returns a Character based off the given name. If the name is not found in the team, returns None.
+        """
+        for char in self.team:
+            if char.name == name:
+                return char
+
+    def organize_dead_characters(self) -> None:
+        """
+        Moves any characters in the team manager from the team reference to the dead_team reference
+        """
+        for character in self.team:
+            if character.is_dead:
+                self.dead_team.append(character)
+                self.team.remove(character)
+
+    def everyone_is_defeated(self) -> bool:
         return all([character.is_dead for character in self.team])
 
     def everyone_took_action(self) -> bool:
@@ -109,8 +172,10 @@ class TeamManager(GameObject):
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['team'] = [character.to_json() for character in self.team]
-        data['country'] = self.country
+        data['dead_team'] = [character.to_json() for character in self.dead_team]
+        data['country_type'] = self.country_type.value
         data['score'] = self.score
+        data['team_name'] = self.team_name
         return data
 
     def __from_json_helper(self, data: dict) -> Character:
@@ -119,6 +184,8 @@ class TeamManager(GameObject):
         match temp:
             case ObjectType.CHARACTER:
                 return Character().from_json(data)
+            case ObjectType.GENERIC_TRASH:
+                return GenericTrash().from_json(data)
             case ObjectType.GENERIC_ATTACKER:
                 return GenericAttacker().from_json(data)
             case ObjectType.GENERIC_HEALER:
@@ -137,6 +204,10 @@ class TeamManager(GameObject):
         # converts each json object in the 'team' to be a Character object and creates a list with them
         self.team = [self.__from_json_helper(obj) for obj in data['team']] if len(data['team']) > 0 else []
 
-        self.country = data['country']
+        self.dead_team = [self.__from_json_helper(obj)
+                          for obj in data['dead_team']] if len(data['dead_team']) > 0 else []
+
+        self.country_type = CountryType(data['country_type'])
         self.score = data['score']
+        self.team_name = data['team_name']
         return self

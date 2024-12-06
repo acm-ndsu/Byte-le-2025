@@ -9,7 +9,7 @@ what they do already. Refer to this file to clear any confusion, and make any ch
 
 # Runtime settings / Restrictions --------------------------------------------------------------------------------------
 # The engine requires these to operate
-MAX_TICKS = 500                                     # max number of ticks the server will run regardless of game state
+MAX_TICKS = 200                                     # max number of ticks the server will run regardless of game state
 TQDM_BAR_FORMAT = "Game running at {rate_fmt} "     # how TQDM displays the bar
 TQDM_UNITS = " turns"                               # units TQDM takes in the bar
 
@@ -29,12 +29,27 @@ SET_NUMBER_OF_CLIENTS_CONTINUE = 2                  # required number of clients
 
 ALLOWED_MODULES = ["game.client.user_client",       # modules that clients are specifically allowed to access
                    "game.common.enums",
-                   "math",
+                   "game.common.map.game_board",
+                   "game.common.map.tile",
+                   "game.common.map.wall",
+                   "game.common.map.game_board",
+                   "game.common.team_manager",
+                   "game.commander_clash.character.character",
+                   "game.commander_clash.character.stats",
+                   "game.commander_clash.moves.effects",
+                   "game.commander_clash.moves.moves",
+                   "game.commander_clash.moves.moveset",
+                   "game.utils.vector",
+                   "typing",
                    "numpy",
                    "scipy",
                    "pandas",
                    "itertools",
                    "functools",
+                   "random",
+                   "heapq",
+                   "sympy",
+                   "math",
                    ]
 
 RESULTS_FILE_NAME = "results.json"                                  # Name and extension of results file
@@ -70,3 +85,5 @@ MINIMUM_DAMAGE = 1                                                  # Base damag
 DEFEATED_SCORE = 100                                                # The points to award for each defeated character
 WIN_SCORE = 200                                                     # The points to award for winning a game
 DIFFERENTIAL_BONUS = 150                                            # The points to award for each alive character on the winning team
+
+GENERIC_TRASH_NAME = 'Missing Character'                            # A name used for Generic Trash to convey a proper message to the players

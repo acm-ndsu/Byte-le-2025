@@ -34,23 +34,23 @@ class TestGameBoard(unittest.TestCase):
             Vector(1, 3): [self.attacker],
         }
 
-        self.ga1: GenericAttacker = GenericAttacker(speed=SpeedStat(6))
-        self.gh1: GenericHealer = GenericHealer(speed=SpeedStat(3))
-        self.gt1: GenericTank = GenericTank(speed=SpeedStat(2))
+        self.ga1: GenericAttacker = GenericAttacker(speed=SpeedStat(6), country_type=CountryType.URODA)
+        self.gh1: GenericHealer = GenericHealer(speed=SpeedStat(3), country_type=CountryType.URODA)
+        self.gt1: GenericTank = GenericTank(speed=SpeedStat(2), country_type=CountryType.URODA)
 
-        self.ga2: GenericAttacker = GenericAttacker(speed=SpeedStat(5))
-        self.gh2: GenericHealer = GenericHealer(speed=SpeedStat(4))
-        self.gt2: GenericTank = GenericTank(speed=SpeedStat(1))
+        self.ga2: GenericAttacker = GenericAttacker(speed=SpeedStat(5), country_type=CountryType.TURPIS)
+        self.gh2: GenericHealer = GenericHealer(speed=SpeedStat(4), country_type=CountryType.TURPIS)
+        self.gt2: GenericTank = GenericTank(speed=SpeedStat(1), country_type=CountryType.TURPIS)
 
         self.uroda_team: list[Character] = [self.ga1, self.gh1, self.gt1]
         self.turpis_team: list[Character] = [self.ga2, self.gh2, self.gt2]
 
-        uroda_manager: TeamManager = TeamManager(country=CountryType.URODA, team=self.uroda_team)
-        turpis_manager: TeamManager = TeamManager(country=CountryType.TURPIS, team=self.turpis_team)
+        self.uroda_manager: TeamManager = TeamManager(country_type=CountryType.URODA, team=self.uroda_team)
+        self.turpis_manager: TeamManager = TeamManager(country_type=CountryType.TURPIS, team=self.turpis_team)
 
         self.game_board: GameBoard = GameBoard(1, Vector(3, 3), self.locations, False,
-                                               uroda_team_manager=uroda_manager,
-                                               turpis_team_manager=turpis_manager)
+                                               uroda_team_manager=self.uroda_manager,
+                                               turpis_team_manager=self.turpis_manager)
 
         self.game_board.generate_map()
 
@@ -105,6 +105,14 @@ class TestGameBoard(unittest.TestCase):
         characters: dict[Vector, Character] = self.game_board.get_characters(CountryType.TURPIS)
         self.assertEqual(characters[Vector(1, 2)], self.leader)
         self.assertEqual(len(characters), 1)
+
+    def test_get_team_manager_uroda(self):
+        result: TeamManager | None = self.game_board.get_team_manager(self.uroda_manager.country_type)
+        self.assertEqual(self.uroda_manager, result)
+
+    def test_get_team_manager_turpis(self):
+        result: TeamManager | None = self.game_board.get_team_manager(self.turpis_manager.country_type)
+        self.assertEqual(self.turpis_manager, result)
 
     # uroda has 3 characters, turpis has 3
     def test_order_characters_3x3(self):
@@ -213,9 +221,9 @@ class TestGameBoard(unittest.TestCase):
         self.assertEqual(self.game_board.uroda_team_manager.object_type, temp.uroda_team_manager.object_type)
         self.assertEqual(self.game_board.uroda_team_manager.team, temp.uroda_team_manager.team)
         self.assertEqual(self.game_board.uroda_team_manager.score, temp.uroda_team_manager.score)
-        self.assertEqual(self.game_board.uroda_team_manager.country, temp.uroda_team_manager.country)
+        self.assertEqual(self.game_board.uroda_team_manager.country_type, temp.uroda_team_manager.country_type)
 
         self.assertEqual(self.game_board.turpis_team_manager.object_type, temp.turpis_team_manager.object_type)
         self.assertEqual(self.game_board.turpis_team_manager.team, temp.turpis_team_manager.team)
         self.assertEqual(self.game_board.turpis_team_manager.score, temp.turpis_team_manager.score)
-        self.assertEqual(self.game_board.turpis_team_manager.country, temp.turpis_team_manager.country)
+        self.assertEqual(self.game_board.turpis_team_manager.country_type, temp.turpis_team_manager.country_type)

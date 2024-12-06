@@ -8,15 +8,18 @@ from datetime import datetime
 
 from tqdm import tqdm
 
+from game.client.user_client import UserClient
+from game.commander_clash.character.character import Generic
+from game.commander_clash.generation.char_position_generation import update_character_info
+from game.commander_clash.validate_team import validate_team_selection as validate
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
+from game.common.team_manager import TeamManager
 from game.config import *
 from game.controllers.master_controller import MasterController
 from game.utils.helpers import write_json_file
 from game.utils.thread import Thread, CommunicationThread
 from game.utils.validation import verify_code, verify_num_clients
-from game.client.user_client import UserClient
-from game.commander_clash.validate_team import validate_team_selection as validate
 
 
 class Engine:
@@ -42,10 +45,6 @@ class Engine:
             self.load()
             self.boot()  # clients are appended in this method
 
-            # a boolean representing if either team was defeated
-            team_is_defeated: bool = (self.clients[0].team_manager.everyone_is_dead() or
-                                      self.clients[1].team_manager.everyone_is_dead())
-
             for self.current_world_key in tqdm(
                     self.master_controller.game_loop_logic(),
                     bar_format=TQDM_BAR_FORMAT,
@@ -54,6 +53,10 @@ class Engine:
                 self.pre_tick()
                 self.tick()
                 self.post_tick()
+
+                # a boolean representing if either team was defeated
+                team_is_defeated: bool = (self.clients[0].team_manager.everyone_is_defeated() or
+                                          self.clients[1].team_manager.everyone_is_defeated())
 
                 # if the tick exceeds the max OR if any team is completely defeated, break the game loop
                 if self.tick_number >= MAX_TICKS or team_is_defeated:
@@ -111,9 +114,10 @@ class Engine:
 
                 player.code = obj
                 thr = None
+
                 try:
                     # Retrieve team name
-                    thr = CommunicationThread(player.code.team_data, list(), str)
+                    thr = CommunicationThread(player.code.team_data, list(), tuple)
                     thr.start()
                     thr.join(0.01)  # Shouldn't take long to get a string
 
@@ -136,8 +140,14 @@ class Engine:
                         # use index 0 to access the team name from `team_data`
                         player.team_name = team_data[0]
 
-                        # use index 1 to access the tuple of character selection enums from `team_data`
-                        player.team_manager.team = validate(team_data[1])
+                        # with access to a new team manager, write it to the json file
+                        with open(GAME_MAP_FILE) as json_file:
+                            world = json.load(json_file)
+
+                            # Write game map to file
+                            write_json_file(world, GAME_MAP_FILE)
+                            self.world = world
+
                     except Exception as e:
                         player.functional = False
                         player.error = f"{str(e)}\n{traceback.print_exc()}"
@@ -145,6 +155,19 @@ class Engine:
                 print(f"Bad client for {filename}: exception: {e}")
                 print(f"{traceback.print_exc()}")
                 player.functional = False
+
+        uroda_tm: TeamManager = TeamManager().from_json(self.world['game_board']['uroda_team_manager'])
+        turpis_tm: TeamManager = TeamManager().from_json(self.world['game_board']['turpis_team_manager'])
+
+        # add the team managers to the list
+        team_managers = [uroda_tm, turpis_tm]
+
+        # give the characters in the team managers their positions
+        update_character_info(team_managers)
+
+        # sort the team managers by speed
+        uroda_tm.speed_sort()
+        turpis_tm.speed_sort()
 
         # Verify correct number of clients have connected to start
         func_clients = [client for client in self.clients if client.functional]
@@ -158,11 +181,15 @@ class Engine:
         else:
             # Sort clients based on name, for the client runner
             self.clients.sort(key=lambda clnt: clnt.team_name, reverse=True)
+
+            # Sort the team managers by the team name to ensure they are with the correct team
+            team_managers.sort(key=lambda tm: tm.team_name, reverse=True)
+
             # Finally, request master controller to establish clients with basic objects
             if SET_NUMBER_OF_CLIENTS_START == 1:
-                self.master_controller.give_clients_objects(self.clients[0], self.world)
+                self.master_controller.give_clients_objects(self.clients[0], self.world, team_managers)
             else:
-                self.master_controller.give_clients_objects(self.clients, self.world)
+                self.master_controller.give_clients_objects(self.clients, self.world, team_managers)
 
     # Loads in the world
     def load(self):
@@ -234,8 +261,13 @@ class Engine:
 
             thr.join(time_remaining)
 
+        client: Player
+        thr: Thread
         # Go through each thread and check if they are still alive
         for client, thr in zip(self.clients, threads):
+            # Load actions into player
+            client.actions = thr.result if thr.result is not None else []
+
             # If thread is no longer alive, mark it as non-functional, preventing it from receiving future turns
             if thr.is_alive():
                 client.functional = False

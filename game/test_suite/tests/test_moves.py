@@ -154,6 +154,7 @@ class TestMove(unittest.TestCase):
     def test_buff_json(self) -> None:
         data: dict = self.buff.to_json()
         buff: Buff = Buff().from_json(data)
+
         self.assertEqual(buff.name, self.buff.name)
         self.assertEqual(buff.move_type, self.buff.move_type)
         self.assertEqual(buff.target_type, self.buff.target_type)
