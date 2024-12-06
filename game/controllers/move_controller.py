@@ -1,3 +1,4 @@
+from game.common.enums import ActionType
 from game.commander_clash.moves.move_logic import handle_move_logic, handle_effect_logic
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
@@ -17,10 +18,10 @@ class MoveController(Controller):
         Given the correct enum, the matching move will be selected from the current character's moveset. If enough
         special points were gained, the move will be used; otherwise, nothing will happen.
         """
-        user: Character = client.team_manager.get_active_character()
+        # the game board's reference to the client's team manager
+        gb_client_team_manager: TeamManager = world.get_team_manager(client.team_manager.country_type)
 
-        # Set user's took_action to True as they have started their action
-        user.took_action = True
+        user: Character = gb_client_team_manager.get_active_character()
 
         current_move: Move
 
@@ -38,32 +39,38 @@ class MoveController(Controller):
             case _:
                 return
 
+        # Set user's took_action to True as they have started their action
+        user.took_action = True
+
         # user cannot use the move if they don't have enough special points
         if user.special_points < current_move.cost:
             return
 
         # get the possible targets based on the target type
-        targets: list[Character] | list = self.__get_targets(user, current_move.target_type, world)
+        primary_targets: list[Character] | list = self.__get_targets(user, current_move.target_type, world)
 
         # don't do anything if there are no available targets
-        if len(targets) == 0:
+        if len(primary_targets) == 0:
             return
 
         # call the move_logic file's method to handle the rest of the logic
-        handle_move_logic(user, targets, current_move, is_normal_attack)
+        handle_move_logic(user, primary_targets, current_move, is_normal_attack)
 
         # a collection of the defeated characters is created
-        defeated_characters: list[Character] = [target for target in targets if target.current_health == 0]
+        defeated_characters: list[Character] = [target for target in primary_targets if target.current_health == 0]
+
+        # a reference to the targets specifically for the secondary effect
+        effect_targets: list[Character] | list = []
 
         # if the current move has an effect, get the targets for it and apply the same logic
         if current_move.effect is not None:
             # get the possible targets based on the effect's target type
-            targets: list[Character] | list = self.__get_targets(user, current_move.effect.target_type, world)
+            effect_targets: list[Character] | list = self.__get_targets(user, current_move.effect.target_type, world)
 
-            handle_effect_logic(user, targets, current_move.effect)
+            handle_effect_logic(user, effect_targets, current_move.effect)
 
             # add any additional characters to defeated_characters
-            defeated_characters += [target for target in targets if
+            defeated_characters += [target for target in effect_targets if
                                     target not in defeated_characters and target.current_health == 0]
 
         # for all defeated characters, set their state to 'defeated;' remove them at start of next turn
@@ -71,6 +78,9 @@ class MoveController(Controller):
             defeated_char.is_dead = True
             defeated_char.state = 'defeated'
             client.team_manager.score += DEFEATED_SCORE
+
+        # update the user on the game map
+        world.replace(user.position, user)
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """

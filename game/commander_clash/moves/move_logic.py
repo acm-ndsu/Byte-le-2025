@@ -4,7 +4,7 @@ from game.config import MINIMUM_DAMAGE, SPECIAL_POINT_LIMIT
 from game.commander_clash.character.character import Character, GenericTank, Leader
 from game.commander_clash.character.stats import Stat
 from game.commander_clash.moves.moves import *
-from game.common.enums import MoveType
+from game.common.enums import MoveType, CharacterType
 
 
 def handle_move_logic(user: Character, targets: list[Character], current_move: Move, is_normal_attack: bool) -> None:
@@ -30,10 +30,6 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
             __assign_target_states(targets, 'debuffing')
             current_move: Debuff
             __handle_stat_modification(targets, current_move)
-        case MoveType.GUARD:
-            current_move: Guard
-            user: GenericTank | Leader
-            __assign_guardian(user, targets)
         case _:
             return
 
@@ -160,20 +156,6 @@ def __get_stat_object_to_affect(target: Character, current_move: AbstractBuff | 
             return target.defense
         case ObjectType.SPEED_STAT:
             return target.speed
-
-
-def __assign_guardian(guardian: GenericTank | Leader, targets: list[Character]):
-    """
-    A helper method that assigns the given tank character to the given targets.
-    """
-
-    # This checks to see if the character using the guard move is a tank or a tank leader, and if not, it returns.
-    if guardian.character_type is not CharacterType.TANK:
-        return
-
-    # Assign all targets their new guardian
-    for target in targets:
-        target.guardian = guardian
 
 
 def __assign_target_states(targets: list[Character], state: str) -> None:

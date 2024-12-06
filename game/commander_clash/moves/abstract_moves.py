@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Self
 
-from game.common.enums import *
+from game.common.enums import MoveType, TargetType, ObjectType
 from game.common.game_object import GameObject
 
 
@@ -36,14 +36,14 @@ class AbstractMove(GameObject):
 
     def to_json(self) -> dict:
         data: dict = super().to_json()
-        data['move_type'] = self.move_type
-        data['target_type'] = self.target_type
+        data['move_type'] = self.move_type.value
+        data['target_type'] = self.target_type.value
         return data
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
-        self.move_type: MoveType = data['move_type']
-        self.target_type: TargetType = data['target_type']
+        self.move_type: MoveType = MoveType(data['move_type'])
+        self.target_type: TargetType = TargetType(data['target_type'])
         return self
 
 
@@ -142,7 +142,7 @@ class AbstractBuff(AbstractMove):
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['buff_amount'] = self.buff_amount
-        data['stat_to_affect'] = self.stat_to_affect
+        data['stat_to_affect'] = self.stat_to_affect.value
         return data
 
     def from_json(self, data: dict) -> Self:
@@ -191,26 +191,11 @@ class AbstractDebuff(AbstractMove):
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['debuff_amount'] = self.debuff_amount
-        data['stat_to_affect'] = self.stat_to_affect
+        data['stat_to_affect'] = self.stat_to_affect.value
         return data
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
         self.debuff_amount: int = data['debuff_amount']
         self.stat_to_affect: ObjectType = ObjectType(data['stat_to_affect'])
-        return self
-
-
-class AbstractGuard(AbstractMove):
-    def __init__(self):
-        super().__init__(TargetType.ADJACENT_ALLIES)
-
-        self.move_type = MoveType.GUARD
-
-    def to_json(self) -> dict:
-        data: dict = super().to_json()
-        return data
-
-    def from_json(self, data: dict) -> Self:
-        super().from_json(data)
         return self

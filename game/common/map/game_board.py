@@ -209,6 +209,29 @@ class GameBoard(GameObject):
 
         self.__walled = walled
 
+    def get_team_manager(self, country_type: CountryType = CountryType.URODA) -> TeamManager | None:
+        """
+        Returns a TeamManager based on the given CountryType. Returns None if the managers are None or an
+        invalid enum is given.
+        """
+        if self.uroda_team_manager is None or self.turpis_team_manager is None:
+            return None
+
+        return self.uroda_team_manager if country_type == CountryType.URODA else \
+            self.turpis_team_manager if country_type == CountryType.TURPIS else None
+
+    def get_opposing_team_manager(self, country_type: CountryType = CountryType.URODA) -> TeamManager | None:
+        """
+        Returns the opponent's TeamManager based on the given CountryType. Returns None if the managers are None or an
+        invalid enum is given.
+        """
+
+        if self.uroda_team_manager is None and self.turpis_team_manager is None:
+            return None
+
+        return self.uroda_team_manager if country_type == CountryType.TURPIS else \
+            self.turpis_team_manager if country_type == CountryType.URODA else None
+
     def get_ordered_teams_as_list(self) -> list[Character]:
         """
         Returns a list that will have the exact order every character will take their turn in. Returns a list
@@ -230,15 +253,13 @@ class GameBoard(GameObject):
         # Dictionary Init
         self.game_map = self.__map_init()
 
-    # FIX ME TO PLACE ALL CHARACTERS FROM EACH TEAM MANAGER
-
     def __map_init(self) -> dict[Vector, GameObjectContainer]:
         output: dict[Vector, GameObjectContainer] = dict()
 
-        # Update all Avatar positions if they are to be placed on the map
+        # Update all Character positions if they are to be placed on the map
         for vec, objs in self.locations.items():
             for obj in objs:
-                if isinstance(obj, TeamManager):
+                if isinstance(obj, Character):
                     obj.position = vec
 
         if self.walled:
@@ -252,6 +273,7 @@ class GameBoard(GameObject):
 
         # convert locations dict to go_container
         output.update({vec: GameObjectContainer(objs) for vec, objs in self.locations.items()})
+
         return output
 
     def get(self, coords: Vector) -> GameObjectContainer | None:
@@ -303,6 +325,21 @@ class GameBoard(GameObject):
             self.game_map.pop(coords, None)
 
         return to_return
+
+    def replace(self, coords: Vector, to_place: GameObject) -> None:
+        """
+        Replaces the GameObjectContainer at the given coordinate with a new GameObjectContainer. The new one will
+        contain the `to_place` object instead. No coordinates are removed in this way
+        """
+        goc: GameObjectContainer = GameObjectContainer([to_place])
+        self.game_map[coords] = goc
+
+    def remove_dead(self, dead: list[Character]) -> None:
+        """
+        Removes the given dead characters off the game map.
+        """
+        for char in dead:
+            self.remove(char.position, char.object_type)
 
     def remove_coordinate(self, coords: Vector) -> None:
         """
@@ -396,6 +433,42 @@ class GameBoard(GameObject):
                 isinstance(self.game_map[coords].get_top(), Character) and
                 self.game_map[coords].get_top().country_type == country}
 
+    def update_team_managers(self) -> None:
+        """
+        Updates the team manager references stored by updating each character in their respective team manager based on
+        the updates to the references on the game map.
+        That is, when a character is modified, their reference on the game map is modified, not the game board's
+        team manager references. So, we need to loop to update the characters properly.
+        """
+
+        characters: list[Character] = []
+
+        # using a method that already exists, get any potential characters from every spot on the game map
+        for coord in self.game_map.keys():
+            characters.append(self.get_top(coord))
+
+        # remove any potential None values from the list of characters
+        characters = [character for character in characters if character is not None]
+
+        for character in characters:
+            manager_to_use: TeamManager
+
+            if character.country_type == CountryType.URODA:
+                manager_to_use = self.uroda_team_manager
+            else:
+                manager_to_use = self.turpis_team_manager
+
+            # update the character
+            manager_to_use.update_character(character)
+
+        # update the game board's team manager references to reflect the changes that happened this turn
+        self.uroda_team_manager.organize_dead_characters()
+        self.turpis_team_manager.organize_dead_characters()
+
+    def update_character_on_map(self, character: Character) -> None:
+        # remove the old instance of the character from the map
+        self.replace(character.position, character)
+
     def get_character_from(self, coords: Vector) -> Character | None:
         """
         Returns a Character object from the given coordinate. If no character is at the coordinate, return None. If
@@ -420,6 +493,15 @@ class GameBoard(GameObject):
         Returns list of all vector positions available on the game board (everything in bounds).
         """
         return [Vector(x, y) for x in range(self.map_size.x) for y in range(self.map_size.y)]
+
+    def remove_dead_characters(self, dead_chars: list[Character]) -> None:
+        """
+        Removes all dead characters from the map and their respective team managers
+        """
+        for char in dead_chars:
+            self.remove(char.position, char.object_type)
+            character_team_manager: TeamManager = self.get_team_manager(char.country_type)
+            character_team_manager.team.remove(char)
 
     def order_teams(self) -> None:
         """

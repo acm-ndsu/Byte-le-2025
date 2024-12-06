@@ -1,7 +1,5 @@
 import random
-from copy import deepcopy
 
-from game.commander_clash.character.character import Character
 from game.common.enums import *
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
@@ -10,7 +8,6 @@ from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN, WIN_SCORE, DIFFERENTIAL_
 from game.controllers.controller import Controller
 from game.controllers.move_controller import MoveController
 from game.controllers.swap_controller import SwapController
-from game.utils.vector import Vector
 
 
 class MasterController(Controller):
@@ -55,20 +52,10 @@ class MasterController(Controller):
         self.move_controller: MoveController = MoveController()
 
     # Receives all clients for the purpose of giving them the objects they will control
-    def give_clients_objects(self, clients: list[Player], world: dict):
-        # starting_positions would set done in generate game
-
-        gb: GameBoard = world['game_board']
-
-        # get the two teams from the gameboard
-        uroda_team: dict[Vector, Character] = gb.get_characters(CountryType.URODA)
-        turpis_team: dict[Vector, Character] = gb.get_characters(CountryType.TURPIS)
-
-        # create a new TeamManager for every Player object
-        # the first Player is assigned the Uroda team, and then second is assigned Turpis
+    def give_clients_objects(self, clients: list[Player], world: dict, team_managers: list[TeamManager]):
+        # the clients and their team managers will match up, so assign the client their correct team manager
         for iteration, client in enumerate(clients):
-            client.team_manager = TeamManager()
-            client.team_manager.team = uroda_team if iteration == 0 else turpis_team
+            client.team_manager = team_managers[iteration]
 
     # Generator function. Given a key:value pair where the key is the identifier for the current world and the value is
     # the state of the world, returns the key that will give the appropriate world information
@@ -87,7 +74,7 @@ class MasterController(Controller):
         self.current_world_data = world
 
         if turn == 1:
-            random.seed(world['game_board'].seed)
+            random.seed(world['game_board']['seed'])
             # self.event_times = random.randrange(162, 172), random.randrange(329, 339)
 
     # Receive a specific client and send them what they get per turn. Also obfuscates necessary objects.
@@ -100,10 +87,12 @@ class MasterController(Controller):
         client.actions = turn_actions
 
         # Create deep copies of all objects sent to the player
-        current_world = GameBoard().from_json(self.current_world_data['game_board'].to_json())  # deepcopy(self.current_world_data["game_board"])  # what is current world and copy avatar
+        current_world = GameBoard().from_json(self.current_world_data[
+                                                  'game_board'])  # deepcopy(self.current_world_data["game_board"])  # what is current world and copy avatar
         copy_team_manager = TeamManager().from_json(client.team_manager.to_json())  # deepcopy(client.team_manager)
         # Obfuscate data in objects that that player should not be able to see
         # Currently world data isn't obfuscated at all
+
         args = (self.turn, turn_actions, current_world, copy_team_manager)
         return args
 
@@ -114,31 +103,60 @@ class MasterController(Controller):
             for character in client.team_manager.team:
                 character.state = 'idle'
 
-                # if everyone took their action in the given team manager, set their took_action bool to False
-                if client.team_manager.everyone_took_action():
-                    character.took_action = False
+            gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
 
-            # if the client did not provide any actions, just continue
-            if len(client.actions) == 0:
+            # if the team is defeated, move on
+            if client.team_manager.everyone_is_defeated():
                 continue
 
             # attempt to perform the action for the given ActionType
             for i in range(MAX_NUMBER_OF_ACTIONS_PER_TURN):
                 try:
-                    self.swap_controller.handle_actions(client.actions[i], client,
-                                                        self.current_world_data["game_board"])
-                    self.move_controller.handle_actions(client.actions[i], client,
-                                                        self.current_world_data["game_board"])
+                    self.swap_controller.handle_actions(client.actions[i], client, gameboard)
+                    self.move_controller.handle_actions(client.actions[i], client, gameboard)
                 except IndexError:
                     pass
+
+            # update the game board's team manager references
+            gameboard.update_team_managers()
+
+            # to ensure the clients receive the updates for their characters, loop over the two and reassign their
+            # team managers to be the game board references
+            # call the variable client_ to not get confused with the outer for loop
+            # this for loop needs to happen every turn
+            for client_ in clients:
+                # get the client's score before it is overwritten
+                client_score: int = client_.team_manager.score
+
+                if client_.team_manager.country_type == CountryType.URODA:
+                    client_.team_manager = gameboard.uroda_team_manager
+                else:
+                    client_.team_manager = gameboard.turpis_team_manager
+
+                client_.team_manager.score = client_score
+
+                # remove any dead characters off the game map
+                gameboard.remove_dead(client.team_manager.dead_team)
+
+            # if everyone took their action in the given team manager, set their took_action bool to False
+            if client.team_manager.everyone_took_action():
+                for character in client.team_manager.team:
+                    character.took_action = False
+
+                # ensure the team is ordered by speed after everyone took their turn
+                client.team_manager.speed_sort()
+
+            # update the current world json by setting it to the game board's updated state
+            self.current_world_data['game_board'] = gameboard.to_json()
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):
         data = dict()
         data['tick'] = turn
         data['clients'] = [client.to_json() for client in clients]
+
         # Add things that should be thrown into the turn logs here
-        data['game_board'] = self.current_world_data["game_board"].to_json()
+        data['game_board'] = self.current_world_data['game_board']
 
         return data
 
@@ -154,8 +172,8 @@ class MasterController(Controller):
         client2.team_manager.score += DIFFERENTIAL_BONUS * len(client2.team_manager.team)
 
         # client1 is the winner if client2's team is all dead
-        winner: Player | None = client1 if client2.team_manager.everyone_is_dead() else \
-            client2 if client1.team_manager.everyone_is_dead() else None
+        winner: Player | None = client1 if client2.team_manager.everyone_is_defeated() else \
+            client2 if client1.team_manager.everyone_is_defeated() else None
 
         # if there is a clear winner (one team was defeated), add the winning score to the winner
         if winner is not None:

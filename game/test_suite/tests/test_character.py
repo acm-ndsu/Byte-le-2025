@@ -54,7 +54,9 @@ class TestCharacter(unittest.TestCase):
         # test that all the parameters are set properly with the constructor
         self.assertEqual(self.special.name, 'Special')
         self.assertEqual(self.special.character_type, CharacterType.TANK)
-        self.assertEqual(self.special.current_health, 10)
+
+        # health is 10 * HEALTH_MODIFIER from config
+        self.assertEqual(self.special.current_health, 40)
         self.assertEqual(self.special.defense.base_value, 20)
         self.assertEqual(self.special.defense.value, 20)
         self.assertEqual(self.special.speed.base_value, 10)
@@ -190,7 +192,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.attack, self.character.attack)
         self.assertEqual(char.defense.value, self.character.defense.value)
         self.assertEqual(char.speed.value, self.character.speed.value)
-        self.assertEqual(char.rank, self.character.rank)
+        self.assertEqual(char.rank_type, self.character.rank_type)
         self.assertEqual(char.special_points, self.character.special_points)
         self.assertEqual(char.position, None)
         self.assertTrue(char.moveset == self.character.moveset)

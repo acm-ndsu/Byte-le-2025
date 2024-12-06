@@ -17,21 +17,21 @@ class Client(UserClient):
     def __init__(self):
         super().__init__()
 
-    def team_data(self) -> tuple[str, tuple[SelectLeader, SelectGeneric, SelectGeneric]]:
+    def team_data(self) -> tuple[str, tuple[SelectGeneric, SelectLeader, SelectGeneric]]:
         """
         Returns your team name and a tuple of enums representing the characters you want for your team.
         The tuple of the team must be ordered as (Leader, Generic, Generic). If an enum is not placed in the correct
         order (e.g., (Generic, Leader, Leader)), whichever selection is incorrect will be swapped with a default value
         of Generic Attacker.
         """
-        return 'Team 2', (SelectLeader.BERRY, SelectGeneric.GEN_ATTACKER, SelectGeneric.GEN_ATTACKER)
+        return 'Fultra Fury', (SelectGeneric.GEN_TANK, SelectLeader.FULTRA, SelectGeneric.GEN_TANK)
 
     def first_turn_init(self, team_manager: TeamManager):
         """
         This is where you can put setup for things that should happen at the beginning of the first turn. This can be
         edited as needed.
         """
-        self.country = team_manager.country
+        self.country = team_manager.country_type
         self.my_team = team_manager.team
         self.current_state = State.HEALTHY
 
@@ -40,7 +40,7 @@ class Client(UserClient):
         Returns a float representing the health of the given character.
         :param character: The character to get the health percentage for.
         """
-        return character.current_health / character.max_health
+        return float(character.current_health / character.max_health)
 
     # This is where your AI will decide what to do
     def take_turn(self, turn: int, actions: list[ActionType], world: GameBoard, team_manager: TeamManager):
@@ -57,13 +57,13 @@ class Client(UserClient):
         active_character = team_manager.get_active_character()
 
         # determine if the current character is healthy
-        self.current_state = State.HEALTHY if self.get_health_percentage(active_character) > 50.0 else State.UNHEALTHY
+        current_state = State.HEALTHY if self.get_health_percentage(active_character) >= 0.50 else State.UNHEALTHY
 
-        if self.current_state == State.HEALTHY:
-            # if the current character from the team is healthy, use its Normal Move
-            actions = [ActionType.USE_NM]
-        else:
-            # if unhealthy, randomly swap in a direction or attack
-            actions = [random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])]
+        # if current_state == State.HEALTHY:
+        #     # if the current character from the team is healthy, use its Normal Move
+        actions = [ActionType.USE_NM]
+        # else:
+        #     # if unhealthy, randomly swap in a direction or attack
+        #     actions = [random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])]
 
         return actions

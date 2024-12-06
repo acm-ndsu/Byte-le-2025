@@ -9,106 +9,97 @@ When developing the game, add any extra enums as necessary.
 
 
 class DebugLevel(Enum):
-    NONE = auto()
-    CLIENT = auto()
-    CONTROLLER = auto()
-    ENGINE = auto()
+    NONE = 1
+    CLIENT = 2
+    CONTROLLER = 3
+    ENGINE = 4
 
 
 class ObjectType(Enum):
-    NONE = auto()
-    ACTION = auto()
-    PLAYER = auto()
-    TEAMMANAGER = auto()
-    GAMEBOARD = auto()
-    VECTOR = auto()
-    TILE = auto()
-    WALL = auto()
-    OCCUPIABLE = auto()
-    GAME_OBJECT_CONTAINER = auto()
-    CHARACTER = auto()
-    GENERIC_ATTACKER = auto()
-    GENERIC_HEALER = auto()
-    GENERIC_TANK = auto()
-    GENERIC_TRASH = auto()
-    LEADER = auto()
-    MOVESET = auto()
-    STAT = auto()
-    ATTACK_STAT = auto()
-    DEFENSE_STAT = auto()
-    SPEED_STAT = auto()
-    MOVE = auto()
-    ATTACK_MOVE = auto()
-    HEAL_MOVE = auto()
-    BUFF_MOVE = auto()
-    DEBUFF_MOVE = auto()
-    GUARD_MOVE = auto()
-    EFFECT = auto()
-    ATTACK_EFFECT = auto()
-    HEAL_EFFECT = auto()
-    BUFF_EFFECT = auto()
-    DEBUFF_EFFECT = auto()
+    NONE = 1
+    ACTION = 2
+    PLAYER = 3
+    TEAMMANAGER = 4
+    GAMEBOARD = 5
+    VECTOR = 6
+    TILE = 7
+    WALL = 8
+    OCCUPIABLE = 9
+    GAME_OBJECT_CONTAINER = 10
+    CHARACTER = 11
+    GENERIC_ATTACKER = 12
+    GENERIC_HEALER = 13
+    GENERIC_TANK = 14
+    GENERIC_TRASH = 15
+    LEADER = 16
+    MOVESET = 17
+    STAT = 18
+    ATTACK_STAT = 19
+    DEFENSE_STAT = 20
+    SPEED_STAT = 21
+    MOVE = 22
+    ATTACK_MOVE = 23
+    HEAL_MOVE = 24
+    BUFF_MOVE = 25
+    DEBUFF_MOVE = 26
+    EFFECT = 27
+    ATTACK_EFFECT = 28
+    HEAL_EFFECT = 29
+    BUFF_EFFECT = 30
+    DEBUFF_EFFECT = 31
 
 
 class CountryType(Enum):
-    URODA = auto()
-    TURPIS = auto()
+    URODA = 1
+    TURPIS = 2
 
 
 class SelectLeader(Enum):
-    ANAHITA = auto()
-    BERRY = auto()
-    FULTRA = auto()
-    NINLIL = auto()
-    CALMUS = auto()
-    IRWIN = auto()
+    ANAHITA = 1
+    BERRY = 2
+    FULTRA = 3
+    NINLIL = 4
+    CALMUS = 5
+    IRWIN = 6
 
 
 class SelectGeneric(Enum):
-    GEN_ATTACKER = auto()
-    GEN_HEALER = auto()
-    GEN_TANK = auto()
-
-
-class Place(Enum):
-    LEADER = auto()
-    ATTACKER = auto()
-    HEALER = auto()
-    TANK = auto()
+    GEN_ATTACKER = 1
+    GEN_HEALER = 2
+    GEN_TANK = 3
 
 
 class MoveType(Enum):
-    MOVE = auto()
-    ATTACK = auto()
-    HEAL = auto()
-    BUFF = auto()
-    DEBUFF = auto()
-    GUARD = auto()
+    MOVE = 1
+    ATTACK = 2
+    HEAL = 3
+    BUFF = 4
+    DEBUFF = 5
 
 
 class TargetType(Enum):
-    SELF = auto()
-    ADJACENT_ALLIES = auto()
-    ENTIRE_TEAM = auto()
-    SINGLE_OPP = auto()
-    ALL_OPPS = auto()
+    SELF = 1
+    ADJACENT_ALLIES = 2
+    ENTIRE_TEAM = 3
+    SINGLE_OPP = 4
+    ALL_OPPS = 5
 
 
 class CharacterType(Enum):
-    ATTACKER = auto()
-    HEALER = auto()
-    TANK = auto()
+    ATTACKER = 1
+    HEALER = 2
+    TANK = 3
 
 
 class RankType(Enum):
-    GENERIC = auto()
-    LEADER = auto()
+    GENERIC = 1
+    LEADER = 2
 
 
 class ActionType(Enum):
-    NONE = auto()
-    USE_NM = auto()
-    USE_S1 = auto()
-    USE_S2 = auto()
-    SWAP_UP = auto()
-    SWAP_DOWN = auto()
+    NONE = 1
+    USE_NM = 2
+    USE_S1 = 3
+    USE_S2 = 4
+    SWAP_UP = 5
+    SWAP_DOWN = 6

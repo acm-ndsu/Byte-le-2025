@@ -1,8 +1,6 @@
-import game.common.map.game_board
 from game.common.player import Player
 from game.common.map.game_board import GameBoard
-from game.common.enums import *
-from game.utils.vector import Vector
+from game.common.enums import ActionType
 from game.controllers.controller import Controller
 from game.common.team_manager import *
 
@@ -23,11 +21,8 @@ class SwapController(Controller):
         super().__init__()
 
     def handle_actions(self, action: ActionType, client: Player, world: GameBoard) -> None:
-        characters_pos: dict[Vector, Character] = world.get_characters(client.team_manager.country)
+        characters_pos: dict[Vector, Character] = world.get_characters(client.team_manager.country_type)
         active_character: Character = client.team_manager.get_active_character()
-
-        # Set active_character's took_action to True as their turn has started
-        active_character.took_action = True
 
         pos_mod: Vector
 
@@ -39,6 +34,9 @@ class SwapController(Controller):
                 pos_mod = Vector(x=0, y=1)
             case _:  # default case
                 return
+
+        # Set active_character's took_action to True as their turn has started
+        active_character.took_action = True
 
         new_vector: Vector = Vector.add_vectors(active_character.position, pos_mod)
 

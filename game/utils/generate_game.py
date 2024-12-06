@@ -1,8 +1,12 @@
 import random
+
+from game.commander_clash.generation.character_generation import *
+from game.common.game_object import GameObject
 from game.common.team_manager import TeamManager
 from game.utils.vector import Vector
 from game.config import *
 from game.utils.helpers import write_json_file
+from game.utils.pre_generate_game import pre_generate
 from game.common.map.game_board import GameBoard
 
 
@@ -17,12 +21,24 @@ def generate(seed: int = random.randint(0, 1000000000)):
 
     print(f'Generating game map... seed: {seed}')
 
-    temp: GameBoard = GameBoard(seed, map_size=Vector(6, 6), locations={Vector(1, 1): [TeamManager(), ],
-                                                                        Vector(4, 4): [TeamManager(), ]}, walled=True)
+    # get the locations of the characters necessary from the pre_generation method
+    info: tuple[dict[Vector, list[GameObject]], list[TeamManager]] = pre_generate()
+
+    temp: GameBoard = GameBoard(seed, map_size=Vector(6, 6), walled=False, locations=info[0])
     temp.generate_map()
     data: dict = {'game_board': temp.to_json()}
     # for x in range(1, MAX_TICKS + 1):
     #     data[x] = 'data'
+
+    # for every created team manager, write them to the json
+    for team_manager in info[1]:
+        # organize the team by speed
+        team_manager.speed_sort()
+
+        if team_manager.country_type == CountryType.URODA:
+            data['game_board']['uroda_team_manager'] = team_manager.to_json()
+        else:
+            data['game_board']['turpis_team_manager'] = team_manager.to_json()
 
     # Verify logs location exists
     if not os.path.exists(GAME_MAP_DIR):
