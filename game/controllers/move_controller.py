@@ -13,22 +13,15 @@ class MoveController(Controller):
     it will access that move and call its `use()` method to attempt to activate it.
     """
 
-    def handle_actions(self, action: ActionType = ActionType.NONE, client: Player = Player(),
-                       world: GameBoard = GameBoard()) -> None:
+    def handle_actions(self, action: ActionType, client: Player, world: GameBoard) -> None:
         """
         Given the correct enum, the matching move will be selected from the current character's moveset. If enough
         special points were gained, the move will be used; otherwise, nothing will happen.
         """
-
-        # user: Character = client.team_manager.get_active_character()
-
         # the game board's reference to the client's team manager
         gb_client_team_manager: TeamManager = world.get_team_manager(client.team_manager.country_type)
 
         user: Character = gb_client_team_manager.get_active_character()
-
-        # the game board's reference to the opposing client's team manager
-        # gb_opponent_team_manager: TeamManager = world.get_opposing_team_manager(client.team_manager.country_type)
 
         current_move: Move
 
@@ -136,49 +129,3 @@ class MoveController(Controller):
                 return list(world.get_characters(user.get_opposing_country()).values())
             case _:
                 return []
-
-    def __update_game_board_managers(self, world: GameBoard, targets: list[Character]) -> None:
-        """
-        Using the list of targets, update the game board's references to the team managers so the characters' changes
-        are
-        """
-
-        for char in targets:
-            # figure out which team manager the character belongs to
-            manager_to_use: TeamManager = world.uroda_team_manager if \
-                char.country_type == CountryType.URODA else world.turpis_team_manager
-
-            # set the character in the team manager to be the target
-            # this helps when writing the gameboard to json, so it receives the proper updates
-            manager_to_use.update_character(char)
-
-    def __update_character_references(self, world: GameBoard, targets: list[Character],
-                                      user_team_manager: TeamManager = TeamManager(),
-                                      opposing_team_manager: TeamManager = TeamManager()) -> None:
-        """
-        A lot happens in the game, and there are many references to a single character (on the game map, the client's
-        team manager, and a copy of that team manager the Game Board contains). Every change needs to be reflected in
-        these three spots to keep the game logic consistent.
-        """
-
-        gb_manager_to_use: TeamManager
-        client_to_use: Player
-
-        for char in targets:
-            # figure out which team manager the character belongs to
-            gb_manager_to_use = world.uroda_team_manager if \
-                char.country_type == CountryType.URODA else world.turpis_team_manager
-
-            # figure out which client the character belongs to
-            client_to_use = user_team_manager if user_team_manager.team.country_type == char.country_type else opposing_team_manager
-
-            # update the character in the gameboard's team manager's reference
-            gb_manager_to_use.update_character(char)
-
-            # find the character in the client's team manager and update it
-            char_index: int = client_to_use.team_manager.team.index(char)
-            client_to_use.team_manager.team[char_index] = char
-
-            # update the character in the game map
-            game_map_character: Character = world.get_character_from(char.position)
-            game_map_character = char

@@ -74,12 +74,6 @@ class Engine:
         sys.path.insert(0, current_dir)
         sys.path.insert(0, f'{current_dir}/{CLIENT_DIRECTORY}')
 
-        # a list to contain all the team managers created
-        team_managers: list[TeamManager] = []
-
-        # an int used to keep track of which client file is being used to assign country values
-        client_files_found: int = 0
-
         # Find and load clients in
         for filename in os.listdir(CLIENT_DIRECTORY):
             try:
@@ -146,46 +140,9 @@ class Engine:
                         # use index 0 to access the team name from `team_data`
                         player.team_name = team_data[0]
 
-                        # if client_files_found == 0:
-                        #     team_managers.append(team_manager)
-                        #     team_manager.country_type = CountryType.URODA
-                        # elif client_files_found == 1:
-                        #     team_manager.country_type = CountryType.TURPIS
-
-                        # give the team manager the player's team name to help with assignment
-                        # team_manager.team_name = player.team_name
-
-                        #
-                        # player.team_manager = team_manager
-
-                        # increment the num of files found; statement is only reached when a client file is found
-                        # client_files_found += 1
-
-                        # # use index 1 to access the tuple of character selection enums from `team_data`
-                        # print(f'Before validate in engine: {[char.name for char in team_manager.team]}')
-                        # team_manager.team = validate(team_data[1])
-                        # print(f'After validate in engine: {[char.name for char in team_manager.team]}\n\n\n\n\n')
-
-                        # add the country name to the character's name if it's a generic to help with identification
-                        # for character in team_manager.team:
-                        #     if isinstance(character, Generic):
-                        #         country_name: str = team_manager.country_type.name
-                        #         country_name = country_name[0].upper() + country_name[1:].lower()
-                        #         character.name = f'{country_name} {character.name}'
-
                         # with access to a new team manager, write it to the json file
                         with open(GAME_MAP_FILE) as json_file:
                             world = json.load(json_file)
-
-                            # uroda_team_manager = world['game_board']['uroda_team_manager']
-                            # turpis_team_manager = world['game_board']['turpis_team_manager']
-
-                            # if CLIENT_KEYWORD in filename and uroda_team_manager is None:
-                            #     world['game_board']['uroda_team_manager'] = team_manager.to_json()
-                            #     world['game_board']['uroda_team_manager']['country'] = CountryType.URODA.value
-                            # elif CLIENT_KEYWORD in filename and turpis_team_manager is None:
-                            #     world['game_board']['turpis_team_manager'] = team_manager.to_json()
-                            #     world['game_board']['turpis_team_manager']['country'] = CountryType.TURPIS.value
 
                             # Write game map to file
                             write_json_file(world, GAME_MAP_FILE)
@@ -337,9 +294,6 @@ class Engine:
             self.master_controller.turn_logic(self.clients[0], self.tick_number)
         else:
             self.master_controller.turn_logic(self.clients, self.tick_number)
-
-        # print(f'Teams at end of tick(): {[[(char.name, char.current_health, char.max_health) for
-        #                                    char in client.team_manager.team] for client in self.clients]}')
 
     # Does any actions that need to happen after the game logic, then creates the game log for the turn
     def post_tick(self):
