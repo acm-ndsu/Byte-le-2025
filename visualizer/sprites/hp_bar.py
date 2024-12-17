@@ -21,17 +21,16 @@ class HPBar(pygame.sprite.Sprite):
             10: pygame.image.load(os.path.join(os.getcwd(), 'visualizer/images/staticsprites/hp_bar/hp_bar_10.png')),
         }
 
-
         self.image: pygame.Surface = self.images[0]
-        self.character: str | int = 0
+        self.hp: str | int = 0
         self.rect = self.image.get_rect()
         self.rect.topleft = top_left.as_tuple()
 
     @property
-    def character(self) -> str | int:
-        return self.__character
+    def hp(self) -> str | int:
+        return self.__hp
 
-    @character.setter
-    def character(self, character: str | int) -> None:
-        self.__character = character
-        self.image = self.images[character]
+    @hp.setter
+    def hp(self, hp: str | int) -> None:
+        self.__hp = hp
+        self.image = self.images[hp]

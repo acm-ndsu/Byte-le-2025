@@ -14,15 +14,15 @@ class AttackStat(pygame.sprite.Sprite):
         }
 
         self.image: pygame.Surface = self.images[0]
-        self.character: str | int = 0
+        self.attack_stat: str | int = 0
         self.rect = self.image.get_rect()
         self.rect.topleft = top_left.as_tuple()
 
     @property
-    def character(self) -> str | int:
-        return self.__character
+    def attack_stat(self) -> str | int:
+        return self.__attack_stat
 
-    @character.setter
-    def character(self, character: str | int) -> None:
-        self.__character = character
-        self.image = self.images[character]
+    @attack_stat.setter
+    def attack_stat(self, attack_stat: str | int) -> None:
+        self.__attack_stat = attack_stat
+        self.image = self.images[attack_stat]

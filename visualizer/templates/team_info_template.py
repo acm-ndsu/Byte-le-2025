@@ -1,5 +1,6 @@
 import pygame
 
+from game.common.enums import RankType
 from game.utils.vector import Vector
 from visualizer.templates.info_template import InfoTemplate
 from visualizer.templates.character_info_template import CharacterInfoTemplate
@@ -20,16 +21,16 @@ class TeamInfoTemplate(InfoTemplate):
                                        font_size=32, font_name=self.font, color=self.color,
                                        position=Vector.add_vectors(self.topleft, Vector(x=77, y=21)))
 
-        # Character Info Templates instantiated here
+        # Character Info Templates instantiated here, in order of first generic, leader, second generic
         self.character1 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(x=38, y=56)),
                                                 Vector(x=350, y=168),
-                                                self.font, self.color, self.country, 0)
+                                                self.font, self.color, self.country, RankType.GENERIC)
         self.character2 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(x=38, y=237)),
                                                 Vector(x=350, y=168),
-                                                self.font, self.color, self.country, 1)
+                                                self.font, self.color, self.country, RankType.LEADER)
         self.character3 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(x=38, y=418)),
                                                 Vector(x=350, y=168),
-                                                self.font, self.color, self.country, 2)
+                                                self.font, self.color, self.country, RankType.GENERIC, True)
 
     def recalc_animation(self, turn_log: dict) -> None:
         team_name: str = [client['team_name']

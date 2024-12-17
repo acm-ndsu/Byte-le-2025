@@ -14,15 +14,15 @@ class SpeedStat(pygame.sprite.Sprite):
         }
 
         self.image: pygame.Surface = self.images[0]
-        self.character: str | int = 0
+        self.speed_stat: str | int = 0
         self.rect = self.image.get_rect()
         self.rect.topleft = top_left.as_tuple()
 
     @property
-    def character(self) -> str | int:
-        return self.__character
+    def speed_stat(self) -> str | int:
+        return self.__speed_stat
 
-    @character.setter
-    def character(self, character: str | int) -> None:
-        self.__character = character
-        self.image = self.images[character]
+    @speed_stat.setter
+    def speed_stat(self, speed_stat: str | int) -> None:
+        self.__speed_stat = speed_stat
+        self.image = self.images[speed_stat]
