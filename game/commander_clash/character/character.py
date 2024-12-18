@@ -36,6 +36,7 @@ class Character(GameObject):
         self.took_action: bool = False
         self.country_type: CountryType = country_type
         self.is_dead: bool = False
+        self.selected_move: Move | None = None
 
     def __eq__(self, other: Self | int) -> bool:
         if not isinstance(other, self.__class__):
@@ -212,6 +213,17 @@ class Character(GameObject):
                              f'{is_dead.__class__.__name__} and has the value of {is_dead}')
         self.__is_dead: bool = is_dead
 
+    @property
+    def selected_move(self) -> Move | None:
+        return self.__selected_move
+
+    @selected_move.setter
+    def selected_move(self, selected_move: Move | None) -> None:
+        if selected_move is not None and not isinstance(selected_move, Move):
+            raise ValueError(f'{self.__class__.__name__}.selected_move must be a Move or None. It is a(n) '
+                             f'{selected_move.__class__.__name__} and has the value of {selected_move}')
+        self.__selected_move: Move | None = selected_move
+
     def get_nm(self):
         return self.moveset.get_nm()
 
@@ -238,14 +250,29 @@ class Character(GameObject):
         data['defense'] = self.defense.to_json()
         data['speed'] = self.speed.to_json()
         data['rank_type'] = self.rank_type.value
-        data['moveset'] = self.moveset.to_json()
         data['special_points'] = self.special_points
-        data['position'] = self.position.to_json() if self.position is not None else None
         data['took_action'] = self.took_action
         data['country_type'] = self.__country_type.value
         data['is_dead'] = self.is_dead
+        data['selected_move'] = self.selected_move.to_json() if self.selected_move is not None else None
+        data['position'] = self.position.to_json() if self.position is not None else None
+        data['moveset'] = self.moveset.to_json()
 
         return data
+
+    def __from_json_helper(self, data) -> Move | None:
+        match ObjectType(data['selected_move']['object_type']):
+            case ObjectType.ATTACK_MOVE:
+                return Attack().from_json(data['selected_move'])
+            case ObjectType.HEAL_MOVE:
+                return Heal().from_json(data['selected_move'])
+            case ObjectType.BUFF_MOVE:
+                return Buff().from_json(data['selected_move'])
+            case ObjectType.DEBUFF_MOVE:
+                return Debuff().from_json(data['selected_move'])
+            case _:
+                raise ValueError(f'{self.__class__.__name__}.__from_json_helper was not able to convert the given '
+                                 f'ObjectType into a Move object: {data["object_type"]}')
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
@@ -257,12 +284,13 @@ class Character(GameObject):
         self.defense: DefenseStat = DefenseStat().from_json(data['defense'])
         self.speed: SpeedStat = SpeedStat().from_json(data['speed'])
         self.rank_type: RankType = RankType(data['rank_type'])
-        self.moveset: Moveset = Moveset().from_json(data['moveset'])
         self.special_points: int = data['special_points']
-        self.position: Vector | None = None if data['position'] is None else Vector().from_json(data['position'])
         self.took_action = data['took_action']
         self.country_type = CountryType(data['country_type'])
         self.is_dead = data['is_dead']
+        self.selected_move = self.__from_json_helper(data) if data['selected_move'] is not None else None
+        self.moveset: Moveset = Moveset().from_json(data['moveset'])
+        self.position: Vector | None = None if data['position'] is None else Vector().from_json(data['position'])
 
         return self
 
