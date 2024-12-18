@@ -40,7 +40,7 @@ class TestMoveController(unittest.TestCase):
              Debuff('Potion of Weakness', TargetType.SINGLE_OPP, 0, self.buff_effect, -1,
                     stat_to_affect=ObjectType.DEFENSE_STAT)))
 
-        self.tank_moveset: Moveset = Moveset((Guard('Baja Barrier', 0),
+        self.tank_moveset: Moveset = Moveset((Buff('Baja Barrier', TargetType.SELF, 0, None, 10),
                                               Attack('Break Bone', TargetType.SINGLE_OPP, 0, None, 15),
                                               Heal('Healing Potion', TargetType.ADJACENT_ALLIES, 0, None, 15)))
 
@@ -91,6 +91,11 @@ class TestMoveController(unittest.TestCase):
         self.turpis_client: Player = Player(team_manager=self.turpis_team_manager)
 
         self.gameboard: GameBoard = GameBoard(locations=self.locations, map_size=Vector(2, 3))
+
+        # set the game board references to the team_managers
+        self.gameboard.uroda_team_manager = self.uroda_team_manager
+        self.gameboard.turpis_team_manager = self.turpis_team_manager
+
         self.gameboard.generate_map()
 
     def test_given_invalid_enum(self) -> None:
