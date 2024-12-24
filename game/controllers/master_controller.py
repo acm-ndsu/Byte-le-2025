@@ -149,6 +149,9 @@ class MasterController(Controller):
             # update the current world json by setting it to the game board's updated state
             self.current_world_data['game_board'] = gameboard.to_json()
 
+        # call move_logic_controller here to handle the actions of both clients at once
+        # move any board game logic for move logic here as well to ensure states are saved to the json
+
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):
         data = dict()

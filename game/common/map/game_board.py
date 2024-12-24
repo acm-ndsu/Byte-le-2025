@@ -132,6 +132,9 @@ class GameBoard(GameObject):
         self.turpis_team_manager: TeamManager = turpis_team_manager
 
         # NEED TO FIND A WAY TO PROTECT THIS PROPERTY
+        self.ordered_teams: list[tuple[..., ...]] = []
+
+        # call order teams to order them immediately when the gameboard is created
         self.order_teams()
 
     @property
