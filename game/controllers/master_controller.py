@@ -9,6 +9,7 @@ from game.controllers.controller import Controller
 from game.controllers.move_controller import MoveController
 from game.controllers.swap_controller import SwapController
 from game.controllers.select_move_controller import SelectMoveController
+from game.controllers.new_move_controller import NewMoveController
 
 
 class MasterController(Controller):
@@ -52,6 +53,7 @@ class MasterController(Controller):
         self.swap_controller: SwapController = SwapController()
         self.move_controller: MoveController = MoveController()
         self.select_move_controller: SelectMoveController = SelectMoveController()
+        self.new_move_controller: NewMoveController = NewMoveController()
 
     # Receives all clients for the purpose of giving them the objects they will control
     def give_clients_objects(self, clients: list[Player], world: dict, team_managers: list[TeamManager]):
@@ -100,12 +102,12 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, clients: list[Player], turn):
+        gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
+
         for client in clients:
             # set each character's state to 'idle' in the client's team manager
             for character in client.team_manager.team:
                 character.state = 'idle'
-
-            gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
 
             # if the team is defeated, move on
             if client.team_manager.everyone_is_defeated():
@@ -119,26 +121,31 @@ class MasterController(Controller):
                 except IndexError:
                     pass
 
-            # update the game board's team manager references
-            gameboard.update_team_managers()
+            # # update the game board's team manager references
+            # gameboard.update_team_managers()
 
-            # to ensure the clients receive the updates for their characters, loop over the two and reassign their
-            # team managers to be the game board references
-            # call the variable client_ to not get confused with the outer for loop
-            # this for loop needs to happen every turn
-            for client_ in clients:
-                # get the client's score before it is overwritten
-                client_score: int = client_.team_manager.score
+        self.new_move_controller.handle_logic(clients, gameboard)
 
-                if client_.team_manager.country_type == CountryType.URODA:
-                    client_.team_manager = gameboard.uroda_team_manager
-                else:
-                    client_.team_manager = gameboard.turpis_team_manager
+        # update the game board's team manager references
+        gameboard.update_team_managers()
 
-                client_.team_manager.score = client_score
+        # to ensure the clients receive the updates for their characters, loop over the two and reassign their
+        # team managers to be the game board references
+        # call the variable client_ to not get confused with the outer for loop
+        # this for loop needs to happen every turn
+        for client in clients:
+            # get the client's score before it is overwritten
+            client_score: int = client.team_manager.score
 
-                # remove any dead characters off the game map
-                gameboard.remove_dead(client.team_manager.dead_team)
+            if client.team_manager.country_type == CountryType.URODA:
+                client.team_manager = gameboard.uroda_team_manager
+            else:
+                client.team_manager = gameboard.turpis_team_manager
+
+            client.team_manager.score = client_score
+
+            # remove any dead characters off the game map
+            gameboard.remove_dead(client.team_manager.dead_team)
 
             # if everyone took their action in the given team manager, set their took_action bool to False
             if client.team_manager.everyone_took_action():
@@ -148,11 +155,8 @@ class MasterController(Controller):
                 # ensure the team is ordered by speed after everyone took their turn
                 client.team_manager.speed_sort()
 
-            # update the current world json by setting it to the game board's updated state
-            self.current_world_data['game_board'] = gameboard.to_json()
-
-        # call move_logic_controller here to handle the actions of both clients at once
-        # move any gameboard logic for move logic here as well to ensure states are saved to the json
+        # update the current world json by setting it to the game board's updated state
+        self.current_world_data['game_board'] = gameboard.to_json()
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):

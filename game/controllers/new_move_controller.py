@@ -1,11 +1,9 @@
-from game.common.enums import ActionType
 from game.commander_clash.moves.move_logic import handle_move_logic, handle_effect_logic
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import *
-from game.controllers.controller import Controller
 from game.config import DEFEATED_SCORE
-
+from game.controllers.controller import Controller
 
 """
 NOTES FOR NEW MOVE CONTROLLER
@@ -15,7 +13,6 @@ NOTES FOR NEW MOVE CONTROLLER
 3. After logic is performed on a pair, remove that pair from the list of the ordered team
 4. The game board will need to check at the end of every term if the `ordered_team` list is empty. If so, reorder the teams
 """
-
 
 
 class NewMoveController(Controller):
@@ -31,29 +28,36 @@ class NewMoveController(Controller):
         # sort the list so that the fastest character is listed first
         active_chars = sorted(active_chars, key=lambda character: character.speed, reverse=True)
 
-        speed_tie: bool = active_chars[0].speed == active_chars[1].speed if len(active_chars) == 2 else False
+        is_speed_tie: bool = active_chars[0].speed == active_chars[1].speed if len(active_chars) == 2 else False
 
         # for every character, execute the logic for their move if applicable
-        for char in active_chars:
-            # move to next iteration if no move was selected
-            if char.selected_move is None:
+        for user in active_chars:
+            # if the client's character died before their turn AND it is not a speed tie, continue to next iteration
+            # if it is a speed tie and the character died before their turn, they can still act to simulate them
+            # attacking at the same time
+            if user.is_dead and not is_speed_tie:
                 continue
 
-            current_move: Move = char.selected_move
+            # move to next iteration if no move was selected
+            if user.selected_move is None:
+                continue
+
+            current_move: Move = user.selected_move
+            is_normal_move: bool = user.selected_move == user.get_nm()
 
             # if the character cannot use the desired move, continue to next iteration
-            if char.special_points < current_move.cost:
+            if user.special_points < current_move.cost:
                 continue
 
             # get the possible targets based on the target type
-            primary_targets: list[Character] | list = self.__get_targets(char, current_move.target_type, world)
+            primary_targets: list[Character] | list = self.__get_targets(user, current_move.target_type, world)
 
             # don't do anything if there are no available targets
             if len(primary_targets) == 0:
                 continue
 
             # call the move_logic file's method to handle the rest of the logic
-            handle_move_logic(char, primary_targets, current_move, is_normal_attack)
+            handle_move_logic(user, primary_targets, current_move, is_normal_move)
 
             # a collection of the defeated characters is created
             defeated_characters: list[Character] = [target for target in primary_targets if target.current_health == 0]
@@ -64,92 +68,36 @@ class NewMoveController(Controller):
             # if the current move has an effect, get the targets for it and apply the same logic
             if current_move.effect is not None:
                 # get the possible targets based on the effect's target type
-                effect_targets: list[Character] | list = self.__get_targets(char, current_move.effect.target_type, world)
+                effect_targets: list[Character] | list = self.__get_targets(user, current_move.effect.target_type,
+                                                                            world)
 
-                handle_effect_logic(char, effect_targets, current_move.effect)
+                handle_effect_logic(user, effect_targets, current_move.effect)
 
                 # add any additional characters to defeated_characters
                 defeated_characters += [target for target in effect_targets if
                                         target not in defeated_characters and target.current_health == 0]
 
-            # for all defeated characters, set their state to 'defeated;' remove them at start of next turn
-            for defeated_char in defeated_characters:
-                defeated_char.is_dead = True
-                defeated_char.state = 'defeated'
-                client.team_manager.score += DEFEATED_SCORE
+            # perform the logic of defeating a character(s)
+            self.__defeated_char_logic(clients, user, defeated_characters)
 
             # update the user on the game map
-            world.replace(char.position, char)
+            world.replace(user.position, user)
 
+    def __defeated_char_logic(self, clients: list[Player], user: Character,
+                              defeated_characters: list[Character]) -> None:
 
-    # def handle_actions(self, action: ActionType, client: Player, world: GameBoard) -> None:
-    #     """
-    #     Given the correct enum, the matching move will be selected from the current character's moveset. If enough
-    #     special points were gained, the move will be used; otherwise, nothing will happen.
-    #     """
-    #     # the game board's reference to the client's team manager
-    #     gb_client_team_manager: TeamManager = world.get_team_manager(client.team_manager.country_type)
-    #
-    #     user: Character = gb_client_team_manager.get_active_character()
-    #
-    #     current_move: Move
-    #
-    #     # a bool to be passed into the handle_logic method
-    #     is_normal_attack: bool = False
-    #
-    #     match action:
-    #         case ActionType.USE_NM:
-    #             current_move: Move = user.get_nm()
-    #             is_normal_attack = True
-    #         case ActionType.USE_S1:
-    #             current_move: Move = user.get_s1()
-    #         case ActionType.USE_S2:
-    #             current_move: Move = user.get_s2()
-    #         case _:
-    #             return
-    #
-    #     # Set user's took_action to True as they have started their action
-    #     user.took_action = True
-    #
-    #     # user cannot use the move if they don't have enough special points
-    #     if user.special_points < current_move.cost:
-    #         return
-    #
-    #     # get the possible targets based on the target type
-    #     primary_targets: list[Character] | list = self.__get_targets(user, current_move.target_type, world)
-    #
-    #     # don't do anything if there are no available targets
-    #     if len(primary_targets) == 0:
-    #         return
-    #
-    #     # call the move_logic file's method to handle the rest of the logic
-    #     handle_move_logic(user, primary_targets, current_move, is_normal_attack)
-    #
-    #     # a collection of the defeated characters is created
-    #     defeated_characters: list[Character] = [target for target in primary_targets if target.current_health == 0]
-    #
-    #     # a reference to the targets specifically for the secondary effect
-    #     effect_targets: list[Character] | list = []
-    #
-    #     # if the current move has an effect, get the targets for it and apply the same logic
-    #     if current_move.effect is not None:
-    #         # get the possible targets based on the effect's target type
-    #         effect_targets: list[Character] | list = self.__get_targets(user, current_move.effect.target_type, world)
-    #
-    #         handle_effect_logic(user, effect_targets, current_move.effect)
-    #
-    #         # add any additional characters to defeated_characters
-    #         defeated_characters += [target for target in effect_targets if
-    #                                 target not in defeated_characters and target.current_health == 0]
-    #
-    #     # for all defeated characters, set their state to 'defeated;' remove them at start of next turn
-    #     for defeated_char in defeated_characters:
-    #         defeated_char.is_dead = True
-    #         defeated_char.state = 'defeated'
-    #         client.team_manager.score += DEFEATED_SCORE
-    #
-    #     # update the user on the game map
-    #     world.replace(user.position, user)
+        client_to_use: Player = Player()
+
+        # find the client the user character belongs to
+        for client in clients:
+            if client.team_manager.country_type == user.country_type:
+                client_to_use = client
+
+        # for all defeated characters, set their state to 'defeated;' remove them at start of next turn
+        for defeated_char in defeated_characters:
+            defeated_char.is_dead = True
+            defeated_char.state = 'defeated'
+            client_to_use.team_manager.score += DEFEATED_SCORE
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """

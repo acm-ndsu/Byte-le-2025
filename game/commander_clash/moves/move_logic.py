@@ -7,7 +7,7 @@ from game.commander_clash.moves.moves import *
 from game.common.enums import MoveType, CharacterType
 
 
-def handle_move_logic(user: Character, targets: list[Character], current_move: Move, is_normal_attack: bool) -> None:
+def handle_move_logic(user: Character, targets: list[Character], current_move: Move, is_normal_move: bool) -> None:
     """
     Handles the logic for every move type. That is, damage is applied for attacks, health is increased for healing,
     and stats are modified based on the buff/debuff
@@ -33,7 +33,7 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
         case _:
             return
 
-    if is_normal_attack:
+    if is_normal_move:
         # add 1 to the user's special points if using a normal attack and not at the Special Point limit
         next_sp: int = user.special_points + 1
         user.special_points = next_sp if next_sp <= SPECIAL_POINT_LIMIT else user.special_points
