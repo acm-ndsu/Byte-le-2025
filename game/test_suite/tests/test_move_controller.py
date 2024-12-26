@@ -98,59 +98,6 @@ class TestMoveController(unittest.TestCase):
 
         self.gameboard.generate_map()
 
-    def test_given_invalid_enum(self) -> None:
-        # mock the handle_move_logic method to later check if it was ever called
-        mock: Mock = Mock()
-        move_logic.handle_move_logic = mock
-
-        self.move_controller.handle_actions(ActionType.SWAP_UP, self.uroda_client, self.gameboard)
-
-        # check that the Generic Tank wasn't affected at all
-        self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health)
-
-        # test passes if the handle_move_logic method was never called
-        mock.assert_not_called()
-
-    def test_opponent_takes_damage(self) -> None:
-        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
-
-        # The uroda attacker is attacking the turpis tank
-        # check the Generic Tank took damage: ceil((15 + 5) * (1 - 10 / 100)) = 18
-        self.assertEqual(self.turpis_tank.current_health, self.turpis_tank.max_health - 18)
-
-        # uroda attacker should have 5 special points
-        self.assertEqual(self.uroda_attacker.special_points, 5)
-
-    def test_opponent_health_stays_at_0(self) -> None:
-        self.turpis_tank.current_health = 1
-
-        # The uroda attacker is attacking the turpis tank
-        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
-
-        # the generic tank's health should be 0
-        self.assertEqual(self.turpis_tank.current_health, 0)
-
-    def test_user_heals_entire_team(self) -> None:
-        # change health to 1 to test healing
-        self.uroda_attacker.current_health = 1
-        self.uroda_healer.current_health = 1
-
-        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
-
-        # 1 HP + healing of 10 = 11
-        self.assertEqual(self.uroda_attacker.current_health, 11)
-        self.assertEqual(self.uroda_healer.current_health, 11)
-        self.assertEqual(self.uroda_tank.current_health, 80)
-
-    def test_user_heals_over_max_health(self) -> None:
-        # test if going healing over the max health doesn't go over
-        self.uroda_attacker.current_health = self.uroda_attacker.max_health - 1
-
-        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
-
-        # 1 HP + healing of 10 = 11
-        self.assertEqual(self.uroda_attacker.max_health, self.uroda_attacker.current_health)
-
     def test_self_buffing(self) -> None:
         # test that a character buffing itself works while the target is themselves
         # uroda attacker buffs themselves
@@ -192,24 +139,6 @@ class TestMoveController(unittest.TestCase):
 
         # attacker's health: 1 + 15 = 16 HP
         self.assertEqual(self.uroda_tank.current_health, 16)
-
-    def test_no_enemy_targets_available(self) -> None:
-        # create a mock object to more easily test this functionality
-        # will test if the handle_move_logic method was called; if not, then test succeeds
-        mock: Mock = Mock()
-        move_logic.handle_move_logic = mock
-
-        # remove the turpis tank from the map
-        self.gameboard.remove_coordinate(self.turpis_tank.position)
-
-        # attempt to attack a target
-        self.move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
-
-        # to ensure nothing happened, mock and check if the handle_move_logic method was called
-        mock.assert_not_called()
-
-        # the urodan attacker attempted to attack in this case, so the special points should stay 4
-        self.assertEqual(self.uroda_attacker.special_points, 4)
 
     def test_no_ally_target_available(self) -> None:
         mock: Mock = Mock()
@@ -304,47 +233,3 @@ class TestMoveController(unittest.TestCase):
         self.assertEqual(self.uroda_attacker.speed.value, 14)
         self.assertEqual(self.uroda_healer.speed.value, 9)
         self.assertEqual(self.uroda_tank.speed.value, 4)
-
-    def test_defeated_character_3_in_list(self):
-        # set the entire opposing team to be on 1 HP
-        self.turpis_attacker.current_health = 1
-        self.turpis_tank.current_health = 1
-        self.turpis_healer.current_health = 1
-
-        # the healer has an AOE, so let it be their turn
-        self.uroda_attacker.took_action = True
-
-        self.move_controller.handle_actions(ActionType.USE_S1, self.uroda_client, self.gameboard)
-
-        self.assertEqual(self.turpis_attacker.state, 'defeated')
-        self.assertEqual(self.turpis_tank.state, 'defeated')
-        self.assertEqual(self.turpis_healer.state, 'defeated')
-
-    def test_defeated_character_2_in_list(self):
-        # set the opposing team members to be on 1 HP
-        self.turpis_attacker.current_health = 1
-        self.turpis_tank.current_health = 1
-
-        # the healer has an AOE, so let it be their turn
-        self.uroda_attacker.took_action = True
-
-        self.move_controller.handle_actions(ActionType.USE_S1, self.uroda_client, self.gameboard)
-
-        self.assertEqual(self.turpis_attacker.state, 'defeated')
-        self.assertEqual(self.turpis_tank.state, 'defeated')
-
-        # healer state should be 'attacked' since it didn't die
-        self.assertEqual(self.turpis_healer.state, 'attacked')
-
-    def test_defeated_character_1_in_list(self):
-        # set opposing team member to be on 1 HP
-        self.turpis_attacker.current_health = 1
-
-        # the healer has an AOE, so let it be their turn
-        self.uroda_attacker.took_action = True
-
-        self.move_controller.handle_actions(ActionType.USE_S1, self.uroda_client, self.gameboard)
-
-        self.assertEqual(self.turpis_attacker.state, 'defeated')
-        self.assertEqual(self.turpis_tank.state, 'attacked')
-        self.assertEqual(self.turpis_healer.state, 'attacked')

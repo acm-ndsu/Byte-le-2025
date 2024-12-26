@@ -30,6 +30,8 @@ class NewMoveController(Controller):
 
         is_speed_tie: bool = active_chars[0].speed == active_chars[1].speed if len(active_chars) == 2 else False
 
+        defeated_characters: list[Character] = []
+
         # for every character, execute the logic for their move if applicable
         for user in active_chars:
             # if the client's character died before their turn AND it is not a speed tie, continue to next iteration
@@ -42,7 +44,6 @@ class NewMoveController(Controller):
             if user.selected_move is None:
                 continue
 
-            user.took_action = True
             current_move: Move = user.selected_move
             is_normal_move: bool = user.selected_move == user.get_nm()
 
@@ -60,8 +61,9 @@ class NewMoveController(Controller):
             # call the move_logic file's method to handle the rest of the logic
             handle_move_logic(user, primary_targets, current_move, is_normal_move)
 
-            # a collection of the defeated characters is created
-            defeated_characters: list[Character] = [target for target in primary_targets if target.current_health == 0]
+            # add the defeated characters to the collection
+            defeated_characters = defeated_characters + [target for target
+                                                         in primary_targets if target.current_health == 0]
 
             # a reference to the targets specifically for the secondary effect
             effect_targets: list[Character] | list = []
@@ -77,6 +79,8 @@ class NewMoveController(Controller):
                 # add any additional characters to defeated_characters
                 defeated_characters += [target for target in effect_targets if
                                         target not in defeated_characters and target.current_health == 0]
+
+            user.took_action = True
 
             # perform the logic of defeating a character(s)
             self.__defeated_char_logic(clients, user, defeated_characters)

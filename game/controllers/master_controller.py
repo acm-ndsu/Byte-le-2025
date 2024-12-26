@@ -155,7 +155,7 @@ class MasterController(Controller):
                 # ensure the team is ordered by speed after everyone took their turn
                 client.team_manager.speed_sort()
 
-        # repopulate the ordered_teams proeprty if the list is empty in the gameboard
+        # repopulate the ordered_teams property if the list is empty in the gameboard
         if len(gameboard.ordered_teams) == 0:
             gameboard.order_teams()
 
