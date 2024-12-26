@@ -33,9 +33,11 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
         case _:
             return
 
-    if is_normal_move:
-        # add 1 to the user's special points if using a normal attack and not at the Special Point limit
+    # add 1 to the user's special points if using a normal attack AND there were targets to affect
+    if is_normal_move and len(targets) > 0:
         next_sp: int = user.special_points + 1
+
+        # prevent the special points from going over the cap
         user.special_points = next_sp if next_sp <= SPECIAL_POINT_LIMIT else user.special_points
 
     # subtract the cost of using the move from the character's total special points

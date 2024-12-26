@@ -42,6 +42,7 @@ class NewMoveController(Controller):
             if user.selected_move is None:
                 continue
 
+            user.took_action = True
             current_move: Move = user.selected_move
             is_normal_move: bool = user.selected_move == user.get_nm()
 
@@ -85,6 +86,10 @@ class NewMoveController(Controller):
 
     def __defeated_char_logic(self, clients: list[Player], user: Character,
                               defeated_characters: list[Character]) -> None:
+
+        # don't do anything if there are no defeated characters
+        if len(defeated_characters) == 0:
+            return
 
         client_to_use: Player = Player()
 

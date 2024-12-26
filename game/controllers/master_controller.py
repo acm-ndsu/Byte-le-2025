@@ -155,6 +155,10 @@ class MasterController(Controller):
                 # ensure the team is ordered by speed after everyone took their turn
                 client.team_manager.speed_sort()
 
+        # repopulate the ordered_teams proeprty if the list is empty in the gameboard
+        if len(gameboard.ordered_teams) == 0:
+            gameboard.order_teams()
+
         # update the current world json by setting it to the game board's updated state
         self.current_world_data['game_board'] = gameboard.to_json()
 
