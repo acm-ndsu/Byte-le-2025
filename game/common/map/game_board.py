@@ -132,7 +132,7 @@ class GameBoard(GameObject):
         self.turpis_team_manager: TeamManager = turpis_team_manager
 
         # NEED TO FIND A WAY TO PROTECT THIS PROPERTY
-        self.ordered_teams: list[tuple[..., ...]] = []
+        self.ordered_teams: list[tuple[Character | None, Character | None]] = []
 
         # call order teams to order them immediately when the gameboard is created
         self.order_teams()
@@ -537,7 +537,7 @@ class GameBoard(GameObject):
             return
 
         # contains the pairs of characters for each team; tuples will contain Character or None values
-        result: list[tuple[..., ...]] = []
+        result: list[tuple[Character | None, Character | None]] = []
 
         # easy access to both teams
         uroda_team: list[Character] = self.uroda_team_manager.team

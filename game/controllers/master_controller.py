@@ -8,6 +8,7 @@ from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN, WIN_SCORE, DIFFERENTIAL_
 from game.controllers.controller import Controller
 from game.controllers.move_controller import MoveController
 from game.controllers.swap_controller import SwapController
+from game.controllers.select_move_controller import SelectMoveController
 
 
 class MasterController(Controller):
@@ -50,6 +51,7 @@ class MasterController(Controller):
         self.current_world_data: dict = None
         self.swap_controller: SwapController = SwapController()
         self.move_controller: MoveController = MoveController()
+        self.select_move_controller: SelectMoveController = SelectMoveController()
 
     # Receives all clients for the purpose of giving them the objects they will control
     def give_clients_objects(self, clients: list[Player], world: dict, team_managers: list[TeamManager]):
@@ -113,7 +115,7 @@ class MasterController(Controller):
             for i in range(MAX_NUMBER_OF_ACTIONS_PER_TURN):
                 try:
                     self.swap_controller.handle_actions(client.actions[i], client, gameboard)
-                    self.move_controller.handle_actions(client.actions[i], client, gameboard)
+                    self.select_move_controller.handle_actions(client.actions[i], client, gameboard)
                 except IndexError:
                     pass
 
@@ -150,7 +152,7 @@ class MasterController(Controller):
             self.current_world_data['game_board'] = gameboard.to_json()
 
         # call move_logic_controller here to handle the actions of both clients at once
-        # move any board game logic for move logic here as well to ensure states are saved to the json
+        # move any gameboard logic for move logic here as well to ensure states are saved to the json
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):

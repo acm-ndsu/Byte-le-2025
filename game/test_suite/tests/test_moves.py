@@ -1,7 +1,6 @@
 import unittest
 
 from game.commander_clash.moves.moves import *
-from game.commander_clash.moves.effects import *
 from game.common.enums import *
 
 
@@ -24,6 +23,66 @@ class TestMove(unittest.TestCase):
                                effect=self.debuff_effect)
         self.debuff: Debuff = Debuff(name='Big Debuff', cost=2, debuff_amount=-2, effect=self.attack_effect,
                                      stat_to_affect=ObjectType.SPEED_STAT)
+
+    def test_attack_equals_method(self) -> None:
+        other_move: Attack = Attack(name='Basic Attack', damage_points=1)
+        self.assertTrue(other_move == self.attack)
+
+        # a different effect makes them different
+        other_move = Attack(name='Basic Attack', damage_points=1, effect=self.attack_effect)
+        self.assertFalse(other_move == self.attack)
+
+        # check that a different damage point value makes them different
+        other_move: Attack = Attack(name='Basic Attack', damage_points=2)
+        self.assertFalse(other_move == self.attack)
+
+    def test_heal_equals_method(self) -> None:
+        other_move: Heal = Heal(name='Basic Heal', heal_points=1)
+        self.assertTrue(other_move == self.heal)
+
+        # a different effect makes them different
+        other_move = Heal(name='Basic Heal', heal_points=1, effect=self.attack_effect)
+        self.assertFalse(other_move == self.heal)
+
+        # check that a different healing point value makes them different
+        other_move = Heal(name='Basic Attack', heal_points=2)
+        self.assertFalse(other_move == self.heal)
+
+    def test_buff_equals_method(self) -> None:
+        other_move: Buff = Buff('Big Buff', target_type=TargetType.ENTIRE_TEAM, buff_amount=2,
+                                effect=self.debuff_effect)
+        self.assertTrue(other_move == self.buff)
+
+        # a different effect makes them different
+        other_move = Buff('Big Buff', target_type=TargetType.ENTIRE_TEAM, buff_amount=2)
+        self.assertFalse(other_move == self.buff)
+
+        # check that a different buff amount value makes them different
+        other_move = Buff('Big Buff', target_type=TargetType.ENTIRE_TEAM, buff_amount=1)
+        self.assertFalse(other_move == self.buff)
+
+        # check that a different stat to affect makes them different
+        other_move = Buff('Big Buff', target_type=TargetType.ENTIRE_TEAM, buff_amount=1,
+                          stat_to_affect=ObjectType.SPEED_STAT)
+        self.assertFalse(other_move == self.buff)
+
+    def test_debuff_equals_method(self) -> None:
+        other_move: Debuff = Debuff(name='Big Debuff', cost=2, debuff_amount=-2, effect=self.attack_effect,
+                                    stat_to_affect=ObjectType.SPEED_STAT)
+        self.assertTrue(other_move == self.debuff)
+
+        # a different effect makes them different
+        other_move = Debuff('Big Debuff', target_type=TargetType.ENTIRE_TEAM, debuff_amount=-2)
+        self.assertFalse(other_move == self.debuff)
+
+        # check that a different debuff amount value makes them different
+        other_move = Debuff('Big Debuff', target_type=TargetType.ENTIRE_TEAM, debuff_amount=-1)
+        self.assertFalse(other_move == self.debuff)
+
+        # check that a different stat to affect makes them different
+        other_move = Debuff('Big Debuff', target_type=TargetType.ENTIRE_TEAM, debuff_amount=-2,
+                            stat_to_affect=ObjectType.ATTACK_STAT)
+        self.assertFalse(other_move == self.debuff)
 
     def test_base_setters(self) -> None:
         with self.assertRaises(ValueError) as e:
