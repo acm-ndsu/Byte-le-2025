@@ -337,7 +337,7 @@ class GameBoard(GameObject):
         goc: GameObjectContainer = GameObjectContainer([to_place])
         self.game_map[coords] = goc
 
-    def remove_dead(self, dead: list[Character]) -> None:
+    def remove_dead_from_game_map(self, dead: list[Character]) -> None:
         """
         Removes the given dead characters off the game map.
         """
@@ -573,6 +573,12 @@ class GameBoard(GameObject):
         data['turpis_team_manager'] = self.turpis_team_manager.to_json() \
             if self.turpis_team_manager is not None else None
 
+        # since json doesn't have tuples, convert the list of tuples to a list of lists and convert later
+        data['ordered_teams'] = [
+            [pair[0].to_json() if pair[0] is not None else None,
+             pair[1].to_json() if pair[1] is not None else None]
+            for pair in self.ordered_teams]
+
         return data
 
     def generate_event(self, start: int, end: int) -> None:
@@ -617,9 +623,14 @@ class GameBoard(GameObject):
             Vector().from_json(ast.literal_eval(k)): GameObjectContainer().from_json(v)
             for k, v in data['game_map'].items()} if data['game_map'] is not None else None
 
-        self.uroda_team_manager = TeamManager().from_json(data['uroda_team_manager']) \
+        self.uroda_team_manager: TeamManager = TeamManager().from_json(data['uroda_team_manager']) \
             if data['uroda_team_manager'] is not None else None
-        self.turpis_team_manager = TeamManager().from_json(data['turpis_team_manager']) \
+        self.turpis_team_manager: TeamManager = TeamManager().from_json(data['turpis_team_manager']) \
             if data['turpis_team_manager'] is not None else None
+
+        # this converts the list of lists into a list of tuples while handling none values
+        self.ordered_teams = [(self.__from_json_helper(pair[0]) if pair[0] is not None else None,
+                               self.__from_json_helper(pair[1]) if pair[1] is not None else None)
+                              for pair in data['ordered_teams']]
 
         return self

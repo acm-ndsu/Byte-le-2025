@@ -145,7 +145,7 @@ class MasterController(Controller):
             client.team_manager.score = client_score
 
             # remove any dead characters off the game map
-            gameboard.remove_dead(client.team_manager.dead_team)
+            gameboard.remove_dead_from_game_map(client.team_manager.dead_team)
 
             # if everyone took their action in the given team manager, set their took_action bool to False
             if client.team_manager.everyone_took_action():

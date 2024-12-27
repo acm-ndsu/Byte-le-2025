@@ -6,11 +6,10 @@ from game.common.enums import ActionType, CountryType
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import TeamManager
-from game.controllers.master_controller import MasterController
-from game.controllers.move_controller import MoveController
-from game.controllers.swap_controller import SwapController
-from game.utils.vector import Vector
 from game.config import DEFEATED_SCORE
+from game.controllers.master_controller import MasterController
+from game.utils.vector import Vector
+
 
 class TestMasterController(unittest.TestCase):
     """
@@ -21,9 +20,8 @@ class TestMasterController(unittest.TestCase):
 
     def setUp(self) -> None:
         self.master_controller = MasterController()
-        self.swap_controller: SwapController = SwapController()
-        self.move_controller: MoveController = MoveController()
 
+        # speed order pairings: (Uroda Healer, Fultra), (Uroda Healer2, Turpis Tank), (Ninlil, Turpis Tank 2)
         self.team_manager1: TeamManager = TeamManager([generate_generic_healer('Uroda Healer'), generate_ninlil(),
                                                        generate_generic_healer('Uroda Healer 2')],
                                                       country_type=CountryType.URODA)

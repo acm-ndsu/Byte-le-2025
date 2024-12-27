@@ -227,3 +227,18 @@ class TestGameBoard(unittest.TestCase):
         self.assertEqual(self.game_board.turpis_team_manager.team, temp.turpis_team_manager.team)
         self.assertEqual(self.game_board.turpis_team_manager.score, temp.turpis_team_manager.score)
         self.assertEqual(self.game_board.turpis_team_manager.country_type, temp.turpis_team_manager.country_type)
+
+        # check that the ordered_teams property was stored properly
+        self.assertEqual(len(self.game_board.ordered_teams), len(temp.ordered_teams))
+        self.assertTrue(all([isinstance(pair, tuple) for pair in temp.ordered_teams]))
+
+        # now check that every pair is in the same order as when the gameboard was instantiated
+        # remember that it's a list of tuples (first indexing is the list, second indexing is the tuple)
+        self.assertTrue(self.game_board.ordered_teams[0][0] == temp.ordered_teams[0][0])
+        self.assertTrue(self.game_board.ordered_teams[0][1] == temp.ordered_teams[0][1])
+
+        self.assertTrue(self.game_board.ordered_teams[1][0] == temp.ordered_teams[1][0])
+        self.assertTrue(self.game_board.ordered_teams[1][1] == temp.ordered_teams[1][1])
+
+        self.assertTrue(self.game_board.ordered_teams[2][0] == temp.ordered_teams[2][0])
+        self.assertTrue(self.game_board.ordered_teams[2][1] == temp.ordered_teams[2][1])
