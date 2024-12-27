@@ -102,6 +102,9 @@ class MasterController(Controller):
     def turn_logic(self, clients: list[Player], turn):
         gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
 
+        # reset the turn info string for new information
+        gameboard.turn_info = ''
+
         for client in clients:
             # set each character's state to 'idle' in the client's team manager
             for character in client.team_manager.team:
@@ -158,6 +161,7 @@ class MasterController(Controller):
             gameboard.order_teams()
 
         # update the current world json by setting it to the game board's updated state
+
         self.current_world_data['game_board'] = gameboard.to_json()
 
     # Return serialized version of game
@@ -180,7 +184,12 @@ class MasterController(Controller):
 
         # add the differential bonus to both teams (150 * # of alive characters)
         client1.team_manager.score += DIFFERENTIAL_BONUS * len(client1.team_manager.team)
+        print(f'Giving client {client1.team_name} different bonus of {DIFFERENTIAL_BONUS} * '
+              f'{len(client1.team_manager.team)} = {DIFFERENTIAL_BONUS * len(client1.team_manager.team)}')
+
         client2.team_manager.score += DIFFERENTIAL_BONUS * len(client2.team_manager.team)
+        print(f'Giving client {client2.team_name} different bonus of {DIFFERENTIAL_BONUS} * '
+              f'{len(client2.team_manager.team)} = {DIFFERENTIAL_BONUS * len(client2.team_manager.team)}')
 
         # client1 is the winner if client2's team is all dead
         winner: Player | None = client1 if client2.team_manager.everyone_is_defeated() else \
@@ -189,6 +198,7 @@ class MasterController(Controller):
         # if there is a clear winner (one team was defeated), add the winning score to the winner
         if winner is not None:
             winner.team_manager.score += WIN_SCORE
+            print(f'Giving client {winner.team_name} win bonus of {WIN_SCORE}')
 
         data['players'] = list()
 

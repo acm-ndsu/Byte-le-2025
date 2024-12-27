@@ -137,6 +137,8 @@ class GameBoard(GameObject):
         # call order teams to order them immediately when the gameboard is created
         self.order_teams()
 
+        self.turn_info: str = ''
+
     @property
     def seed(self) -> int:
         return self.__seed
@@ -540,8 +542,8 @@ class GameBoard(GameObject):
         result: list[tuple[Character | None, Character | None]] = []
 
         # easy access to both teams
-        uroda_team: list[Character] = self.uroda_team_manager.team
-        turpis_team: list[Character] = self.turpis_team_manager.team
+        uroda_team: list[Character] = [char for char in self.uroda_team_manager.team if not char.took_action]
+        turpis_team: list[Character] = [char for char in self.turpis_team_manager.team if not char.took_action]
 
         # pair the characters; the ordered pair matters, so uroda will be first in the tuples
         for index in range(max(len(uroda_team), len(turpis_team))):
@@ -578,6 +580,8 @@ class GameBoard(GameObject):
             [pair[0].to_json() if pair[0] is not None else None,
              pair[1].to_json() if pair[1] is not None else None]
             for pair in self.ordered_teams]
+
+        data['turn_info'] = self.turn_info
 
         return data
 
@@ -629,8 +633,12 @@ class GameBoard(GameObject):
             if data['turpis_team_manager'] is not None else None
 
         # this converts the list of lists into a list of tuples while handling none values
-        self.ordered_teams = [(self.__from_json_helper(pair[0]) if pair[0] is not None else None,
-                               self.__from_json_helper(pair[1]) if pair[1] is not None else None)
-                              for pair in data['ordered_teams']]
+        self.ordered_teams: list[tuple[Character | None, Character | None]] = [
+            (self.__from_json_helper(pair[0]) if pair[0] is not None else None,
+             self.__from_json_helper(pair[1]) if pair[1] is not None else None)
+            for pair in data['ordered_teams']
+        ]
+
+        self.turn_info: str = data['turn_info']
 
         return self

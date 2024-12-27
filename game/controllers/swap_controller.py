@@ -60,4 +60,7 @@ class SwapController(Controller):
         active_character.position = new_vector
         world.place(new_vector, active_character)
 
-
+        if action == ActionType.SWAP_UP:
+            world.turn_info += f'{active_character.name} swapped up on the map!'
+        else:
+            world.turn_info += f'{active_character.name} swapped down on the map!'

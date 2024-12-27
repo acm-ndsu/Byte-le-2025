@@ -1,18 +1,14 @@
 import unittest
-from unittest.mock import Mock
 
 from game.commander_clash.character.character import GenericAttacker, GenericTank, GenericHealer
 from game.commander_clash.character.stats import DefenseStat, SpeedStat, AttackStat
-from game.commander_clash.moves import move_logic
 from game.commander_clash.moves.moves import *
 from game.commander_clash.moves.moveset import Moveset
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import TeamManager
 from game.common.enums import CountryType, ActionType
-from game.controllers.move_controller import MoveController
 from game.controllers.select_move_controller import SelectMoveController
-from game.controllers.swap_controller import SwapController
 from game.utils.vector import Vector
 
 

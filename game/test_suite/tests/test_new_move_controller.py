@@ -310,6 +310,14 @@ class TestMoveController(unittest.TestCase):
         self.assertEqual(self.uroda_healer.current_health, self.uroda_healer.max_health)
         self.assertEqual(self.uroda_tank.current_health, self.uroda_tank.max_health)
 
+    def test_gameboard_logs_turn_info(self) -> None:
+        self.new_move_controller.handle_logic(self.clients, self.gameboard)
+
+        # simply need to check that the string is not empty
+        self.assertTrue(self.gameboard.turn_info != '')
+
+        print(self.gameboard.turn_info)
+
     # -------------------------------------------------------------------------------------------------------
 
     # the methods below are the same from the original test move controller; it was easier to paste them here

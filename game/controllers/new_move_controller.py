@@ -22,15 +22,24 @@ class NewMoveController(Controller):
     """
 
     def handle_logic(self, clients: list[Player], world: GameBoard) -> None:
+        world.order_teams()
+
+        # if the list is empty, return as the team managers in the game board likely aren't assigned yet
+        if len(world.ordered_teams) == 0:
+            return
+
         # get the active pair for the turn, but only get character references; that is, filter None values
-        active_chars: list[Character | None] = [char for char in world.ordered_teams.pop(0) if char is not None]
+        active_chars: list[Character | None] = [char for char in world.ordered_teams.pop(0) if char is not None
+                                                and not char.took_action]
 
         # sort the list so that the fastest character is listed first
         active_chars = sorted(active_chars, key=lambda character: character.speed, reverse=True)
 
         is_speed_tie: bool = active_chars[0].speed == active_chars[1].speed if len(active_chars) == 2 else False
 
-        defeated_characters: list[Character] = []
+        # indicate it's a speed tie in the gameboard's turn info string
+        if is_speed_tie:
+            world.turn_info += f'\nIt\'s a speed tie between {active_chars[0].name} and {active_chars[1].name}!\n'
 
         # for every character, execute the logic for their move if applicable
         for user in active_chars:
@@ -58,12 +67,15 @@ class NewMoveController(Controller):
             if len(primary_targets) == 0:
                 continue
 
+            world.turn_info += f'\nStarting {user.name}\'s turn!\n'
+
             # call the move_logic file's method to handle the rest of the logic
-            handle_move_logic(user, primary_targets, current_move, is_normal_move)
+            handle_move_logic(user, primary_targets, current_move, is_normal_move, world)
+
+            defeated_characters: list[Character] = []
 
             # add the defeated characters to the collection
-            defeated_characters = defeated_characters + [target for target
-                                                         in primary_targets if target.current_health == 0]
+            defeated_characters += [target for target in primary_targets if target.current_health == 0]
 
             # a reference to the targets specifically for the secondary effect
             effect_targets: list[Character] | list = []
@@ -74,23 +86,26 @@ class NewMoveController(Controller):
                 effect_targets: list[Character] | list = self.__get_targets(user, current_move.effect.target_type,
                                                                             world)
 
-                handle_effect_logic(user, effect_targets, current_move.effect)
+                handle_effect_logic(user, effect_targets, current_move.effect, world)
 
                 # add any additional characters to defeated_characters
                 defeated_characters += [target for target in effect_targets if
                                         target not in defeated_characters and target.current_health == 0]
 
+            for char in defeated_characters:
+                world.turn_info += f'\n{user.name} defeated {char.name}!\n'
+
             user.took_action = True
+
+            print(f'\nCharacters in defeated_characters: {[char.name for char in defeated_characters]}\n'
+                  f'Length of defeated_characters: {len(defeated_characters)}')
 
             # perform the logic of defeating a character(s)
             self.__defeated_char_logic(clients, user, defeated_characters)
 
-            # update the user on the game map
-            world.replace(user.position, user)
-
-        # # update the characters that were active this turn
-        # for char in active_chars:
-        #     world.replace(char.position, char)
+        # update the characters that were active this turn
+        for char in active_chars:
+            world.replace(char.position, char)
 
     def __defeated_char_logic(self, clients: list[Player], user: Character,
                               defeated_characters: list[Character]) -> None:

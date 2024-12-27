@@ -163,7 +163,7 @@ class TeamManager(GameObject):
                 self.team.remove(character)
 
     def everyone_is_defeated(self) -> bool:
-        return all([character.is_dead for character in self.team])
+        return len(self.dead_team) == 3
 
     def everyone_took_action(self) -> bool:
         return all([character.took_action for character in self.team])
