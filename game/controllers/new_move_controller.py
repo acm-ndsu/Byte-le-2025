@@ -126,7 +126,8 @@ class NewMoveController(Controller):
             defeated_char.is_dead = True
             defeated_char.state = 'defeated'
             client_to_use.team_manager.score += DEFEATED_SCORE
-            print(f'Defeated {defeated_char.name} current health: {defeated_char.current_health}')
+            print(f'Defeated {defeated_char.name} current health: {defeated_char.current_health}\n'
+                  f'{defeated_char.name} current state: {defeated_char.state}')
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """

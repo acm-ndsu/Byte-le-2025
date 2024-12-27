@@ -341,11 +341,15 @@ class GameBoard(GameObject):
 
     def remove_dead_from_game_map(self, dead: list[Character]) -> None:
         """
-        Removes the given dead characters off the game map.
+        Removes the given dead characters off the game map if they are on the game map.
         """
         for char in dead:
-            self.remove(char.position, char.object_type)
-            print(f'Removing {char.name} from game map')
+            removed = self.remove(char.position, char.object_type)
+
+            if removed:
+                print(f'Removing {char.name} from game map at position {char.position}')
+            else:
+                print(f'Removing None value from game map')
 
     def remove_coordinate(self, coords: Vector) -> None:
         """

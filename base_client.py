@@ -57,13 +57,13 @@ class Client(UserClient):
         active_character = team_manager.get_active_character()
 
         # determine if the current character is healthy
-        current_state = State.HEALTHY if self.get_health_percentage(active_character) >= 0.50 else State.UNHEALTHY
-
-        if current_state == State.HEALTHY:
+        # current_state = State.HEALTHY if self.get_health_percentage(active_character) >= 0.50 else State.UNHEALTHY
+        #
+        # if current_state == State.HEALTHY:
             # if the current character from the team is healthy, use its Normal Move
-            actions = [ActionType.USE_NM]
-        else:
-            # if unhealthy, randomly swap in a direction or attack
-            actions = [random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])]
+        actions = [ActionType.USE_NM]
+        # else:
+        #     # if unhealthy, randomly swap in a direction or attack
+        #     actions = [random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])]
 
         return actions
