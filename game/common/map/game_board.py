@@ -345,6 +345,7 @@ class GameBoard(GameObject):
         """
         for char in dead:
             self.remove(char.position, char.object_type)
+            print(f'Removing {char.name} from game map')
 
     def remove_coordinate(self, coords: Vector) -> None:
         """

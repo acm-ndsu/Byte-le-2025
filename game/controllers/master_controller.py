@@ -125,7 +125,7 @@ class MasterController(Controller):
             # # update the game board's team manager references
             # gameboard.update_team_managers()
 
-        self.new_move_controller.handle_logic(clients, gameboard)
+        self.new_move_controller.handle_logic(clients, gameboard, turn)
 
         # update the game board's team manager references
         gameboard.update_team_managers()

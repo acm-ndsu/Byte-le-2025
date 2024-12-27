@@ -21,7 +21,7 @@ class NewMoveController(Controller):
     it will access that move and call its `use()` method to attempt to activate it.
     """
 
-    def handle_logic(self, clients: list[Player], world: GameBoard) -> None:
+    def handle_logic(self, clients: list[Player], world: GameBoard, turn: int) -> None:
         world.order_teams()
 
         # if the list is empty, return as the team managers in the game board likely aren't assigned yet
@@ -97,7 +97,7 @@ class NewMoveController(Controller):
 
             user.took_action = True
 
-            print(f'\nCharacters in defeated_characters: {[char.name for char in defeated_characters]}\n'
+            print(f'\nCharacters in defeated_characters on turn {turn}: {[char.name for char in defeated_characters]}\n'
                   f'Length of defeated_characters: {len(defeated_characters)}')
 
             # perform the logic of defeating a character(s)
@@ -126,6 +126,7 @@ class NewMoveController(Controller):
             defeated_char.is_dead = True
             defeated_char.state = 'defeated'
             client_to_use.team_manager.score += DEFEATED_SCORE
+            print(f'Defeated {defeated_char.name} current health: {defeated_char.current_health}')
 
     def __get_targets(self, user: Character, target_type: TargetType, world: GameBoard) -> list[Character] | list:
         """
