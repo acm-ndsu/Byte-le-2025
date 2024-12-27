@@ -88,6 +88,10 @@ class NewMoveController(Controller):
             # update the user on the game map
             world.replace(user.position, user)
 
+        # # update the characters that were active this turn
+        # for char in active_chars:
+        #     world.replace(char.position, char)
+
     def __defeated_char_logic(self, clients: list[Player], user: Character,
                               defeated_characters: list[Character]) -> None:
 

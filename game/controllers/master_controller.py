@@ -6,7 +6,6 @@ from game.common.player import Player
 from game.common.team_manager import TeamManager
 from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN, WIN_SCORE, DIFFERENTIAL_BONUS
 from game.controllers.controller import Controller
-from game.controllers.move_controller import MoveController
 from game.controllers.swap_controller import SwapController
 from game.controllers.select_move_controller import SelectMoveController
 from game.controllers.new_move_controller import NewMoveController
@@ -51,7 +50,6 @@ class MasterController(Controller):
         self.turn: int = 1
         self.current_world_data: dict = None
         self.swap_controller: SwapController = SwapController()
-        self.move_controller: MoveController = MoveController()
         self.select_move_controller: SelectMoveController = SelectMoveController()
         self.new_move_controller: NewMoveController = NewMoveController()
 

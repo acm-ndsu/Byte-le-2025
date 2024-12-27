@@ -29,6 +29,10 @@ class TestMasterController(unittest.TestCase):
                                                        generate_generic_tank('Turpis Tank 2')],
                                                       country_type=CountryType.TURPIS)
 
+        # set every character's selected move to be their normal move
+        for char in self.team_manager1.team + self.team_manager2.team:
+            char.selected_move = char.get_nm()
+
         # set the country type to turpis for team manager 2
         for char in self.team_manager2.team:
             char.country_type = CountryType.TURPIS
