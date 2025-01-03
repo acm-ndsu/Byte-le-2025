@@ -3,13 +3,14 @@ import math
 from game.commander_clash.character.character import Character
 from game.commander_clash.character.stats import Stat
 from game.commander_clash.moves.moves import *
-from game.common.enums import MoveType
+from game.common.enums import MoveType, CountryType
 from game.common.map.game_board import GameBoard
+from game.common.team_manager import TeamManager
 from game.config import MINIMUM_DAMAGE, SPECIAL_POINT_LIMIT
 
 
 def handle_move_logic(user: Character, targets: list[Character], current_move: Move, is_normal_move: bool,
-                      world: GameBoard) -> None:
+                      world: GameBoard, uroda_team_manager: TeamManager, turpis_team_manager: TeamManager) -> None:
     """
     Handles the logic for every move type. That is, damage is applied for attacks, health is increased for healing,
     and stats are modified based on the buff/debuff
@@ -35,6 +36,8 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
         case _:
             return
 
+    __sync_characters(targets, uroda_team_manager, turpis_team_manager)
+
     # # add 1 to the user's special points if using a normal attack AND there were targets to affect
     # if is_normal_move and len(targets) > 0:
     #     next_sp: int = user.special_points + 1
@@ -46,15 +49,14 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
     #     # subtract the cost of using the move from the character's total special points if there were targets
     #     user.special_points -= current_move.cost
 
-    if len(targets) > 0:
-        if is_normal_move:
-            next_sp: int = user.special_points + 1
+    if is_normal_move:
+        next_sp: int = user.special_points + 1
 
-            # prevent the special points from going over the cap
-            user.special_points = next_sp if next_sp <= SPECIAL_POINT_LIMIT else user.special_points
+        # prevent the special points from going over the cap
+        user.special_points = next_sp if next_sp <= SPECIAL_POINT_LIMIT else user.special_points
 
-        # subtract the cost of using the move from the character's total special points if there were targets
-        user.special_points -= current_move.cost
+    # subtract the cost of using the move from the character's total special points if there were targets
+    user.special_points -= current_move.cost
 
 
 def handle_effect_logic(user: Character, targets: list[Character], current_effect: Effect, world: GameBoard) -> None:
@@ -206,3 +208,21 @@ def __get_stat_object_to_affect(target: Character, current_move: AbstractBuff | 
 def __assign_target_states(targets: list[Character], state: str) -> None:
     for target in targets:
         target.state = state
+
+
+def __sync_characters(targets: list[Character],
+                      uroda_team_manager: TeamManager, turpis_team_manager: TeamManager) -> None:
+    """
+    Takes the list of targets that were affected and applies all changes to the team manager references of that
+    character. This is because the targets originally come from the game map, so the team manager references must be
+    updated.
+    """
+
+    for gm_character in targets:
+        tm_to_use: TeamManager = uroda_team_manager \
+            if gm_character.country_type == CountryType.URODA else turpis_team_manager
+
+        tm_character: Character = tm_to_use.get_character(gm_character.name)
+
+        # sync the two characters
+        tm_character.sync_char_with(gm_character)

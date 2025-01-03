@@ -99,8 +99,8 @@ class TestGameBoard(unittest.TestCase):
 
     def test_get_characters(self):
         characters: dict[Vector, Character] = self.game_board.get_characters()
-        self.assertEqual(characters[Vector(1, 2)], self.leader)
-        self.assertEqual(characters[Vector(1, 3)], self.attacker)
+        self.assertTrue(characters[Vector(1, 2)] == self.leader)
+        self.assertTrue(characters[Vector(1, 3)] == self.attacker)
         self.assertEqual(len(characters), 2)
 
     def test_get_characters_by_country(self):
@@ -108,98 +108,85 @@ class TestGameBoard(unittest.TestCase):
         self.assertEqual(characters[Vector(1, 2)], self.leader)
         self.assertEqual(len(characters), 1)
 
-    def test_get_team_manager_uroda(self):
-        result: TeamManager | None = self.game_board.get_team_manager(self.uroda_manager.country_type)
-        self.assertEqual(self.uroda_manager, result)
-
-    def test_get_team_manager_turpis(self):
-        result: TeamManager | None = self.game_board.get_team_manager(self.turpis_manager.country_type)
-        self.assertEqual(self.turpis_manager, result)
+    # def test_get_team_manager_uroda(self):
+    #     result: TeamManager | None = self.game_board.get_team_manager(self.uroda_manager.country_type)
+    #     self.assertEqual(self.uroda_manager, result)
+    #
+    # def test_get_team_manager_turpis(self):
+    #     result: TeamManager | None = self.game_board.get_team_manager(self.turpis_manager.country_type)
+    #     self.assertEqual(self.turpis_manager, result)
 
     # uroda has 3 characters, turpis has 3
     def test_order_characters_3x3(self):
-        self.game_board.order_teams()
+        self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2), (self.gh1, self.gh2),
                                                          (self.gt1, self.gt2)])
 
     # uroda has 3 characters, turpis has 2
     def test_order_characters_3x2(self):
-        self.turpis_team = self.turpis_team[:2]
-        self.game_board.turpis_team_manager.team = self.turpis_team
+        self.turpis_manager.team = self.turpis_manager.team[:2]
 
-        self.game_board.order_teams()
+        # generate the game map again so the new turpis team is reflected
+        self.game_board.generate_map()
+
+        self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2), (self.gh1, self.gh2),
                                                          (self.gt1, None)])
 
     # uroda has 3 characters, turpis has 1
     def test_order_character_3x1(self):
-        self.turpis_team = self.turpis_team[:1]
-        self.game_board.turpis_team_manager.team = self.turpis_team
+        self.turpis_manager.team = self.turpis_team[:1]
 
-        self.game_board.order_teams()
+        self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2), (self.gh1, None),
                                                          (self.gt1, None)])
 
     # uroda has 2 characters, turpis has 3
     def test_order_character_2x3(self):
-        self.uroda_team = self.uroda_team[:2]
-        self.game_board.uroda_team_manager.team = self.uroda_team
+        self.uroda_manager.team = self.uroda_team[:2]
 
-        self.game_board.order_teams()
+        self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2), (self.gh1, self.gh2),
                                                          (None, self.gt2)])
 
     # uroda has 2 characters, turpis has 3
     def test_order_character_1x3(self):
-        self.uroda_team = self.uroda_team[:1]
-        self.game_board.uroda_team_manager.team = self.uroda_team
+        self.uroda_manager.team = self.uroda_team[:1]
 
-        self.game_board.order_teams()
+        self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2), (None, self.gh2),
                                                          (None, self.gt2)])
 
     # uroda has 2 characters, turpis has 2
     def test_order_character_2x2(self):
-        self.uroda_team = self.uroda_team[:2]
-        self.game_board.uroda_team_manager.team = self.uroda_team
+        self.uroda_manager.team = self.uroda_team[:2]
+        self.turpis_manager.team = self.turpis_team[:2]
 
-        self.turpis_team = self.turpis_team[:2]
-        self.game_board.turpis_team_manager.team = self.turpis_team
-
-        self.game_board.order_teams()
+        self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2), (self.gh1, self.gh2)])
 
     # uroda has 2 characters, turpis has 1
     def test_order_character_2x1(self):
-        self.uroda_team = self.uroda_team[:2]
-        self.game_board.uroda_team_manager.team = self.uroda_team
+        self.uroda_manager.team = self.uroda_team[:2]
+        self.turpis_manager.team = self.turpis_team[:1]
 
-        self.turpis_team = self.turpis_team[:1]
-        self.game_board.turpis_team_manager.team = self.turpis_team
-
-        self.game_board.order_teams()
+        self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2), (self.gh1, None)])
 
     # uroda has 1 characters, turpis has 2
     def test_order_character_1x2(self):
-        self.uroda_team = self.uroda_team[:1]
-        self.game_board.uroda_team_manager.team = self.uroda_team
+        self.uroda_manager.team = self.uroda_team[:1]
+        self.turpis_manager.team = self.turpis_team[:2]
 
-        self.turpis_team = self.turpis_team[:2]
-        self.game_board.turpis_team_manager.team = self.turpis_team
-
-        self.game_board.order_teams()
+        self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2), (None, self.gh2)])
 
     # uroda has 1 characters, turpis has 1
     def test_order_character_1x1(self):
-        self.uroda_team = self.uroda_team[:1]
-        self.game_board.uroda_team_manager.team = self.uroda_team
+        self.uroda_manager.team = self.uroda_team[:1]
+        self.turpis_manager.team = self.turpis_team[:1]
 
-        self.turpis_team = self.turpis_team[:1]
-        self.game_board.turpis_team_manager.team = self.turpis_team
-
-        self.game_board.order_teams()
+        self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2)])
 
     def test_get_ordered_teams_as_list(self):
@@ -220,15 +207,15 @@ class TestGameBoard(unittest.TestCase):
         self.assertTrue(self.game_board.game_map.values(), temp.game_map.values())
 
         # check that both team managers stored information correctly
-        self.assertEqual(self.game_board.uroda_team_manager.object_type, temp.uroda_team_manager.object_type)
-        self.assertEqual(self.game_board.uroda_team_manager.team, temp.uroda_team_manager.team)
-        self.assertEqual(self.game_board.uroda_team_manager.score, temp.uroda_team_manager.score)
-        self.assertEqual(self.game_board.uroda_team_manager.country_type, temp.uroda_team_manager.country_type)
-
-        self.assertEqual(self.game_board.turpis_team_manager.object_type, temp.turpis_team_manager.object_type)
-        self.assertEqual(self.game_board.turpis_team_manager.team, temp.turpis_team_manager.team)
-        self.assertEqual(self.game_board.turpis_team_manager.score, temp.turpis_team_manager.score)
-        self.assertEqual(self.game_board.turpis_team_manager.country_type, temp.turpis_team_manager.country_type)
+        # self.assertEqual(self.game_board.uroda_team_manager.object_type, temp.uroda_team_manager.object_type)
+        # self.assertEqual(self.game_board.uroda_team_manager.team, temp.uroda_team_manager.team)
+        # self.assertEqual(self.game_board.uroda_team_manager.score, temp.uroda_team_manager.score)
+        # self.assertEqual(self.game_board.uroda_team_manager.country_type, temp.uroda_team_manager.country_type)
+        #
+        # self.assertEqual(self.game_board.turpis_team_manager.object_type, temp.turpis_team_manager.object_type)
+        # self.assertEqual(self.game_board.turpis_team_manager.team, temp.turpis_team_manager.team)
+        # self.assertEqual(self.game_board.turpis_team_manager.score, temp.turpis_team_manager.score)
+        # self.assertEqual(self.game_board.turpis_team_manager.country_type, temp.turpis_team_manager.country_type)
 
         # check that the ordered_teams property was stored properly
         self.assertEqual(len(self.game_board.ordered_teams), len(temp.ordered_teams))

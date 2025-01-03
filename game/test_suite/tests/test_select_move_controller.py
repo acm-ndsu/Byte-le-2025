@@ -96,30 +96,21 @@ class TestSelectMoveController(unittest.TestCase):
         self.gameboard.generate_map()
 
     def test_given_valid_enum(self) -> None:
-        # the active character is the attacker, and it's selected move should be the normal move
+        # the active character is the attacker, and its selected move should be the normal move
         self.select_move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
         # test that the attacker's selected move is the normal move
         self.assertEqual(self.uroda_attacker.selected_move.name, self.attacker_moveset.get_nm().name)
 
-        # test that the gameboard's reference of the attacker also has correct selected move
-        self.assertEqual(self.gameboard.uroda_team_manager.get_character(self.uroda_attacker.name).selected_move.name,
-                         self.attacker_moveset.get_nm().name)
-
         # test special 1
         self.select_move_controller.handle_actions(ActionType.USE_S1, self.uroda_client, self.gameboard)
         self.assertEqual(self.uroda_attacker.selected_move.name, self.attacker_moveset.get_s1().name)
-        self.assertEqual(self.gameboard.uroda_team_manager.get_character(self.uroda_attacker.name).selected_move.name,
-                         self.attacker_moveset.get_s1().name)
 
         # test special 2
         self.select_move_controller.handle_actions(ActionType.USE_S2, self.uroda_client, self.gameboard)
         self.assertEqual(self.uroda_attacker.selected_move.name, self.attacker_moveset.get_s2().name)
-        self.assertEqual(self.gameboard.uroda_team_manager.get_character(self.uroda_attacker.name).selected_move.name,
-                         self.attacker_moveset.get_s2().name)
 
     def test_invalid_enum(self) -> None:
         # test that the selected move is None after receiving an invalid enum
         self.select_move_controller.handle_actions(ActionType.SWAP_UP, self.uroda_client, self.gameboard)
         self.assertTrue(self.uroda_attacker.selected_move is None)
-        self.assertTrue(self.gameboard.uroda_team_manager.get_character(self.uroda_attacker.name).selected_move is None)

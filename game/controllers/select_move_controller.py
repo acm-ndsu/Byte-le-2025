@@ -3,7 +3,6 @@ from game.commander_clash.moves.moves import Move
 from game.common.enums import ActionType
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
-from game.common.team_manager import TeamManager
 from game.controllers.controller import Controller
 
 
@@ -18,10 +17,7 @@ class SelectMoveController(Controller):
         will be used in another controller that will execute a move's logic.
         """
 
-        # the game board's reference to the client's team manager
-        gb_client_team_manager: TeamManager = world.get_team_manager(client.team_manager.country_type)
-
-        user: Character = gb_client_team_manager.get_active_character()
+        user: Character = client.team_manager.get_active_character()
 
         current_move: Move
 

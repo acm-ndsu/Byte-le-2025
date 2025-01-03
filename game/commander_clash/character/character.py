@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from typing import Self
 from game.commander_clash.character.stats import *
 from game.commander_clash.moves.moves import *
 from game.commander_clash.moves.moveset import Moveset
@@ -43,16 +44,22 @@ class Character(GameObject):
             return False
 
         # return if all the attributes match for the two characters
-        # to any future devs looking at this, I, Ian King, sincerely apologize for this amalgamation
-        # it was either this or other gross code :( I was short on time, and I was tired
-        # forgive me please, and do better than this...
-        return (self.name == other.name and self.object_type == other.object_type
-                and self.character_type == other.character_type and self.current_health == other.current_health
-                and self.max_health == other.max_health and self.attack == other.attack
-                and self.defense == other.defense and self.speed == other.speed and self.rank_type == other.rank_type
+        return (self.name == other.name
+                and self.object_type == other.object_type
+                and self.character_type == other.character_type
+                and self.current_health == other.current_health
+                and self.max_health == other.max_health
+                and self.attack == other.attack
+                and self.defense == other.defense
+                and self.speed == other.speed
+                and self.rank_type == other.rank_type
                 and self.moveset == other.moveset
-                and self.special_points == other.special_points and self.position == other.position
-                and self.took_action == other.took_action and self.country_type == other.country_type)
+                and self.special_points == other.special_points
+                and self.position == other.position
+                and self.took_action == other.took_action
+                and self.country_type == other.country_type
+                and self.is_dead == other.is_dead
+                and self.selected_move == other.selected_move)
 
     @property
     def name(self) -> str:
@@ -239,6 +246,27 @@ class Character(GameObject):
 
     def is_defeated(self) -> bool:
         return self.current_health == 0
+
+    def sync_char_with(self, char: Character) -> None:
+        """
+        If the given character has the same name, its changes will be applied to this instance of the character. For
+        example, if the given character has 50 current health and 2 special points, this instance of the character
+        will have those same numbers.
+        """
+        if char is None:
+            return
+
+        if char.name == self.name:
+            self.current_health = char.current_health
+            self.max_health = char.max_health
+            self.attack = char.attack
+            self.defense = char.defense
+            self.speed = char.speed
+            self.selected_move = char.selected_move
+            self.position = char.position
+            self.took_action = char.took_action
+            self.is_dead = char.is_dead
+            self.special_points = char.special_points
 
     def to_json(self) -> dict:
         data: dict = super().to_json()

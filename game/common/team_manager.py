@@ -153,14 +153,14 @@ class TeamManager(GameObject):
             if char.name == name:
                 return char
 
-    def organize_dead_characters(self) -> None:
-        """
-        Moves any characters in the team manager from the team reference to the dead_team reference
-        """
-        for character in self.team:
-            if character.is_dead:
-                self.dead_team.append(character)
-                self.team.remove(character)
+    # def organize_dead_characters(self) -> None:
+    #     """
+    #     Moves any characters in the team manager from the team reference to the dead_team reference
+    #     """
+    #     for character in self.team:
+    #         if character.is_dead:
+    #             self.dead_team.append(character)
+    #             self.team.remove(character)
 
     def everyone_is_defeated(self) -> bool:
         return len(self.dead_team) == 3

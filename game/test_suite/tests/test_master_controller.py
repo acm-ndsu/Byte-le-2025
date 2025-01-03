@@ -66,20 +66,14 @@ class TestMasterController(unittest.TestCase):
         self.master_controller.current_world_data = {'game_board': self.gameboard.to_json()}
 
     def test_turn_logic(self) -> None:
-        uroda_active_char_name: str = self.client1.team_manager.get_active_character().name
-        turpis_active_char_name: str = self.client2.team_manager.get_active_character().name
-
         self.master_controller.turn_logic([self.client1, self.client2], 0)
 
-        uroda_active_char: Character = self.client1.team_manager.get_character(uroda_active_char_name)
-        turpis_active_char: Character = self.client2.team_manager.get_character(turpis_active_char_name)
-
         # assert that only the characters that took their turn have the 'took_action' bool set to True
-        self.assertTrue(uroda_active_char.took_action)
+        self.assertTrue(self.team_manager1.team[0].took_action)
         self.assertFalse(self.team_manager1.team[1].took_action)
         self.assertFalse(self.team_manager1.team[2].took_action)
 
-        self.assertTrue(turpis_active_char.took_action)
+        self.assertTrue(self.team_manager2.team[0].took_action)
         self.assertFalse(self.team_manager2.team[1].took_action)
         self.assertFalse(self.team_manager2.team[2].took_action)
 
@@ -98,24 +92,19 @@ class TestMasterController(unittest.TestCase):
         self.assertFalse(self.client2.team_manager.team[2].took_action)
 
     def test_dead_handling(self) -> None:
-        # arrangements for the test
-        t_tank_position: Vector = self.client2.team_manager.get_character('Turpis Tank').position
-
-        # defeat the Turpis Tank and ensure it's handled appropriately
-        self.gameboard.get_character_from(t_tank_position).current_health = 1
+        # set the Turpis Tank health to 1
+        self.team_manager2.team[1].current_health = 1
 
         # generate the game map
         self.gameboard.generate_map()
         self.master_controller.current_world_data = {'game_board': self.gameboard.to_json()}
 
-        self.master_controller.turn_logic([self.client1, self.client2], 0)
+        # execute the turn logic twice so the master controller can call the method to handle dead characters properly
+        for x in range(2):
+            self.master_controller.turn_logic([self.client1, self.client2], 0)
 
         # read the json of the gameboard to receive all recent changes
         self.gameboard = GameBoard().from_json(self.master_controller.current_world_data['game_board'])
-
-        # set the team managers to be the updated versions
-        self.client1.team_manager = self.gameboard.uroda_team_manager
-        self.client2.team_manager = self.gameboard.turpis_team_manager
 
         self.assertTrue(self.client2.team_manager.dead_team[0].name == 'Turpis Tank')
         self.assertTrue(len(self.client2.team_manager.team) == 2)

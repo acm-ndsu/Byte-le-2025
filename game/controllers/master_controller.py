@@ -102,10 +102,14 @@ class MasterController(Controller):
     def turn_logic(self, clients: list[Player], turn):
         gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
 
-        # start by removing any dead characters off the game map
-        for client in clients:
-            # remove any dead characters off the game map
-            gameboard.remove_dead_from_game_map(client.team_manager.dead_team)
+        uroda_team_manager: TeamManager = clients[0].team_manager if (
+                clients[0].team_manager.country_type == CountryType.URODA) else clients[1].team_manager
+
+        turpis_team_manager: TeamManager = clients[0].team_manager if (
+                clients[0].team_manager.country_type == CountryType.TURPIS) else clients[1].team_manager
+
+        # start by organizing the dead characters that died last turn if applicable
+        gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
 
         # reset the turn info string for new information
         gameboard.turn_info = ''
@@ -133,7 +137,7 @@ class MasterController(Controller):
         self.new_move_controller.handle_logic(clients, gameboard, turn)
 
         # update the game board's team manager references
-        gameboard.update_team_managers()
+        # gameboard.update_team_managers()
 
         # to ensure the clients receive the updates for their characters, loop over the two and reassign their
         # team managers to be the game board references
@@ -143,10 +147,10 @@ class MasterController(Controller):
             # get the client's score before it is overwritten
             client_score: int = client.team_manager.score
 
-            if client.team_manager.country_type == CountryType.URODA:
-                client.team_manager = gameboard.uroda_team_manager
-            else:
-                client.team_manager = gameboard.turpis_team_manager
+            # if client.team_manager.country_type == CountryType.URODA:
+            #     client.team_manager = gameboard.uroda_team_manager
+            # else:
+            #     client.team_manager = gameboard.turpis_team_manager
 
             client.team_manager.score = client_score
 
@@ -160,7 +164,7 @@ class MasterController(Controller):
 
         # repopulate the ordered_teams property if the list is empty in the gameboard
         if len(gameboard.ordered_teams) == 0:
-            gameboard.order_teams()
+            gameboard.order_teams(uroda_team_manager, turpis_team_manager)
 
         # update the current world json by setting it to the game board's updated state
 
