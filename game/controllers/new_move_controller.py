@@ -55,6 +55,7 @@ class NewMoveController(Controller):
 
             current_move: Move = user.selected_move
             is_normal_move: bool = user.selected_move == user.get_nm()
+            user.took_action = True
 
             # if the character cannot use the desired move, continue to next iteration
             if user.special_points < current_move.cost:
@@ -94,8 +95,6 @@ class NewMoveController(Controller):
 
             for char in defeated_characters:
                 world.turn_info += f'\n{user.name} defeated {char.name}!\n'
-
-            user.took_action = True
 
             print(f'\nCharacters in defeated_characters on turn {turn}: {[char.name for char in defeated_characters]}\n'
                   f'Length of defeated_characters: {len(defeated_characters)}')

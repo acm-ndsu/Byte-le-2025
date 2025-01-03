@@ -52,6 +52,8 @@ class TestGameBoard(unittest.TestCase):
                                                uroda_team_manager=self.uroda_manager,
                                                turpis_team_manager=self.turpis_manager)
 
+        self.game_board.recently_died = [self.ga1]
+
         self.game_board.generate_map()
 
     # test that seed cannot be set after generate_map
@@ -242,3 +244,7 @@ class TestGameBoard(unittest.TestCase):
 
         self.assertTrue(self.game_board.ordered_teams[2][0] == temp.ordered_teams[2][0])
         self.assertTrue(self.game_board.ordered_teams[2][1] == temp.ordered_teams[2][1])
+
+        # test the recently_died list
+        self.assertTrue(self.game_board.recently_died[0] == self.ga1)
+        self.assertEqual(len(self.game_board.recently_died), 1)

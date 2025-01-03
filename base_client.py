@@ -20,7 +20,7 @@ class Client(UserClient):
     def team_data(self) -> tuple[str, tuple[SelectGeneric, SelectLeader, SelectGeneric]]:
         """
         Returns your team name and a tuple of enums representing the characters you want for your team.
-        The tuple of the team must be ordered as (Leader, Generic, Generic). If an enum is not placed in the correct
+        The tuple of the team must be ordered as (Generic, Leader, Generic). If an enum is not placed in the correct
         order (e.g., (Generic, Leader, Leader)), whichever selection is incorrect will be swapped with a default value
         of Generic Attacker.
         """
@@ -57,13 +57,13 @@ class Client(UserClient):
         active_character = team_manager.get_active_character()
 
         # determine if the current character is healthy
-        # current_state = State.HEALTHY if self.get_health_percentage(active_character) >= 0.50 else State.UNHEALTHY
-        #
-        # if current_state == State.HEALTHY:
+        current_state = State.HEALTHY if self.get_health_percentage(active_character) >= 0.50 else State.UNHEALTHY
+
+        if current_state == State.HEALTHY:
             # if the current character from the team is healthy, use its Normal Move
-        actions = [ActionType.USE_NM]
-        # else:
-        #     # if unhealthy, randomly swap in a direction or attack
-        #     actions = [random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])]
+            actions = [ActionType.USE_NM]
+        else:
+            # if unhealthy, randomly swap in a direction or attack
+            actions = [random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])]
 
         return actions

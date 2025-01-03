@@ -102,6 +102,11 @@ class MasterController(Controller):
     def turn_logic(self, clients: list[Player], turn):
         gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
 
+        # start by removing any dead characters off the game map
+        for client in clients:
+            # remove any dead characters off the game map
+            gameboard.remove_dead_from_game_map(client.team_manager.dead_team)
+
         # reset the turn info string for new information
         gameboard.turn_info = ''
 
@@ -144,9 +149,6 @@ class MasterController(Controller):
                 client.team_manager = gameboard.turpis_team_manager
 
             client.team_manager.score = client_score
-
-            # remove any dead characters off the game map
-            gameboard.remove_dead_from_game_map(client.team_manager.dead_team)
 
             # if everyone took their action in the given team manager, set their took_action bool to False
             if client.team_manager.everyone_took_action():

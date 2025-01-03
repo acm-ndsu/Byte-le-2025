@@ -138,6 +138,7 @@ class GameBoard(GameObject):
         self.order_teams()
 
         self.turn_info: str = ''
+        self.recently_died: list[Character] = []
 
     @property
     def seed(self) -> int:
@@ -479,6 +480,23 @@ class GameBoard(GameObject):
         # remove the old instance of the character from the map
         self.replace(character.position, character)
 
+    def clean_up_dead_characters(self) -> None:
+        """
+        Using the `recently_died` list, this will remove every character from the list off the game map and also move
+        them from their respective team manager's `team` list to its `dead_team` list.
+        """
+
+        for char in self.recently_died:
+            name: str = char.name
+            team_manager: TeamManager = self.uroda_team_manager if char.country_type == CountryType.URODA \
+                else self.turpis_team_manager
+
+            self.remove_coordinate(char.position)
+
+            # get the team manager's reference of the character
+            # char_tm_reference: Character =
+
+
     def get_character_from(self, coords: Vector) -> Character | None:
         """
         Returns a Character object from the given coordinate. If no character is at the coordinate, return None. If
@@ -587,6 +605,7 @@ class GameBoard(GameObject):
             for pair in self.ordered_teams]
 
         data['turn_info'] = self.turn_info
+        data['recently_died'] = [char.to_json() for char in self.recently_died]
 
         return data
 
@@ -645,5 +664,7 @@ class GameBoard(GameObject):
         ]
 
         self.turn_info: str = data['turn_info']
+
+        self.recently_died: list[Character] = [self.__from_json_helper(char) for char in data['recently_died']]
 
         return self
