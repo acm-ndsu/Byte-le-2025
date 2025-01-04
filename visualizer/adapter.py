@@ -4,6 +4,7 @@ from game.config import *
 from typing import Callable, Any
 
 from game.utils.vector import Vector
+from game.common.enums import ObjectType
 from visualizer.config import Config
 from visualizer.bytesprites.charactersBS import CharactersBS
 from visualizer.templates.scoreboard_template import ScoreboardTemplate
@@ -30,12 +31,12 @@ class Adapter:
         self.populate_bytesprite: pygame.sprite.Group = pygame.sprite.Group()
         self.menu: MenuTemplate = Basic(screen, self.config.FONT, self.config.FONT_COLOR_ALT,
                                         self.config.BUTTON_COLORS, 'Commander Clash')
-        self.scoreboard = ScoreboardTemplate(screen, Vector(y=13, x=38), Vector(y=40, x=1200), self.config.FONT,
+        self.scoreboard = ScoreboardTemplate(screen, Vector(x=38, y=13), Vector(x=1200, y=40), self.config.FONT,
                                              self.config.FONT_COLOR)
         self.playback: PlaybackTemplate = PlaybackTemplate(screen, self.config.FONT, self.config.BUTTON_COLORS)
-        self.urodaTeam: TeamInfoTemplate = TeamInfoTemplate(screen, Vector(y=67, x=0), Vector(y=586, x=426),
+        self.urodaTeam: TeamInfoTemplate = TeamInfoTemplate(screen, Vector(x=0, y=67), Vector(x=426, y=586),
                                                             self.config.FONT, self.config.FONT_COLOR, 1)
-        self.turpisTeam: TeamInfoTemplate = TeamInfoTemplate(screen, Vector(y=67, x=854), Vector(y=586, x=426),
+        self.turpisTeam: TeamInfoTemplate = TeamInfoTemplate(screen, Vector(x=854, y=67), Vector(x=426, y=586),
                                                              self.config.FONT, self.config.FONT_COLOR, 2)
         self.turn_number: int = 0
         self.turn_max: int = MAX_TICKS
@@ -98,6 +99,8 @@ class Adapter:
         :return: None
         """
         self.scoreboard.recalc_animation(turn_log)
+        self.urodaTeam.recalc_animation(turn_log)
+        self.turpisTeam.recalc_animation(turn_log)
         self.turn_number = turn_log['tick']
 
     def populate_bytesprite_factories(self) -> dict[int: Callable[[pygame.Surface], ByteSprite]]:
@@ -107,10 +110,19 @@ class Adapter:
         :return: dict[int, Callable[[pygame.Surface], ByteSprite]]
         """
         return {
-            12: CharactersBS.create_bytesprite,
-            13: CharactersBS.create_bytesprite,
-            14: CharactersBS.create_bytesprite,
-            15: CharactersBS.create_bytesprite,
+            ObjectType.ANAHITA: CharactersBS.create_anahita_bytesprite,
+            ObjectType.BERRY: CharactersBS.create_berry_bytesprite,
+            ObjectType.CALMUS: CharactersBS.create_calmus_bytesprite,
+            ObjectType.FULTRA: CharactersBS.create_fultra_bytesprite,
+            ObjectType.IRWIN: CharactersBS.create_irwin_bytesprite,
+            ObjectType.NINLIL: CharactersBS.create_ninlil_bytesprite,
+            ObjectType.URODA_GENERIC_ATTACKER: CharactersBS.create_uroda_gen_attacker_bytesprite,
+            ObjectType.URODA_GENERIC_HEALER: CharactersBS.create_uroda_gen_healer_bytesprite,
+            ObjectType.URODA_GENERIC_TANK: CharactersBS.create_uroda_gen_tank_bytesprite,
+            ObjectType.TURPIS_GENERIC_ATTACKER: CharactersBS.create_turpis_gen_attack_bytesprite,
+            ObjectType.TURPIS_GENERIC_HEALER: CharactersBS.create_turpis_gen_healer_bytesprite,
+            ObjectType.TURPIS_GENERIC_TANK: CharactersBS.create_turpis_gen_tank_bytesprite,
+            ObjectType.GENERIC_TRASH: CharactersBS.create_gen_trash_bytesprite
         }
 
     def render(self) -> None:
@@ -126,6 +138,8 @@ class Adapter:
         text.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().midtop), Vector(0, 50)).as_tuple()
         text.render()
 
+        self.urodaTeam.render()
+        self.turpisTeam.render()
         self.scoreboard.render()
         self.playback.playback_render()
 
