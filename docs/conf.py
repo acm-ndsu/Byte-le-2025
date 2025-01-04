@@ -6,8 +6,8 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Byte-le 2025 Documentation'
-copyright = '2025, NDSU ACM Byte-le 2025 Dev Team'
+project = 'Byte-le Royale 2025 1.0.0'
+copyright = '1974-2025, NDSU ACM'
 author = 'NDSU ACM Byte-le 2025 Dev Team'
 
 # -- General configuration ---------------------------------------------------
@@ -23,5 +23,5 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'alabaster'
+html_theme = 'sphinx_book_theme'
 html_static_path = ['_static']
