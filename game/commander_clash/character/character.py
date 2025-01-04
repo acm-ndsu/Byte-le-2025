@@ -298,7 +298,7 @@ class GenericAttacker(Generic):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)
 
-        self.object_type: ObjectType = ObjectType.GENERIC_ATTACKER
+        # Object type given in char_position_generation based on country as well
         self.character_type: CharacterType = CharacterType.ATTACKER
 
     def to_json(self) -> dict:
@@ -317,7 +317,7 @@ class GenericHealer(Generic):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)
 
-        self.object_type: ObjectType = ObjectType.GENERIC_HEALER
+        # Object type given in char_position_generation based on country as well
         self.character_type: CharacterType = CharacterType.HEALER
 
     def to_json(self) -> dict:
@@ -336,7 +336,7 @@ class GenericTank(Generic):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)
 
-        self.object_type: ObjectType = ObjectType.GENERIC_TANK
+        # Object type given in char_position_generation based on country as well
         self.character_type: CharacterType = CharacterType.TANK
 
     def to_json(self) -> dict:
