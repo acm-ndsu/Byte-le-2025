@@ -32,9 +32,6 @@ def generate(seed: int = random.randint(0, 1000000000)):
 
     # for every created team manager, write them to the json
     for team_manager in info[1]:
-        # organize the team by speed
-        team_manager.speed_sort()
-
         if team_manager.country_type == CountryType.URODA:
             data['game_board']['uroda_team_manager'] = team_manager.to_json()
         else:

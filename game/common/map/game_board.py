@@ -135,8 +135,9 @@ class GameBoard(GameObject):
         # call order teams to order them immediately when the gameboard is created
         self.order_teams(uroda_team_manager, turpis_team_manager)
 
-        self.turn_info: str = ''
         self.recently_died: list[Character] = []
+
+        self.turn_info: str = ''
 
     @property
     def seed(self) -> int:
@@ -508,6 +509,13 @@ class GameBoard(GameObject):
                 if obj2 is not None and obj2.name == dead_char.name:
                     self.ordered_teams[index] = (obj1, None)
 
+            # reset all characters' took_action bool after a character is removed
+            if team_manager.everyone_took_action():
+                for char in team_manager.team:
+                    char.took_action = False
+
+                team_manager.speed_sort()
+
     def get_character_from(self, coords: Vector) -> Character | None:
         """
         Returns a Character object from the given coordinate. If no character is at the coordinate, return None. If
@@ -615,8 +623,9 @@ class GameBoard(GameObject):
              pair[1].to_json() if pair[1] is not None else None]
             for pair in self.ordered_teams]
 
-        data['turn_info'] = self.turn_info
         data['recently_died'] = [char.to_json() for char in self.recently_died]
+
+        data['turn_info'] = self.turn_info
 
         return data
 
@@ -674,8 +683,8 @@ class GameBoard(GameObject):
             for pair in data['ordered_teams']
         ]
 
-        self.turn_info: str = data['turn_info']
-
         self.recently_died: list[Character] = [self.__from_json_helper(info) for info in data['recently_died']]
+
+        self.turn_info: str = data['turn_info']
 
         return self

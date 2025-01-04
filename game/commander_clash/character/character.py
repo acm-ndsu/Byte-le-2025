@@ -258,15 +258,15 @@ class Character(GameObject):
 
         if char.name == self.name:
             self.current_health = char.current_health
-            self.max_health = char.max_health
+            # self.max_health = char.max_health
             self.attack = char.attack
             self.defense = char.defense
             self.speed = char.speed
-            self.selected_move = char.selected_move
+            # self.selected_move = char.selected_move
             self.position = char.position
-            self.took_action = char.took_action
+            # self.took_action = char.took_action
             self.is_dead = char.is_dead
-            self.special_points = char.special_points
+            # self.special_points = char.special_points
 
     def to_json(self) -> dict:
         data: dict = super().to_json()

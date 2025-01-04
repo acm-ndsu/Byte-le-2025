@@ -36,8 +36,6 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
         case _:
             return
 
-    __sync_characters(targets, uroda_team_manager, turpis_team_manager)
-
     # # add 1 to the user's special points if using a normal attack AND there were targets to affect
     # if is_normal_move and len(targets) > 0:
     #     next_sp: int = user.special_points + 1
@@ -184,11 +182,11 @@ def __handle_stat_modification(targets: list[Character], current_move: AbstractB
         # change the message depending on if the current move is a Move or Effect
         if isinstance(current_move, Buff) or isinstance(current_move, Debuff):
             world.turn_info += (f'{current_move.name} changed {target.name}\'s {stat.__class__.__name__.lower()} by '
-                                f'{before_val - after_val}!\n')
+                                f'{after_val - before_val}!\n')
         elif isinstance(current_move, Effect):
             world.turn_info += (f'The secondary effect activated and changed '
                                 f'{target.name}\'s {stat.__class__.__name__.lower()} by '
-                                f'{before_val - after_val}!\n')
+                                f'{after_val - before_val}!\n')
 
 
 def __get_stat_object_to_affect(target: Character, current_move: AbstractBuff | AbstractDebuff) -> Stat:
@@ -208,21 +206,3 @@ def __get_stat_object_to_affect(target: Character, current_move: AbstractBuff | 
 def __assign_target_states(targets: list[Character], state: str) -> None:
     for target in targets:
         target.state = state
-
-
-def __sync_characters(targets: list[Character],
-                      uroda_team_manager: TeamManager, turpis_team_manager: TeamManager) -> None:
-    """
-    Takes the list of targets that were affected and applies all changes to the team manager references of that
-    character. This is because the targets originally come from the game map, so the team manager references must be
-    updated.
-    """
-
-    for gm_character in targets:
-        tm_to_use: TeamManager = uroda_team_manager \
-            if gm_character.country_type == CountryType.URODA else turpis_team_manager
-
-        tm_character: Character = tm_to_use.get_character(gm_character.name)
-
-        # sync the two characters
-        tm_character.sync_char_with(gm_character)

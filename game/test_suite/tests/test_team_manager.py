@@ -81,6 +81,8 @@ class TestTeamManager(unittest.TestCase):
         self.assertEqual(self.team_manager2.get_active_character(), self.leader)
         self.leader.took_action = True
 
+        self.assertTrue(self.team_manager2.everyone_took_action())
+
     def test_json_default(self) -> None:
         data: dict = self.team_manager.to_json()
         team_manager: TeamManager = TeamManager().from_json(data)

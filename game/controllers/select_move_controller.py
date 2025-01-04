@@ -19,6 +19,14 @@ class SelectMoveController(Controller):
 
         user: Character = client.team_manager.get_active_character()
 
+        if user is None:
+            print(f'No active character found for client {client.team_name}.\nCurrent world `ordered_teams` list: '
+                  f'{[(obj1.name if obj1 is not None else None, 
+                       obj2.name if obj2 is not None else None) 
+                      for obj1, obj2 in world.ordered_teams]}')
+
+            input('\n\nEnter > ')
+
         current_move: Move
 
         match action:
@@ -31,5 +39,9 @@ class SelectMoveController(Controller):
             case _:
                 return
 
-        # set the client's version of the character to have the same selected move
-        client.team_manager.get_active_character().selected_move = user.selected_move
+        # give the reference in the ordered_teams on the gameboard the same selected move
+        for pair in world.ordered_teams:
+            for char in pair:
+                if char is not None and char.name == user.name:
+                    char.selected_move = user.selected_move
+                    break

@@ -77,6 +77,7 @@ class NewMoveController(Controller):
             if len(primary_targets) == 0:
                 continue
 
+            print(f'Starting turn {turn}')
             world.turn_info += f'\nStarting {user.name}\'s turn!\n'
 
             # call the move_logic file's method to handle the rest of the logic
@@ -105,15 +106,15 @@ class NewMoveController(Controller):
             for char in defeated_characters:
                 world.turn_info += f'\n{user.name} defeated {char.name}!\n'
 
-            print(f'\nCharacters in defeated_characters on turn {turn}: {[char.name for char in defeated_characters]}\n'
-                  f'Length of defeated_characters: {len(defeated_characters)}')
+            # print(f'\nCharacters in defeated_characters on turn {turn}: {[char.name for char in defeated_characters]}\n'
+            #       f'Length of defeated_characters: {len(defeated_characters)}')
 
             # perform the logic of defeating a character(s)
             self.__defeated_char_logic(clients, user, defeated_characters, world)
 
             # sync the primary and effect targets
-            self.__sync_characters(primary_targets, uroda_team_manager, turpis_team_manager)
-            self.__sync_characters(effect_targets, uroda_team_manager, turpis_team_manager)
+            self.__sync_targeted_characters(primary_targets, uroda_team_manager, turpis_team_manager)
+            self.__sync_targeted_characters(effect_targets, uroda_team_manager, turpis_team_manager)
 
         # sync the users that took their action
         self.__sync_active_characters(active_chars, uroda_team_manager, turpis_team_manager, world)
@@ -137,8 +138,8 @@ class NewMoveController(Controller):
             defeated_char.is_dead = True
             defeated_char.state = 'defeated'
             client_to_use.team_manager.score += DEFEATED_SCORE
-            print(f'Defeated {defeated_char.name} current health: {defeated_char.current_health}\n'
-                  f'{defeated_char.name} current state: {defeated_char.state}')
+            # print(f'Defeated {defeated_char.name} current health: {defeated_char.current_health}\n'
+            #       f'{defeated_char.name} current state: {defeated_char.state}')
 
             # add the defeated character to the recently died list of the game board
             world.recently_died.append(defeated_char)
@@ -191,27 +192,18 @@ class NewMoveController(Controller):
             case _:
                 return []
 
-    def __sync_characters(self, characters: list[Character], uroda_team_manager: TeamManager,
-                          turpis_team_manager: TeamManager) -> None:
+    def __sync_targeted_characters(self, targets: list[Character], uroda_team_manager: TeamManager,
+                                   turpis_team_manager: TeamManager) -> None:
         """
         Takes the list of targets that were affected and applies all changes to the team manager references of that
         character. This is because the targets originally come from the game map, so the team manager references must be
         updated.
 
-        The `syncing_active_chars` bool is for a specific scenario when the characters that were active for the turn
-        are being synced. They sync in the reverse order of what normally happens.
-
-        Example:
-            Syncing active characters: False
-                The team manager reference receives the differences from the game map.
-                Game Map Reference -> Team Manager Reference
-
-            Syncing active characters: True
-                The game map reference receives the differences from the team manager.
-                Team Manager Reference -> Game Map Reference
+        The team manager reference receives the differences from the game map.
+        Game Map Reference -> Team Manager Reference
         """
 
-        for gm_character in characters:
+        for gm_character in targets:
             tm_to_use: TeamManager = uroda_team_manager \
                 if gm_character.country_type == CountryType.URODA else turpis_team_manager
 
@@ -221,7 +213,18 @@ class NewMoveController(Controller):
             # if syncing_active_chars:
             #     gm_character.sync_char_with(tm_character)
             # else:
-            tm_character.sync_char_with(gm_character)
+            # tm_character.sync_char_with(gm_character)
+
+            # sync these attributes specifically to maintain the correct info
+            tm_character.current_health = gm_character.current_health
+            tm_character.attack = gm_character.attack
+            tm_character.defense = gm_character.defense
+            tm_character.speed = gm_character.speed
+            # tm_character.selected_move = gm_character.selected_move
+            # tm_character.position = gm_character.position
+            # tm_character.took_action = gm_character.took_action
+            tm_character.is_dead = gm_character.is_dead
+            # tm_character.special_points = gm_character.special_points
 
     def __sync_active_characters(self, active_chars: list[Character], uroda_team_manager: TeamManager,
                                  turpis_team_manager: TeamManager, world: GameBoard) -> None:
@@ -233,6 +236,26 @@ class NewMoveController(Controller):
             tm_character: Character = tm_to_use.get_character(active_char.name)
             tm_character.sync_char_with(active_char)
 
+            # tm_character.current_health = active_char.current_health
+            # tm_character.attack = active_char.attack
+            # tm_character.defense = active_char.defense
+            # tm_character.speed = active_char.speed
+            tm_character.selected_move = active_char.selected_move
+            # tm_character.position = active_char.position
+            tm_character.took_action = active_char.took_action
+            tm_character.is_dead = active_char.is_dead
+            tm_character.special_points = active_char.special_points
+
             # sync the game map's reference of the character
             gm_character: Character = world.get_character_from(active_char.position)
-            gm_character.sync_char_with(active_char)
+            # gm_character.sync_char_with(active_char)
+
+            # gm_character.current_health = active_char.current_health
+            # gm_character.attack = active_char.attack
+            # gm_character.defense = active_char.defense
+            # gm_character.speed = active_char.speed
+            gm_character.selected_move = active_char.selected_move
+            # gm_character.position = active_char.position
+            gm_character.took_action = active_char.took_action
+            gm_character.is_dead = active_char.is_dead
+            gm_character.special_points = active_char.special_points

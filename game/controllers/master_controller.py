@@ -59,6 +59,9 @@ class MasterController(Controller):
         for iteration, client in enumerate(clients):
             client.team_manager = team_managers[iteration]
 
+            # sort the team manager by speed
+            client.team_manager.speed_sort()
+
     # Generator function. Given a key:value pair where the key is the identifier for the current world and the value is
     # the state of the world, returns the key that will give the appropriate world information
     def game_loop_logic(self, start=1):
@@ -108,6 +111,14 @@ class MasterController(Controller):
         turpis_team_manager: TeamManager = clients[0].team_manager if (
                 clients[0].team_manager.country_type == CountryType.TURPIS) else clients[1].team_manager
 
+        # order the teams if it's the first turn so the game can start
+        if turn == 1:
+            gameboard.order_teams(uroda_team_manager, turpis_team_manager)
+
+        print(f'Gameboard ordered_teams: {[(pair[0].name if pair[0] is not None else None, 
+                                            pair[1].name if pair[1] is not None else None) 
+                                           for pair in gameboard.ordered_teams]}')
+
         # start by organizing the dead characters that died last turn if applicable
         gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
 
@@ -145,14 +156,14 @@ class MasterController(Controller):
         # this for loop needs to happen every turn
         for client in clients:
             # get the client's score before it is overwritten
-            client_score: int = client.team_manager.score
+            # client_score: int = client.team_manager.score
 
             # if client.team_manager.country_type == CountryType.URODA:
             #     client.team_manager = gameboard.uroda_team_manager
             # else:
             #     client.team_manager = gameboard.turpis_team_manager
 
-            client.team_manager.score = client_score
+            # client.team_manager.score = client_score
 
             # if everyone took their action in the given team manager, set their took_action bool to False
             if client.team_manager.everyone_took_action():
@@ -167,8 +178,9 @@ class MasterController(Controller):
             gameboard.order_teams(uroda_team_manager, turpis_team_manager)
 
         # update the current world json by setting it to the game board's updated state
-
         self.current_world_data['game_board'] = gameboard.to_json()
+
+        print(gameboard.turn_info)
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):

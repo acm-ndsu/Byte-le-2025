@@ -61,8 +61,10 @@ class SwapController(Controller):
         world.place(new_vector, active_character)
 
         if action == ActionType.SWAP_UP:
-            world.turn_info += f'{active_character.name} swapped up on the map!'
+            world.turn_info += (f'Starting {active_character.name}\'s turn! {active_character.name} '
+                                f'swapped up on the map!')
             print(f'{active_character.name} swapped up on the map!')
         else:
-            world.turn_info += f'{active_character.name} swapped down on the map!'
+            world.turn_info += (f'Starting {active_character.name}\'s turn! {active_character.name} '
+                                f'swapped down on the map!')
             print(f'{active_character.name} swapped down on the map!')
