@@ -3,8 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+===============================================
 Welcome to the Commander Clash Training Scroll!
-======================================================
+===============================================
 
 .. raw:: html
 
@@ -29,10 +30,19 @@ question of yours, you may consult a commander (developer) over at any time.
 
    getting_started
    useful_commands
+   server
+   characters
+   stats
+   team
+   actions
+   scoring
+   enums
+   visualizer
+   credits
 
-
-
-Search Page
+Indices and tables
 ==================
 
+* :ref:`genindex`
+* :ref:`modindex`
 * :ref:`search`
