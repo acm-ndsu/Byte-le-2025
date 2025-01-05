@@ -24,7 +24,7 @@ def generate(seed: int = random.randint(0, 1000000000)):
     # get the locations of the characters necessary from the pre_generation method
     info: tuple[dict[Vector, list[GameObject]], list[TeamManager]] = pre_generate()
 
-    temp: GameBoard = GameBoard(seed, map_size=Vector(6, 6), walled=False, locations=info[0])
+    temp: GameBoard = GameBoard(seed, map_size=Vector(2, 3), walled=False, locations=info[0])
     temp.generate_map()
     data: dict = {'game_board': temp.to_json()}
     # for x in range(1, MAX_TICKS + 1):

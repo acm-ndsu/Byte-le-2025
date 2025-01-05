@@ -123,6 +123,8 @@ def __calc_and_apply_damage(user: Character, targets: list[Character], current_m
         # get the damage to be dealt
         damage_to_deal: int = calculate_damage(user, target, current_move)
 
+        target_hp_before: int = target.current_health
+
         # reduces the target's health while preventing it from going below 0 (the setter will throw an error if < 0)
         if target.current_health - damage_to_deal < 0:
             target.current_health = 0
@@ -133,13 +135,13 @@ def __calc_and_apply_damage(user: Character, targets: list[Character], current_m
         if isinstance(current_move, Attack):
             world.turn_info += (f'{user.name} used {current_move.name} and dealt {damage_to_deal} damage to '
                                 f'{target.name}!\n'
-                                f'Health before: {target.current_health + damage_to_deal} -> '
-                                f'Health after: {target.current_health}\n')
+                                f'{target.name} health before: {target_hp_before} -> '
+                                f'{target.name} health after: {target.current_health}\n')
         else:
             world.turn_info += (f'The secondary effect activated and dealt {damage_to_deal} damage to '
                                 f'{target.name}!\n'
-                                f'Health before: {target.current_health + damage_to_deal} -> '
-                                f'Health after: {target.current_health}\n')
+                                f'{target.name} health before: {target_hp_before} -> '
+                                f'{target.name} health after: {target.current_health}\n')
 
 
 def __apply_heal_points(targets: list[Character], current_move: AbstractHeal, world: GameBoard) -> None:
@@ -155,18 +157,20 @@ def __apply_heal_points(targets: list[Character], current_move: AbstractHeal, wo
         # calculate the healing amount
         adjusted_healing_amount = calculate_healing(target, current_move)
 
+        target_hp_before: int = target.current_health
+
         target.current_health = target.current_health + adjusted_healing_amount
 
         # change the message depending on if the current move is a Move or Effect
         if isinstance(current_move, Heal):
             world.turn_info += (f'{current_move.name} healed {target.name} {adjusted_healing_amount} HP!\n'
-                                f'Health before: {target.current_health - adjusted_healing_amount} -> '
-                                f'Health after: {target.current_health}\n')
+                                f'{target.name} health before: {target_hp_before} -> '
+                                f'{target.name} health after: {target.current_health}\n')
         else:
             world.turn_info += (f'The secondary effect activated and healed {target.name} '
                                 f'{adjusted_healing_amount} HP!\n'
-                                f'Health before: {target.current_health - adjusted_healing_amount} -> '
-                                f'Health after: {target.current_health}\n')
+                                f'{target.name} health before: {target_hp_before} -> '
+                                f'{target.name} health after: {target.current_health}\n')
 
 
 def __handle_stat_modification(targets: list[Character], current_move: AbstractBuff | AbstractDebuff,
@@ -191,14 +195,14 @@ def __handle_stat_modification(targets: list[Character], current_move: AbstractB
         if isinstance(current_move, Buff) or isinstance(current_move, Debuff):
             world.turn_info += (f'{current_move.name} changed {target.name}\'s {stat.__class__.__name__.lower()} by '
                                 f'{after_val - before_val}!\n'
-                                f'{stat.__class__.__name__.lower()} before: {before_val} -> '
-                                f'{stat.__class__.__name__.lower()} after: {after_val}\n')
+                                f'{target.name}\'s {stat.__class__.__name__.lower()} before: {before_val} -> '
+                                f'{target.name}\'s {stat.__class__.__name__.lower()} after: {after_val}\n')
         elif isinstance(current_move, Effect):
             world.turn_info += (f'The secondary effect activated and changed '
                                 f'{target.name}\'s {stat.__class__.__name__.lower()} by '
                                 f'{after_val - before_val}!\n'
-                                f'{stat.__class__.__name__.lower()} before: {before_val} -> '
-                                f'{stat.__class__.__name__.lower()} after: {after_val}\n')
+                                f'{target.name}\'s {stat.__class__.__name__.lower()} before: {before_val} -> '
+                                f'{target.name}\'s {stat.__class__.__name__.lower()} after: {after_val}\n')
 
 
 def __get_stat_object_to_affect(target: Character, current_move: AbstractBuff | AbstractDebuff) -> Stat:

@@ -19,12 +19,28 @@ class SwapController(Controller):
 
     def handle_actions(self, action: ActionType, client: Player, world: GameBoard) -> None:
         characters_pos: dict[Vector, Character] = world.get_characters(client.team_manager.country_type)
+
+        active_chars: tuple[Character | None, Character | None] = world.ordered_teams[0]
+
+        # index will be 0 if Uroda, 1 if Turpis
+        tuple_index_to_use: int = client.team_manager.country_type.value - 1
+
+        active_char_from_ot: Character | None = active_chars[tuple_index_to_use]
+
+        # if the active character from the ordered_teams list is None, it's not its turn to do anything yet
+        if active_char_from_ot is None:
+            return
+
         active_character: Character = client.team_manager.get_active_character()
+
+        # if the character from the ordered list is not the same as the team manager's active character, do nothing
+        if active_char_from_ot.name != active_character.name:
+            return
 
         pos_mod: Vector
 
         # used for describing what the character did in the gameboard's turn_info string
-        swapping_direction: str = ''
+        swapping_direction: str
 
         # Determine pos_mod based on swapping up or down
         match action:
@@ -50,7 +66,8 @@ class SwapController(Controller):
 
         # If character is attempting to leave the gameboard, prevent it (there is no escape)
         if not world.is_valid_coords(new_vector):
-            world.turn_info += f'\n{active_character.name} tried to swap but couldn\'t be moved off the map!\n'
+            world.turn_info += (f'\n{active_character.name} tried to swap to coordinate {new_vector} '
+                                f'but couldn\'t be moved off the map!\n')
             return
 
         # Get character to swap to if there is one
@@ -73,7 +90,13 @@ class SwapController(Controller):
 
         world.turn_info += (f'\nStarting {active_character.name}\'s turn!'
                             f'\n{active_character.name} swapped {swapping_direction} on the map!'
-                            f'\nPosition before: {position_before} -> Position after: {active_character.position}\n')
+                            f'\n{active_character.name}\'s position before: {position_before} -> '
+                            f'{active_character.name}\'s position after: {active_character.position}\n')
+
+        if swapped_character is not None:
+            world.turn_info += (f'\n{active_character.name} swapped with {swapped_character.name}!'
+                                f'\n{swapped_character.name}\'s position before: {new_vector} -> '
+                                f'{swapped_character.name}\'s position after: {swapped_character.position}\n')
 
     def __sync_character_references(self, active_character: Character, swapped_character: Character,
                                     client: Player, world: GameBoard) -> None:
@@ -107,6 +130,8 @@ class SwapController(Controller):
 
             # if there is no ordered_team character reference, do nothing
             if ot_swapped_char is None:
+                print(f'\n\nTried updating swapped character {swapped_character.name} but the ordered_teams reference '
+                      f'is None')
                 return
 
             ot_swapped_char.position = swapped_character.position

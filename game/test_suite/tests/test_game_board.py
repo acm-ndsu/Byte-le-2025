@@ -200,6 +200,52 @@ class TestGameBoard(unittest.TestCase):
         char = self.game_board.get_char_from_ordered_teams('Bob')
         self.assertTrue(char is None)
 
+    def test_is_valid_coords(self) -> None:
+        # test that the 9 coordinates are valid game board coordinates
+        self.assertTrue(self.game_board.is_valid_coords(Vector(0, 0)))
+        self.assertTrue(self.game_board.is_valid_coords(Vector(0, 1)))
+        self.assertTrue(self.game_board.is_valid_coords(Vector(0, 2)))
+        self.assertTrue(self.game_board.is_valid_coords(Vector(1, 0)))
+        self.assertTrue(self.game_board.is_valid_coords(Vector(1, 1)))
+        self.assertTrue(self.game_board.is_valid_coords(Vector(1, 2)))
+        self.assertTrue(self.game_board.is_valid_coords(Vector(2, 0)))
+        self.assertTrue(self.game_board.is_valid_coords(Vector(2, 1)))
+        self.assertTrue(self.game_board.is_valid_coords(Vector(2, 2)))
+
+    def test_is_valid_coords_fail(self) -> None:
+        # test that the following coordinates are invalid for the game board
+        self.assertFalse(self.game_board.is_valid_coords(Vector(-1, -1)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(-1, -2)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(-1, -3)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(-1, 3)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(-1, 4)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(-1, 5)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(0, -1)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(0, -2)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(0, -3)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(0, 3)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(0, 4)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(0, 5)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(1, -1)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(1, -2)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(1, -3)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(1, 3)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(1, 4)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(1, 5)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(2, -1)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(2, -2)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(2, -3)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(2, 3)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(2, 4)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(2, 5)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(3, -1)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(3, -2)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(3, -3)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(3, 3)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(3, 4)))
+        self.assertFalse(self.game_board.is_valid_coords(Vector(3, 5)))
+
+
     # test json method
     def test_game_board_json(self):
         data: dict = self.game_board.to_json()

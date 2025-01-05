@@ -23,12 +23,11 @@ def generate_locations_dict(team_managers: list[TeamManager]) -> dict:
         locations.update({Vector(x_pos, 1): [leader]})
         locations.update({Vector(x_pos, 2): [generics[1]]})
 
-        # add the country name to the character's name if it's a generic to help with identification
+        # add the country name to the character's name to help with identification
         for character in team_manager.team:
-            if isinstance(character, Generic):
-                country_name: str = team_manager.country_type.name
-                country_name = country_name[0].upper() + country_name[1:].lower()
-                character.name = f'{country_name} {character.name}'
+            country_name: str = team_manager.country_type.name
+            country_name = country_name[0].upper() + country_name[1:].lower()
+            character.name = f'{country_name} {character.name}'
 
     return locations
 

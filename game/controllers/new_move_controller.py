@@ -53,7 +53,8 @@ class NewMoveController(Controller):
 
         # for every character, execute the logic for their move if applicable
         for user in active_chars:
-            print(f'Starting turn {turn}')
+            print(f'Starting turn {turn} for user {user.name}. User selected move '
+                  f'{user.selected_move.name if user.selected_move is not None else None}')
 
             # if the client's character died before their turn AND it is not a speed tie, continue to next iteration
             # if it is a speed tie and the character died before their turn, they can still act to simulate them
@@ -214,6 +215,10 @@ class NewMoveController(Controller):
             tm_to_use: TeamManager = uroda_team_manager \
                 if gm_character.country_type == CountryType.URODA else turpis_team_manager
 
+            # # no point in syncing if the character died
+            # if gm_character.is_dead:
+            #     return
+
             tm_character: Character = tm_to_use.get_character(gm_character.name)
 
             # sync the two characters
@@ -223,7 +228,12 @@ class NewMoveController(Controller):
             # tm_character.sync_char_with(gm_character)
 
             if tm_character is None:
-                input('Team manager character reference is none. Press enter to continue. Program suspended >')
+                print(f'\n\nTeam manager {tm_to_use.team_name}\'s character reference is none for '
+                      f'{gm_character.name}.\n'
+                      f'Characters in team manager: {[char.name for char in tm_to_use.team]}\n'
+                      f'Targets: {[char.name for char in targets]}\n')
+
+                input('Press enter to continue. Program suspended >')
 
             # sync these attributes specifically to maintain the correct info
             tm_character.current_health = gm_character.current_health
@@ -261,9 +271,9 @@ class NewMoveController(Controller):
             tm_character.sync_char_with(active_char)
 
             # tm_character.current_health = active_char.current_health
-            # tm_character.attack = active_char.attack
-            # tm_character.defense = active_char.defense
-            # tm_character.speed = active_char.speed
+            tm_character.attack = active_char.attack
+            tm_character.defense = active_char.defense
+            tm_character.speed = active_char.speed
             tm_character.selected_move = active_char.selected_move
             # tm_character.position = active_char.position
             tm_character.took_action = active_char.took_action
@@ -280,12 +290,16 @@ class NewMoveController(Controller):
             #     return
 
             if gm_character is None:
-                input('Game map character reference is none. Press enter to continue. Program suspended >')
+                print(f'\n\nGame map character reference is none for {active_char.name}.\n'
+                      f'{active_char.name}\'s current position: {active_char.position}\n'
+                      f'Active chars: {[char.name for char in active_chars]}\n')
+
+                input('Press enter to continue. Program suspended >')
 
             # gm_character.current_health = active_char.current_health
-            # gm_character.attack = active_char.attack
-            # gm_character.defense = active_char.defense
-            # gm_character.speed = active_char.speed
+            gm_character.attack = active_char.attack
+            gm_character.defense = active_char.defense
+            gm_character.speed = active_char.speed
             gm_character.selected_move = active_char.selected_move
             # gm_character.position = active_char.position
             gm_character.took_action = active_char.took_action
