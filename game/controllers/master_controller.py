@@ -115,6 +115,9 @@ class MasterController(Controller):
         if turn == 1:
             gameboard.order_teams(uroda_team_manager, turpis_team_manager)
 
+        # increment the active_pair_index for the next turn
+        gameboard.active_pair_index += 1
+
         # start by organizing the dead characters that died last turn if applicable
         gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
 
@@ -173,9 +176,10 @@ class MasterController(Controller):
                 # ensure the team is ordered by speed after everyone took their turn
                 client.team_manager.speed_sort()
 
-        # repopulate the ordered_teams property if the list is empty in the gameboard
-        if len(gameboard.ordered_teams) == 0:
+        # repopulate the ordered_teams property if the active_pair_index is the length of the list and reset that value
+        if gameboard.active_pair_index == len(gameboard.ordered_teams) - 1:
             gameboard.order_teams(uroda_team_manager, turpis_team_manager)
+            gameboard.active_pair_index = -1
 
         # if any team is defeated, set game_over to true
         # if clients[0].team_manager.everyone_is_defeated() or clients[1].team_manager.everyone_is_defeated():
@@ -227,5 +231,9 @@ class MasterController(Controller):
         # Determine results
         for client in clients:
             data['players'].append(client.to_json())
+
+        print(f'Ending turn: {turn}\n'
+              f'Ending {client1.team_name} score: {client1.team_manager.score}\n'
+              f'Ending {client2.team_name} score: {client2.team_manager.score}\n')
 
         return data

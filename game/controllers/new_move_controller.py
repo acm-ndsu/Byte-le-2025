@@ -33,13 +33,17 @@ class NewMoveController(Controller):
         turpis_team_manager: TeamManager = clients[0].team_manager \
             if clients[0].team_manager.country_type == CountryType.TURPIS else clients[1].team_manager
 
+        # DELETE WHEN FIXED
+        print(f'Active pair index in move controller: {world.active_pair_index}')
+
         # get the active pair for the turn, but only get character references; that is, filter None values
-        active_chars: list[Character] = [char for char in world.ordered_teams[0] if char is not None
+        active_chars: list[Character] = [char for char in world.get_active_pair() if char is not None
                                          and not char.took_action]
 
         # if all active characters are None, nothing can happen; return
         if all([obj is None for obj in active_chars]):
-            world.ordered_teams.pop(0)
+            print('All active chars were None values')
+            # world.ordered_teams.pop(0)
             return
 
         # sort the list so that the fastest character is listed first
@@ -124,7 +128,7 @@ class NewMoveController(Controller):
         self.__sync_active_characters(active_chars, uroda_team_manager, turpis_team_manager, world)
 
         # pop the active chars after all logic is handled
-        world.ordered_teams.pop(0)
+        # world.ordered_teams.pop(0)
 
     def __defeated_char_logic(self, clients: list[Player], user: Character,
                               defeated_characters: list[Character], world: GameBoard) -> None:

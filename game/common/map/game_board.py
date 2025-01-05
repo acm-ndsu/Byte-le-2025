@@ -139,6 +139,9 @@ class GameBoard(GameObject):
 
         self.turn_info: str = ''
 
+        # -1 indicates no index is selected yet
+        self.active_pair_index: int = -1
+
     @property
     def seed(self) -> int:
         return self.__seed
@@ -422,6 +425,9 @@ class GameBoard(GameObject):
 
         return results
 
+    def get_active_pair(self) -> tuple[Character | None, Character | None]:
+        return self.ordered_teams[self.active_pair_index]
+
     def get_characters(self, country: CountryType | None = None) -> dict[Vector, Character]:
         """
         Returns a dictionary of Vector: Character pair.
@@ -583,8 +589,8 @@ class GameBoard(GameObject):
         result: list[tuple[Character | None, Character | None]] = []
 
         # easy access to both teams
-        uroda_team: list[Character] = [char for char in uroda_team_manager.team if not char.took_action]
-        turpis_team: list[Character] = [char for char in turpis_team_manager.team if not char.took_action]
+        uroda_team: list[Character] = [char for char in uroda_team_manager.team] #if not char.took_action]
+        turpis_team: list[Character] = [char for char in turpis_team_manager.team] #if not char.took_action]
 
         # pair the characters; the ordered pair matters, so uroda will be first in the tuples
         for index in range(max(len(uroda_team), len(turpis_team))):
@@ -635,6 +641,8 @@ class GameBoard(GameObject):
         data['recently_died'] = [char.to_json() for char in self.recently_died]
 
         data['turn_info'] = self.turn_info
+
+        data['active_pair_index'] = self.active_pair_index
 
         return data
 
@@ -695,5 +703,7 @@ class GameBoard(GameObject):
         self.recently_died: list[Character] = [self.__from_json_helper(info) for info in data['recently_died']]
 
         self.turn_info: str = data['turn_info']
+
+        self.active_pair_index: int = data['active_pair_index']
 
         return self

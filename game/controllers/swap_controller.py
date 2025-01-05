@@ -20,7 +20,7 @@ class SwapController(Controller):
     def handle_actions(self, action: ActionType, client: Player, world: GameBoard) -> None:
         characters_pos: dict[Vector, Character] = world.get_characters(client.team_manager.country_type)
 
-        active_chars: tuple[Character | None, Character | None] = world.ordered_teams[0]
+        active_chars: tuple[Character | None, Character | None] = world.get_active_pair()
 
         # index will be 0 if Uroda, 1 if Turpis
         tuple_index_to_use: int = client.team_manager.country_type.value - 1

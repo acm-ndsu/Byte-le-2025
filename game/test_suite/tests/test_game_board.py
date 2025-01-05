@@ -34,13 +34,13 @@ class TestGameBoard(unittest.TestCase):
             Vector(1, 3): [self.attacker],
         }
 
-        self.ga1: GenericAttacker = GenericAttacker(speed=SpeedStat(6), country_type=CountryType.URODA)
-        self.gh1: GenericHealer = GenericHealer(speed=SpeedStat(3), country_type=CountryType.URODA)
-        self.gt1: GenericTank = GenericTank(speed=SpeedStat(2), country_type=CountryType.URODA)
+        self.ga1: GenericAttacker = GenericAttacker(name='GA1', speed=SpeedStat(6), country_type=CountryType.URODA)
+        self.gh1: GenericHealer = GenericHealer(name='GH1', speed=SpeedStat(3), country_type=CountryType.URODA)
+        self.gt1: GenericTank = GenericTank(name='GT1', speed=SpeedStat(2), country_type=CountryType.URODA)
 
-        self.ga2: GenericAttacker = GenericAttacker(speed=SpeedStat(5), country_type=CountryType.TURPIS)
-        self.gh2: GenericHealer = GenericHealer(speed=SpeedStat(4), country_type=CountryType.TURPIS)
-        self.gt2: GenericTank = GenericTank(speed=SpeedStat(1), country_type=CountryType.TURPIS)
+        self.ga2: GenericAttacker = GenericAttacker(name='GA2', speed=SpeedStat(5), country_type=CountryType.TURPIS)
+        self.gh2: GenericHealer = GenericHealer(name='GH2', speed=SpeedStat(4), country_type=CountryType.TURPIS)
+        self.gt2: GenericTank = GenericTank(name='GT2', speed=SpeedStat(1), country_type=CountryType.TURPIS)
 
         self.uroda_team: list[Character] = [self.ga1, self.gh1, self.gt1]
         self.turpis_team: list[Character] = [self.ga2, self.gh2, self.gt2]
@@ -196,6 +196,21 @@ class TestGameBoard(unittest.TestCase):
     def test_get_char_from_ordered_teams(self) -> None:
         char: Character | None = self.game_board.get_char_from_ordered_teams(self.ga1.name)
         self.assertEqual(char.name, self.ga1.name)
+
+        char: Character | None = self.game_board.get_char_from_ordered_teams(self.ga2.name)
+        self.assertEqual(char.name, self.ga2.name)
+
+        char: Character | None = self.game_board.get_char_from_ordered_teams(self.gh1.name)
+        self.assertEqual(char.name, self.gh1.name)
+
+        char: Character | None = self.game_board.get_char_from_ordered_teams(self.gh2.name)
+        self.assertEqual(char.name, self.gh2.name)
+
+        char: Character | None = self.game_board.get_char_from_ordered_teams(self.gt1.name)
+        self.assertEqual(char.name, self.gt1.name)
+
+        char: Character | None = self.game_board.get_char_from_ordered_teams(self.gt2.name)
+        self.assertEqual(char.name, self.gt2.name)
 
         char = self.game_board.get_char_from_ordered_teams('Bob')
         self.assertTrue(char is None)
