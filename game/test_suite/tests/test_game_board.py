@@ -57,53 +57,53 @@ class TestGameBoard(unittest.TestCase):
         self.game_board.generate_map()
 
     # test that seed cannot be set after generate_map
-    def test_seed_fail(self):
+    def test_seed_fail(self) -> None:
         with self.assertRaises(RuntimeError) as e:
             self.game_board.seed = 20
         self.assertTrue(spell_check(str(e.exception), 'GameBoard variables cannot be changed once '
                                                       'generate_map is run.', False))
 
     # test that map_size cannot be set after generate_map
-    def test_map_size_fail(self):
+    def test_map_size_fail(self) -> None:
         with self.assertRaises(RuntimeError) as e:
             self.game_board.map_size = Vector(1, 1)
         self.assertTrue(spell_check(str(e.exception), 'GameBoard variables cannot be changed once '
                                                       'generate_map is run.', False))
 
     # test that locations cannot be set after generate_map
-    def test_locations_fail(self):
+    def test_locations_fail(self) -> None:
         with self.assertRaises(RuntimeError) as e:
             self.game_board.locations = self.locations
         self.assertTrue(spell_check(str(e.exception), 'GameBoard variables cannot be changed once '
                                                       'generate_map is run.', False))
 
     # test that locations raises RuntimeError even with incorrect data type
-    def test_locations_incorrect_fail(self):
+    def test_locations_incorrect_fail(self) -> None:
         with self.assertRaises(RuntimeError) as e:
             self.game_board.locations = Vector(1, 1)
         self.assertTrue(spell_check(str(e.exception), 'GameBoard variables cannot be changed once '
                                                       'generate_map is run.', False))
 
     # test that walled cannot be set after generate_map
-    def test_walled_fail(self):
+    def test_walled_fail(self) -> None:
         with self.assertRaises(RuntimeError) as e:
             self.game_board.walled = False
         self.assertTrue(spell_check(str(e.exception), 'GameBoard variables cannot be changed once '
                                                       'generate_map is run.', False))
 
     # test that get_objects works correctly with walls
-    def test_get_objects_wall(self):
+    def test_get_objects_wall(self) -> None:
         walls: list[tuple[Vector, list[GameObject]]] = self.game_board.get_objects(ObjectType.WALL)
         self.assertTrue(all(map(lambda wall: isinstance(wall[1][0], Wall), walls)))
         self.assertEqual(len(walls), 1)
 
-    def test_get_characters(self):
+    def test_get_characters(self) -> None:
         characters: dict[Vector, Character] = self.game_board.get_characters()
         self.assertTrue(characters[Vector(1, 2)] == self.leader)
         self.assertTrue(characters[Vector(1, 3)] == self.attacker)
         self.assertEqual(len(characters), 2)
 
-    def test_get_characters_by_country(self):
+    def test_get_characters_by_country(self) -> None:
         characters: dict[Vector, Character] = self.game_board.get_characters(CountryType.TURPIS)
         self.assertEqual(characters[Vector(1, 2)], self.leader)
         self.assertEqual(len(characters), 1)
@@ -117,13 +117,13 @@ class TestGameBoard(unittest.TestCase):
     #     self.assertEqual(self.turpis_manager, result)
 
     # uroda has 3 characters, turpis has 3
-    def test_order_characters_3x3(self):
+    def test_order_characters_3x3(self) -> None:
         self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2), (self.gh1, self.gh2),
                                                          (self.gt1, self.gt2)])
 
     # uroda has 3 characters, turpis has 2
-    def test_order_characters_3x2(self):
+    def test_order_characters_3x2(self) -> None:
         self.turpis_manager.team = self.turpis_manager.team[:2]
 
         # generate the game map again so the new turpis team is reflected
@@ -134,7 +134,7 @@ class TestGameBoard(unittest.TestCase):
                                                          (self.gt1, None)])
 
     # uroda has 3 characters, turpis has 1
-    def test_order_character_3x1(self):
+    def test_order_character_3x1(self) -> None:
         self.turpis_manager.team = self.turpis_team[:1]
 
         self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
@@ -142,7 +142,7 @@ class TestGameBoard(unittest.TestCase):
                                                          (self.gt1, None)])
 
     # uroda has 2 characters, turpis has 3
-    def test_order_character_2x3(self):
+    def test_order_character_2x3(self) -> None:
         self.uroda_manager.team = self.uroda_team[:2]
 
         self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
@@ -150,7 +150,7 @@ class TestGameBoard(unittest.TestCase):
                                                          (None, self.gt2)])
 
     # uroda has 2 characters, turpis has 3
-    def test_order_character_1x3(self):
+    def test_order_character_1x3(self) -> None:
         self.uroda_manager.team = self.uroda_team[:1]
 
         self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
@@ -158,7 +158,7 @@ class TestGameBoard(unittest.TestCase):
                                                          (None, self.gt2)])
 
     # uroda has 2 characters, turpis has 2
-    def test_order_character_2x2(self):
+    def test_order_character_2x2(self) -> None:
         self.uroda_manager.team = self.uroda_team[:2]
         self.turpis_manager.team = self.turpis_team[:2]
 
@@ -174,7 +174,7 @@ class TestGameBoard(unittest.TestCase):
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2), (self.gh1, None)])
 
     # uroda has 1 characters, turpis has 2
-    def test_order_character_1x2(self):
+    def test_order_character_1x2(self) -> None:
         self.uroda_manager.team = self.uroda_team[:1]
         self.turpis_manager.team = self.turpis_team[:2]
 
@@ -182,16 +182,23 @@ class TestGameBoard(unittest.TestCase):
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2), (None, self.gh2)])
 
     # uroda has 1 characters, turpis has 1
-    def test_order_character_1x1(self):
+    def test_order_character_1x1(self) -> None:
         self.uroda_manager.team = self.uroda_team[:1]
         self.turpis_manager.team = self.turpis_team[:1]
 
         self.game_board.order_teams(self.uroda_manager, self.turpis_manager)
         self.assertEqual(self.game_board.ordered_teams, [(self.ga1, self.ga2)])
 
-    def test_get_ordered_teams_as_list(self):
+    def test_get_ordered_teams_as_list(self) -> None:
         self.assertEqual(self.game_board.get_ordered_teams_as_list(),
                          [self.ga1, self.ga2, self.gh2, self.gh1, self.gt1, self.gt2])
+
+    def test_get_char_from_ordered_teams(self) -> None:
+        char: Character | None = self.game_board.get_char_from_ordered_teams(self.ga1.name)
+        self.assertEqual(char.name, self.ga1.name)
+
+        char = self.game_board.get_char_from_ordered_teams('Bob')
+        self.assertTrue(char is None)
 
     # test json method
     def test_game_board_json(self):

@@ -132,10 +132,14 @@ def __calc_and_apply_damage(user: Character, targets: list[Character], current_m
         # change the message depending on if the current move is a Move or Effect
         if isinstance(current_move, Attack):
             world.turn_info += (f'{user.name} used {current_move.name} and dealt {damage_to_deal} damage to '
-                                f'{target.name}!\n')
+                                f'{target.name}!\n'
+                                f'Health before: {target.current_health + damage_to_deal} -> '
+                                f'Health after: {target.current_health}\n')
         else:
             world.turn_info += (f'The secondary effect activated and dealt {damage_to_deal} damage to '
-                                f'{target.name}!\n')
+                                f'{target.name}!\n'
+                                f'Health before: {target.current_health + damage_to_deal} -> '
+                                f'Health after: {target.current_health}\n')
 
 
 def __apply_heal_points(targets: list[Character], current_move: AbstractHeal, world: GameBoard) -> None:
@@ -155,10 +159,14 @@ def __apply_heal_points(targets: list[Character], current_move: AbstractHeal, wo
 
         # change the message depending on if the current move is a Move or Effect
         if isinstance(current_move, Heal):
-            world.turn_info += f'{current_move.name} healed {target.name} {adjusted_healing_amount} HP!\n'
+            world.turn_info += (f'{current_move.name} healed {target.name} {adjusted_healing_amount} HP!\n'
+                                f'Health before: {target.current_health - adjusted_healing_amount} -> '
+                                f'Health after: {target.current_health}\n')
         else:
             world.turn_info += (f'The secondary effect activated and healed {target.name} '
-                                f'{adjusted_healing_amount} HP!\n')
+                                f'{adjusted_healing_amount} HP!\n'
+                                f'Health before: {target.current_health - adjusted_healing_amount} -> '
+                                f'Health after: {target.current_health}\n')
 
 
 def __handle_stat_modification(targets: list[Character], current_move: AbstractBuff | AbstractDebuff,
@@ -182,11 +190,15 @@ def __handle_stat_modification(targets: list[Character], current_move: AbstractB
         # change the message depending on if the current move is a Move or Effect
         if isinstance(current_move, Buff) or isinstance(current_move, Debuff):
             world.turn_info += (f'{current_move.name} changed {target.name}\'s {stat.__class__.__name__.lower()} by '
-                                f'{after_val - before_val}!\n')
+                                f'{after_val - before_val}!\n'
+                                f'{stat.__class__.__name__.lower()} before: {before_val} -> '
+                                f'{stat.__class__.__name__.lower()} after: {after_val}\n')
         elif isinstance(current_move, Effect):
             world.turn_info += (f'The secondary effect activated and changed '
                                 f'{target.name}\'s {stat.__class__.__name__.lower()} by '
-                                f'{after_val - before_val}!\n')
+                                f'{after_val - before_val}!\n'
+                                f'{stat.__class__.__name__.lower()} before: {before_val} -> '
+                                f'{stat.__class__.__name__.lower()} after: {after_val}\n')
 
 
 def __get_stat_object_to_affect(target: Character, current_move: AbstractBuff | AbstractDebuff) -> Stat:

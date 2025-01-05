@@ -34,11 +34,12 @@ class NewMoveController(Controller):
             if clients[0].team_manager.country_type == CountryType.TURPIS else clients[1].team_manager
 
         # get the active pair for the turn, but only get character references; that is, filter None values
-        active_chars: list[Character] = [char for char in world.ordered_teams.pop(0) if char is not None
+        active_chars: list[Character] = [char for char in world.ordered_teams[0] if char is not None
                                          and not char.took_action]
 
         # if all active characters are None, nothing can happen; return
         if all([obj is None for obj in active_chars]):
+            world.ordered_teams.pop(0)
             return
 
         # sort the list so that the fastest character is listed first
@@ -52,6 +53,8 @@ class NewMoveController(Controller):
 
         # for every character, execute the logic for their move if applicable
         for user in active_chars:
+            print(f'Starting turn {turn}')
+
             # if the client's character died before their turn AND it is not a speed tie, continue to next iteration
             # if it is a speed tie and the character died before their turn, they can still act to simulate them
             # attacking at the same time
@@ -75,9 +78,9 @@ class NewMoveController(Controller):
 
             # don't do anything if there are no available targets
             if len(primary_targets) == 0:
+                print(f'{user.name} has no targets to attack')
                 continue
 
-            print(f'Starting turn {turn}')
             world.turn_info += f'\nStarting {user.name}\'s turn!\n'
 
             # call the move_logic file's method to handle the rest of the logic
@@ -113,11 +116,14 @@ class NewMoveController(Controller):
             self.__defeated_char_logic(clients, user, defeated_characters, world)
 
             # sync the primary and effect targets
-            self.__sync_targeted_characters(primary_targets, uroda_team_manager, turpis_team_manager)
-            self.__sync_targeted_characters(effect_targets, uroda_team_manager, turpis_team_manager)
+            self.__sync_targeted_characters(primary_targets, uroda_team_manager, turpis_team_manager, world)
+            self.__sync_targeted_characters(effect_targets, uroda_team_manager, turpis_team_manager, world)
 
         # sync the users that took their action
         self.__sync_active_characters(active_chars, uroda_team_manager, turpis_team_manager, world)
+
+        # pop the active chars after all logic is handled
+        world.ordered_teams.pop(0)
 
     def __defeated_char_logic(self, clients: list[Player], user: Character,
                               defeated_characters: list[Character], world: GameBoard) -> None:
@@ -193,7 +199,7 @@ class NewMoveController(Controller):
                 return []
 
     def __sync_targeted_characters(self, targets: list[Character], uroda_team_manager: TeamManager,
-                                   turpis_team_manager: TeamManager) -> None:
+                                   turpis_team_manager: TeamManager, world: GameBoard) -> None:
         """
         Takes the list of targets that were affected and applies all changes to the team manager references of that
         character. This is because the targets originally come from the game map, so the team manager references must be
@@ -203,6 +209,7 @@ class NewMoveController(Controller):
         Game Map Reference -> Team Manager Reference
         """
 
+        # for every game map reference of a character, sync it with the team manager and ordered_teams references
         for gm_character in targets:
             tm_to_use: TeamManager = uroda_team_manager \
                 if gm_character.country_type == CountryType.URODA else turpis_team_manager
@@ -215,6 +222,9 @@ class NewMoveController(Controller):
             # else:
             # tm_character.sync_char_with(gm_character)
 
+            if tm_character is None:
+                input('Team manager character reference is none. Press enter to continue. Program suspended >')
+
             # sync these attributes specifically to maintain the correct info
             tm_character.current_health = gm_character.current_health
             tm_character.attack = gm_character.attack
@@ -224,10 +234,24 @@ class NewMoveController(Controller):
             # tm_character.position = gm_character.position
             # tm_character.took_action = gm_character.took_action
             tm_character.is_dead = gm_character.is_dead
+            tm_character.state = gm_character.state
             # tm_character.special_points = gm_character.special_points
+
+            # sync the ordered_teams reference
+            ot_char: Character = world.get_char_from_ordered_teams(gm_character.name)
+
+            # the ordered_team reference might be None if the target was in active_chars
+            if ot_char is not None:
+                ot_char.current_health = gm_character.current_health
+                ot_char.attack = gm_character.attack
+                ot_char.defense = gm_character.defense
+                ot_char.speed = gm_character.speed
+                ot_char.is_dead = gm_character.is_dead
+                ot_char.state = gm_character.state
 
     def __sync_active_characters(self, active_chars: list[Character], uroda_team_manager: TeamManager,
                                  turpis_team_manager: TeamManager, world: GameBoard) -> None:
+        # for every active character from the ordered_teams list, sync with the team manager and game map references
         for active_char in active_chars:
             tm_to_use: TeamManager = uroda_team_manager \
                 if active_char.country_type == CountryType.URODA else turpis_team_manager
@@ -245,10 +269,18 @@ class NewMoveController(Controller):
             tm_character.took_action = active_char.took_action
             tm_character.is_dead = active_char.is_dead
             tm_character.special_points = active_char.special_points
+            tm_character.state = active_char.state
 
             # sync the game map's reference of the character
             gm_character: Character = world.get_character_from(active_char.position)
             # gm_character.sync_char_with(active_char)
+
+            # DELETE ME IF NOT WORKING
+            # if gm_character is None:
+            #     return
+
+            if gm_character is None:
+                input('Game map character reference is none. Press enter to continue. Program suspended >')
 
             # gm_character.current_health = active_char.current_health
             # gm_character.attack = active_char.attack
@@ -259,3 +291,4 @@ class NewMoveController(Controller):
             gm_character.took_action = active_char.took_action
             gm_character.is_dead = active_char.is_dead
             gm_character.special_points = active_char.special_points
+            gm_character.state = active_char.state

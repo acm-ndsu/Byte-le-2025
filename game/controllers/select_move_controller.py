@@ -20,12 +20,13 @@ class SelectMoveController(Controller):
         user: Character = client.team_manager.get_active_character()
 
         if user is None:
-            print(f'No active character found for client {client.team_name}.\nCurrent world `ordered_teams` list: '
+            print(f'No active character found for client {client.team_name} in SelectMoveController.'
+                  f'\nCurrent world `ordered_teams` list: '
                   f'{[(obj1.name if obj1 is not None else None, 
                        obj2.name if obj2 is not None else None) 
                       for obj1, obj2 in world.ordered_teams]}')
 
-            input('\n\nEnter > ')
+            # input('\n\nEnter > ')
 
         current_move: Move
 
@@ -39,9 +40,15 @@ class SelectMoveController(Controller):
             case _:
                 return
 
-        # give the reference in the ordered_teams on the gameboard the same selected move
-        for pair in world.ordered_teams:
-            for char in pair:
-                if char is not None and char.name == user.name:
-                    char.selected_move = user.selected_move
-                    break
+        # give the reference in the ordered_teams and game map the same selected move
+        ot_char: Character | None = world.get_char_from_ordered_teams(user.name)
+
+        # giving the ordered_teams reference the selected move
+        if ot_char is not None:
+            ot_char.selected_move = user.selected_move
+
+        gm_char: Character | None = world.get_character_from(user.position)
+
+        # giving the game map reference the selected move
+        if gm_char is not None:
+            gm_char.selected_move = user.selected_move

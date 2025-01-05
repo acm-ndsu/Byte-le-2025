@@ -494,8 +494,7 @@ class GameBoard(GameObject):
             self.remove_coordinate(dead_char.position)
 
             # add the character to the dead_team list and remove it from the team list
-            team_manager.dead_team.append(dead_char)
-            team_manager.team.remove(dead_char)
+            team_manager.organize_dead_characters()
 
             # find the character in the ordered_teams list and remove it from there
             for index in range(len(self.ordered_teams)):
@@ -598,6 +597,16 @@ class GameBoard(GameObject):
                 result.append((uroda_team[index], turpis_team[index]))
 
         self.ordered_teams = result
+
+    def get_char_from_ordered_teams(self, char_name: str) -> Character | None:
+        """
+        Searches for the character by the given name in the `ordered_teams` list. If the character is not found, None
+        is returned.
+        """
+        for pair in self.ordered_teams:
+            for char in pair:
+                if char is not None and char.name == char_name:
+                    return char
 
     def to_json(self) -> dict:
         data: dict[str, object] = super().to_json()

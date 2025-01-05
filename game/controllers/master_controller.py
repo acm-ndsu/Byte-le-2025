@@ -115,12 +115,12 @@ class MasterController(Controller):
         if turn == 1:
             gameboard.order_teams(uroda_team_manager, turpis_team_manager)
 
+        # start by organizing the dead characters that died last turn if applicable
+        gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
+
         print(f'Gameboard ordered_teams: {[(pair[0].name if pair[0] is not None else None, 
                                             pair[1].name if pair[1] is not None else None) 
                                            for pair in gameboard.ordered_teams]}')
-
-        # start by organizing the dead characters that died last turn if applicable
-        gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
 
         # reset the turn info string for new information
         gameboard.turn_info = ''
@@ -176,6 +176,10 @@ class MasterController(Controller):
         # repopulate the ordered_teams property if the list is empty in the gameboard
         if len(gameboard.ordered_teams) == 0:
             gameboard.order_teams(uroda_team_manager, turpis_team_manager)
+
+        # if any team is defeated, set game_over to true
+        # if clients[0].team_manager.everyone_is_defeated() or clients[1].team_manager.everyone_is_defeated():
+        #     self.game_over = True
 
         # update the current world json by setting it to the game board's updated state
         self.current_world_data['game_board'] = gameboard.to_json()

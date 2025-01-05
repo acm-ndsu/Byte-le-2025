@@ -193,6 +193,8 @@ class TestMoveController(unittest.TestCase):
         self.assertTrue(self.uroda_attacker == self.gameboard.get_character_from(self.uroda_attacker.position))
         self.assertTrue(self.turpis_attacker == self.gameboard.get_character_from(self.turpis_attacker.position))
 
+        # the attacker references cannot be compared in ordered_teams since their instances were popped off the list
+
     def test_speed_tie_both_defeated(self) -> None:
         # set the health of both attackers to be 1
         self.uroda_attacker.current_health = 1
@@ -209,6 +211,8 @@ class TestMoveController(unittest.TestCase):
         # test that the game map's instance of the characters are the same
         self.assertTrue(self.uroda_attacker == self.gameboard.get_character_from(self.uroda_attacker.position))
         self.assertTrue(self.turpis_attacker == self.gameboard.get_character_from(self.turpis_attacker.position))
+
+        # the attacker references cannot be compared in ordered_teams since their instances were popped off the list
 
     def test_defeated_before_taking_turn(self) -> None:
         # remove the uroda and turpis attacker from the ordered teams list
