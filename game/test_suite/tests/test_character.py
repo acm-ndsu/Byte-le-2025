@@ -198,20 +198,6 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.character.get_opposing_country(), CountryType.URODA)
         self.assertEqual(self.gen_attacker.get_opposing_country(), CountryType.TURPIS)
 
-    def test_sync_character(self) -> None:
-        self.leader.sync_char_with(self.sync_leader)
-
-        self.assertTrue(self.leader.current_health == 5 == self.sync_leader.current_health)
-        self.assertTrue(self.leader.max_health == 5 == self.sync_leader.max_health)
-        self.assertTrue(self.leader.attack.value == 5 == self.sync_leader.attack.value)
-        self.assertTrue(self.leader.defense.value == 5 == self.sync_leader.defense.value)
-        self.assertTrue(self.leader.speed.value == 5 == self.sync_leader.speed.value)
-        self.assertTrue(self.leader.special_points == 5 == self.sync_leader.special_points)
-        self.assertTrue(self.leader.took_action == self.sync_leader.took_action)
-        self.assertTrue(self.leader.is_dead == self.sync_leader.is_dead)
-        self.assertTrue(self.leader.position == Vector(1, 1) == self.sync_leader.position)
-        self.assertTrue(self.leader.selected_move.name == 'Synced Attack' == self.sync_leader.selected_move.name)
-
     def test_to_json_character(self) -> None:
         data: dict = self.character.to_json()
         char: Character = Character().from_json(data)

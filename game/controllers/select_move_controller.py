@@ -19,15 +19,6 @@ class SelectMoveController(Controller):
 
         user: Character = client.team_manager.get_active_character()
 
-        if user is None:
-            print(f'No active character found for client {client.team_name} in SelectMoveController.'
-                  f'\nCurrent world `ordered_teams` list: '
-                  f'{[(obj1.name if obj1 is not None else None, 
-                       obj2.name if obj2 is not None else None) 
-                      for obj1, obj2 in world.ordered_teams]}')
-
-            # input('\n\nEnter > ')
-
         current_move: Move
 
         match action:

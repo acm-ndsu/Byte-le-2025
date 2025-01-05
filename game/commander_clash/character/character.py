@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from typing import Self
 from game.commander_clash.character.stats import *
 from game.commander_clash.moves.moves import *
 from game.commander_clash.moves.moveset import Moveset
 from game.common.enums import ObjectType, CharacterType, RankType, CountryType
 from game.common.game_object import GameObject
-from game.utils.vector import Vector
 from game.config import HEALTH_MODIFIER, GENERIC_TRASH_NAME
+from game.utils.vector import Vector
 
 
 class Character(GameObject):
@@ -246,27 +245,6 @@ class Character(GameObject):
 
     def is_defeated(self) -> bool:
         return self.current_health == 0
-
-    def sync_char_with(self, char: Character) -> None:
-        """
-        If the given character has the same name, its changes will be applied to this instance of the character. For
-        example, if the given character has 50 current health and 2 special points, this instance of the character
-        will have those same numbers.
-        """
-        if char is None:
-            return
-
-        if char.name == self.name:
-            self.current_health = char.current_health
-            # self.max_health = char.max_health
-            self.attack = char.attack
-            self.defense = char.defense
-            self.speed = char.speed
-            # self.selected_move = char.selected_move
-            self.position = char.position
-            # self.took_action = char.took_action
-            self.is_dead = char.is_dead
-            # self.special_points = char.special_points
 
     def to_json(self) -> dict:
         data: dict = super().to_json()

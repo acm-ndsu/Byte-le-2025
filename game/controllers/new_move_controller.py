@@ -22,19 +22,10 @@ class NewMoveController(Controller):
     """
 
     def handle_logic(self, clients: list[Player], world: GameBoard, turn: int = 1) -> None:
-        # world.order_teams()
-
-        # if the list is empty, return as the team managers in the game board likely aren't assigned yet
-        # if len(world.ordered_teams) == 0:
-        #     return
-
         uroda_team_manager: TeamManager = clients[0].team_manager \
             if clients[0].team_manager.country_type == CountryType.URODA else clients[1].team_manager
         turpis_team_manager: TeamManager = clients[0].team_manager \
             if clients[0].team_manager.country_type == CountryType.TURPIS else clients[1].team_manager
-
-        # DELETE WHEN FIXED
-        print(f'Active pair index in move controller: {world.active_pair_index}')
 
         # get the active pair for the turn, but only get character references; that is, filter None values
         active_chars: list[Character] = [char for char in world.get_active_pair() if char is not None
@@ -42,8 +33,6 @@ class NewMoveController(Controller):
 
         # if all active characters are None, nothing can happen; return
         if all([obj is None for obj in active_chars]):
-            print('All active chars were None values')
-            # world.ordered_teams.pop(0)
             return
 
         # sort the list so that the fastest character is listed first
@@ -57,9 +46,6 @@ class NewMoveController(Controller):
 
         # for every character, execute the logic for their move if applicable
         for user in active_chars:
-            print(f'Starting turn {turn} for user {user.name}. User selected move '
-                  f'{user.selected_move.name if user.selected_move is not None else None}')
-
             # if the client's character died before their turn AND it is not a speed tie, continue to next iteration
             # if it is a speed tie and the character died before their turn, they can still act to simulate them
             # attacking at the same time
@@ -83,7 +69,6 @@ class NewMoveController(Controller):
 
             # don't do anything if there are no available targets
             if len(primary_targets) == 0:
-                print(f'{user.name} has no targets to attack')
                 continue
 
             world.turn_info += f'\nStarting {user.name}\'s turn!\n'
@@ -114,9 +99,6 @@ class NewMoveController(Controller):
             for char in defeated_characters:
                 world.turn_info += f'\n{user.name} defeated {char.name}!\n'
 
-            # print(f'\nCharacters in defeated_characters on turn {turn}: {[char.name for char in defeated_characters]}\n'
-            #       f'Length of defeated_characters: {len(defeated_characters)}')
-
             # perform the logic of defeating a character(s)
             self.__defeated_char_logic(clients, user, defeated_characters, world)
 
@@ -126,9 +108,6 @@ class NewMoveController(Controller):
 
         # sync the users that took their action
         self.__sync_active_characters(active_chars, uroda_team_manager, turpis_team_manager, world)
-
-        # pop the active chars after all logic is handled
-        # world.ordered_teams.pop(0)
 
     def __defeated_char_logic(self, clients: list[Player], user: Character,
                               defeated_characters: list[Character], world: GameBoard) -> None:
@@ -149,8 +128,6 @@ class NewMoveController(Controller):
             defeated_char.is_dead = True
             defeated_char.state = 'defeated'
             client_to_use.team_manager.score += DEFEATED_SCORE
-            # print(f'Defeated {defeated_char.name} current health: {defeated_char.current_health}\n'
-            #       f'{defeated_char.name} current state: {defeated_char.state}')
 
             # add the defeated character to the recently died list of the game board
             world.recently_died.append(defeated_char)
@@ -197,8 +174,6 @@ class NewMoveController(Controller):
 
                 return [target] if target is not None else []
             case TargetType.ALL_OPPS:
-                # get_characters() returns a dict; receives the characters by getting the dict's values as a list
-                # gets all characters opposite the user's country_type
                 return list(world.get_characters(user.get_opposing_country()).values())
             case _:
                 return []
@@ -219,37 +194,15 @@ class NewMoveController(Controller):
             tm_to_use: TeamManager = uroda_team_manager \
                 if gm_character.country_type == CountryType.URODA else turpis_team_manager
 
-            # # no point in syncing if the character died
-            # if gm_character.is_dead:
-            #     return
-
             tm_character: Character = tm_to_use.get_character(gm_character.name)
-
-            # sync the two characters
-            # if syncing_active_chars:
-            #     gm_character.sync_char_with(tm_character)
-            # else:
-            # tm_character.sync_char_with(gm_character)
-
-            if tm_character is None:
-                print(f'\n\nTeam manager {tm_to_use.team_name}\'s character reference is none for '
-                      f'{gm_character.name}.\n'
-                      f'Characters in team manager: {[char.name for char in tm_to_use.team]}\n'
-                      f'Targets: {[char.name for char in targets]}\n')
-
-                input('Press enter to continue. Program suspended >')
 
             # sync these attributes specifically to maintain the correct info
             tm_character.current_health = gm_character.current_health
             tm_character.attack = gm_character.attack
             tm_character.defense = gm_character.defense
             tm_character.speed = gm_character.speed
-            # tm_character.selected_move = gm_character.selected_move
-            # tm_character.position = gm_character.position
-            # tm_character.took_action = gm_character.took_action
             tm_character.is_dead = gm_character.is_dead
             tm_character.state = gm_character.state
-            # tm_character.special_points = gm_character.special_points
 
             # sync the ordered_teams reference
             ot_char: Character = world.get_char_from_ordered_teams(gm_character.name)
@@ -272,14 +225,11 @@ class NewMoveController(Controller):
 
             # sync the client's team manager reference of the character
             tm_character: Character = tm_to_use.get_character(active_char.name)
-            tm_character.sync_char_with(active_char)
 
-            # tm_character.current_health = active_char.current_health
             tm_character.attack = active_char.attack
             tm_character.defense = active_char.defense
             tm_character.speed = active_char.speed
             tm_character.selected_move = active_char.selected_move
-            # tm_character.position = active_char.position
             tm_character.took_action = active_char.took_action
             tm_character.is_dead = active_char.is_dead
             tm_character.special_points = active_char.special_points
@@ -287,25 +237,11 @@ class NewMoveController(Controller):
 
             # sync the game map's reference of the character
             gm_character: Character = world.get_character_from(active_char.position)
-            # gm_character.sync_char_with(active_char)
 
-            # DELETE ME IF NOT WORKING
-            # if gm_character is None:
-            #     return
-
-            if gm_character is None:
-                print(f'\n\nGame map character reference is none for {active_char.name}.\n'
-                      f'{active_char.name}\'s current position: {active_char.position}\n'
-                      f'Active chars: {[char.name for char in active_chars]}\n')
-
-                input('Press enter to continue. Program suspended >')
-
-            # gm_character.current_health = active_char.current_health
             gm_character.attack = active_char.attack
             gm_character.defense = active_char.defense
             gm_character.speed = active_char.speed
             gm_character.selected_move = active_char.selected_move
-            # gm_character.position = active_char.position
             gm_character.took_action = active_char.took_action
             gm_character.is_dead = active_char.is_dead
             gm_character.special_points = active_char.special_points

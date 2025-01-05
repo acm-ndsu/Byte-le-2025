@@ -42,6 +42,9 @@ class TestSwapController(unittest.TestCase):
 
     # tests for swap up
     def test_swap_up_character(self) -> None:
+        # set the active pair index
+        self.game_board.active_pair_index = 2
+
         self.client.team_manager.team[0].took_action = True
         self.client.team_manager.team[1].took_action = True
         self.client.team_manager.team[2].took_action = False
@@ -65,6 +68,9 @@ class TestSwapController(unittest.TestCase):
                          Vector(0, 2))
 
     def test_swap_up_none(self) -> None:
+        # set the active pair index
+        self.game_board.active_pair_index = 2
+
         self.game_board.remove_coordinate(self.client.team_manager.team.pop(1).position)
         self.client.team_manager.team[0].took_action = True
         self.client.team_manager.team[1].took_action = False
@@ -81,6 +87,9 @@ class TestSwapController(unittest.TestCase):
         self.assertEqual(self.game_board.get_char_from_ordered_teams('Bob').position, Vector(0, 1))
 
     def test_swap_up_fail(self) -> None:
+        # set the active pair index
+        self.game_board.active_pair_index = 0
+
         self.client.team_manager.team[0].took_action = False
         self.client.team_manager.team[1].took_action = True
         self.client.team_manager.team[2].took_action = True
@@ -96,6 +105,9 @@ class TestSwapController(unittest.TestCase):
 
     # tests for swap down
     def test_swap_down_character(self) -> None:
+        # set the active pair index
+        self.game_board.active_pair_index = 1
+
         self.client.team_manager.team[0].took_action = True
         self.client.team_manager.team[1].took_action = False
         self.client.team_manager.team[2].took_action = True
@@ -119,6 +131,9 @@ class TestSwapController(unittest.TestCase):
                          Vector(0, 2))
 
     def test_swap_down_none(self) -> None:
+        # set the active pair index
+        self.game_board.active_pair_index = 0
+
         self.game_board.remove_coordinate(self.client.team_manager.team.pop(1).position)
         self.client.team_manager.team[0].took_action = False
         self.client.team_manager.team[1].took_action = True
@@ -138,6 +153,9 @@ class TestSwapController(unittest.TestCase):
         self.assertEqual(self.game_board.get_char_from_ordered_teams('Reginald').position, Vector(0, 1))
 
     def test_swap_down_fail(self) -> None:
+        # set the active pair index
+        self.game_board.active_pair_index = 2
+
         self.client.team_manager.team[0].took_action = True
         self.client.team_manager.team[1].took_action = True
         self.client.team_manager.team[2].took_action = False

@@ -130,8 +130,6 @@ class SwapController(Controller):
 
             # if there is no ordered_team character reference, do nothing
             if ot_swapped_char is None:
-                print(f'\n\nTried updating swapped character {swapped_character.name} but the ordered_teams reference '
-                      f'is None')
                 return
 
             ot_swapped_char.position = swapped_character.position

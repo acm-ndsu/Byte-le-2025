@@ -121,10 +121,6 @@ class MasterController(Controller):
         # start by organizing the dead characters that died last turn if applicable
         gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
 
-        print(f'Gameboard ordered_teams: {[(pair[0].name if pair[0] is not None else None, 
-                                            pair[1].name if pair[1] is not None else None) 
-                                           for pair in gameboard.ordered_teams]}')
-
         # reset the turn info string for new information
         gameboard.turn_info = ''
 
@@ -145,29 +141,10 @@ class MasterController(Controller):
                 except IndexError:
                     pass
 
-            # # update the game board's team manager references
-            # gameboard.update_team_managers()
-
         self.new_move_controller.handle_logic(clients, gameboard, turn)
 
-        # update the game board's team manager references
-        # gameboard.update_team_managers()
-
-        # to ensure the clients receive the updates for their characters, loop over the two and reassign their
-        # team managers to be the game board references
-        # call the variable client_ to not get confused with the outer for loop
-        # this for loop needs to happen every turn
+        # loop again to handle tasks after all logic is handled for the turn
         for client in clients:
-            # get the client's score before it is overwritten
-            # client_score: int = client.team_manager.score
-
-            # if client.team_manager.country_type == CountryType.URODA:
-            #     client.team_manager = gameboard.uroda_team_manager
-            # else:
-            #     client.team_manager = gameboard.turpis_team_manager
-
-            # client.team_manager.score = client_score
-
             # if everyone took their action in the given team manager, set their took_action bool to False
             if client.team_manager.everyone_took_action():
                 for character in client.team_manager.team:
@@ -181,14 +158,8 @@ class MasterController(Controller):
             gameboard.order_teams(uroda_team_manager, turpis_team_manager)
             gameboard.active_pair_index = -1
 
-        # if any team is defeated, set game_over to true
-        # if clients[0].team_manager.everyone_is_defeated() or clients[1].team_manager.everyone_is_defeated():
-        #     self.game_over = True
-
         # update the current world json by setting it to the game board's updated state
         self.current_world_data['game_board'] = gameboard.to_json()
-
-        print(gameboard.turn_info)
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):
@@ -210,12 +181,8 @@ class MasterController(Controller):
 
         # add the differential bonus to both teams (150 * # of alive characters)
         client1.team_manager.score += DIFFERENTIAL_BONUS * len(client1.team_manager.team)
-        print(f'Giving client {client1.team_name} different bonus of {DIFFERENTIAL_BONUS} * '
-              f'{len(client1.team_manager.team)} = {DIFFERENTIAL_BONUS * len(client1.team_manager.team)}')
 
         client2.team_manager.score += DIFFERENTIAL_BONUS * len(client2.team_manager.team)
-        print(f'Giving client {client2.team_name} different bonus of {DIFFERENTIAL_BONUS} * '
-              f'{len(client2.team_manager.team)} = {DIFFERENTIAL_BONUS * len(client2.team_manager.team)}')
 
         # client1 is the winner if client2's team is all dead
         winner: Player | None = client1 if client2.team_manager.everyone_is_defeated() else \
@@ -224,16 +191,11 @@ class MasterController(Controller):
         # if there is a clear winner (one team was defeated), add the winning score to the winner
         if winner is not None:
             winner.team_manager.score += WIN_SCORE
-            print(f'Giving client {winner.team_name} win bonus of {WIN_SCORE}')
 
         data['players'] = list()
 
         # Determine results
         for client in clients:
             data['players'].append(client.to_json())
-
-        print(f'Ending turn: {turn}\n'
-              f'Ending {client1.team_name} score: {client1.team_manager.score}\n'
-              f'Ending {client2.team_name} score: {client2.team_manager.score}\n')
 
         return data

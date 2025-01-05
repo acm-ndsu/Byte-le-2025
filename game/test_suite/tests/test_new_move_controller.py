@@ -175,6 +175,9 @@ class TestMoveController(unittest.TestCase):
         mock.assert_not_called()
 
     def test_speed_tie(self) -> None:
+        # set the game board's active_pair_index to 0
+        self.gameboard.active_pair_index = 0
+
         # uroda attacker and turpis attacker should be attacking each other at the same time
         self.new_move_controller.handle_logic(self.clients, self.gameboard)
 
@@ -196,6 +199,9 @@ class TestMoveController(unittest.TestCase):
         # the attacker references cannot be compared in ordered_teams since their instances were popped off the list
 
     def test_speed_tie_both_defeated(self) -> None:
+        # set the game board's active_pair_index to 0
+        self.gameboard.active_pair_index = 0
+
         # set the health of both attackers to be 1
         self.uroda_attacker.current_health = 1
         self.turpis_attacker.current_health = 1
@@ -215,6 +221,9 @@ class TestMoveController(unittest.TestCase):
         # the attacker references cannot be compared in ordered_teams since their instances were popped off the list
 
     def test_defeated_before_taking_turn(self) -> None:
+        # set the game board's active_pair_index to 0
+        self.gameboard.active_pair_index = 0
+
         # remove the uroda and turpis attacker from the ordered teams list
         self.gameboard.ordered_teams.pop(0)
 
@@ -237,6 +246,9 @@ class TestMoveController(unittest.TestCase):
         self.assertTrue(self.turpis_tank == self.gameboard.get_character_from(self.turpis_tank.position))
 
     def test_both_teams_are_defeated_with_speed_tie(self) -> None:
+        # set the game board's active_pair_index to 0
+        self.gameboard.active_pair_index = 0
+
         # set the special points so the attackers can use their aoe
         self.uroda_attacker.special_points = 5
         self.uroda_attacker.selected_move = self.uroda_attacker.get_s2()
@@ -277,6 +289,9 @@ class TestMoveController(unittest.TestCase):
         self.assertTrue(self.turpis_tank2 == self.gameboard.get_character_from(self.turpis_tank2.position))
 
     def test_no_special_point_increase(self) -> None:
+        # set the game board's active_pair_index to 0
+        self.gameboard.active_pair_index = 0
+
         # remove the turpis attacker from the game map so the uroda attack has no target
         self.gameboard.remove_coordinate(self.turpis_attacker.position)
 
@@ -298,6 +313,9 @@ class TestMoveController(unittest.TestCase):
         self.assertTrue(self.uroda_attacker == self.gameboard.get_character_from(self.uroda_attacker.position))
 
     def test_no_special_point_decrease(self) -> None:
+        # set the game board's active_pair_index to 0
+        self.gameboard.active_pair_index = 0
+
         # set the special points to 5 to show the uroda attacker has enough points to use the special
         self.uroda_attacker.special_points = 4
 
@@ -321,6 +339,9 @@ class TestMoveController(unittest.TestCase):
         self.assertTrue(self.uroda_attacker == self.gameboard.get_character_from(self.uroda_attacker.position))
 
     def test_user_heals_entire_team(self) -> None:
+        # set the game board's active_pair_index to 0
+        self.gameboard.active_pair_index = 0
+
         # set the uroda team to be on low health and allow the healer to take its turn
         self.uroda_attacker.current_health = 1
         self.uroda_healer.current_health = 1
@@ -346,6 +367,9 @@ class TestMoveController(unittest.TestCase):
         self.assertTrue(self.uroda_tank == self.gameboard.get_character_from(self.uroda_tank.position))
 
     def test_user_heals_over_max_health(self) -> None:
+        # set the game board's active_pair_index to 0
+        self.gameboard.active_pair_index = 0
+
         # set the uroda team to be on low health and allow the healer to take its turn
         self.uroda_attacker.current_health = self.uroda_attacker.max_health - 1
         self.uroda_healer.current_health = self.uroda_healer.max_health - 1
@@ -377,6 +401,9 @@ class TestMoveController(unittest.TestCase):
 
     # the methods below are the same from the original test move controller; it was easier to paste them here
     def test_self_buffing(self) -> None:
+        # set the other game board's active_pair_index to 0
+        self.other_gameboard.active_pair_index = 0
+
         self.other_uroda_attacker.selected_move = self.other_uroda_attacker.get_s1()
 
         # test that a character buffing itself works while the target is themselves
@@ -394,6 +421,9 @@ class TestMoveController(unittest.TestCase):
             self.other_uroda_attacker == self.other_gameboard.get_character_from(self.other_uroda_attacker.position))
 
     def test_heal_ally_up(self) -> None:
+        # set the other game board's active_pair_index to 0
+        self.other_gameboard.active_pair_index = 0
+
         # set urodan attacker health to be at 1 HP and to have already taken their turn
         self.other_uroda_attacker.current_health = 1
 
@@ -419,6 +449,9 @@ class TestMoveController(unittest.TestCase):
             self.other_uroda_healer == self.other_gameboard.get_character_from(self.other_uroda_healer.position))
 
     def test_heal_adjacent_allies(self) -> None:
+        # set the other game board's active_pair_index to 0
+        self.other_gameboard.active_pair_index = 0
+
         # set urodan attacker health to be on 1 HP
         self.other_uroda_attacker.current_health = 1
 
@@ -445,6 +478,9 @@ class TestMoveController(unittest.TestCase):
     def test_no_ally_target_available(self) -> None:
         mock: Mock = Mock()
         move_logic.handle_move_logic = mock
+
+        # set the other game board's active_pair_index to 0
+        self.other_gameboard.active_pair_index = 0
 
         # remove all urodan characters except the healer who is in the middle
         self.other_gameboard.remove_coordinate(self.other_uroda_attacker.position)
@@ -474,6 +510,9 @@ class TestMoveController(unittest.TestCase):
     # explicit move_logic tests below ---------------------------------------------------------------------
 
     def test_debuff_modifier_is_applied(self) -> None:
+        # set the other game board's active_pair_index to 0
+        self.other_gameboard.active_pair_index = 0
+
         # testing to ensure a debuff is applied properly from move_logic.py
         self.other_gameboard.ordered_teams.pop(0)
 
@@ -493,6 +532,9 @@ class TestMoveController(unittest.TestCase):
             self.other_uroda_attacker == self.other_gameboard.get_character_from(self.other_uroda_attacker.position))
 
     def test_attack_effect(self) -> None:
+        # set the other game board's active_pair_index to 0
+        self.other_gameboard.active_pair_index = 0
+
         # the uroda healer has the effects to test, so let it be its turn
         self.other_gameboard.ordered_teams.pop(0)
 
@@ -507,6 +549,9 @@ class TestMoveController(unittest.TestCase):
             self.other_uroda_healer == self.other_gameboard.get_character_from(self.other_uroda_healer.position))
 
     def test_healing_effect(self) -> None:
+        # set the other game board's active_pair_index to 0
+        self.other_gameboard.active_pair_index = 0
+
         # the uroda attacker has the effects to test
         # set the allies' health to be 1 to test healing effect
         self.other_uroda_healer.current_health = 1
@@ -526,6 +571,9 @@ class TestMoveController(unittest.TestCase):
             self.other_uroda_tank == self.other_gameboard.get_character_from(self.other_uroda_tank.position))
 
     def test_buff_effect(self) -> None:
+        # set the other game board's active_pair_index to 0
+        self.other_gameboard.active_pair_index = 0
+
         # the uroda healer has the effects to test, so let it be its turn
         self.other_gameboard.ordered_teams.pop(0)
 
@@ -550,6 +598,9 @@ class TestMoveController(unittest.TestCase):
             self.other_turpis_tank == self.other_gameboard.get_character_from(self.other_turpis_tank.position))
 
     def test_debuff_effect(self) -> None:
+        # set the other game board's active_pair_index to 0
+        self.other_gameboard.active_pair_index = 0
+
         # the uroda healer has the effects to test, so let it be its turn
         self.other_gameboard.ordered_teams.pop(0)
 

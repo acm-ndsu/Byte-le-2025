@@ -129,18 +129,10 @@ class TeamManager(GameObject):
         """
         Returns the first character in the team that hasn't taken its turn.
         """
-        # if everyone took their turn, reset their bool
-        # if self.everyone_took_action():
-        #     for character in self.team:
-        #         character.took_action = False
 
         for character in self.team:
-            if not character.took_action: # and not character.is_dead:
+            if not character.took_action:
                 return character
-
-        print(f'Team Manager {self.team_name} has no active character. Current characters: '
-              f'{[(char.name, char.took_action, char.special_points) for char in self.team]}\n'
-              f'Everyone took action: {self.everyone_took_action()}')
 
     def update_character(self, character: Character) -> None:
         """
