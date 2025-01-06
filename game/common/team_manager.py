@@ -184,14 +184,15 @@ class TeamManager(GameObject):
                 return Character().from_json(data)
             case ObjectType.GENERIC_TRASH:
                 return GenericTrash().from_json(data)
-            case ObjectType.GENERIC_ATTACKER:
-                return GenericAttacker().from_json(data)
-            case ObjectType.GENERIC_HEALER:
-                return GenericHealer().from_json(data)
-            case ObjectType.GENERIC_TANK:
-                return GenericTank().from_json(data)
-            case ObjectType.LEADER:
+            case (ObjectType.ANAHITA | ObjectType.BERRY | ObjectType.FULTRA |
+                  ObjectType.NINLIL | ObjectType.CALMUS | ObjectType.IRWIN):
                 return Leader().from_json(data)
+            case ObjectType.URODA_GENERIC_ATTACKER | ObjectType.TURPIS_GENERIC_ATTACKER:
+                return GenericAttacker().from_json(data)
+            case ObjectType.URODA_GENERIC_HEALER | ObjectType.TURPIS_GENERIC_HEALER:
+                return GenericHealer().from_json(data)
+            case ObjectType.URODA_GENERIC_TANK | ObjectType.TURPIS_GENERIC_TANK:
+                return GenericTank().from_json(data)
             case _:
                 raise ValueError(
                     f'The object type of the object is not handled properly. The object type passed in is {temp}.')

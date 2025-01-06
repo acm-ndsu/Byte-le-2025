@@ -15,14 +15,12 @@ class TestGameBoard(unittest.TestCase):
     `Test Gameboard Notes:`
 
         This class tests the different methods in the Gameboard class. This file is worthwhile to look at to understand
-        the GamebBoard class better if there is still confusion on it.
+        the GameBoard class better if there is still confusion on it.
 
         *This class tests the Gameboard specifically when the map is generated.*
     """
 
     def setUp(self) -> None:
-        # TEST TEAM MANAGER, GAME BOARD, PLAYER, CHARACTER, ALL WHEN IMPLEMENTED
-
         self.wall: Wall = Wall()
         self.leader: Leader = Leader(position=Vector(1, 2), country_type=CountryType.TURPIS)
         self.attacker: GenericAttacker = GenericAttacker(position=Vector(1, 3))
@@ -41,6 +39,18 @@ class TestGameBoard(unittest.TestCase):
         self.ga2: GenericAttacker = GenericAttacker(name='GA2', speed=SpeedStat(5), country_type=CountryType.TURPIS)
         self.gh2: GenericHealer = GenericHealer(name='GH2', speed=SpeedStat(4), country_type=CountryType.TURPIS)
         self.gt2: GenericTank = GenericTank(name='GT2', speed=SpeedStat(1), country_type=CountryType.TURPIS)
+
+        # set object types
+        self.ga1.object_type = ObjectType.URODA_GENERIC_ATTACKER
+        self.gh1.object_type = ObjectType.URODA_GENERIC_HEALER
+        self.gt1.object_type = ObjectType.URODA_GENERIC_TANK
+
+        self.ga2.object_type = ObjectType.URODA_GENERIC_ATTACKER
+        self.gh2.object_type = ObjectType.URODA_GENERIC_HEALER
+        self.gt2.object_type = ObjectType.URODA_GENERIC_TANK
+
+        self.leader.object_type = ObjectType.ANAHITA
+        self.attacker.object_type = ObjectType.URODA_GENERIC_ATTACKER
 
         self.uroda_team: list[Character] = [self.ga1, self.gh1, self.gt1]
         self.turpis_team: list[Character] = [self.ga2, self.gh2, self.gt2]
@@ -107,14 +117,6 @@ class TestGameBoard(unittest.TestCase):
         characters: dict[Vector, Character] = self.game_board.get_characters(CountryType.TURPIS)
         self.assertEqual(characters[Vector(1, 2)], self.leader)
         self.assertEqual(len(characters), 1)
-
-    # def test_get_team_manager_uroda(self):
-    #     result: TeamManager | None = self.game_board.get_team_manager(self.uroda_manager.country_type)
-    #     self.assertEqual(self.uroda_manager, result)
-    #
-    # def test_get_team_manager_turpis(self):
-    #     result: TeamManager | None = self.game_board.get_team_manager(self.turpis_manager.country_type)
-    #     self.assertEqual(self.turpis_manager, result)
 
     # uroda has 3 characters, turpis has 3
     def test_order_characters_3x3(self) -> None:
@@ -260,7 +262,6 @@ class TestGameBoard(unittest.TestCase):
         self.assertFalse(self.game_board.is_valid_coords(Vector(3, 4)))
         self.assertFalse(self.game_board.is_valid_coords(Vector(3, 5)))
 
-
     # test json method
     def test_game_board_json(self):
         data: dict = self.game_board.to_json()
@@ -273,17 +274,6 @@ class TestGameBoard(unittest.TestCase):
 
         self.assertEqual(self.game_board.game_map.keys(), temp.game_map.keys())
         self.assertTrue(self.game_board.game_map.values(), temp.game_map.values())
-
-        # check that both team managers stored information correctly
-        # self.assertEqual(self.game_board.uroda_team_manager.object_type, temp.uroda_team_manager.object_type)
-        # self.assertEqual(self.game_board.uroda_team_manager.team, temp.uroda_team_manager.team)
-        # self.assertEqual(self.game_board.uroda_team_manager.score, temp.uroda_team_manager.score)
-        # self.assertEqual(self.game_board.uroda_team_manager.country_type, temp.uroda_team_manager.country_type)
-        #
-        # self.assertEqual(self.game_board.turpis_team_manager.object_type, temp.turpis_team_manager.object_type)
-        # self.assertEqual(self.game_board.turpis_team_manager.team, temp.turpis_team_manager.team)
-        # self.assertEqual(self.game_board.turpis_team_manager.score, temp.turpis_team_manager.score)
-        # self.assertEqual(self.game_board.turpis_team_manager.country_type, temp.turpis_team_manager.country_type)
 
         # check that the ordered_teams property was stored properly
         self.assertEqual(len(self.game_board.ordered_teams), len(temp.ordered_teams))

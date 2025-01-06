@@ -8,7 +8,7 @@ from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN, WIN_SCORE, DIFFERENTIAL_
 from game.controllers.controller import Controller
 from game.controllers.swap_controller import SwapController
 from game.controllers.select_move_controller import SelectMoveController
-from game.controllers.new_move_controller import NewMoveController
+from game.controllers.move_controller import MoveController
 
 
 class MasterController(Controller):
@@ -51,7 +51,7 @@ class MasterController(Controller):
         self.current_world_data: dict = None
         self.swap_controller: SwapController = SwapController()
         self.select_move_controller: SelectMoveController = SelectMoveController()
-        self.new_move_controller: NewMoveController = NewMoveController()
+        self.move_controller: MoveController = MoveController()
 
     # Receives all clients for the purpose of giving them the objects they will control
     def give_clients_objects(self, clients: list[Player], world: dict, team_managers: list[TeamManager]):
@@ -141,7 +141,7 @@ class MasterController(Controller):
                 except IndexError:
                     pass
 
-        self.new_move_controller.handle_logic(clients, gameboard, turn)
+        self.move_controller.handle_logic(clients, gameboard, turn)
 
         # loop again to handle tasks after all logic is handled for the turn
         for client in clients:

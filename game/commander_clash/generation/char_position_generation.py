@@ -1,7 +1,7 @@
 import json
 
 from game.commander_clash.character.character import Leader, Generic
-from game.common.enums import CountryType
+from game.common.enums import CountryType, RankType, ObjectType
 from game.common.team_manager import TeamManager
 from game.config import GAME_MAP_FILE
 from game.utils.helpers import write_json_file
@@ -28,6 +28,22 @@ def generate_locations_dict(team_managers: list[TeamManager]) -> dict:
             country_name: str = team_manager.country_type.name
             country_name = country_name[0].upper() + country_name[1:].lower()
             character.name = f'{country_name} {character.name}'
+
+            # assign the specific ObjectType for the generic character
+            if character.rank_type == RankType.GENERIC:
+                match character.name:
+                    case 'Uroda Attacker' | 'Uroda Attacker 2':
+                        character.object_type = ObjectType.URODA_GENERIC_ATTACKER
+                    case 'Uroda Healer' | 'Uroda Healer 2':
+                        character.object_type = ObjectType.URODA_GENERIC_HEALER
+                    case 'Uroda Tank' | 'Uroda Tank 2':
+                        character.object_type = ObjectType.URODA_GENERIC_TANK
+                    case 'Turpis Attacker' | 'Turpis Attacker 2':
+                        character.object_type = ObjectType.TURPIS_GENERIC_ATTACKER
+                    case 'Turpis Healer' | 'Turpis Healer 2':
+                        character.object_type = ObjectType.TURPIS_GENERIC_HEALER
+                    case 'Turpis Tank' | 'Turpis Tank 2':
+                        character.object_type = ObjectType.TURPIS_GENERIC_TANK
 
     return locations
 

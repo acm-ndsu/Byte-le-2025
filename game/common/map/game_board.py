@@ -319,7 +319,6 @@ class GameBoard(GameObject):
         goc: GameObjectContainer = GameObjectContainer([to_place])
         self.game_map[coords] = goc
 
-
     def remove_coordinate(self, coords: Vector) -> None:
         """
         Removes the given coordinate from the game map.
@@ -514,8 +513,8 @@ class GameBoard(GameObject):
         result: list[tuple[Character | None, Character | None]] = []
 
         # easy access to both teams
-        uroda_team: list[Character] = [char for char in uroda_team_manager.team] #if not char.took_action]
-        turpis_team: list[Character] = [char for char in turpis_team_manager.team] #if not char.took_action]
+        uroda_team: list[Character] = [char for char in uroda_team_manager.team]  # if not char.took_action]
+        turpis_team: list[Character] = [char for char in turpis_team_manager.team]  # if not char.took_action]
 
         # pair the characters; the ordered pair matters, so uroda will be first in the tuples
         for index in range(max(len(uroda_team), len(turpis_team))):
@@ -573,22 +572,27 @@ class GameBoard(GameObject):
 
     def __from_json_helper(self, data: dict) -> GameObject:
         temp: ObjectType = ObjectType(data['object_type'])
+
         match temp:
             case ObjectType.TILE:
                 return Tile().from_json(data)
             case ObjectType.WALL:
                 return Wall().from_json(data)
-            case ObjectType.LEADER:
+            case (ObjectType.ANAHITA | ObjectType.BERRY | ObjectType.FULTRA |
+                  ObjectType.NINLIL | ObjectType.CALMUS | ObjectType.IRWIN):
                 return Leader().from_json(data)
-            case ObjectType.GENERIC_ATTACKER:
+            case ObjectType.URODA_GENERIC_ATTACKER | ObjectType.TURPIS_GENERIC_ATTACKER:
                 return GenericAttacker().from_json(data)
-            case ObjectType.GENERIC_HEALER:
+            case ObjectType.URODA_GENERIC_HEALER | ObjectType.TURPIS_GENERIC_HEALER:
                 return GenericHealer().from_json(data)
-            case ObjectType.GENERIC_TANK:
+            case ObjectType.URODA_GENERIC_TANK | ObjectType.TURPIS_GENERIC_TANK:
                 return GenericTank().from_json(data)
+            case ObjectType.GENERIC_TRASH:
+                return GenericTrash().from_json(data)
             case _:
                 raise ValueError(
-                    f'The object type of the object is not handled properly. The object type passed in is {temp}.')
+                    f'The object type of the object is not handled properly. The object type passed in is {temp}. The '
+                    f'data passed in is:\n{data}')
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)

@@ -29,6 +29,15 @@ class TestMasterController(unittest.TestCase):
                                                        generate_generic_tank('Turpis Tank 2')],
                                                       country_type=CountryType.TURPIS)
 
+        # assign object types
+        self.team_manager1.team[0].object_type = ObjectType.URODA_GENERIC_HEALER
+        self.team_manager1.team[1].object_type = ObjectType.NINLIL
+        self.team_manager1.team[2].object_type = ObjectType.URODA_GENERIC_HEALER
+
+        self.team_manager2.team[0].object_type = ObjectType.TURPIS_GENERIC_TANK
+        self.team_manager2.team[1].object_type = ObjectType.FULTRA
+        self.team_manager2.team[2].object_type = ObjectType.TURPIS_GENERIC_TANK
+
         # set every character's selected move to be their normal move
         for char in self.team_manager1.team + self.team_manager2.team:
             char.selected_move = char.get_nm()

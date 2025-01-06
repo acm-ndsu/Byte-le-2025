@@ -22,6 +22,11 @@ class TestTeamManager(unittest.TestCase):
         self.team_manager2: TeamManager = TeamManager([self.leader, self.attacker, self.healer],
                                                       CountryType.TURPIS)
 
+        # set the object types
+        self.leader.object_type = ObjectType.IRWIN
+        self.attacker.object_type = ObjectType.URODA_GENERIC_ATTACKER
+        self.healer.object_type = ObjectType.URODA_GENERIC_HEALERc
+
         self.swap_controller: SwapController = SwapController()
 
     def test_init_default(self) -> None:
@@ -87,7 +92,6 @@ class TestTeamManager(unittest.TestCase):
         data: dict = self.team_manager.to_json()
         team_manager: TeamManager = TeamManager().from_json(data)
         self.assertEqual(team_manager.object_type, self.team_manager.object_type)
-        # self.assertEqual(team_manager.team, self.team_manager.team)
         self.assertEqual(team_manager.country_type, self.team_manager.country_type)
         self.assertEqual(team_manager.score, self.team_manager.score)
 

@@ -31,8 +31,12 @@ def generate_anahita() -> Leader:
     defense: DefenseStat = DefenseStat(30)
     spd: SpeedStat = SpeedStat(50)
 
-    return Leader(name='Anahita', character_type=CharacterType.HEALER, health=hp, attack=atk, defense=defense,
-                  speed=spd, moveset=moves)
+    anahita: Leader = Leader(name='Anahita', character_type=CharacterType.HEALER, health=hp, attack=atk,
+                             defense=defense, speed=spd, moveset=moves)
+
+    anahita.object_type = ObjectType.ANAHITA
+
+    return anahita
 
 
 def generate_berry() -> Leader:
@@ -55,8 +59,14 @@ def generate_berry() -> Leader:
     atk: AttackStat = AttackStat(1)
     defense: DefenseStat = DefenseStat(50)
     spd: SpeedStat = SpeedStat(69)
-    return Leader(name='Berry', character_type=CharacterType.HEALER, health=hp, attack=atk, defense=defense, speed=spd,
-                  moveset=moves)
+
+    berry: Leader = Leader(name='Berry', character_type=CharacterType.HEALER, health=hp, attack=atk, defense=defense,
+                           speed=spd,
+                           moveset=moves)
+
+    berry.object_type = ObjectType.BERRY
+
+    return berry
 
 
 def generate_fultra() -> Leader:
@@ -79,8 +89,13 @@ def generate_fultra() -> Leader:
 
     moves: Moveset = Moveset((nm, s1, s2))
 
-    return Leader(name='Fultra', character_type=CharacterType.ATTACKER, health=hp, attack=atk, defense=defense,
-                  speed=spd, moveset=moves)
+    fultra: Leader = Leader(name='Fultra', character_type=CharacterType.ATTACKER, health=hp, attack=atk,
+                            defense=defense,
+                            speed=spd, moveset=moves)
+
+    fultra.object_type = ObjectType.FULTRA
+
+    return fultra
 
 
 def generate_ninlil() -> Leader:
@@ -92,7 +107,8 @@ def generate_ninlil() -> Leader:
 
     s2_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-5,
                                            stat_to_affect=ObjectType.SPEED_STAT)
-    s2: Attack = Attack(name='Tiny Titan', target_type=TargetType.SINGLE_OPP, cost=5, effect=s2_effect, damage_points=15)
+    s2: Attack = Attack(name='Tiny Titan', target_type=TargetType.SINGLE_OPP, cost=5, effect=s2_effect,
+                        damage_points=15)
 
     hp: int = 46
     atk: AttackStat = AttackStat(47)
@@ -101,8 +117,13 @@ def generate_ninlil() -> Leader:
 
     moves: Moveset = Moveset((nm, s1, s2))
 
-    return Leader(name='Ninlil', character_type=CharacterType.ATTACKER, health=hp, attack=atk, defense=defense,
-                  speed=spd, moveset=moves)
+    ninlil: Leader = Leader(name='Ninlil', character_type=CharacterType.ATTACKER, health=hp, attack=atk,
+                            defense=defense,
+                            speed=spd, moveset=moves)
+
+    ninlil.object_type = ObjectType.NINLIL
+
+    return ninlil
 
 
 def generate_calmus() -> Leader:
@@ -124,8 +145,12 @@ def generate_calmus() -> Leader:
     defense: DefenseStat = DefenseStat(35)
     spd: SpeedStat = SpeedStat(20)
 
-    return Leader(name='Calmus', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
-                  speed=spd, moveset=moves)
+    calmus: Leader = Leader(name='Calmus', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
+                            speed=spd, moveset=moves)
+
+    calmus.object_type = ObjectType.CALMUS
+
+    return calmus
 
 
 def generate_irwin() -> Leader:
@@ -146,8 +171,12 @@ def generate_irwin() -> Leader:
 
     moves: Moveset = Moveset((nm, s1, s2))
 
-    return Leader(name='Irwin', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
-                  speed=spd, moveset=moves)
+    irwin: Leader = Leader(name='Irwin', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
+                           speed=spd, moveset=moves)
+
+    irwin.object_type = ObjectType.IRWIN
+
+    return irwin
 
 
 def generate_generic_attacker(name: str = 'Attacker') -> GenericAttacker:
