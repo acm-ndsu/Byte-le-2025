@@ -37,11 +37,14 @@ class TestSwapController(unittest.TestCase):
                                                           Vector(0, 1): [self.client.team_manager.team[1]],
                                                           Vector(0, 2): [self.client.team_manager.team[2]]}
         self.game_board: GameBoard = GameBoard(0, Vector(2, 3), self.locations,
-                                               False, self.client.team_manager)
+                                               False, self.client.team_manager, TeamManager())
         self.game_board.generate_map()
 
     # tests for swap up
     def test_swap_up_character(self) -> None:
+        # set the active pair index
+        self.game_board.active_pair_index = 2
+
         self.client.team_manager.team[0].took_action = True
         self.client.team_manager.team[1].took_action = True
         self.client.team_manager.team[2].took_action = False
@@ -54,7 +57,20 @@ class TestSwapController(unittest.TestCase):
         self.assertEqual(self.game_board.get_characters(CountryType.URODA)[Vector(0, 2)].name,
                          'Count Leopold Von Liechtenstein III')
 
+        # ensure the team manager references for all affected characters are synchronized
+        self.assertEqual(self.team_manager.get_character('Bob').position, Vector(0, 1))
+        self.assertEqual(self.team_manager.get_character(
+            'Count Leopold Von Liechtenstein III').position, Vector(0, 2))
+
+        # now ensure the ordered_teams references of the characters are synced
+        self.assertEqual(self.game_board.get_char_from_ordered_teams('Bob').position, Vector(0, 1))
+        self.assertEqual(self.game_board.get_char_from_ordered_teams('Count Leopold Von Liechtenstein III').position,
+                         Vector(0, 2))
+
     def test_swap_up_none(self) -> None:
+        # set the active pair index
+        self.game_board.active_pair_index = 2
+
         self.game_board.remove_coordinate(self.client.team_manager.team.pop(1).position)
         self.client.team_manager.team[0].took_action = True
         self.client.team_manager.team[1].took_action = False
@@ -66,7 +82,14 @@ class TestSwapController(unittest.TestCase):
         with self.assertRaises(KeyError):
             self.game_board.get_characters(CountryType.URODA)[Vector(0, 2)].name
 
+        # ensure the team manager and ordered_teams references didn't change
+        self.assertEqual(self.team_manager.get_character('Bob').position, Vector(0, 1))
+        self.assertEqual(self.game_board.get_char_from_ordered_teams('Bob').position, Vector(0, 1))
+
     def test_swap_up_fail(self) -> None:
+        # set the active pair index
+        self.game_board.active_pair_index = 0
+
         self.client.team_manager.team[0].took_action = False
         self.client.team_manager.team[1].took_action = True
         self.client.team_manager.team[2].took_action = True
@@ -76,8 +99,15 @@ class TestSwapController(unittest.TestCase):
         self.assertEqual(self.client.team_manager.team[0].position, Vector(0, 0))
         self.assertEqual(self.game_board.get_characters(CountryType.URODA)[Vector(0, 0)].name, 'Reginald')
 
+        # ensure the team manager and ordered_teams references didn't change
+        self.assertEqual(self.team_manager.get_character('Reginald').position, Vector(0, 0))
+        self.assertEqual(self.game_board.get_char_from_ordered_teams('Reginald').position, Vector(0, 0))
+
     # tests for swap down
     def test_swap_down_character(self) -> None:
+        # set the active pair index
+        self.game_board.active_pair_index = 1
+
         self.client.team_manager.team[0].took_action = True
         self.client.team_manager.team[1].took_action = False
         self.client.team_manager.team[2].took_action = True
@@ -90,7 +120,20 @@ class TestSwapController(unittest.TestCase):
         self.assertEqual(self.game_board.get_characters(CountryType.URODA)[Vector(0, 2)].name,
                          'Count Leopold Von Liechtenstein III')
 
+        # ensure the team manager references for all affected characters are synchronized
+        self.assertEqual(self.team_manager.get_character('Bob').position, Vector(0, 1))
+        self.assertEqual(self.team_manager.get_character(
+            'Count Leopold Von Liechtenstein III').position, Vector(0, 2))
+
+        # now ensure the ordered_teams references of the characters are synced
+        self.assertEqual(self.game_board.get_char_from_ordered_teams('Bob').position, Vector(0, 1))
+        self.assertEqual(self.game_board.get_char_from_ordered_teams('Count Leopold Von Liechtenstein III').position,
+                         Vector(0, 2))
+
     def test_swap_down_none(self) -> None:
+        # set the active pair index
+        self.game_board.active_pair_index = 0
+
         self.game_board.remove_coordinate(self.client.team_manager.team.pop(1).position)
         self.client.team_manager.team[0].took_action = False
         self.client.team_manager.team[1].took_action = True
@@ -102,7 +145,17 @@ class TestSwapController(unittest.TestCase):
         with self.assertRaises(KeyError):
             self.game_board.get_characters(CountryType.URODA)[Vector(0, 0)].name
 
+        # ensure the team manager references for all affected characters are synchronized
+        self.assertEqual(self.team_manager.get_character('Reginald').position, Vector(0, 1))
+        self.assertTrue(self.team_manager.get_character('Count Leopold Von Liechtenstein III') is None)
+
+        # now ensure the ordered_teams references of the character is synced
+        self.assertEqual(self.game_board.get_char_from_ordered_teams('Reginald').position, Vector(0, 1))
+
     def test_swap_down_fail(self) -> None:
+        # set the active pair index
+        self.game_board.active_pair_index = 2
+
         self.client.team_manager.team[0].took_action = True
         self.client.team_manager.team[1].took_action = True
         self.client.team_manager.team[2].took_action = False
@@ -111,3 +164,7 @@ class TestSwapController(unittest.TestCase):
 
         self.assertEqual(self.client.team_manager.team[2].position, Vector(0, 2))
         self.assertEqual(self.game_board.get_characters(CountryType.URODA)[Vector(0, 2)].name, 'Bob')
+
+        # ensure the team manager and ordered_teams references didn't change
+        self.assertEqual(self.team_manager.get_character('Bob').position, Vector(0, 2))
+        self.assertEqual(self.game_board.get_char_from_ordered_teams('Bob').position, Vector(0, 2))

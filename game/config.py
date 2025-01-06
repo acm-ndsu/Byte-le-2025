@@ -78,7 +78,7 @@ ATTACK_MAXIMUM = 100                                                # The highes
 DEFENSE_MAXIMUM = 75                                                # The highest the Defense stat can reach
 SPEED_MAXIMUM = 100                                                 # The highest the Speed stat can reach
 
-SPECIAL_POINT_LIMIT = 5                                               # The highest amount of Special Points attainable
+SPECIAL_POINT_LIMIT = 5                                             # The highest amount of Special Points attainable
 
 MINIMUM_DAMAGE = 1                                                  # Base damage to be dealt to prevent negative ints
 

@@ -113,9 +113,10 @@ class TeamManager(GameObject):
     # Method to sort team based on character speed, fastest to slowest (descending order)
     def speed_sort(self) -> None:
         """
-        Sorts the team by the speed stat in descending order.
+        Sorts the team by the speed stat and rank type in descending order. If a Leader and a Generic have the same
+        speed and are on the same team, the leader will take its action first.
         """
-        self.team = sorted(self.team, key=lambda character: character.speed, reverse=True)
+        self.team = sorted(self.team, key=lambda character: (character.speed, character.rank_type.value), reverse=True)
 
     # Method to filter the team by a character type
     def filter_by_type(self, character_type: CharacterType) -> list[Character]:
@@ -128,13 +129,10 @@ class TeamManager(GameObject):
         """
         Returns the first character in the team that hasn't taken its turn.
         """
-        for character in self.team:
-            if not character.took_action and not character.is_dead:
-                return character
 
-        print(f'Team Manager {self.team_name} has no active character. Current characters: '
-              f'{[(char.name, char.took_action, char.special_points) for char in self.team]}\n'
-              f'Everyone took action: {self.everyone_took_action()}')
+        for character in self.team:
+            if not character.took_action:
+                return character
 
     def update_character(self, character: Character) -> None:
         """
@@ -163,7 +161,7 @@ class TeamManager(GameObject):
                 self.team.remove(character)
 
     def everyone_is_defeated(self) -> bool:
-        return all([character.is_dead for character in self.team])
+        return len(self.dead_team) == 3
 
     def everyone_took_action(self) -> bool:
         return all([character.took_action for character in self.team])
@@ -186,14 +184,15 @@ class TeamManager(GameObject):
                 return Character().from_json(data)
             case ObjectType.GENERIC_TRASH:
                 return GenericTrash().from_json(data)
-            case ObjectType.GENERIC_ATTACKER:
-                return GenericAttacker().from_json(data)
-            case ObjectType.GENERIC_HEALER:
-                return GenericHealer().from_json(data)
-            case ObjectType.GENERIC_TANK:
-                return GenericTank().from_json(data)
-            case ObjectType.LEADER:
+            case (ObjectType.ANAHITA | ObjectType.BERRY | ObjectType.FULTRA |
+                  ObjectType.NINLIL | ObjectType.CALMUS | ObjectType.IRWIN):
                 return Leader().from_json(data)
+            case ObjectType.URODA_GENERIC_ATTACKER | ObjectType.TURPIS_GENERIC_ATTACKER:
+                return GenericAttacker().from_json(data)
+            case ObjectType.URODA_GENERIC_HEALER | ObjectType.TURPIS_GENERIC_HEALER:
+                return GenericHealer().from_json(data)
+            case ObjectType.URODA_GENERIC_TANK | ObjectType.TURPIS_GENERIC_TANK:
+                return GenericTank().from_json(data)
             case _:
                 raise ValueError(
                     f'The object type of the object is not handled properly. The object type passed in is {temp}.')

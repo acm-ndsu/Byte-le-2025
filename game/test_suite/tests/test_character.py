@@ -16,6 +16,23 @@ class TestCharacter(unittest.TestCase):
         self.leader: Leader = Leader('Phil', CharacterType.TANK)
         self.special: Character = Character('Special', CharacterType.TANK, 10, AttackStat(), DefenseStat(20),
                                             SpeedStat(10), Vector(0, 0))
+
+        self.sync_leader: Leader = Leader('Phil', CharacterType.TANK)
+        self.sync_leader.is_dead = True
+        self.sync_leader.took_action = True
+        self.sync_leader.current_health = 5
+        self.sync_leader.max_health = 5
+        self.sync_leader.selected_move = Attack('Synced Attack')
+        self.sync_leader.position = Vector(1, 1)
+        self.sync_leader.attack = AttackStat(5)
+        self.sync_leader.defense = DefenseStat(5)
+        self.sync_leader.speed = SpeedStat(5)
+        self.sync_leader.special_points = 5
+
+        # set the selected move for two characters to test the json
+        self.gen_tank.selected_move = Buff('Ultimate Buff')
+        self.leader.selected_move = Attack('Ultimate Attack')
+
         self.num: int = 100
         self.neg_num: int = -1
         self.none: None = None
@@ -176,7 +193,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.gen_tank.get_s1(), self.moveset.get_s1())
         self.assertEqual(self.gen_tank.get_s2(), self.moveset.get_s2())
 
-    def test_get_opposing_country(self):
+    def test_get_opposing_country(self) -> None:
         # character is Turpis; gen_attacker is Uroda
         self.assertEqual(self.character.get_opposing_country(), CountryType.URODA)
         self.assertEqual(self.gen_attacker.get_opposing_country(), CountryType.TURPIS)
@@ -199,6 +216,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.took_action, self.character.took_action)
         self.assertEqual(char.country_type, self.character.country_type)
         self.assertEqual(char.is_dead, self.character.is_dead)
+        self.assertTrue(char.selected_move is None and self.character.selected_move is None)
 
     def test_to_json_gen_atk(self) -> None:
         data: dict = self.gen_attacker.to_json()
@@ -211,13 +229,14 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.attack, self.gen_attacker.attack)
         self.assertEqual(char.defense.value, self.gen_attacker.defense.value)
         self.assertEqual(char.speed.value, self.gen_attacker.speed.value)
-        self.assertEqual(char.rank, self.gen_attacker.rank)
+        self.assertEqual(char.rank_type, self.gen_attacker.rank_type)
         self.assertEqual(char.special_points, self.gen_attacker.special_points)
         self.assertEqual(char.position, None)
         self.assertTrue(char.moveset == self.gen_attacker.moveset)
         self.assertEqual(char.took_action, self.gen_attacker.took_action)
         self.assertEqual(char.country_type, self.gen_attacker.country_type)
         self.assertEqual(char.is_dead, self.gen_attacker.is_dead)
+        self.assertTrue(char.selected_move is None and self.gen_attacker.selected_move is None)
 
     def test_to_json_gen_heal(self) -> None:
         data: dict = self.gen_healer.to_json()
@@ -230,13 +249,14 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.attack, self.gen_healer.attack)
         self.assertEqual(char.defense.value, self.gen_healer.defense.value)
         self.assertEqual(char.speed.value, self.gen_healer.speed.value)
-        self.assertEqual(char.rank, self.gen_healer.rank)
+        self.assertEqual(char.rank_type, self.gen_healer.rank_type)
         self.assertEqual(char.special_points, self.gen_healer.special_points)
         self.assertEqual(char.position, None)
         self.assertTrue(char.moveset == self.gen_healer.moveset)
         self.assertEqual(char.took_action, self.gen_healer.took_action)
         self.assertEqual(char.country_type, self.gen_healer.country_type)
         self.assertEqual(char.is_dead, self.gen_healer.is_dead)
+        self.assertTrue(char.selected_move is None and self.gen_healer.selected_move is None)
 
     def test_to_json_gen_tank(self) -> None:
         data: dict = self.gen_tank.to_json()
@@ -249,13 +269,14 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.attack, self.gen_tank.attack)
         self.assertEqual(char.defense.value, self.gen_tank.defense.value)
         self.assertEqual(char.speed.value, self.gen_tank.speed.value)
-        self.assertEqual(char.rank, self.gen_tank.rank)
+        self.assertEqual(char.rank_type, self.gen_tank.rank_type)
         self.assertEqual(char.special_points, self.gen_tank.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.took_action, self.gen_tank.took_action)
         self.assertEqual(char.country_type, self.gen_tank.country_type)
         self.assertEqual(char.is_dead, self.gen_tank.is_dead)
         self.assertTrue(char.moveset == self.gen_tank.moveset)
+        self.assertTrue(char.selected_move.name == self.gen_tank.selected_move.name == 'Ultimate Buff')
 
     def test_to_json_leader(self) -> None:
         data: dict = self.leader.to_json()
@@ -268,10 +289,11 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.attack, self.leader.attack)
         self.assertEqual(char.defense.value, self.leader.defense.value)
         self.assertEqual(char.speed.value, self.leader.speed.value)
-        self.assertEqual(char.rank, self.leader.rank)
+        self.assertEqual(char.rank_type, self.leader.rank_type)
         self.assertEqual(char.special_points, self.leader.special_points)
         self.assertEqual(char.position, None)
         self.assertEqual(char.moveset, self.leader.moveset)
         self.assertEqual(char.took_action, self.leader.took_action)
         self.assertEqual(char.country_type, self.leader.country_type)
         self.assertEqual(char.is_dead, self.leader.is_dead)
+        self.assertTrue(char.selected_move.name == self.leader.selected_move.name == 'Ultimate Attack')
