@@ -25,7 +25,7 @@ class TestTeamManager(unittest.TestCase):
         # set the object types
         self.leader.object_type = ObjectType.IRWIN
         self.attacker.object_type = ObjectType.URODA_GENERIC_ATTACKER
-        self.healer.object_type = ObjectType.URODA_GENERIC_HEALERc
+        self.healer.object_type = ObjectType.URODA_GENERIC_HEALER
 
         self.swap_controller: SwapController = SwapController()
 

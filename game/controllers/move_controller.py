@@ -5,15 +5,6 @@ from game.common.team_manager import *
 from game.config import DEFEATED_SCORE
 from game.controllers.controller import Controller
 
-"""
-NOTES FOR NEW MOVE CONTROLLER
-
-1. After a character from the ordered team tuple executes it's move (if applicable), set its selected move to be None
-2. Always check if a character in the tuple has a selected move. If not, don't perform any logic for it
-3. After logic is performed on a pair, remove that pair from the list of the ordered team
-4. The game board will need to check at the end of every term if the `ordered_team` list is empty. If so, reorder the teams
-"""
-
 
 class MoveController(Controller):
     """

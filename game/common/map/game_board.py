@@ -129,7 +129,6 @@ class GameBoard(GameObject):
         self.locations: dict | None = locations
         self.walled: bool = walled
 
-        # NEED TO FIND A WAY TO PROTECT THIS PROPERTY
         self.ordered_teams: list[tuple[Character | None, Character | None]] = []
 
         # call order teams to order them immediately when the gameboard is created
