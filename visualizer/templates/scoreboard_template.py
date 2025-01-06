@@ -20,7 +20,7 @@ class ScoreboardTemplate(InfoTemplate):
                                              position=Vector.add_vectors(topleft, Vector(x=252, y=9)))
 
     def recalc_animation(self, turn_log: dict) -> None:
-        clients = sorted(turn_log['clients'], key=lambda client: client.get('team_manager', {'country': 0})['country'])
+        clients = sorted(turn_log['clients'], key=lambda client: client.get('team_manager', {'country_type': 0})['country_type'])
         scores: list[int] = [client['team_manager']['score'] if client['team_manager'] else 0 for client in clients]
         turn = turn_log['tick']
 

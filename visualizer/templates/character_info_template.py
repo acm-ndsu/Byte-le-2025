@@ -62,12 +62,11 @@ class CharacterInfoTemplate(InfoTemplate):
                                     position=Vector.add_vectors(topleft, Vector(x=287, y=106)))
 
     def recalc_animation(self, turn_log: dict) -> None:
-
         # Get character we are recalculating
         team: list[Character] = turn_log['clients']['team_manager']['team'] \
-            if turn_log['clients']['team_manager']['country'] == self.country else None
+            if turn_log['clients']['team_manager']['country_type'] == self.country else None
         dead_team: list[Character] = turn_log['clients']['team_manager']['dead_team'] \
-            if turn_log['clients']['team_manager']['country'] == self.country else None
+            if turn_log['clients']['team_manager']['country_type'] == self.country else None
 
         character: Character
         if self.rank_type == RankType.LEADER:

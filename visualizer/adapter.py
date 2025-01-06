@@ -7,6 +7,7 @@ from game.utils.vector import Vector
 from game.common.enums import ObjectType
 from visualizer.config import Config
 from visualizer.bytesprites.charactersBS import CharactersBS
+from visualizer.bytesprites.tileBS import TileBS
 from visualizer.templates.scoreboard_template import ScoreboardTemplate
 from visualizer.templates.team_info_template import TeamInfoTemplate
 from visualizer.utils.text import Text
@@ -110,19 +111,20 @@ class Adapter:
         :return: dict[int, Callable[[pygame.Surface], ByteSprite]]
         """
         return {
-            ObjectType.ANAHITA: CharactersBS.create_anahita_bytesprite,
-            ObjectType.BERRY: CharactersBS.create_berry_bytesprite,
-            ObjectType.CALMUS: CharactersBS.create_calmus_bytesprite,
-            ObjectType.FULTRA: CharactersBS.create_fultra_bytesprite,
-            ObjectType.IRWIN: CharactersBS.create_irwin_bytesprite,
-            ObjectType.NINLIL: CharactersBS.create_ninlil_bytesprite,
-            ObjectType.URODA_GENERIC_ATTACKER: CharactersBS.create_uroda_gen_attacker_bytesprite,
-            ObjectType.URODA_GENERIC_HEALER: CharactersBS.create_uroda_gen_healer_bytesprite,
-            ObjectType.URODA_GENERIC_TANK: CharactersBS.create_uroda_gen_tank_bytesprite,
-            ObjectType.TURPIS_GENERIC_ATTACKER: CharactersBS.create_turpis_gen_attack_bytesprite,
-            ObjectType.TURPIS_GENERIC_HEALER: CharactersBS.create_turpis_gen_healer_bytesprite,
-            ObjectType.TURPIS_GENERIC_TANK: CharactersBS.create_turpis_gen_tank_bytesprite,
-            ObjectType.GENERIC_TRASH: CharactersBS.create_gen_trash_bytesprite
+            ObjectType.TILE.value: TileBS.create_bytesprite,
+            ObjectType.ANAHITA.value: CharactersBS.create_anahita_bytesprite,
+            ObjectType.BERRY.value: CharactersBS.create_berry_bytesprite,
+            ObjectType.CALMUS.value: CharactersBS.create_calmus_bytesprite,
+            ObjectType.FULTRA.value: CharactersBS.create_fultra_bytesprite,
+            ObjectType.IRWIN.value: CharactersBS.create_irwin_bytesprite,
+            ObjectType.NINLIL.value: CharactersBS.create_ninlil_bytesprite,
+            ObjectType.URODA_GENERIC_ATTACKER.value: CharactersBS.create_uroda_gen_attacker_bytesprite,
+            ObjectType.URODA_GENERIC_HEALER.value: CharactersBS.create_uroda_gen_healer_bytesprite,
+            ObjectType.URODA_GENERIC_TANK.value: CharactersBS.create_uroda_gen_tank_bytesprite,
+            ObjectType.TURPIS_GENERIC_ATTACKER.value: CharactersBS.create_turpis_gen_attack_bytesprite,
+            ObjectType.TURPIS_GENERIC_HEALER.value: CharactersBS.create_turpis_gen_healer_bytesprite,
+            ObjectType.TURPIS_GENERIC_TANK.value: CharactersBS.create_turpis_gen_tank_bytesprite,
+            ObjectType.GENERIC_TRASH.value: CharactersBS.create_gen_trash_bytesprite
         }
 
     def render(self) -> None:

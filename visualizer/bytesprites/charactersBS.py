@@ -31,7 +31,7 @@ class CharactersBS(ByteSpriteFactory):
             temp_spritesheet = spritesheets[0]
 
         # If company is 1 (uroda), flip the sprites to face right
-        if data.get('country') == 1:
+        if data.get('country_type') == 1:
             temp_spritesheet = [pygame.transform.flip(sprite, True, False) for sprite in temp_spritesheet]
 
         return temp_spritesheet
@@ -40,32 +40,32 @@ class CharactersBS(ByteSpriteFactory):
 # Separate create bytesprite methods for each of the characters
     @staticmethod
     def create_anahita_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/anahita.png'), 7, 16,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/anahita.png'), 7, 19,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_berry_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/berry.png'), 7, 16,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/berry.png'), 7, 20,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_calmus_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/calmus.png'), 7, 16,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/calmus.png'), 7, 23,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_fultra_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/fultra.png'), 7, 16,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/fultra.png'), 7, 21,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_irwin_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/irwin.png'), 7, 16,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/irwin.png'), 7, 24,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_ninlil_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/ninlil.png'), 7, 16,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/ninlil.png'), 7, 22,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
@@ -85,20 +85,20 @@ class CharactersBS(ByteSpriteFactory):
     
     @staticmethod
     def create_turpis_gen_attack_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/turpis_gen_attacker.png'), 7, 13,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/turpis_gen_attacker.png'), 7, 15,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
     
     @staticmethod
     def create_turpis_gen_healer_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/turpis_gen_healer.png'), 7, 13,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/turpis_gen_healer.png'), 7, 16,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
     
     @staticmethod
     def create_turpis_gen_tank_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/turpis_gen_tank.png'), 7, 13,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/turpis_gen_tank.png'), 7, 17,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))
 
     @staticmethod
     def create_gen_trash_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/gen_trash.png'), 7, 13,
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/gen_trash.png'), 7, 18,
                           CharactersBS.update, colorkey=pygame.Color(255, 0, 255))

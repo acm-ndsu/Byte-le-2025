@@ -23,6 +23,7 @@ class Headshot(pygame.sprite.Sprite):
             'uroda_generic_healer': pygame.image.load(os.path.join(os.getcwd(),'visualizer/images/staticsprites/headshot/uroda_generic_healer_headshot.png')),
             'uroda_generic_' + GENERIC_TRASH_NAME.lower(): pygame.image.load(os.path.join(os.getcwd(),'visualizer/images/staticsprites/headshot/generic_trash_headshot.png')),
             'turpis_generic_' + GENERIC_TRASH_NAME.lower(): pygame.image.load(os.path.join(os.getcwd(), 'visualizer/images/staticsprites/headshot/generic_trash_headshot.png')),
+            'generic_trash': pygame.image.load(os.path.join(os.getcwd(), 'visualizer/images/staticsprites/headshot/generic_trash_headshot.png')),
         }
 
         self.image: pygame.Surface = self.images['generic_trash']

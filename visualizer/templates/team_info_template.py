@@ -35,7 +35,7 @@ class TeamInfoTemplate(InfoTemplate):
     def recalc_animation(self, turn_log: dict) -> None:
         team_name: str = [client['team_name']
                           for client in turn_log['clients']
-                          if client['team_manager']['country'] == self.country][0]
+                          if client['team_manager']['country_type'] == self.country][0]
         self.country_text.text = f'{"Uroda" if self.country == 1 else "Turpis"}: {team_name}'[:30]
         self.character1.recalc_animation(turn_log)
         self.character2.recalc_animation(turn_log)

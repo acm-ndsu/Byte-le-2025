@@ -94,7 +94,6 @@ class Basic(MenuTemplate):
     def __init__(self, screen: pygame.Surface, font: str, text_color: str, button_colors: ButtonColors, title: str):
         super().__init__(screen, font, text_color, button_colors)
         self.title: Text = Text(screen, title, 48, color=self.text_color, font_name=self.font)
-        print(self.font)
         self.title.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
                                                     Vector(0, -100)).as_tuple()
 
