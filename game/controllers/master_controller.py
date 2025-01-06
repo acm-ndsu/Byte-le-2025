@@ -6,8 +6,9 @@ from game.common.player import Player
 from game.common.team_manager import TeamManager
 from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN, WIN_SCORE, DIFFERENTIAL_BONUS
 from game.controllers.controller import Controller
-from game.controllers.move_controller import MoveController
 from game.controllers.swap_controller import SwapController
+from game.controllers.select_move_controller import SelectMoveController
+from game.controllers.move_controller import MoveController
 
 
 class MasterController(Controller):
@@ -49,6 +50,7 @@ class MasterController(Controller):
         self.turn: int = 1
         self.current_world_data: dict = None
         self.swap_controller: SwapController = SwapController()
+        self.select_move_controller: SelectMoveController = SelectMoveController()
         self.move_controller: MoveController = MoveController()
 
     # Receives all clients for the purpose of giving them the objects they will control
@@ -56,6 +58,9 @@ class MasterController(Controller):
         # the clients and their team managers will match up, so assign the client their correct team manager
         for iteration, client in enumerate(clients):
             client.team_manager = team_managers[iteration]
+
+            # sort the team manager by speed
+            client.team_manager.speed_sort()
 
     # Generator function. Given a key:value pair where the key is the identifier for the current world and the value is
     # the state of the world, returns the key that will give the appropriate world information
@@ -98,12 +103,31 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, clients: list[Player], turn):
+        gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
+
+        uroda_team_manager: TeamManager = clients[0].team_manager if (
+                clients[0].team_manager.country_type == CountryType.URODA) else clients[1].team_manager
+
+        turpis_team_manager: TeamManager = clients[0].team_manager if (
+                clients[0].team_manager.country_type == CountryType.TURPIS) else clients[1].team_manager
+
+        # order the teams if it's the first turn so the game can start
+        if turn == 1:
+            gameboard.order_teams(uroda_team_manager, turpis_team_manager)
+
+        # increment the active_pair_index for the next turn
+        gameboard.active_pair_index += 1
+
+        # start by organizing the dead characters that died last turn if applicable
+        gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
+
+        # reset the turn info string for new information
+        gameboard.turn_info = ''
+
         for client in clients:
             # set each character's state to 'idle' in the client's team manager
             for character in client.team_manager.team:
                 character.state = 'idle'
-
-            gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
 
             # if the team is defeated, move on
             if client.team_manager.everyone_is_defeated():
@@ -113,31 +137,14 @@ class MasterController(Controller):
             for i in range(MAX_NUMBER_OF_ACTIONS_PER_TURN):
                 try:
                     self.swap_controller.handle_actions(client.actions[i], client, gameboard)
-                    self.move_controller.handle_actions(client.actions[i], client, gameboard)
+                    self.select_move_controller.handle_actions(client.actions[i], client, gameboard)
                 except IndexError:
                     pass
 
-            # update the game board's team manager references
-            gameboard.update_team_managers()
+        self.move_controller.handle_logic(clients, gameboard, turn)
 
-            # to ensure the clients receive the updates for their characters, loop over the two and reassign their
-            # team managers to be the game board references
-            # call the variable client_ to not get confused with the outer for loop
-            # this for loop needs to happen every turn
-            for client_ in clients:
-                # get the client's score before it is overwritten
-                client_score: int = client_.team_manager.score
-
-                if client_.team_manager.country_type == CountryType.URODA:
-                    client_.team_manager = gameboard.uroda_team_manager
-                else:
-                    client_.team_manager = gameboard.turpis_team_manager
-
-                client_.team_manager.score = client_score
-
-                # remove any dead characters off the game map
-                gameboard.remove_dead(client.team_manager.dead_team)
-
+        # loop again to handle tasks after all logic is handled for the turn
+        for client in clients:
             # if everyone took their action in the given team manager, set their took_action bool to False
             if client.team_manager.everyone_took_action():
                 for character in client.team_manager.team:
@@ -146,8 +153,13 @@ class MasterController(Controller):
                 # ensure the team is ordered by speed after everyone took their turn
                 client.team_manager.speed_sort()
 
-            # update the current world json by setting it to the game board's updated state
-            self.current_world_data['game_board'] = gameboard.to_json()
+        # repopulate the ordered_teams property if the active_pair_index is the length of the list and reset that value
+        if gameboard.active_pair_index == len(gameboard.ordered_teams) - 1:
+            gameboard.order_teams(uroda_team_manager, turpis_team_manager)
+            gameboard.active_pair_index = -1
+
+        # update the current world json by setting it to the game board's updated state
+        self.current_world_data['game_board'] = gameboard.to_json()
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):
@@ -169,6 +181,7 @@ class MasterController(Controller):
 
         # add the differential bonus to both teams (150 * # of alive characters)
         client1.team_manager.score += DIFFERENTIAL_BONUS * len(client1.team_manager.team)
+
         client2.team_manager.score += DIFFERENTIAL_BONUS * len(client2.team_manager.team)
 
         # client1 is the winner if client2's team is all dead

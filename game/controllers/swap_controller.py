@@ -17,31 +17,57 @@ class SwapController(Controller):
         tries to move into anything that can't be occupied by something, they won't move.
     """
 
-    def __init__(self):
-        super().__init__()
-
     def handle_actions(self, action: ActionType, client: Player, world: GameBoard) -> None:
         characters_pos: dict[Vector, Character] = world.get_characters(client.team_manager.country_type)
+
+        active_chars: tuple[Character | None, Character | None] = world.get_active_pair()
+
+        # index will be 0 if Uroda, 1 if Turpis
+        tuple_index_to_use: int = client.team_manager.country_type.value - 1
+
+        active_char_from_ot: Character | None = active_chars[tuple_index_to_use]
+
+        # if the active character from the ordered_teams list is None, it's not its turn to do anything yet
+        if active_char_from_ot is None:
+            return
+
         active_character: Character = client.team_manager.get_active_character()
 
+        # if the character from the ordered list is not the same as the team manager's active character, do nothing
+        if active_char_from_ot.name != active_character.name:
+            return
+
         pos_mod: Vector
+
+        # used for describing what the character did in the gameboard's turn_info string
+        swapping_direction: str
 
         # Determine pos_mod based on swapping up or down
         match action:
             case ActionType.SWAP_UP:
                 pos_mod = Vector(x=0, y=-1)
+                swapping_direction = 'up'
             case ActionType.SWAP_DOWN:
                 pos_mod = Vector(x=0, y=1)
+                swapping_direction = 'down'
             case _:  # default case
                 return
 
         # Set active_character's took_action to True as their turn has started
         active_character.took_action = True
 
+        # used in the turn_info string
+        position_before: Vector = active_character.position
+
+        # since the active character is swapping, set its selected move to be none
+        active_character.selected_move = None
+
         new_vector: Vector = Vector.add_vectors(active_character.position, pos_mod)
 
         # If character is attempting to leave the gameboard, prevent it (there is no escape)
-        if new_vector not in world.get_in_bound_coords():
+        if not world.is_valid_coords(new_vector):
+            world.turn_info += (f'\n{active_character.name} tried to swap to coordinate {new_vector} '
+                                f'but couldn\'t be moved off the map!\n')
             return
 
         # Get character to swap to if there is one
@@ -60,4 +86,54 @@ class SwapController(Controller):
         active_character.position = new_vector
         world.place(new_vector, active_character)
 
+        self.__sync_character_references(active_character, swapped_character, client, world)
 
+        world.turn_info += (f'\nStarting {active_character.name}\'s turn!'
+                            f'\n{active_character.name} swapped {swapping_direction} on the map!'
+                            f'\n{active_character.name}\'s position before: {position_before} -> '
+                            f'{active_character.name}\'s position after: {active_character.position}\n')
+
+        if swapped_character is not None:
+            world.turn_info += (f'\n{active_character.name} swapped with {swapped_character.name}!'
+                                f'\n{swapped_character.name}\'s position before: {new_vector} -> '
+                                f'{swapped_character.name}\'s position after: {swapped_character.position}\n')
+
+    def __sync_character_references(self, active_character: Character, swapped_character: Character,
+                                    client: Player, world: GameBoard) -> None:
+        """
+        A helper method to ensure that all character references are synchronized. The controller ensures the
+        character's position is updated and that the game map is updated too, but the same update needs to happen with
+        the gameboard's `ordered_teams` list.
+
+        Then, the swapped character references also need to be synchronized. This is done by finding its
+        `ordered_teams` reference and its TeamManager reference.
+        """
+
+        # updated references for the active character and set that reference's took_action bool to true
+        ot_active_char: Character = world.get_char_from_ordered_teams(active_character.name)
+
+        if ot_active_char is not None:
+            ot_active_char.position = active_character.position
+            ot_active_char.took_action = True
+            ot_active_char.selected_move = None
+
+            # update the team manager reference of the character
+            tm_active_char: Character = client.team_manager.get_character(active_character.name)
+            tm_active_char.position = active_character.position
+            tm_active_char.took_action = True
+            tm_active_char.selected_move = None
+
+        # after all swapping is done, update references for the swapped character if applicable
+        if swapped_character is not None:
+            # syncing the ordered_teams reference of the swapped character
+            ot_swapped_char: Character | None = world.get_char_from_ordered_teams(swapped_character.name)
+
+            # if there is no ordered_team character reference, do nothing
+            if ot_swapped_char is None:
+                return
+
+            ot_swapped_char.position = swapped_character.position
+
+            # now sync the team manager's reference of the swapped character
+            tm_swapped_char: Character = client.team_manager.get_character(swapped_character.name)
+            tm_swapped_char.position = swapped_character.position

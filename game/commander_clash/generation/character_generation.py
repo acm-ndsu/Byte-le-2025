@@ -31,10 +31,12 @@ def generate_anahita() -> Leader:
     defense: DefenseStat = DefenseStat(30)
     spd: SpeedStat = SpeedStat(50)
 
-    leader: Leader = Leader(name='Anahita', character_type=CharacterType.HEALER, health=hp, attack=atk, defense=defense,
-                            speed=spd, moveset=moves)
-    leader.object_type = ObjectType.ANAHITA
-    return leader
+    anahita: Leader = Leader(name='Anahita', character_type=CharacterType.HEALER, health=hp, attack=atk,
+                             defense=defense, speed=spd, moveset=moves)
+
+    anahita.object_type = ObjectType.ANAHITA
+
+    return anahita
 
 
 def generate_berry() -> Leader:
@@ -58,11 +60,13 @@ def generate_berry() -> Leader:
     defense: DefenseStat = DefenseStat(50)
     spd: SpeedStat = SpeedStat(69)
 
-    leader: Leader = Leader(name='Berry', character_type=CharacterType.HEALER, health=hp, attack=atk, defense=defense,
-                            speed=spd,
-                            moveset=moves)
-    leader.object_type = ObjectType.BERRY
-    return leader
+    berry: Leader = Leader(name='Berry', character_type=CharacterType.HEALER, health=hp, attack=atk, defense=defense,
+                           speed=spd,
+                           moveset=moves)
+
+    berry.object_type = ObjectType.BERRY
+
+    return berry
 
 
 def generate_fultra() -> Leader:
@@ -85,11 +89,13 @@ def generate_fultra() -> Leader:
 
     moves: Moveset = Moveset((nm, s1, s2))
 
-    leader: Leader = Leader(name='Fultra', character_type=CharacterType.ATTACKER, health=hp, attack=atk,
+    fultra: Leader = Leader(name='Fultra', character_type=CharacterType.ATTACKER, health=hp, attack=atk,
                             defense=defense,
                             speed=spd, moveset=moves)
-    leader.object_type = ObjectType.FULTRA
-    return leader
+
+    fultra.object_type = ObjectType.FULTRA
+
+    return fultra
 
 
 def generate_ninlil() -> Leader:
@@ -111,11 +117,13 @@ def generate_ninlil() -> Leader:
 
     moves: Moveset = Moveset((nm, s1, s2))
 
-    leader: Leader = Leader(name='Ninlil', character_type=CharacterType.ATTACKER, health=hp, attack=atk,
+    ninlil: Leader = Leader(name='Ninlil', character_type=CharacterType.ATTACKER, health=hp, attack=atk,
                             defense=defense,
                             speed=spd, moveset=moves)
-    leader.object_type = ObjectType.NINLIL
-    return leader
+
+    ninlil.object_type = ObjectType.NINLIL
+
+    return ninlil
 
 
 def generate_calmus() -> Leader:
@@ -137,10 +145,12 @@ def generate_calmus() -> Leader:
     defense: DefenseStat = DefenseStat(35)
     spd: SpeedStat = SpeedStat(20)
 
-    leader: Leader = Leader(name='Calmus', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
+    calmus: Leader = Leader(name='Calmus', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
                             speed=spd, moveset=moves)
-    leader.object_type = ObjectType.CALMUS
-    return leader
+
+    calmus.object_type = ObjectType.CALMUS
+
+    return calmus
 
 
 def generate_irwin() -> Leader:
@@ -161,10 +171,12 @@ def generate_irwin() -> Leader:
 
     moves: Moveset = Moveset((nm, s1, s2))
 
-    leader: Leader = Leader(name='Irwin', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
-                            speed=spd, moveset=moves)
-    leader.object_type = ObjectType.IRWIN
-    return leader
+    irwin: Leader = Leader(name='Irwin', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
+                           speed=spd, moveset=moves)
+
+    irwin.object_type = ObjectType.IRWIN
+
+    return irwin
 
 
 def generate_generic_attacker(name: str = 'Attacker') -> GenericAttacker:
