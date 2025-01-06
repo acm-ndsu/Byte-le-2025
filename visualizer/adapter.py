@@ -14,6 +14,8 @@ from visualizer.utils.text import Text
 from visualizer.bytesprites.bytesprite import ByteSprite
 from visualizer.templates.menu_template import Basic, MenuTemplate
 from visualizer.templates.playback_template import PlaybackTemplate, PlaybackButtons
+from visualizer.sprites.game_backdrop import GameBackdrop
+from visualizer.sprites.main_backdrop import MainBackdrop
 
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
@@ -30,6 +32,8 @@ class Adapter:
         self.config: Config = Config()
         self.bytesprites: list[ByteSprite] = []
         self.populate_bytesprite: pygame.sprite.Group = pygame.sprite.Group()
+        self.main_backdrop: MainBackdrop = MainBackdrop(Vector(x=0, y=0))
+        self.game_backdrop: GameBackdrop = GameBackdrop(Vector(x=426, y=204))
         self.menu: MenuTemplate = Basic(screen, self.config.FONT, self.config.FONT_COLOR_ALT,
                                         self.config.BUTTON_COLORS, 'Commander Clash')
         self.scoreboard = ScoreboardTemplate(screen, Vector(x=38, y=13), Vector(x=1200, y=40), self.config.FONT,
@@ -133,7 +137,12 @@ class Adapter:
         during the playback phase.
         :return: None
         """
-        # self.button.render()
+        # render backdrops first with pygame draw method
+        render_backdrops: pygame.sprite.Group = pygame.sprite.Group()
+        self.main_backdrop.add(render_backdrops)
+        self.game_backdrop.add(render_backdrops)
+        render_backdrops.draw(self.screen)
+
         # any logic for rendering text, buttons, and other visuals
         text = Text(self.screen, f'{self.turn_number:3d} / {self.turn_max:3d}', 48, color=self.config.FONT_COLOR,
                     font_name=self.config.FONT)

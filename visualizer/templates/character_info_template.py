@@ -68,19 +68,23 @@ class CharacterInfoTemplate(InfoTemplate):
 
         character: Character
         if self.rank_type == RankType.LEADER:
-            character = Character().from_json(data=[char for char in team + dead_team if char['rank_type'] == self.rank_type.value][0])
+            character = Character().from_json(
+                data=[char for char in team + dead_team if char['rank_type'] == RankType.LEADER.value][0])
         else:
             if self.second_gen:
-                character = Character().from_json(data=[char for char in team + dead_team if '2' in char['name']][0])
+                character = Character().from_json(data=[char for char in team + dead_team if
+                                                        '2' in char['name'] and char[
+                                                            'rank_type'] == RankType.GENERIC.value][0])
             else:
-                character = Character().from_json(data=[char for char in team + dead_team if '2' not in char['name']][0])
+                character = Character().from_json(data=[char for char in team + dead_team if
+                                                        '2' not in char['name'] and char[
+                                                            'rank_type'] == RankType.GENERIC.value][0])
 
         # Get which headshot to grab
         if self.rank_type == RankType.LEADER:
             self.headshot.character = character.name.split(" ", 1)[1].lower()
         else:
-            self.headshot.character = (f"{CountryType(self.country).name.lower()}_generic_"
-                                       f"{CharacterType(character.character_type).name.lower()}")
+            self.headshot.character = f'{character.name.split(" ", 2)[0].lower()}_generic_{character.name.split(" ", 2)[1].lower()}'
 
         # Get hp and sp of character
         self.hp_bar.hp = int(ceil((float(character.current_health) / float(character.max_health)) * 10))

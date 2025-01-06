@@ -530,6 +530,8 @@ class ByteVisualiser:
         # Run playback buttons method
         self.__playback_controls(button_pressed)
 
+        self.adapter.render()
+
         if self.tick % self.config.NUMBER_OF_FRAMES_PER_TURN == 0:
             # NEXT TURN
             turn: int = self.tick // self.config.NUMBER_OF_FRAMES_PER_TURN + 1
@@ -544,7 +546,6 @@ class ByteVisualiser:
             self.continue_animation()
             self.adapter.continue_animation()
 
-        self.adapter.render()
         pygame.display.flip()
 
         # If recording, save frames into video
