@@ -6,11 +6,10 @@ from game.common.enums import ActionType, CountryType
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import TeamManager
-from game.controllers.master_controller import MasterController
-from game.controllers.move_controller import MoveController
-from game.controllers.swap_controller import SwapController
-from game.utils.vector import Vector
 from game.config import DEFEATED_SCORE
+from game.controllers.master_controller import MasterController
+from game.utils.vector import Vector
+
 
 class TestMasterController(unittest.TestCase):
     """
@@ -21,15 +20,27 @@ class TestMasterController(unittest.TestCase):
 
     def setUp(self) -> None:
         self.master_controller = MasterController()
-        self.swap_controller: SwapController = SwapController()
-        self.move_controller: MoveController = MoveController()
 
+        # speed order pairings: (Uroda Healer, Fultra), (Uroda Healer2, Turpis Tank), (Ninlil, Turpis Tank 2)
         self.team_manager1: TeamManager = TeamManager([generate_generic_healer('Uroda Healer'), generate_ninlil(),
                                                        generate_generic_healer('Uroda Healer 2')],
                                                       country_type=CountryType.URODA)
         self.team_manager2: TeamManager = TeamManager([generate_generic_tank('Turpis Tank'), generate_fultra(),
                                                        generate_generic_tank('Turpis Tank 2')],
                                                       country_type=CountryType.TURPIS)
+
+        # assign object types
+        self.team_manager1.team[0].object_type = ObjectType.URODA_GENERIC_HEALER
+        self.team_manager1.team[1].object_type = ObjectType.NINLIL
+        self.team_manager1.team[2].object_type = ObjectType.URODA_GENERIC_HEALER
+
+        self.team_manager2.team[0].object_type = ObjectType.TURPIS_GENERIC_TANK
+        self.team_manager2.team[1].object_type = ObjectType.FULTRA
+        self.team_manager2.team[2].object_type = ObjectType.TURPIS_GENERIC_TANK
+
+        # set every character's selected move to be their normal move
+        for char in self.team_manager1.team + self.team_manager2.team:
+            char.selected_move = char.get_nm()
 
         # set the country type to turpis for team manager 2
         for char in self.team_manager2.team:
@@ -64,20 +75,14 @@ class TestMasterController(unittest.TestCase):
         self.master_controller.current_world_data = {'game_board': self.gameboard.to_json()}
 
     def test_turn_logic(self) -> None:
-        uroda_active_char_name: str = self.client1.team_manager.get_active_character().name
-        turpis_active_char_name: str = self.client2.team_manager.get_active_character().name
-
         self.master_controller.turn_logic([self.client1, self.client2], 0)
 
-        uroda_active_char: Character = self.client1.team_manager.get_character(uroda_active_char_name)
-        turpis_active_char: Character = self.client2.team_manager.get_character(turpis_active_char_name)
-
         # assert that only the characters that took their turn have the 'took_action' bool set to True
-        self.assertTrue(uroda_active_char.took_action)
+        self.assertTrue(self.team_manager1.team[0].took_action)
         self.assertFalse(self.team_manager1.team[1].took_action)
         self.assertFalse(self.team_manager1.team[2].took_action)
 
-        self.assertTrue(turpis_active_char.took_action)
+        self.assertTrue(self.team_manager2.team[0].took_action)
         self.assertFalse(self.team_manager2.team[1].took_action)
         self.assertFalse(self.team_manager2.team[2].took_action)
 
@@ -96,24 +101,19 @@ class TestMasterController(unittest.TestCase):
         self.assertFalse(self.client2.team_manager.team[2].took_action)
 
     def test_dead_handling(self) -> None:
-        # arrangements for the test
-        t_tank_position: Vector = self.client2.team_manager.get_character('Turpis Tank').position
-
-        # defeat the Turpis Tank and ensure it's handled appropriately
-        self.gameboard.get_character_from(t_tank_position).current_health = 1
+        # set the Turpis Tank health to 1
+        self.team_manager2.team[1].current_health = 1
 
         # generate the game map
         self.gameboard.generate_map()
         self.master_controller.current_world_data = {'game_board': self.gameboard.to_json()}
 
-        self.master_controller.turn_logic([self.client1, self.client2], 0)
+        # execute the turn logic twice so the master controller can call the method to handle dead characters properly
+        for x in range(2):
+            self.master_controller.turn_logic([self.client1, self.client2], 0)
 
         # read the json of the gameboard to receive all recent changes
         self.gameboard = GameBoard().from_json(self.master_controller.current_world_data['game_board'])
-
-        # set the team managers to be the updated versions
-        self.client1.team_manager = self.gameboard.uroda_team_manager
-        self.client2.team_manager = self.gameboard.turpis_team_manager
 
         self.assertTrue(self.client2.team_manager.dead_team[0].name == 'Turpis Tank')
         self.assertTrue(len(self.client2.team_manager.team) == 2)

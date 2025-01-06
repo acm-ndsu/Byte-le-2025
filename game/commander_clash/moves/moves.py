@@ -88,6 +88,15 @@ class Attack(Move, AbstractAttack):
         self.object_type = ObjectType.ATTACK_MOVE
         self.move_type = MoveType.ATTACK
 
+    def __eq__(self, other: Self | int) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+
+        # return if all the attributes match for the two Moves
+        return (self.name == other.name and self.object_type == other.object_type
+                and self.damage_points == other.damage_points and self.cost == other.cost
+                and self.effect == other.effect and self.move_type == other.move_type)
+
 
 class Heal(Move, AbstractHeal):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.ENTIRE_TEAM, cost: int = 0,
@@ -97,6 +106,15 @@ class Heal(Move, AbstractHeal):
         self.heal_points: int = heal_points
         self.object_type = ObjectType.HEAL_MOVE
         self.move_type = MoveType.HEAL
+
+    def __eq__(self, other: Self | int) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+
+        # return if all the attributes match for the two Moves
+        return (self.name == other.name and self.object_type == other.object_type
+                and self.heal_points == other.heal_points and self.cost == other.cost
+                and self.effect == other.effect and self.move_type == other.move_type)
 
 
 class Buff(Move, AbstractBuff):
@@ -110,6 +128,16 @@ class Buff(Move, AbstractBuff):
         self.buff_amount: int = buff_amount
         self.stat_to_affect: ObjectType = stat_to_affect
 
+    def __eq__(self, other: Self | int) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+
+        # return if all the attributes match for the two Moves
+        return (self.name == other.name and self.object_type == other.object_type
+                and self.buff_amount == other.buff_amount and self.cost == other.cost
+                and self.effect == other.effect and self.move_type == other.move_type
+                and self.stat_to_affect == other.stat_to_affect)
+
 
 class Debuff(Move, AbstractDebuff):
     def __init__(self, name: str = '', target_type: TargetType = TargetType.SINGLE_OPP, cost: int = 0,
@@ -122,10 +150,12 @@ class Debuff(Move, AbstractDebuff):
         self.debuff_amount: int = debuff_amount
         self.stat_to_affect: ObjectType = stat_to_affect
 
+    def __eq__(self, other: Self | int) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
 
-class Guard(Move):
-    def __init__(self, name: str = '', cost: int = 1):
-        super().__init__(name, TargetType.ADJACENT_ALLIES, cost)
-
-        self.object_type = ObjectType.GUARD_MOVE
-        self.move_type = MoveType.GUARD
+        # return if all the attributes match for the two Moves
+        return (self.name == other.name and self.object_type == other.object_type
+                and self.debuff_amount == other.debuff_amount and self.cost == other.cost
+                and self.effect == other.effect and self.move_type == other.move_type
+                and self.stat_to_affect == other.stat_to_affect)

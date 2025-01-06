@@ -128,11 +128,18 @@ class GameBoard(GameObject):
         # when passing Vectors as a tuple, end the tuple of Vectors with a comma, so it is recognized as a tuple
         self.locations: dict | None = locations
         self.walled: bool = walled
-        self.uroda_team_manager: TeamManager = uroda_team_manager
-        self.turpis_team_manager: TeamManager = turpis_team_manager
 
-        # NEED TO FIND A WAY TO PROTECT THIS PROPERTY
-        self.order_teams()
+        self.ordered_teams: list[tuple[Character | None, Character | None]] = []
+
+        # call order teams to order them immediately when the gameboard is created
+        self.order_teams(uroda_team_manager, turpis_team_manager)
+
+        self.recently_died: list[Character] = []
+
+        self.turn_info: str = ''
+
+        # -1 indicates no index is selected yet
+        self.active_pair_index: int = -1
 
     @property
     def seed(self) -> int:
@@ -208,29 +215,6 @@ class GameBoard(GameObject):
                 f'It is a(n) {walled.__class__.__name__} with the value of {walled}.')
 
         self.__walled = walled
-
-    def get_team_manager(self, country_type: CountryType = CountryType.URODA) -> TeamManager | None:
-        """
-        Returns a TeamManager based on the given CountryType. Returns None if the managers are None or an
-        invalid enum is given.
-        """
-        if self.uroda_team_manager is None or self.turpis_team_manager is None:
-            return None
-
-        return self.uroda_team_manager if country_type == CountryType.URODA else \
-            self.turpis_team_manager if country_type == CountryType.TURPIS else None
-
-    def get_opposing_team_manager(self, country_type: CountryType = CountryType.URODA) -> TeamManager | None:
-        """
-        Returns the opponent's TeamManager based on the given CountryType. Returns None if the managers are None or an
-        invalid enum is given.
-        """
-
-        if self.uroda_team_manager is None and self.turpis_team_manager is None:
-            return None
-
-        return self.uroda_team_manager if country_type == CountryType.TURPIS else \
-            self.turpis_team_manager if country_type == CountryType.URODA else None
 
     def get_ordered_teams_as_list(self) -> list[Character]:
         """
@@ -334,13 +318,6 @@ class GameBoard(GameObject):
         goc: GameObjectContainer = GameObjectContainer([to_place])
         self.game_map[coords] = goc
 
-    def remove_dead(self, dead: list[Character]) -> None:
-        """
-        Removes the given dead characters off the game map.
-        """
-        for char in dead:
-            self.remove(char.position, char.object_type)
-
     def remove_coordinate(self, coords: Vector) -> None:
         """
         Removes the given coordinate from the game map.
@@ -412,6 +389,9 @@ class GameBoard(GameObject):
 
         return results
 
+    def get_active_pair(self) -> tuple[Character | None, Character | None]:
+        return self.ordered_teams[self.active_pair_index]
+
     def get_characters(self, country: CountryType | None = None) -> dict[Vector, Character]:
         """
         Returns a dictionary of Vector: Character pair.
@@ -433,41 +413,45 @@ class GameBoard(GameObject):
                 isinstance(self.game_map[coords].get_top(), Character) and
                 self.game_map[coords].get_top().country_type == country}
 
-    def update_team_managers(self) -> None:
-        """
-        Updates the team manager references stored by updating each character in their respective team manager based on
-        the updates to the references on the game map.
-        That is, when a character is modified, their reference on the game map is modified, not the game board's
-        team manager references. So, we need to loop to update the characters properly.
-        """
-
-        characters: list[Character] = []
-
-        # using a method that already exists, get any potential characters from every spot on the game map
-        for coord in self.game_map.keys():
-            characters.append(self.get_top(coord))
-
-        # remove any potential None values from the list of characters
-        characters = [character for character in characters if character is not None]
-
-        for character in characters:
-            manager_to_use: TeamManager
-
-            if character.country_type == CountryType.URODA:
-                manager_to_use = self.uroda_team_manager
-            else:
-                manager_to_use = self.turpis_team_manager
-
-            # update the character
-            manager_to_use.update_character(character)
-
-        # update the game board's team manager references to reflect the changes that happened this turn
-        self.uroda_team_manager.organize_dead_characters()
-        self.turpis_team_manager.organize_dead_characters()
-
     def update_character_on_map(self, character: Character) -> None:
         # remove the old instance of the character from the map
         self.replace(character.position, character)
+
+    def clean_up_dead_characters(self, uroda_team_manager, turpis_team_manager) -> None:
+        """
+        Using the `recently_died` list, this will remove every character from the list off the game map and also move
+        them from their respective team manager's `team` list to its `dead_team` list.
+        """
+
+        while len(self.recently_died) > 0:
+            dead_char: Character = self.recently_died.pop(0)
+            team_manager: TeamManager = uroda_team_manager \
+                if dead_char.country_type == CountryType.URODA else turpis_team_manager
+
+            # remove the character from the game map
+            self.remove_coordinate(dead_char.position)
+
+            # add the character to the dead_team list and remove it from the team list
+            team_manager.organize_dead_characters()
+
+            # find the character in the ordered_teams list and remove it from there
+            for index in range(len(self.ordered_teams)):
+                obj1: Character | None = self.ordered_teams[index][0]
+                obj2: Character | None = self.ordered_teams[index][1]
+
+                # if an object is not none and has the same name, create a new tuple and replace the object with None
+                if obj1 is not None and obj1.name == dead_char.name:
+                    self.ordered_teams[index] = (None, obj2)
+
+                if obj2 is not None and obj2.name == dead_char.name:
+                    self.ordered_teams[index] = (obj1, None)
+
+            # reset all characters' took_action bool after a character is removed
+            if team_manager.everyone_took_action():
+                for char in team_manager.team:
+                    char.took_action = False
+
+                team_manager.speed_sort()
 
     def get_character_from(self, coords: Vector) -> Character | None:
         """
@@ -494,16 +478,7 @@ class GameBoard(GameObject):
         """
         return [Vector(x, y) for x in range(self.map_size.x) for y in range(self.map_size.y)]
 
-    def remove_dead_characters(self, dead_chars: list[Character]) -> None:
-        """
-        Removes all dead characters from the map and their respective team managers
-        """
-        for char in dead_chars:
-            self.remove(char.position, char.object_type)
-            character_team_manager: TeamManager = self.get_team_manager(char.country_type)
-            character_team_manager.team.remove(char)
-
-    def order_teams(self) -> None:
+    def order_teams(self, uroda_team_manager: TeamManager, turpis_team_manager: TeamManager) -> None:
         """
         Each turn, at most two characters will take action. It will be each team's next fastest character, assuming
         it hasn't died or taken its action yet.
@@ -530,15 +505,15 @@ class GameBoard(GameObject):
         of the two characters and have it act first.
         """
 
-        if self.uroda_team_manager is None or self.turpis_team_manager is None:
+        if uroda_team_manager is None or turpis_team_manager is None:
             return
 
         # contains the pairs of characters for each team; tuples will contain Character or None values
-        result: list[tuple[..., ...]] = []
+        result: list[tuple[Character | None, Character | None]] = []
 
         # easy access to both teams
-        uroda_team: list[Character] = self.uroda_team_manager.team
-        turpis_team: list[Character] = self.turpis_team_manager.team
+        uroda_team: list[Character] = [char for char in uroda_team_manager.team]  # if not char.took_action]
+        turpis_team: list[Character] = [char for char in turpis_team_manager.team]  # if not char.took_action]
 
         # pair the characters; the ordered pair matters, so uroda will be first in the tuples
         for index in range(max(len(uroda_team), len(turpis_team))):
@@ -551,6 +526,16 @@ class GameBoard(GameObject):
                 result.append((uroda_team[index], turpis_team[index]))
 
         self.ordered_teams = result
+
+    def get_char_from_ordered_teams(self, char_name: str) -> Character | None:
+        """
+        Searches for the character by the given name in the `ordered_teams` list. If the character is not found, None
+        is returned.
+        """
+        for pair in self.ordered_teams:
+            for char in pair:
+                if char is not None and char.name == char_name:
+                    return char
 
     def to_json(self) -> dict:
         data: dict[str, object] = super().to_json()
@@ -566,9 +551,18 @@ class GameBoard(GameObject):
                                     self.locations.values()] if self.locations is not None else None
         data['walled'] = self.walled
         data['event_active'] = self.event_active
-        data['uroda_team_manager'] = self.uroda_team_manager.to_json() if self.uroda_team_manager is not None else None
-        data['turpis_team_manager'] = self.turpis_team_manager.to_json() \
-            if self.turpis_team_manager is not None else None
+
+        # since json doesn't have tuples, convert the list of tuples to a list of lists and convert later
+        data['ordered_teams'] = [
+            [pair[0].to_json() if pair[0] is not None else None,
+             pair[1].to_json() if pair[1] is not None else None]
+            for pair in self.ordered_teams]
+
+        data['recently_died'] = [char.to_json() for char in self.recently_died]
+
+        data['turn_info'] = self.turn_info
+
+        data['active_pair_index'] = self.active_pair_index
 
         return data
 
@@ -577,22 +571,27 @@ class GameBoard(GameObject):
 
     def __from_json_helper(self, data: dict) -> GameObject:
         temp: ObjectType = ObjectType(data['object_type'])
+
         match temp:
             case ObjectType.TILE:
                 return Tile().from_json(data)
             case ObjectType.WALL:
                 return Wall().from_json(data)
-            case ObjectType.LEADER:
+            case (ObjectType.ANAHITA | ObjectType.BERRY | ObjectType.FULTRA |
+                  ObjectType.NINLIL | ObjectType.CALMUS | ObjectType.IRWIN):
                 return Leader().from_json(data)
-            case ObjectType.GENERIC_ATTACKER:
+            case ObjectType.URODA_GENERIC_ATTACKER | ObjectType.TURPIS_GENERIC_ATTACKER:
                 return GenericAttacker().from_json(data)
-            case ObjectType.GENERIC_HEALER:
+            case ObjectType.URODA_GENERIC_HEALER | ObjectType.TURPIS_GENERIC_HEALER:
                 return GenericHealer().from_json(data)
-            case ObjectType.GENERIC_TANK:
+            case ObjectType.URODA_GENERIC_TANK | ObjectType.TURPIS_GENERIC_TANK:
                 return GenericTank().from_json(data)
+            case ObjectType.GENERIC_TRASH:
+                return GenericTrash().from_json(data)
             case _:
                 raise ValueError(
-                    f'The object type of the object is not handled properly. The object type passed in is {temp}.')
+                    f'The object type of the object is not handled properly. The object type passed in is {temp}. The '
+                    f'data passed in is:\n{data}')
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
@@ -614,9 +613,17 @@ class GameBoard(GameObject):
             Vector().from_json(ast.literal_eval(k)): GameObjectContainer().from_json(v)
             for k, v in data['game_map'].items()} if data['game_map'] is not None else None
 
-        self.uroda_team_manager = TeamManager().from_json(data['uroda_team_manager']) \
-            if data['uroda_team_manager'] is not None else None
-        self.turpis_team_manager = TeamManager().from_json(data['turpis_team_manager']) \
-            if data['turpis_team_manager'] is not None else None
+        # this converts the list of lists into a list of tuples while handling none values
+        self.ordered_teams: list[tuple[Character | None, Character | None]] = [
+            (self.__from_json_helper(pair[0]) if pair[0] is not None else None,
+             self.__from_json_helper(pair[1]) if pair[1] is not None else None)
+            for pair in data['ordered_teams']
+        ]
+
+        self.recently_died: list[Character] = [self.__from_json_helper(info) for info in data['recently_died']]
+
+        self.turn_info: str = data['turn_info']
+
+        self.active_pair_index: int = data['active_pair_index']
 
         return self

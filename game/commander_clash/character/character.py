@@ -5,8 +5,8 @@ from game.commander_clash.moves.moves import *
 from game.commander_clash.moves.moveset import Moveset
 from game.common.enums import ObjectType, CharacterType, RankType, CountryType
 from game.common.game_object import GameObject
-from game.utils.vector import Vector
 from game.config import HEALTH_MODIFIER, GENERIC_TRASH_NAME
+from game.utils.vector import Vector
 
 
 class Character(GameObject):
@@ -36,22 +36,29 @@ class Character(GameObject):
         self.took_action: bool = False
         self.country_type: CountryType = country_type
         self.is_dead: bool = False
+        self.selected_move: Move | None = None
 
     def __eq__(self, other: Self | int) -> bool:
         if not isinstance(other, self.__class__):
             return False
 
         # return if all the attributes match for the two characters
-        # to any future devs looking at this, I, Ian King, sincerely apologize for this amalgamation
-        # it was either this or other gross code :( I was short on time, and I was tired
-        # forgive me please, and do better than this...
-        return (self.name == other.name and self.object_type == other.object_type
-                and self.character_type == other.character_type and self.current_health == other.current_health
-                and self.max_health == other.max_health and self.attack == other.attack
-                and self.defense == other.defense and self.speed == other.speed and self.rank_type == other.rank_type
+        return (self.name == other.name
+                and self.object_type == other.object_type
+                and self.character_type == other.character_type
+                and self.current_health == other.current_health
+                and self.max_health == other.max_health
+                and self.attack == other.attack
+                and self.defense == other.defense
+                and self.speed == other.speed
+                and self.rank_type == other.rank_type
                 and self.moveset == other.moveset
-                and self.special_points == other.special_points and self.position == other.position
-                and self.took_action == other.took_action and self.country_type == other.country_type)
+                and self.special_points == other.special_points
+                and self.position == other.position
+                and self.took_action == other.took_action
+                and self.country_type == other.country_type
+                and self.is_dead == other.is_dead
+                and self.selected_move == other.selected_move)
 
     @property
     def name(self) -> str:
@@ -212,6 +219,17 @@ class Character(GameObject):
                              f'{is_dead.__class__.__name__} and has the value of {is_dead}')
         self.__is_dead: bool = is_dead
 
+    @property
+    def selected_move(self) -> Move | None:
+        return self.__selected_move
+
+    @selected_move.setter
+    def selected_move(self, selected_move: Move | None) -> None:
+        if selected_move is not None and not isinstance(selected_move, Move):
+            raise ValueError(f'{self.__class__.__name__}.selected_move must be a Move or None. It is a(n) '
+                             f'{selected_move.__class__.__name__} and has the value of {selected_move}')
+        self.__selected_move: Move | None = selected_move
+
     def get_nm(self):
         return self.moveset.get_nm()
 
@@ -238,14 +256,29 @@ class Character(GameObject):
         data['defense'] = self.defense.to_json()
         data['speed'] = self.speed.to_json()
         data['rank_type'] = self.rank_type.value
-        data['moveset'] = self.moveset.to_json()
         data['special_points'] = self.special_points
-        data['position'] = self.position.to_json() if self.position is not None else None
         data['took_action'] = self.took_action
         data['country_type'] = self.__country_type.value
         data['is_dead'] = self.is_dead
+        data['selected_move'] = self.selected_move.to_json() if self.selected_move is not None else None
+        data['position'] = self.position.to_json() if self.position is not None else None
+        data['moveset'] = self.moveset.to_json()
 
         return data
+
+    def __from_json_helper(self, data) -> Move | None:
+        match ObjectType(data['selected_move']['object_type']):
+            case ObjectType.ATTACK_MOVE:
+                return Attack().from_json(data['selected_move'])
+            case ObjectType.HEAL_MOVE:
+                return Heal().from_json(data['selected_move'])
+            case ObjectType.BUFF_MOVE:
+                return Buff().from_json(data['selected_move'])
+            case ObjectType.DEBUFF_MOVE:
+                return Debuff().from_json(data['selected_move'])
+            case _:
+                raise ValueError(f'{self.__class__.__name__}.__from_json_helper was not able to convert the given '
+                                 f'ObjectType into a Move object: {data["object_type"]}')
 
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
@@ -257,12 +290,13 @@ class Character(GameObject):
         self.defense: DefenseStat = DefenseStat().from_json(data['defense'])
         self.speed: SpeedStat = SpeedStat().from_json(data['speed'])
         self.rank_type: RankType = RankType(data['rank_type'])
-        self.moveset: Moveset = Moveset().from_json(data['moveset'])
         self.special_points: int = data['special_points']
-        self.position: Vector | None = None if data['position'] is None else Vector().from_json(data['position'])
         self.took_action = data['took_action']
         self.country_type = CountryType(data['country_type'])
         self.is_dead = data['is_dead']
+        self.selected_move = self.__from_json_helper(data) if data['selected_move'] is not None else None
+        self.moveset: Moveset = Moveset().from_json(data['moveset'])
+        self.position: Vector | None = None if data['position'] is None else Vector().from_json(data['position'])
 
         return self
 
@@ -298,7 +332,6 @@ class GenericAttacker(Generic):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)
 
-        self.object_type: ObjectType = ObjectType.GENERIC_ATTACKER
         self.character_type: CharacterType = CharacterType.ATTACKER
 
     def to_json(self) -> dict:
@@ -317,7 +350,6 @@ class GenericHealer(Generic):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)
 
-        self.object_type: ObjectType = ObjectType.GENERIC_HEALER
         self.character_type: CharacterType = CharacterType.HEALER
 
     def to_json(self) -> dict:
@@ -336,7 +368,6 @@ class GenericTank(Generic):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)
 
-        self.object_type: ObjectType = ObjectType.GENERIC_TANK
         self.character_type: CharacterType = CharacterType.TANK
 
     def to_json(self) -> dict:
@@ -378,7 +409,6 @@ class Leader(Character):
         super().__init__(name, character_type, health, attack, defense, speed,
                          position, country_type, moveset)
 
-        self.object_type: ObjectType = ObjectType.LEADER
         self.rank_type: RankType = RankType.LEADER
 
     def to_json(self) -> dict:

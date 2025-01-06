@@ -28,6 +28,14 @@ class AttackEffect(AbstractAttack, Effect):
         super().__init__(target_type, damage_points)
         self.object_type = ObjectType.ATTACK_EFFECT
 
+    def __eq__(self, other: Self | int) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+
+        # return if all the attributes match for the two effects
+        return (self.object_type == other.object_type and self.target_type == other.target_type
+                and self.damage_points == other.damage_points)
+
     def to_json(self) -> dict:
         return super().to_json()
 
@@ -40,6 +48,14 @@ class HealEffect(AbstractHeal, Effect):
     def __init__(self, target_type: TargetType = TargetType.SELF, heal_points: int = 0):
         super().__init__(target_type, heal_points)
         self.object_type = ObjectType.HEAL_EFFECT
+
+    def __eq__(self, other: Self | int) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+
+        # return if all the attributes match for the two effects
+        return (self.object_type == other.object_type and self.target_type == other.target_type
+                and self.heal_points == other.heal_points)
 
     def to_json(self) -> dict:
         return super().to_json()
@@ -55,6 +71,14 @@ class BuffEffect(AbstractBuff, Effect):
         super().__init__(target_type, buff_amount, stat_to_affect)
         self.object_type = ObjectType.BUFF_EFFECT
 
+    def __eq__(self, other: Self | int) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+
+        # return if all the attributes match for the two effects
+        return (self.object_type == other.object_type and self.target_type == other.target_type
+                and self.buff_amount == other.buff_amount)
+
     def to_json(self) -> dict:
         return super().to_json()
 
@@ -68,6 +92,14 @@ class DebuffEffect(AbstractDebuff, Effect):
                  stat_to_affect: ObjectType = ObjectType.ATTACK_STAT):
         super().__init__(target_type, debuff_amount, stat_to_affect)
         self.object_type = ObjectType.DEBUFF_EFFECT
+
+    def __eq__(self, other: Self | int) -> bool:
+        if not isinstance(other, self.__class__):
+            return False
+
+        # return if all the attributes match for the two effects
+        return (self.object_type == other.object_type and self.target_type == other.target_type
+                and self.debuff_amount == other.debuff_amount)
 
     def to_json(self) -> dict:
         return super().to_json()
