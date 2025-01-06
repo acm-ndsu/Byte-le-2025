@@ -2,7 +2,7 @@ import pygame
 
 from math import ceil
 from game.commander_clash.character.character import Character
-from game.common.enums import RankType, CountryType
+from game.common.enums import RankType, CountryType, CharacterType
 from game.utils.vector import Vector
 from visualizer.sprites.attack_stat import AttackStat
 from visualizer.sprites.character_info_backdrop import CharacterInfoBackdrop
@@ -63,26 +63,24 @@ class CharacterInfoTemplate(InfoTemplate):
 
     def recalc_animation(self, turn_log: dict) -> None:
         # Get character we are recalculating
-        team: list[Character] = turn_log['clients']['team_manager']['team'] \
-            if turn_log['clients']['team_manager']['country_type'] == self.country else None
-        dead_team: list[Character] = turn_log['clients']['team_manager']['dead_team'] \
-            if turn_log['clients']['team_manager']['country_type'] == self.country else None
+        team: list[Character] = turn_log['clients'][self.country - 1]['team_manager']['team']
+        dead_team: list[Character] = turn_log['clients'][self.country - 1]['team_manager']['dead_team']
 
         character: Character
         if self.rank_type == RankType.LEADER:
-            character = [character for character in team + dead_team if character.rank_type == self.rank_type][0]
+            character = Character().from_json(data=[char for char in team + dead_team if char['rank_type'] == self.rank_type.value][0])
         else:
-            if not self.second_gen:
-                character = [character for character in team + dead_team if '1' in character.name][0]
+            if self.second_gen:
+                character = Character().from_json(data=[char for char in team + dead_team if '2' in char['name']][0])
             else:
-                character = [character for character in team + dead_team if '2' in character.name][0]
+                character = Character().from_json(data=[char for char in team + dead_team if '2' not in char['name']][0])
 
         # Get which headshot to grab
         if self.rank_type == RankType.LEADER:
-            self.headshot.character = character.name.lower()
+            self.headshot.character = character.name.split(" ", 1)[1].lower()
         else:
-            self.headshot.character = (f'{CountryType(self.country).name.lower()}_generic_'
-                                       f'{character.character_type.name.lower()}')
+            self.headshot.character = (f"{CountryType(self.country).name.lower()}_generic_"
+                                       f"{CharacterType(character.character_type).name.lower()}")
 
         # Get hp and sp of character
         self.hp_bar.hp = int(ceil((float(character.current_health) / float(character.max_health)) * 10))
@@ -93,15 +91,15 @@ class CharacterInfoTemplate(InfoTemplate):
         # Get attack, defense, and speed based on generated character
         self.attack_stat.attack_stat = 0 if character.attack.value == character.attack.base_value else 1 \
             if character.attack.value > character.attack.base_value else 2
-        self.attack_stat_text.text = character.attack.value
+        self.attack_stat_text.text = str(character.attack.value)
 
         self.defense_stat.defense_stat = 0 if character.defense.value == character.defense.base_value else 1 \
             if character.defense.value > character.defense.base_value else 2
-        self.defense_stat_text.text = character.defense.value
+        self.defense_stat_text.text = str(character.defense.value)
 
         self.speed_stat.speed_stat = 0 if character.speed.value == character.speed.base_value else 1 \
             if character.speed.value > character.speed.base_value else 2
-        self.speed_stat_text.text = character.speed.value
+        self.speed_stat_text.text = str(character.speed.value)
 
     def render(self) -> None:
         super().render()

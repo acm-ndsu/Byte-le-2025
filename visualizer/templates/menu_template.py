@@ -133,10 +133,10 @@ class Basic(MenuTemplate):
         :param players:
         :return: string with the winning team name(s)
         """
-        m = max(map(lambda player: player['avatar']['score'], players))  # Gets the max score from all results
+        m = max(map(lambda player: player['team_manager']['score'], players))  # Gets the max score from all results
 
         # Compares each player in the given list to the max score
-        winners: list = [player['team_name'] for player in players if player['avatar']['score'] == m]
+        winners: list = [player['team_name'] for player in players if player['team_manager']['score'] == m]
 
         # Prints the winner(s) from the final results
         return f'{"Winners" if len(winners) > 1 else "Winner"}: {", ".join(winners)}'
