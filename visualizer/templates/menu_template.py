@@ -1,13 +1,13 @@
 from typing import Any
 
 import os
-import pygame
 
 from game.utils.vector import Vector
 from visualizer.utils.button import Button, ButtonColors
 from visualizer.utils.text import Text
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+import pygame
 
 
 """
