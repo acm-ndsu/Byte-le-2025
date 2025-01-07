@@ -19,8 +19,12 @@ class MoveController(Controller):
             if clients[0].team_manager.country_type == CountryType.TURPIS else clients[1].team_manager
 
         # get the active pair for the turn, but only get character references; that is, filter None values
-        active_chars: list[Character] = [char for char in world.get_active_pair() if char is not None
-                                         and not char.took_action]
+        active_chars: list[Character] = [char for char in world.get_active_pair() if char is not None]
+
+        # explicitly filter to only characters that have not acted yet (i.e., didn't swap)
+        active_chars: list[Character] = [char for char in active_chars if not char.took_action]
+
+        print(f'Filtered active_chars in move controller: {[(char.name, char.took_action) for char in active_chars]}')
 
         # if all active characters are None, nothing can happen; return
         if all([obj is None for obj in active_chars]):

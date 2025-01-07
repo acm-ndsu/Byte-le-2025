@@ -17,7 +17,22 @@ class SelectMoveController(Controller):
         will be used in another controller that will execute a move's logic.
         """
 
-        user: Character = client.team_manager.get_active_character()
+        active_chars: tuple[Character | None, Character | None] = world.get_active_pair()
+
+        # index will be 0 if Uroda, 1 if Turpis
+        tuple_index_to_use: int = client.team_manager.country_type.value - 1
+
+        user: Character | None = active_chars[tuple_index_to_use]
+
+        if user is None:
+            print(f'Active character for {client.team_name} is None in SelectMoveController')
+            return
+
+        # if the user took action already, don't do anything
+        if user.took_action:
+            print(f'{user.name} already took action when getting to select move controller. '
+                  f'Passed in enum: {action.name}')
+            return
 
         current_move: Move
 

@@ -6,9 +6,9 @@ from game.common.player import Player
 from game.common.team_manager import TeamManager
 from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN, WIN_SCORE, DIFFERENTIAL_BONUS
 from game.controllers.controller import Controller
-from game.controllers.swap_controller import SwapController
-from game.controllers.select_move_controller import SelectMoveController
 from game.controllers.move_controller import MoveController
+from game.controllers.select_move_controller import SelectMoveController
+from game.controllers.swap_controller import SwapController
 
 
 class MasterController(Controller):
@@ -103,6 +103,8 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, clients: list[Player], turn):
+        print(f'Starting turn {turn}')
+
         gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
 
         uroda_team_manager: TeamManager = clients[0].team_manager if (
@@ -122,7 +124,8 @@ class MasterController(Controller):
         gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
 
         # reset the turn info string for new information
-        gameboard.turn_info = ''
+        gameboard.turn_info = (f'Unordered active pair for turn {turn}: {[char.name if char is not None else None 
+                                                                          for char in gameboard.get_active_pair()]}\n')
 
         for client in clients:
             # set each character's state to 'idle' in the client's team manager
@@ -143,7 +146,8 @@ class MasterController(Controller):
 
         self.move_controller.handle_logic(clients, gameboard, turn)
 
-        # loop again to handle tasks after all logic is handled for the turn
+        # NOTE: when there are 6 characters alive, every json file whose turn is a multiple of 3 will show
+        # all characters as not taken a turn yet. This is fine unless the visualizer needs it for something!
         for client in clients:
             # if everyone took their action in the given team manager, set their took_action bool to False
             if client.team_manager.everyone_took_action():
@@ -160,6 +164,8 @@ class MasterController(Controller):
 
         # update the current world json by setting it to the game board's updated state
         self.current_world_data['game_board'] = gameboard.to_json()
+
+        print(f'{gameboard.turn_info}')
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):
