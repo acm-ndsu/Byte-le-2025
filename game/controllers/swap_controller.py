@@ -33,15 +33,6 @@ class SwapController(Controller):
 
         active_character: Character = client.team_manager.get_active_character()
 
-        # if the character from the ordered list is not the same as the team manager's active character, do nothing
-        # if active_char_from_ot.name != active_character.name:
-        #     print(f'Active character from OT {active_char_from_ot.name} does not have the same name as client\'s '
-        #           f'active character {active_character.name}.\n'
-        #           f'All active pairs: {[(pair[0].name if pair[0] is not None else None,
-        #                                  pair[1].name if pair[1] is not None else None) for pair in
-        #                                 world.ordered_teams]}')
-        #     return
-
         pos_mod: Vector
 
         # used for describing what the character did in the gameboard's turn_info string
@@ -73,8 +64,6 @@ class SwapController(Controller):
         if not world.is_valid_coords(new_vector):
             world.turn_info += (f'\n{active_character.name} tried to swap to coordinate {new_vector} '
                                 f'but couldn\'t be moved off the map!\n')
-            # print(f'{active_character.name} tried to swap to coordinate {new_vector}. Took action bool: '
-            #       f'{active_character.took_action}')
 
             # sync the active character if they can't move
             self.__sync_character_references(active_character, None, client, world)

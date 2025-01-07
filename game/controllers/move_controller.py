@@ -24,8 +24,6 @@ class MoveController(Controller):
         # explicitly filter to only characters that have not acted yet (i.e., didn't swap)
         active_chars: list[Character] = [char for char in active_chars if not char.took_action]
 
-        print(f'Filtered active_chars in move controller: {[(char.name, char.took_action) for char in active_chars]}')
-
         # if all active characters are None, nothing can happen; return
         if all([obj is None for obj in active_chars]):
             return

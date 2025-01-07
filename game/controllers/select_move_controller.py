@@ -25,13 +25,10 @@ class SelectMoveController(Controller):
         user: Character | None = active_chars[tuple_index_to_use]
 
         if user is None:
-            print(f'Active character for {client.team_name} is None in SelectMoveController')
             return
 
         # if the user took action already, don't do anything
         if user.took_action:
-            print(f'{user.name} already took action when getting to select move controller. '
-                  f'Passed in enum: {action.name}')
             return
 
         current_move: Move
@@ -45,6 +42,12 @@ class SelectMoveController(Controller):
                 user.selected_move = user.get_s2()
             case _:
                 return
+
+        # sync the team manager reference
+        tm_char: Character | None = client.team_manager.get_character(user.name)
+
+        if tm_char is not None:
+            tm_char.selected_move = user.selected_move
 
         # give the reference in the ordered_teams and game map the same selected move
         ot_char: Character | None = world.get_char_from_ordered_teams(user.name)

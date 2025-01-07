@@ -103,8 +103,6 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, clients: list[Player], turn):
-        print(f'Starting turn {turn}')
-
         gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
 
         uroda_team_manager: TeamManager = clients[0].team_manager if (
@@ -164,8 +162,6 @@ class MasterController(Controller):
 
         # update the current world json by setting it to the game board's updated state
         self.current_world_data['game_board'] = gameboard.to_json()
-
-        print(f'{gameboard.turn_info}')
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):
