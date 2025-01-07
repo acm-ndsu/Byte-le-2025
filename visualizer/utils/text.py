@@ -38,7 +38,7 @@ class Text:
         self.font_size: int = font_size
         self.font_name: str = font_name
         # Get selected font from list of fonts
-        self.__font: pygame.font.Font = pygame.font.SysFont(self.font_name, self.font_size)
+        self.__font: pygame.font.Font = pygame.font.Font(self.font_name, self.font_size)
         self.color: Color = color
         self.position: Vector = position
         self.text: str = text
@@ -113,7 +113,7 @@ class Text:
         self.__font_name: str = font_name
         if self.__is_init: return
         # Reevaluate text with new font
-        self.__font: pygame.font.Font = pygame.font.SysFont(self.font_name, self.font_size)
+        self.__font: pygame.font.Font = pygame.font.Font(self.font_name, self.font_size)
         self.__text_surface: pygame.Surface = self.__font.render(self.text, True, self.color)
         self.__rect: pygame.Rect = self.__text_surface.get_rect()
         self.__rect.topleft = self.position.as_tuple()
@@ -125,7 +125,7 @@ class Text:
         self.__font_size: int = font_size
         if self.__is_init: return
         # Reevaluate text with new font size
-        self.__font: pygame.font.Font = pygame.font.SysFont(self.font_name, self.font_size)
+        self.__font: pygame.font.Font = pygame.font.Font(self.font_name, self.font_size)
         self.__text_surface: pygame.Surface = self.__font.render(self.text, True, self.color)
         self.__rect: pygame.Rect = self.__text_surface.get_rect()
         self.__rect.topleft = self.position.as_tuple()
