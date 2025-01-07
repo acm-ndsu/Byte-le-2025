@@ -5,6 +5,10 @@ from game.utils.vector import Vector
 
 
 class SPBar(pygame.sprite.Sprite):
+    """
+    This class is for loading the images for the special points of a character.
+    Implemented in character_info_template.py.
+    """
     def __init__(self, top_left: Vector):
         super().__init__()
         self.images: dict[str | int, pygame.Surface] = {

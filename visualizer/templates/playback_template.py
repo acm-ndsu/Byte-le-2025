@@ -1,12 +1,12 @@
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
 from functools import reduce
 from enum import Flag, auto
 import pygame
 
 from game.utils.vector import Vector
 from visualizer.utils.button import Button, ButtonColors
-
-import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 
 """

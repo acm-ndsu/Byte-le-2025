@@ -1,4 +1,7 @@
 import os
+
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
 import pygame
 from game.config import *
 from typing import Callable, Any
@@ -16,9 +19,6 @@ from visualizer.templates.menu_template import Basic, MenuTemplate
 from visualizer.templates.playback_template import PlaybackTemplate, PlaybackButtons
 from visualizer.sprites.game_backdrop import GameBackdrop
 from visualizer.sprites.main_backdrop import MainBackdrop
-
-
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 
 class Adapter:

@@ -1,13 +1,12 @@
-from typing import Any
-
 import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
 import pygame
 
+from typing import Any
 from game.utils.vector import Vector
 from visualizer.utils.button import Button, ButtonColors
 from visualizer.utils.text import Text
-
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 
 """
@@ -133,10 +132,10 @@ class Basic(MenuTemplate):
         :param players:
         :return: string with the winning team name(s)
         """
-        m = max(map(lambda player: player['team_manager']['score'], players))  # Gets the max score from all results
+        max_score = max(map(lambda player: player['team_manager']['score'], players))  # Gets the max score from all results
 
         # Compares each player in the given list to the max score
-        winners: list = [player['team_name'] for player in players if player['team_manager']['score'] == m]
+        winners: list = [player['team_name'] for player in players if player['team_manager']['score'] == max_score]
 
         # Prints the winner(s) from the final results
         return f'{"Winners" if len(winners) > 1 else "Winner"}: {", ".join(winners)}'

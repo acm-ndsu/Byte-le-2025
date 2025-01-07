@@ -5,6 +5,11 @@ from game.utils.vector import Vector
 
 
 class SpeedStat(pygame.sprite.Sprite):
+    """
+    This class is for loading an image for the speed stat for each character on the visualizer. It includes an image
+    for when it is neutral, buffed, and debuffed. Implemented in character_info_template.py.
+    """
+
     def __init__(self, top_left: Vector):
         super().__init__()
         self.images: dict[str | int, pygame.Surface] = {
