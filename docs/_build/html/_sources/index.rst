@@ -31,8 +31,9 @@ question of yours, you may consult a commander (developer) over at any time.
    getting_started
    useful_commands
    server
-   characters
    stats
+   moves
+   characters
    team
    actions
    scoring
@@ -40,9 +41,7 @@ question of yours, you may consult a commander (developer) over at any time.
    visualizer
    credits
 
-Indices and tables
-==================
+Search Page
+===========
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+:ref:`search`
