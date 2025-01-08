@@ -122,8 +122,20 @@ class MasterController(Controller):
         gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
 
         # reset the turn info string for new information
-        gameboard.turn_info = (f'Unordered active pair for turn {turn}: {[char.name if char is not None else None 
+        gameboard.turn_info = (f'Unordered active pair for turn {turn}: {[char.name if char is not None else None
                                                                           for char in gameboard.get_active_pair()]}\n')
+
+        # set each character's state to 'idle' in the gameboard's ordered_teams list
+        for pair in gameboard.ordered_teams:
+            for char in pair:
+                if char is not None:
+                    char.state = 'idle'
+
+        # set each character's state to 'idle' in the game map
+        # do this by getting all characters by country and making the dict values a list
+        for char in list(gameboard.get_characters(CountryType.URODA).values()) + list(
+                gameboard.get_characters(CountryType.TURPIS).values()):
+            char.state = 'idle'
 
         for client in clients:
             # set each character's state to 'idle' in the client's team manager
