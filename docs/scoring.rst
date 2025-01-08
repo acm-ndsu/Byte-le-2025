@@ -29,17 +29,17 @@ Method                     Points          Description
                                            peace.
 ========================== =============== =============================================================================
 
-Point Table
------------
+Points Table
+------------
 
 Here's a table showing how the score will change depending on how many characters are alive on the winning team.
 
-==================================== ===== ===== =====
-Characters Lost on Winning Team      0     1     2
-==================================== ===== ===== =====
-:gold:`Winner`                       950   800   650
-:red:`Loser`                         0     100   200
-==================================== ===== ===== =====
+============================================== ===== ===== =====
+Number of Remaining Characters on Winning Team 3     2     1
+============================================== ===== ===== =====
+:gold:`Winner`                                 950   800   650
+:red:`Loser`                                   0     100   200
+============================================== ===== ===== =====
 
 
 Final Score Formula
