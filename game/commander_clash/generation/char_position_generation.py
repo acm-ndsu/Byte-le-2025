@@ -50,6 +50,9 @@ def update_character_info(team_managers: list[TeamManager]):
                 character.position = Vector(x_pos, y_pos)
                 character.country_type = team_manager.country_type
 
+                # assign the generic characters their specific object types for the visualizer
+                __assign_generic_object_type(character)
+
             if team_manager.country_type == CountryType.URODA:
                 world['game_board']['uroda_team_manager'] = team_manager.to_json()
             else:

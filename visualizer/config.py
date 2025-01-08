@@ -1,4 +1,6 @@
 from game.utils.vector import Vector
+from visualizer.utils.button import ButtonColors
+import os
 
 
 class Config:
@@ -61,14 +63,26 @@ class Config:
     """
 
     __NUMBER_OF_FRAMES_PER_TURN: int = 4
-    __TILE_SIZE: int = 16
-    __SCALE: int = 5
-    __SCREEN_SIZE: Vector = Vector(x=1366, y=768)  # width, height
-    __FRAME_RATE: int = 12
+    __TILE_SIZE: int = 64
+    __SCALE: int = 1
+    __SCREEN_SIZE: Vector = Vector(x=1280, y=720)  # width, height
+    __FRAME_RATE: int = 8
     __BACKGROUND_COLOR: (int, int, int) = 0, 0, 0
-    __GAME_BOARD_MARGIN_LEFT: int = 440
-    __GAME_BOARD_MARGIN_TOP: int = 100
-    __VISUALIZE_HELD_ITEMS: bool = True
+    __GAME_BOARD_MARGIN_LEFT: int = 574
+    __GAME_BOARD_MARGIN_TOP: int = 324
+    __VISUALIZE_HELD_ITEMS: bool = False
+    __FONT: str = os.path.join(os.getcwd(), 'visualizer', 'fonts', 'wizzta.ttf')
+    __FONT_ALT: str = os.path.join(os.getcwd(), 'visualizer' 'fonts', 'FantaisieArtistique.otf')
+    __FONT_COLOR: str = '#000000'
+    __FONT_COLOR_ALT: str = '#FFFFFF'
+    __BUTTON_COLORS: ButtonColors = ButtonColors(
+        bg_color='#66396D',
+        bg_color_hover='#967BB6',
+        bg_color_clicked='#522888',
+        fg_color='#B97F24',
+        fg_color_hover='#BF9553',
+        fg_color_clicked='#CDC7D9'
+    )
 
     @property
     def NUMBER_OF_FRAMES_PER_TURN(self) -> int:
@@ -145,3 +159,23 @@ class Config:
         :return: bool
         """
         return self.__VISUALIZE_HELD_ITEMS
+
+    @property
+    def FONT(self) -> str:
+        return self.__FONT
+
+    @property
+    def FONT_ALT(self) -> str:
+        return self.__FONT_ALT
+
+    @property
+    def FONT_COLOR(self) -> str:
+        return self.__FONT_COLOR
+
+    @property
+    def FONT_COLOR_ALT(self) -> str:
+        return self.__FONT_COLOR_ALT
+
+    @property
+    def BUTTON_COLORS(self) -> ButtonColors:
+        return self.__BUTTON_COLORS
