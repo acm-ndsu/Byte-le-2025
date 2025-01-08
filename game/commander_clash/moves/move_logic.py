@@ -68,10 +68,7 @@ def calculate_damage(user: Character, target: Character, current_move: AbstractA
     """
     Calculates the damage done by using the following formula:
 
-        ceiling((user's attack stat - target's defense stat) + current move's damage points)
-
-    The ceiling function is applied to the (damage_points * attack stat modifier) part of the formula to do the
-    most damage possible.
+        ceiling((character attack value + move damage value) * (1 - target defense value / 100))
 
     This method can be used to plan for the competition and give competitors a way to adapt to battles.
     """

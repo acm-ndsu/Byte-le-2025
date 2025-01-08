@@ -58,5 +58,5 @@ alive
 Characters Lost on Both Teams 0     1     2
 ============================= ===== ===== =====
 :gold:`Uroda Team`            450   400   350
-:purple:`Turpis Team`         450   400   35g0
+:purple:`Turpis Team`         450   400   350
 ============================= ===== ===== =====
