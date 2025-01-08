@@ -1,10 +1,17 @@
-import pygame
 import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
+import pygame
 
 from game.utils.vector import Vector
 
 
 class DefenseStat(pygame.sprite.Sprite):
+    """
+    This class is for loading an image for the defense stat for each character on the visualizer. It includes an image
+    for when it is neutral, buffed, and debuffed. Implemented in character_info_template.py.
+    """
+
     def __init__(self, top_left: Vector):
         super().__init__()
         self.images: dict[str | int, pygame.Surface] = {

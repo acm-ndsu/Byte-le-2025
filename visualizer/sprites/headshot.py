@@ -1,11 +1,17 @@
-import pygame
 import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
+import pygame
 from game.utils.vector import Vector
 from game.config import GENERIC_TRASH_NAME
 
 
 class Headshot(pygame.sprite.Sprite):
+    """
+    This class is for loading an image for the headshot of the character, depending on the character.
+    Implemented in character_info_template.py.
+    """
+
     def __init__(self, top_left: Vector):
         super().__init__()
         self.images: dict[str | int, pygame.Surface] = {

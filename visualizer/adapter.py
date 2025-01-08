@@ -1,5 +1,6 @@
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
 import pygame
 from game.config import *
 from typing import Callable, Any

@@ -530,6 +530,7 @@ class ByteVisualiser:
         # Run playback buttons method
         self.__playback_controls(button_pressed)
 
+        # This renders all static images and templates from the adapter file before the game, placing it behind the game
         self.adapter.render()
 
         if self.tick % self.config.NUMBER_OF_FRAMES_PER_TURN == 0:
