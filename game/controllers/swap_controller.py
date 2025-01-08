@@ -25,13 +25,13 @@ class SwapController(Controller):
         # index will be 0 if Uroda, 1 if Turpis
         tuple_index_to_use: int = client.team_manager.country_type.value - 1
 
-        active_char_from_ot: Character | None = active_chars[tuple_index_to_use]
+        active_character: Character | None = active_chars[tuple_index_to_use]
 
         # if the active character from the ordered_teams list is None, it's not its turn to do anything yet
-        if active_char_from_ot is None:
+        if active_character is None:
             return
 
-        active_character: Character = client.team_manager.get_active_character()
+        # active_character: Character = client.team_manager.get_active_character()
 
         pos_mod: Vector
 

@@ -125,14 +125,22 @@ class TeamManager(GameObject):
         """
         return [character for character in self.team if character.character_type is character_type]
 
-    def get_active_character(self) -> Character:
+    def get_active_character(self, ordered_teams: list[tuple[Character | None, Character | None]],
+                             active_pair_index: int) -> Character:
         """
-        Returns the first character in the team that hasn't taken its turn.
+        Using the GameBoard's ordered_teams list, this will return the character from this team manager that will next
+        take its turn. None is returned if a character cannot take its turn yet.
         """
 
-        for character in self.team:
-            if not character.took_action:
-                return character
+        active_chars: tuple[Character | None, Character | None] = ordered_teams[active_pair_index]
+
+        # index will be 0 if Uroda, 1 if Turpis
+        tuple_index_to_use: int = self.country_type.value - 1
+
+        active_char: Character | None = active_chars[tuple_index_to_use]
+
+        return active_char
+
 
     def update_character(self, character: Character) -> None:
         """

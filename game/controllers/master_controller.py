@@ -112,8 +112,8 @@ class MasterController(Controller):
                 clients[0].team_manager.country_type == CountryType.TURPIS) else clients[1].team_manager
 
         # order the teams if it's the first turn so the game can start
-        if turn == 1:
-            gameboard.order_teams(uroda_team_manager, turpis_team_manager)
+        # if turn == 1:
+        #     gameboard.order_teams(uroda_team_manager, turpis_team_manager)
 
         # increment the active_pair_index for the next turn
         gameboard.active_pair_index += 1
