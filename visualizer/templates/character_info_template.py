@@ -1,5 +1,7 @@
-import pygame
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
+import pygame
 from math import ceil
 from game.commander_clash.character.character import Character
 from game.common.enums import RankType, CountryType, CharacterType

@@ -1,6 +1,7 @@
-import pygame
 import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
+import pygame
 from game.utils.vector import Vector
 from game.config import GENERIC_TRASH_NAME
 
