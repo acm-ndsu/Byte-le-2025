@@ -27,13 +27,13 @@ class TeamInfoTemplate(InfoTemplate):
         # Character Info Templates instantiated here, in order of first generic, leader, second generic
         self.character1 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(x=38, y=56)),
                                                 Vector(x=350, y=168),
-                                                self.font, self.color, self.country, RankType.GENERIC)
+                                                self.font, self.color, self.country, 0)
         self.character2 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(x=38, y=237)),
                                                 Vector(x=350, y=168),
-                                                self.font, self.color, self.country, RankType.LEADER)
+                                                self.font, self.color, self.country, 1)
         self.character3 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(x=38, y=418)),
                                                 Vector(x=350, y=168),
-                                                self.font, self.color, self.country, RankType.GENERIC, True)
+                                                self.font, self.color, self.country, 2)
 
     def recalc_animation(self, turn_log: dict) -> None:
         team_name: str = [client['team_name']

@@ -31,6 +31,9 @@ def validate_team_selection(
     # make the names unique
     __differentiate_names(characters)
 
+    for x in range(0, 3):
+        characters[x].index = x
+
     # return a list of the characters in the order they would appear in the GameBoard
     return characters
 
