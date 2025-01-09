@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="" >
+<html lang="en" data-content_root="./" >
 
   <head>
     <meta charset="utf-8" />
@@ -30,8 +30,8 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
   
   <!-- So that users can add custom icons -->
   <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
@@ -39,10 +39,10 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'useful_commands';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -322,9 +322,9 @@
                 <article class="bd-article">
                   
   <section id="useful-commands">
-<h1>Useful Commands<a class="headerlink" href="#useful-commands" title="Permalink to this heading">#</a></h1>
+<h1>Useful Commands<a class="headerlink" href="#useful-commands" title="Link to this heading">#</a></h1>
 <style> .red {color:#BC0C25; font-weight:bold; font-size:16px} </style><section id="running-the-launcher">
-<h2>Running the launcher<a class="headerlink" href="#running-the-launcher" title="Permalink to this heading">#</a></h2>
+<h2>Running the launcher<a class="headerlink" href="#running-the-launcher" title="Link to this heading">#</a></h2>
 <p>There are required packages necessary for running the game. Run the following command to install them all:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install -r requirements.txt</span>
 </pre></div>
@@ -332,14 +332,14 @@
 <p>You can view the list of packages in the requirements.txt file.</p>
 </section>
 <section id="pygame-installation">
-<h2>Pygame Installation<a class="headerlink" href="#pygame-installation" title="Permalink to this heading">#</a></h2>
+<h2>Pygame Installation<a class="headerlink" href="#pygame-installation" title="Link to this heading">#</a></h2>
 <p>If you have problems installing the pygame package, try running the following command:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install pygame --pre</span>
 </pre></div>
 </div>
 </section>
 <section id="generate-run-visualize">
-<h2>Generate, Run, Visualize<a class="headerlink" href="#generate-run-visualize" title="Permalink to this heading">#</a></h2>
+<h2>Generate, Run, Visualize<a class="headerlink" href="#generate-run-visualize" title="Link to this heading">#</a></h2>
 <p>As you’re testing your code, it’s important to do these three actions.</p>
 <ul class="simple">
 <li><p>‘Generate’ will generate a new game and map.</p></li>
@@ -348,7 +348,7 @@
 </ul>
 <p>Here are the commands:</p>
 <section id="generate">
-<h3>Generate<a class="headerlink" href="#generate" title="Permalink to this heading">#</a></h3>
+<h3>Generate<a class="headerlink" href="#generate" title="Link to this heading">#</a></h3>
 <p>Run the following in the root directory in your terminal:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">launcher</span><span class="o">.</span><span class="n">pyz</span> <span class="n">g</span>
 </pre></div>
@@ -357,7 +357,7 @@
 stay consistent.</p>
 </section>
 <section id="run">
-<h3>Run<a class="headerlink" href="#run" title="Permalink to this heading">#</a></h3>
+<h3>Run<a class="headerlink" href="#run" title="Link to this heading">#</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">launcher</span><span class="o">.</span><span class="n">pyz</span> <span class="n">r</span>
 </pre></div>
 </div>
@@ -366,7 +366,7 @@ debugging. There will also be logs generated in the <code class="docutils litera
 the JSON format.</p>
 </section>
 <section id="visualize">
-<h3>Visualize<a class="headerlink" href="#visualize" title="Permalink to this heading">#</a></h3>
+<h3>Visualize<a class="headerlink" href="#visualize" title="Link to this heading">#</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">launcher</span><span class="o">.</span><span class="n">pyz</span> <span class="n">v</span>
 </pre></div>
 </div>
@@ -375,9 +375,9 @@ the JSON format.</p>
 </section>
 </section>
 <section id="quality-of-life">
-<h2>Quality of Life<a class="headerlink" href="#quality-of-life" title="Permalink to this heading">#</a></h2>
+<h2>Quality of Life<a class="headerlink" href="#quality-of-life" title="Link to this heading">#</a></h2>
 <section id="generate-run-and-visualize-combined">
-<h3>Generate, Run, and Visualize Combined<a class="headerlink" href="#generate-run-and-visualize-combined" title="Permalink to this heading">#</a></h3>
+<h3>Generate, Run, and Visualize Combined<a class="headerlink" href="#generate-run-and-visualize-combined" title="Link to this heading">#</a></h3>
 <p>If you type</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">launcher</span><span class="o">.</span><span class="n">pyz</span> <span class="n">grv</span>
 </pre></div>
@@ -385,14 +385,14 @@ the JSON format.</p>
 <p>in the terminal, it will generate, run, and visualize all at once in one command.</p>
 </section>
 <section id="generate-and-run">
-<h3>Generate and Run<a class="headerlink" href="#generate-and-run" title="Permalink to this heading">#</a></h3>
+<h3>Generate and Run<a class="headerlink" href="#generate-and-run" title="Link to this heading">#</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">launcher</span><span class="o">.</span><span class="n">pyz</span> <span class="n">gr</span>
 </pre></div>
 </div>
 <p>This command will generate and run your game without using the visualizer.</p>
 </section>
 <section id="terminal-help">
-<h3>Terminal Help<a class="headerlink" href="#terminal-help" title="Permalink to this heading">#</a></h3>
+<h3>Terminal Help<a class="headerlink" href="#terminal-help" title="Link to this heading">#</a></h3>
 <p>Lastly, a list of commands can be viewed by typing</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">launcher</span><span class="o">.</span><span class="n">pyz</span> <span class="o">-</span><span class="n">h</span>
 </pre></div>

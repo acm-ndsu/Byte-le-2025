@@ -36,6 +36,7 @@ question of yours, you may consult a commander (developer) over at any time.
    characters
    team
    actions
+   game_logic
    scoring
    enums
    visualizer
