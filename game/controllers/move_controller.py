@@ -211,6 +211,8 @@ class MoveController(Controller):
 
     def __sync_active_characters(self, active_chars: list[Character], uroda_team_manager: TeamManager,
                                  turpis_team_manager: TeamManager, world: GameBoard) -> None:
+        print(f'Syncing active chars {[char.name if char is not None else None for char in active_chars]}')
+
         # for every active character from the ordered_teams list, sync with the team manager and game map references
         for active_char in active_chars:
             tm_to_use: TeamManager = uroda_team_manager \
@@ -230,6 +232,8 @@ class MoveController(Controller):
 
             # sync the game map's reference of the character
             gm_character: Character = world.get_character_from(active_char.position)
+
+            print(f'Syncing game map reference for {active_char.name}')
 
             gm_character.attack = active_char.attack
             gm_character.defense = active_char.defense

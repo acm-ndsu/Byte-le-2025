@@ -103,6 +103,8 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, clients: list[Player], turn):
+        print(f'Starting turn {turn}')
+
         gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
 
         uroda_team_manager: TeamManager = clients[0].team_manager if (
@@ -156,6 +158,10 @@ class MasterController(Controller):
 
         self.move_controller.handle_logic(clients, gameboard, turn)
 
+        print(f'Gameboard turn order: {[(pair[0].name if pair[0] is not None else None,
+                                        pair[1].name if pair[1] is not None else None) 
+                                        for pair in gameboard.ordered_teams]}')
+
         # NOTE: when there are 6 characters alive, every json file whose turn is a multiple of 3 will show
         # all characters as not taken a turn yet. This is fine unless the visualizer needs it for something!
         for client in clients:
@@ -174,6 +180,8 @@ class MasterController(Controller):
 
         # update the current world json by setting it to the game board's updated state
         self.current_world_data['game_board'] = gameboard.to_json()
+
+        print(f'{gameboard.turn_info}')
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):

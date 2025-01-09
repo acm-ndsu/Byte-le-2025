@@ -14,7 +14,7 @@ def validate_team_selection(
 
     # if the leader is the same class as both generics (e.g., Tank, Tank, Tank), the leader must be replaced with trash
     # this should only be done if the leader is an actual Leader object
-    if gen1.character_type == leader.character_type == gen2.character_type and isinstance(leader, Leader):
+    if gen1.character_type == leader.character_type == gen2.character_type:
         leader = GenericTrash()
 
     if not isinstance(gen1, Generic):
