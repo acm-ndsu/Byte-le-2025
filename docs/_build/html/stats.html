@@ -147,6 +147,7 @@
 <li class="toctree-l1"><a class="reference internal" href="characters.html">Characters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="team.html">Making a Team</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actions.html">Taking Character Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_logic.html">Game Logic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scoring.html">Scoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="enums.html">Enums</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a></li>
@@ -315,12 +316,14 @@
 <p>Every character has a unique set of stats, including attack, defense, and speed.</p>
 <section id="attack">
 <h2>Attack<a class="headerlink" href="#attack" title="Link to this heading">#</a></h2>
+<a class="reference internal image-reference" href="_images/attack_buff.png"><img alt="_images/attack_buff.png" class="align-center" src="_images/attack_buff.png" style="width: 90px;" /></a>
 <p>Attack is the amount of base damage a character can deal when using an Attack move. Essentially, it is the strength of
 the character, reflected by an integer between 0 and 100.</p>
 <p>For example, if the attack stat is 50, the character will attempt to deal 50 points of damage to the target.</p>
 </section>
 <section id="defense">
 <h2>Defense<a class="headerlink" href="#defense" title="Link to this heading">#</a></h2>
+<a class="reference internal image-reference" href="_images/defense_buff.png"><img alt="_images/defense_buff.png" class="align-center" src="_images/defense_buff.png" style="width: 90px;" /></a>
 <p>Defense is a percentage of the amount of damage a character can prevent from taking from an Attack, represented by an
 integer between 0 - 100.</p>
 <p>For example, if the defense stat is 50, and the incoming damage is 50, the character will prevent 50% of the damage
@@ -328,8 +331,9 @@ and take 25 points of damage.</p>
 </section>
 <section id="speed">
 <h2>Speed<a class="headerlink" href="#speed" title="Link to this heading">#</a></h2>
+<a class="reference internal image-reference" href="_static/images/speed_buff.png"><img alt="_static/images/speed_buff.png" class="align-center" src="_static/images/speed_buff.png" style="width: 90px;" /></a>
 <p>Speed is the stat that determines the turn order of your team and who gets to act first each turn. Visit
-<span class="xref std std-doc">Game Logic</span> for more details about turn order and how the speed stat affects it.</p>
+<a class="reference internal" href="game_logic.html"><span class="doc">Game Logic</span></a> for more details about turn order and how the speed stat affects it.</p>
 </section>
 </section>
 

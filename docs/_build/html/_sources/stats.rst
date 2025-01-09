@@ -7,6 +7,10 @@ Every character has a unique set of stats, including attack, defense, and speed.
 Attack
 ------
 
+.. image:: ./_static/images/attack_buff.png
+   :width: 90
+   :align: center
+
 Attack is the amount of base damage a character can deal when using an Attack move. Essentially, it is the strength of
 the character, reflected by an integer between 0 and 100.
 
@@ -14,6 +18,10 @@ For example, if the attack stat is 50, the character will attempt to deal 50 poi
 
 Defense
 -------
+
+.. image:: ./_static/images/defense_buff.png
+   :width: 90
+   :align: center
 
 Defense is a percentage of the amount of damage a character can prevent from taking from an Attack, represented by an
 integer between 0 - 100.
@@ -24,5 +32,9 @@ and take 25 points of damage.
 Speed
 -----
 
+.. image:: ./_static/images/speed_buff.png
+   :width: 90
+   :align: center
+
 Speed is the stat that determines the turn order of your team and who gets to act first each turn. Visit
-:doc:`Game Logic` for more details about turn order and how the speed stat affects it.
+:doc:`game_logic` for more details about turn order and how the speed stat affects it.
