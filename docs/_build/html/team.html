@@ -330,6 +330,9 @@ order.</p>
 </div>
 <p>The string literal will represent your team name. The nested tuple will contain specific enums determining which
 characters you’d like to choose. Refer to <a class="reference internal" href="enums.html"><span class="doc">Enums</span></a> for an expansive list of all enums.</p>
+<p>It is important to order the enums in the order you’d like them to appear on the GameBoard. The first enum represents
+the first Generic that will be on the top position; the second represents the Leader which will always start in the
+middle; the third represents the second Generic that will be on the bottom.</p>
 </section>
 <section id="selecting-generics">
 <h2>Selecting Generics<a class="headerlink" href="#selecting-generics" title="Link to this heading">#</a></h2>
@@ -391,8 +394,8 @@ characters of duplicate CharacterTypes:</p>
 </pre></div>
 </div>
 <p>The first and second examples show that your Leader’s ClassType can be the same as <em>one (1)</em> Generic’s ClassType.</p>
-<p>The third examples shows a team with every character having a unique ClassType.</p>
-<p>The fourth and fifth examples show how the two Generic characters can have the same ClassType, but the Leader then
+<p>The third example shows a team with every character having a unique ClassType.</p>
+<p>The fourth and fifth examples show how the two Generic characters can have the same ClassType, but the Leader
 <em>must</em> have a different ClassType.</p>
 </section>
 <section id="malformed-character-selection">

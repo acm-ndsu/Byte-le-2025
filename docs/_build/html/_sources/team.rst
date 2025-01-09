@@ -25,6 +25,10 @@ order.
 The string literal will represent your team name. The nested tuple will contain specific enums determining which
 characters you'd like to choose. Refer to :doc:`enums` for an expansive list of all enums.
 
+It is important to order the enums in the order you'd like them to appear on the GameBoard. The first enum represents
+the first Generic that will be on the top position; the second represents the Leader which will always start in the
+middle; the third represents the second Generic that will be on the bottom.
+
 
 Selecting Generics
 ------------------
@@ -94,9 +98,9 @@ characters of duplicate CharacterTypes:
 
 The first and second examples show that your Leader's ClassType can be the same as *one (1)* Generic's ClassType.
 
-The third examples shows a team with every character having a unique ClassType.
+The third example shows a team with every character having a unique ClassType.
 
-The fourth and fifth examples show how the two Generic characters can have the same ClassType, but the Leader then
+The fourth and fifth examples show how the two Generic characters can have the same ClassType, but the Leader
 *must* have a different ClassType.
 
 
