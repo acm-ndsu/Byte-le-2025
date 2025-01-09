@@ -24,9 +24,9 @@ Method                     Points          Description
 :red:`Defeated Character`  100             These will be awarded for every character you defeat on the opposing side.
                                            Go get 'em!
 :blue:`Differential Bonus` 150             These points will be awarded for every character that is alive on your team
-                                           by the end of a game. Try to win without losing valuable fighters!
-:gold:`Win`                200             Your country :gold:`won` the war - congratulations! Now the land can know
-                                           peace.
+                                           by the end of a game. These will always be rewarded, even on the losing team.
+:gold:`Winner's Bonus`     200             Your country :gold:`won` the war - congratulations! Now the land can know
+                                           peace. Here's a little extra something for your efforts!
 ========================== =============== =============================================================================
 
 Points Table

@@ -274,7 +274,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -290,6 +292,18 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#team-formation">Team Formation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-generics">Selecting Generics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-leaders">Selecting Leaders</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valid-team-selections">Valid Team Selections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#malformed-character-selection">Malformed Character Selection</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -301,6 +315,108 @@
                   
   <section id="making-a-team">
 <h1>Making a Team<a class="headerlink" href="#making-a-team" title="Link to this heading">#</a></h1>
+<p>Hiring the best mercenaries will be what aids you in winning this decisive battle. How you choose your characters –
+and who you choose – matters!</p>
+<section id="team-formation">
+<h2>Team Formation<a class="headerlink" href="#team-formation" title="Link to this heading">#</a></h2>
+<p>Every team consists of <em>three (3) characters</em>. No more, and no less! Teams will consist of <em>one (1) Leader</em> and
+<em>two (2) Generic</em> characters. By finding a good combination of your hired team, victory for your country is assured!</p>
+<p>When forming a team, you do so by modifying the return statement of your <code class="docutils literal notranslate"><span class="pre">team_data()</span></code> method. Recall that this
+method returns a tuple containing 2 objects: a string literal and a nested tuple containing three enums in a specific
+order.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">team_data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">SelectGeneric</span><span class="p">,</span> <span class="n">SelectLeader</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="p">]]:</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">,</span> <span class="p">(</span><span class="n">SelectGeneric</span><span class="p">,</span> <span class="n">SelectLeader</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The string literal will represent your team name. The nested tuple will contain specific enums determining which
+characters you’d like to choose. Refer to <a class="reference internal" href="enums.html"><span class="doc">Enums</span></a> for an expansive list of all enums.</p>
+</section>
+<section id="selecting-generics">
+<h2>Selecting Generics<a class="headerlink" href="#selecting-generics" title="Link to this heading">#</a></h2>
+<p>When selecting your Generic characters, you can choose between 3 options:</p>
+<ul class="simple">
+<li><p>Generic Attacker</p></li>
+<li><p>Generic Healer</p></li>
+<li><p>Generic Tank</p></li>
+</ul>
+<p>The enums to select them are the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_ATTACKER</span>
+<span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_HEALER</span>
+<span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_TANK</span>
+</pre></div>
+</div>
+</section>
+<section id="selecting-leaders">
+<h2>Selecting Leaders<a class="headerlink" href="#selecting-leaders" title="Link to this heading">#</a></h2>
+<p>When selecting your Leader character, you can choose between 6 options. There are 2 leaders per ClassType:</p>
+<dl class="simple">
+<dt>Attacker ClassType:</dt><dd><ul class="simple">
+<li><p>Fultra</p></li>
+<li><p>Ninlil</p></li>
+</ul>
+</dd>
+<dt>Healer ClassType:</dt><dd><ul class="simple">
+<li><p>Anahita</p></li>
+<li><p>Berry</p></li>
+</ul>
+</dd>
+<dt>Tank ClassType:</dt><dd><ul class="simple">
+<li><p>Calmus</p></li>
+<li><p>Irwin</p></li>
+</ul>
+</dd>
+</dl>
+<p>The enums to select any one of these characters are the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SelectLeader</span><span class="o">.</span><span class="n">FULTRA</span>
+<span class="n">SelectLeader</span><span class="o">.</span><span class="n">NINLIL</span>
+<span class="n">SelectLeader</span><span class="o">.</span><span class="n">ANAHITA</span>
+<span class="n">SelectLeader</span><span class="o">.</span><span class="n">BERRY</span>
+<span class="n">SelectLeader</span><span class="o">.</span><span class="n">CALMUS</span>
+<span class="n">SelectLeader</span><span class="o">.</span><span class="n">IRWIN</span>
+</pre></div>
+</div>
+</section>
+<section id="valid-team-selections">
+<h2>Valid Team Selections<a class="headerlink" href="#valid-team-selections" title="Link to this heading">#</a></h2>
+<p>When selecting a team, duplicate characters are allowed, but to an extent. Every team is allowed to have a <em>maximum of
+two (2)</em> characters with the same ClassType. The following will provide examples of valid team selections with
+characters of duplicate CharacterTypes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">(</span><span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_TANK</span><span class="p">,</span> <span class="n">SelectLeader</span><span class="o">.</span><span class="n">CALMUS</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_HEALER</span><span class="p">)</span>
+<span class="k">return</span> <span class="p">(</span><span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_HEALER</span><span class="p">,</span> <span class="n">SelectLeader</span><span class="o">.</span><span class="n">CALMUS</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_TANK</span><span class="p">)</span>
+
+<span class="k">return</span> <span class="p">(</span><span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_HEALER</span><span class="p">,</span> <span class="n">SelectLeader</span><span class="o">.</span><span class="n">FULTRA</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_TANK</span><span class="p">)</span>
+
+<span class="k">return</span> <span class="p">(</span><span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_TANK</span><span class="p">,</span> <span class="n">SelectLeader</span><span class="o">.</span><span class="n">ANAHITA</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_TANK</span><span class="p">)</span>
+<span class="k">return</span> <span class="p">(</span><span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_HEALER</span><span class="p">,</span> <span class="n">SelectLeader</span><span class="o">.</span><span class="n">FULTRA</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_HEALER</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first and second examples show that your Leader’s ClassType can be the same as <em>one (1)</em> Generic’s ClassType.</p>
+<p>The third examples shows a team with every character having a unique ClassType.</p>
+<p>The fourth and fifth examples show how the two Generic characters can have the same ClassType, but the Leader then
+<em>must</em> have a different ClassType.</p>
+</section>
+<section id="malformed-character-selection">
+<h2>Malformed Character Selection<a class="headerlink" href="#malformed-character-selection" title="Link to this heading">#</a></h2>
+<p>In the case you try to cheat (🫵🤨) and submit a malformed team, you will <em>not</em> receive all the characters you desire,
+so be mindful. Any character that is determined malformed will be replaced with a different character: Generic Trash!
+Read more about Generic Trash in <a class="reference internal" href="characters.html"><span class="doc">Characters</span></a>.</p>
+<p>Here are examples of malformed character selections:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">(</span><span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_TANK</span><span class="p">,</span> <span class="n">SelectLeader</span><span class="o">.</span><span class="n">CALMUS</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_TANK</span><span class="p">)</span>
+
+<span class="k">return</span> <span class="p">(</span><span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_HEALER</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_ATTACKER</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_TANK</span><span class="p">)</span>
+
+<span class="k">return</span> <span class="p">(</span><span class="n">SelectLeader</span><span class="o">.</span><span class="n">CALMUS</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_TANK</span><span class="p">,</span> <span class="n">SelectLeader</span><span class="o">.</span><span class="n">ANAHITA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first example shows that all 3 characters have the same ClassType. In this case, the Leader will be replaced with
+Generic Trash.</p>
+<p>The second example shows that 3 Generics were selected with no Leader. In this case, the second Generic will be
+replaced with Generic Trash.</p>
+<p>The third example shows that the <code class="docutils literal notranslate"><span class="pre">SelectLeader</span></code> enums are where <code class="docutils literal notranslate"><span class="pre">SelectGeneric</span></code> enums should be, and the
+<code class="docutils literal notranslate"><span class="pre">SelectGeneric</span></code> enum is where the <code class="docutils literal notranslate"><span class="pre">SelectLeader</span></code> enum should be. In this case, <em>all 3</em> characters are replaced with
+Generic Trash.</p>
+<p>Be mindful on how you order the tuple when selecting your team (unless you want to attempt to win at a deficit).</p>
+</section>
 </section>
 
 
@@ -338,6 +454,26 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#team-formation">Team Formation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-generics">Selecting Generics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-leaders">Selecting Leaders</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#valid-team-selections">Valid Team Selections</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#malformed-character-selection">Malformed Character Selection</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
