@@ -51,8 +51,8 @@ Python Version
 Make sure to uninstall the visual studio version of python if you have visual studio installed.
 You can do this by re-running the installer and unselecting the python development kit then clicking update.
 
-:gold:`We require using Python version 3.11.` You can go to the
-`official Python website <https://www.python.org/downloads/release/python-3117/>`_ to download it.
+:gold:`We require using Python version 3.12.` You can go to the
+`official Python website <https://www.python.org/downloads/release/python-3125/>`_ to download it.
 
 You can use any text editor or IDE for this competition, but we recommend Visual Studio Code.
 
