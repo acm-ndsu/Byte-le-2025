@@ -2,22 +2,22 @@ import unittest
 
 from game.commander_clash.character.character import *
 from game.commander_clash.moves.effects import HealEffect
-from game.common.enums import CharacterType
+from game.common.enums import ClassType
 from game.test_suite.utils import spell_check
 from game.utils.vector import Vector
 
 
 class TestCharacter(unittest.TestCase):
     def setUp(self) -> None:
-        self.character: Character = Character('name', CharacterType.TANK, country_type=CountryType.TURPIS)
-        self.gen_attacker: GenericAttacker = GenericAttacker('Billy', CharacterType.ATTACKER)
-        self.gen_healer: GenericHealer = GenericHealer('Steve', CharacterType.HEALER)
-        self.gen_tank: GenericTank = GenericTank('Bertha', CharacterType.TANK)
-        self.leader: Leader = Leader('Phil', CharacterType.TANK)
-        self.special: Character = Character('Special', CharacterType.TANK, 10, AttackStat(), DefenseStat(20),
+        self.character: Character = Character('name', ClassType.TANK, country_type=CountryType.TURPIS)
+        self.gen_attacker: GenericAttacker = GenericAttacker('Billy', ClassType.ATTACKER)
+        self.gen_healer: GenericHealer = GenericHealer('Steve', ClassType.HEALER)
+        self.gen_tank: GenericTank = GenericTank('Bertha', ClassType.TANK)
+        self.leader: Leader = Leader('Phil', ClassType.TANK)
+        self.special: Character = Character('Special', ClassType.TANK, 10, AttackStat(), DefenseStat(20),
                                             SpeedStat(10), Vector(0, 0))
 
-        self.sync_leader: Leader = Leader('Phil', CharacterType.TANK)
+        self.sync_leader: Leader = Leader('Phil', ClassType.TANK)
         self.sync_leader.is_dead = True
         self.sync_leader.took_action = True
         self.sync_leader.current_health = 5
@@ -70,7 +70,7 @@ class TestCharacter(unittest.TestCase):
 
         # test that all the parameters are set properly with the constructor
         self.assertEqual(self.special.name, 'Special')
-        self.assertEqual(self.special.character_type, CharacterType.TANK)
+        self.assertEqual(self.special.class_type, ClassType.TANK)
 
         # health is 10 * HEALTH_MODIFIER from config
         self.assertEqual(self.special.current_health, 40)
@@ -88,8 +88,8 @@ class TestCharacter(unittest.TestCase):
                                           f'and has the value 1')
 
         with self.assertRaises(ValueError) as e:
-            self.character.character_type = 1
-        self.assertTrue(str(e.exception), f'{self.character.__class__.name}.name must be a CharacterType. It is '
+            self.character.class_type = 1
+        self.assertTrue(str(e.exception), f'{self.character.__class__.name}.name must be a ClassType. It is '
                                           f'a(n) int and has the value 1')
 
         # check that a negative int fails for CURRENT health
@@ -203,7 +203,7 @@ class TestCharacter(unittest.TestCase):
         char: Character = Character().from_json(data)
         self.assertEqual(char.name, self.character.name)
         self.assertEqual(char.object_type, self.character.object_type)
-        self.assertEqual(char.character_type, self.character.character_type)
+        self.assertEqual(char.class_type, self.character.class_type)
         self.assertEqual(char.current_health, self.character.current_health)
         self.assertEqual(char.max_health, self.character.max_health)
         self.assertEqual(char.attack, self.character.attack)
@@ -223,7 +223,7 @@ class TestCharacter(unittest.TestCase):
         char: GenericAttacker = GenericAttacker().from_json(data)
         self.assertEqual(char.name, self.gen_attacker.name)
         self.assertEqual(char.object_type, self.gen_attacker.object_type)
-        self.assertEqual(char.character_type, self.gen_attacker.character_type)
+        self.assertEqual(char.class_type, self.gen_attacker.class_type)
         self.assertEqual(char.current_health, self.gen_attacker.current_health)
         self.assertEqual(char.max_health, self.gen_attacker.max_health)
         self.assertEqual(char.attack, self.gen_attacker.attack)
@@ -243,7 +243,7 @@ class TestCharacter(unittest.TestCase):
         char: GenericHealer = GenericHealer().from_json(data)
         self.assertEqual(char.name, self.gen_healer.name)
         self.assertEqual(char.object_type, self.gen_healer.object_type)
-        self.assertEqual(char.character_type, self.gen_healer.character_type)
+        self.assertEqual(char.class_type, self.gen_healer.class_type)
         self.assertEqual(char.current_health, self.gen_healer.current_health)
         self.assertEqual(char.max_health, self.gen_healer.max_health)
         self.assertEqual(char.attack, self.gen_healer.attack)
@@ -263,7 +263,7 @@ class TestCharacter(unittest.TestCase):
         char: GenericTank = GenericTank().from_json(data)
         self.assertEqual(char.name, self.gen_tank.name)
         self.assertEqual(char.object_type, self.gen_tank.object_type)
-        self.assertEqual(char.character_type, self.gen_tank.character_type)
+        self.assertEqual(char.class_type, self.gen_tank.class_type)
         self.assertEqual(char.current_health, self.gen_tank.current_health)
         self.assertEqual(char.max_health, self.gen_tank.max_health)
         self.assertEqual(char.attack, self.gen_tank.attack)
@@ -283,7 +283,7 @@ class TestCharacter(unittest.TestCase):
         char: Leader = Leader().from_json(data)
         self.assertEqual(char.name, self.leader.name)
         self.assertEqual(char.object_type, self.leader.object_type)
-        self.assertEqual(char.character_type, self.leader.character_type)
+        self.assertEqual(char.class_type, self.leader.class_type)
         self.assertEqual(char.current_health, self.leader.current_health)
         self.assertEqual(char.max_health, self.leader.max_health)
         self.assertEqual(char.attack, self.leader.attack)

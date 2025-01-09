@@ -94,7 +94,7 @@ class TargetType(Enum):
     ALL_OPPS = 5
 
 
-class CharacterType(Enum):
+class ClassType(Enum):
     ATTACKER = 1
     HEALER = 2
     TANK = 3
