@@ -29,6 +29,8 @@ It is important to order the enums in the order you'd like them to appear on the
 the first Generic that will be on the top position; the second represents the Leader which will always start in the
 middle; the third represents the second Generic that will be on the bottom.
 
+!!!!!!!!!!!!!!!!! ADD SCREENSHOT OF GAME BOARD AND EXAMPLE SELECTED TEAM !!!!!!!!!!!!!!!!!
+
 
 Selecting Generics
 ------------------
@@ -120,6 +122,8 @@ Here are examples of malformed character selections:
     return (SelectGeneric.GEN_HEALER, SelectGeneric.GEN_ATTACKER, SelectGeneric.GEN_TANK)
 
     return (SelectLeader.CALMUS, SelectGeneric.GEN_TANK, SelectLeader.ANAHITA)
+
+    return (SelectGeneric.GEN_HEALER, SelectGeneric.GEN_ATTACKER, SelectGeneric.GEN_TANK)
 
 The first example shows that all 3 characters have the same ClassType. In this case, the Leader will be replaced with
 Generic Trash.

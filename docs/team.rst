@@ -123,6 +123,8 @@ Here are examples of malformed character selections:
 
     return (SelectLeader.CALMUS, SelectGeneric.GEN_TANK, SelectLeader.ANAHITA)
 
+    return (SelectGeneric.GEN_HEALER, SelectGeneric.GEN_ATTACKER, SelectGeneric.GEN_TANK)
+
 The first example shows that all 3 characters have the same ClassType. In this case, the Leader will be replaced with
 Generic Trash.
 
