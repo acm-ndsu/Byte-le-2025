@@ -72,7 +72,7 @@ class Debug:                    # Keeps track of the current debug level of the 
 
 HEALTH_MODIFIER = 4                                                 # The modfier to increase a character's health
 
-STAT_MINIMUM = 0                                                    # The lowest number a stat can reach
+STAT_MINIMUM = 1                                                    # The lowest number a stat can reach
 
 ATTACK_MAXIMUM = 100                                                # The highest the Attack stat can reach
 DEFENSE_MAXIMUM = 75                                                # The highest the Defense stat can reach
