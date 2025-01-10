@@ -53,7 +53,7 @@ Special Points
 --------------
 
 Not all Moves can be used immediately. A character needs to build up the strength to use some moves by increasing
-their :cyan:`Special Points`. :cyan:`Special Points` can be gained and lost during a match depending on the Move that
+their :cyan:`Special Points`. :cyan:`Special Points` can be gained and lost during a match depending on the Move that's
 used. A character can gain a maximum of five (5) :cyan:`Special Points`. How :cyan:`Special Points` are gained and
 lost is explained below in the next section.
 
@@ -79,3 +79,8 @@ Understanding how a character's Moveset will affect not just the user but all ch
 forming a team.
 
 Every character's individual Moveset will be explained in depth in :doc:`characters`.
+
+
+Target Types
+------------
+

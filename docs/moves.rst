@@ -79,3 +79,8 @@ Understanding how a character's Moveset will affect not just the user but all ch
 forming a team.
 
 Every character's individual Moveset will be explained in depth in :doc:`characters`.
+
+
+Target Types
+------------
+
