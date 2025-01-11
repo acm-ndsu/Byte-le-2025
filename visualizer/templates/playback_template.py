@@ -67,23 +67,23 @@ class PlaybackTemplate:
 
         # Can change locations of buttons here
         self.prev_button.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
-                                                          Vector(-80, 225)).as_tuple()
+                                                          Vector(-80, 175)).as_tuple()
         self.pause_button.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
-                                                           Vector(0, 225)).as_tuple()
+                                                           Vector(0, 175)).as_tuple()
         self.next_button.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
-                                                          Vector(80, 225)).as_tuple()
+                                                          Vector(80, 175)).as_tuple()
         self.start_button.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
-                                                           Vector(-80, 275)).as_tuple()
+                                                           Vector(-80, 225)).as_tuple()
         self.save_button.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
-                                                          Vector(0, 275)).as_tuple()
+                                                          Vector(0, 225)).as_tuple()
         self.end_button.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
-                                                         Vector(80, 275)).as_tuple()
+                                                         Vector(80, 225)).as_tuple()
         self.normal_speed_button.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
-                                                                  Vector(-80, 325)).as_tuple()
+                                                                  Vector(-80, 275)).as_tuple()
         self.fast_speed_button.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
-                                                                Vector(0, 325)).as_tuple()
+                                                                Vector(0, 275)).as_tuple()
         self.fastest_speed_button.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
-                                                                   Vector(80, 325)).as_tuple()
+                                                                   Vector(80, 275)).as_tuple()
 
     def playback_render(self) -> None:
         """

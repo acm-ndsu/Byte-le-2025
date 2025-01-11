@@ -145,7 +145,7 @@ class Adapter:
         # any logic for rendering text, buttons, and other visuals
         text = Text(self.screen, f'{self.turn_number:3d} / {self.turn_max:3d}', 48, color=self.config.FONT_COLOR,
                     font_name=self.config.FONT)
-        text.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().midtop), Vector(0, 50)).as_tuple()
+        text.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().midtop), Vector(0, 100)).as_tuple()
         text.render()
 
         self.urodaTeam.render()

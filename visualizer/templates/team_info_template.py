@@ -22,7 +22,7 @@ class TeamInfoTemplate(InfoTemplate):
         self.country = country
         self.country_text: Text = Text(screen, text=f'{"Uroda" if country == 1 else "Turpis"}',
                                        font_size=32, font_name=self.font, color=self.color,
-                                       position=Vector.add_vectors(self.topleft, Vector(x=77, y=21)))
+                                       position=Vector.add_vectors(self.topleft, Vector(x=35, y=15)))
 
         # Character Info Templates instantiated here, in order of first generic, leader, second generic
         self.character1 = CharacterInfoTemplate(screen, Vector.add_vectors(self.topleft, Vector(x=38, y=56)),

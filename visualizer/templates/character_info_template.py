@@ -28,38 +28,38 @@ class CharacterInfoTemplate(InfoTemplate):
         self.backdrop: CharacterInfoBackdrop = CharacterInfoBackdrop(top_left=topleft)
         self.backdrop.add(self.render_list)
 
-        self.headshot: Headshot = Headshot(top_left=Vector.add_vectors(topleft, Vector(x=22, y=23)))
+        self.headshot: Headshot = Headshot(top_left=Vector.add_vectors(topleft, Vector(x=15, y=23)))
         self.headshot.add(self.render_list)
 
-        self.hp_bar: HPBar = HPBar(top_left=Vector.add_vectors(topleft, Vector(x=96, y=23)))
+        self.hp_bar: HPBar = HPBar(top_left=Vector.add_vectors(topleft, Vector(x=89, y=23)))
         self.hp_bar.add(self.render_list)
 
         self.hp_bar_text: Text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                      position=Vector.add_vectors(topleft, Vector(x=303, y=23)))
+                                      position=Vector.add_vectors(topleft, Vector(x=296, y=19)))
 
-        self.sp_bar = SPBar(top_left=Vector.add_vectors(topleft, Vector(x=96, y=62)))
+        self.sp_bar = SPBar(top_left=Vector.add_vectors(topleft, Vector(x=89, y=62)))
         self.sp_bar.add(self.render_list)
 
         self.sp_bar_text: Text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                      position=Vector.add_vectors(topleft, Vector(x=209, y=62)))
+                                      position=Vector.add_vectors(topleft, Vector(x=202, y=58)))
 
-        self.attack_stat = AttackStat(top_left=Vector.add_vectors(topleft, Vector(x=29, y=106)))
+        self.attack_stat = AttackStat(top_left=Vector.add_vectors(topleft, Vector(x=15, y=106)))
         self.attack_stat.add(self.render_list)
 
         self.attack_stat_text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                     position=Vector.add_vectors(topleft, Vector(x=78, y=106)))
+                                     position=Vector.add_vectors(topleft, Vector(x=64, y=109)))
 
-        self.defense_stat = DefenseStat(top_left=Vector.add_vectors(topleft, Vector(x=135, y=106)))
+        self.defense_stat = DefenseStat(top_left=Vector.add_vectors(topleft, Vector(x=121, y=106)))
         self.defense_stat.add(self.render_list)
 
         self.defense_stat_text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                      position=Vector.add_vectors(topleft, Vector(x=184, y=106)))
+                                      position=Vector.add_vectors(topleft, Vector(x=170, y=109)))
 
-        self.speed_stat = SpeedStat(top_left=Vector.add_vectors(topleft, Vector(x=238, y=106)))
+        self.speed_stat = SpeedStat(top_left=Vector.add_vectors(topleft, Vector(x=224, y=106)))
         self.speed_stat.add(self.render_list)
 
         self.speed_stat_text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                    position=Vector.add_vectors(topleft, Vector(x=287, y=106)))
+                                    position=Vector.add_vectors(topleft, Vector(x=273, y=109)))
 
     def recalc_animation(self, turn_log: dict) -> None:
         # Get character we are recalculating
