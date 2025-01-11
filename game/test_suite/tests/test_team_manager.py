@@ -14,7 +14,7 @@ class TestTeamManager(unittest.TestCase):
     """
 
     def setUp(self):
-        self.leader: Leader = Leader('Agles', CharacterType.TANK, 100, AttackStat(), DefenseStat(10),
+        self.leader: Leader = Leader('Agles', ClassType.TANK, 100, AttackStat(), DefenseStat(10),
                                      SpeedStat(5))
         self.attacker: GenericAttacker = GenericAttacker('Grog', health=50, attack=AttackStat(), defense=DefenseStat(5),
                                                          speed=SpeedStat(15))
@@ -82,11 +82,11 @@ class TestTeamManager(unittest.TestCase):
         self.assertEqual(self.team_manager2.team, [self.attacker, self.healer, self.leader])
 
     def test_filter_by_type(self) -> None:
-        self.assertEqual(self.team_manager.filter_by_type(CharacterType.ATTACKER), TeamManager().team)
-        self.assertEqual(self.team_manager.filter_by_type(CharacterType.TANK), [])
-        self.assertEqual(self.team_manager2.filter_by_type(CharacterType.TANK), [self.leader])
-        self.assertEqual(self.team_manager2.filter_by_type(CharacterType.ATTACKER), [self.attacker])
-        self.assertEqual(self.team_manager2.filter_by_type(CharacterType.HEALER), [self.healer])
+        self.assertEqual(self.team_manager.filter_by_type(ClassType.ATTACKER), TeamManager().team)
+        self.assertEqual(self.team_manager.filter_by_type(ClassType.TANK), [])
+        self.assertEqual(self.team_manager2.filter_by_type(ClassType.TANK), [self.leader])
+        self.assertEqual(self.team_manager2.filter_by_type(ClassType.ATTACKER), [self.attacker])
+        self.assertEqual(self.team_manager2.filter_by_type(ClassType.HEALER), [self.healer])
 
     # test ensuring the correct character is returned to represent the team manager's active character for a turn
     def test_get_active_character(self) -> None:

@@ -3,7 +3,7 @@ from game.commander_clash.character.stats import AttackStat, DefenseStat, SpeedS
 from game.commander_clash.moves.effects import AttackEffect, BuffEffect, DebuffEffect, HealEffect
 from game.commander_clash.moves.moves import Attack, Buff, Debuff, Heal
 from game.commander_clash.moves.moveset import Moveset
-from game.common.enums import ObjectType, CharacterType, TargetType
+from game.common.enums import ObjectType, ClassType, TargetType
 
 """
 This file is used to create the different leaders and generic characters. In this file, all attributes of a character 
@@ -31,7 +31,7 @@ def generate_anahita() -> Leader:
     defense: DefenseStat = DefenseStat(30)
     spd: SpeedStat = SpeedStat(50)
 
-    anahita: Leader = Leader(name='Anahita', character_type=CharacterType.HEALER, health=hp, attack=atk,
+    anahita: Leader = Leader(name='Anahita', class_type=ClassType.HEALER, health=hp, attack=atk,
                              defense=defense, speed=spd, moveset=moves)
 
     anahita.object_type = ObjectType.ANAHITA
@@ -60,7 +60,7 @@ def generate_berry() -> Leader:
     defense: DefenseStat = DefenseStat(50)
     spd: SpeedStat = SpeedStat(69)
 
-    berry: Leader = Leader(name='Berry', character_type=CharacterType.HEALER, health=hp, attack=atk, defense=defense,
+    berry: Leader = Leader(name='Berry', class_type=ClassType.HEALER, health=hp, attack=atk, defense=defense,
                            speed=spd,
                            moveset=moves)
 
@@ -89,7 +89,7 @@ def generate_fultra() -> Leader:
 
     moves: Moveset = Moveset((nm, s1, s2))
 
-    fultra: Leader = Leader(name='Fultra', character_type=CharacterType.ATTACKER, health=hp, attack=atk,
+    fultra: Leader = Leader(name='Fultra', class_type=ClassType.ATTACKER, health=hp, attack=atk,
                             defense=defense,
                             speed=spd, moveset=moves)
 
@@ -117,7 +117,7 @@ def generate_ninlil() -> Leader:
 
     moves: Moveset = Moveset((nm, s1, s2))
 
-    ninlil: Leader = Leader(name='Ninlil', character_type=CharacterType.ATTACKER, health=hp, attack=atk,
+    ninlil: Leader = Leader(name='Ninlil', class_type=ClassType.ATTACKER, health=hp, attack=atk,
                             defense=defense,
                             speed=spd, moveset=moves)
 
@@ -145,7 +145,7 @@ def generate_calmus() -> Leader:
     defense: DefenseStat = DefenseStat(35)
     spd: SpeedStat = SpeedStat(20)
 
-    calmus: Leader = Leader(name='Calmus', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
+    calmus: Leader = Leader(name='Calmus', class_type=ClassType.TANK, health=hp, attack=atk, defense=defense,
                             speed=spd, moveset=moves)
 
     calmus.object_type = ObjectType.CALMUS
@@ -171,7 +171,7 @@ def generate_irwin() -> Leader:
 
     moves: Moveset = Moveset((nm, s1, s2))
 
-    irwin: Leader = Leader(name='Irwin', character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
+    irwin: Leader = Leader(name='Irwin', class_type=ClassType.TANK, health=hp, attack=atk, defense=defense,
                            speed=spd, moveset=moves)
 
     irwin.object_type = ObjectType.IRWIN
@@ -198,7 +198,7 @@ def generate_generic_attacker(name: str = 'Attacker') -> GenericAttacker:
     spd: SpeedStat = SpeedStat(35)
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
-    return GenericAttacker(name=name, character_type=CharacterType.ATTACKER, health=hp, attack=atk,
+    return GenericAttacker(name=name, class_type=ClassType.ATTACKER, health=hp, attack=atk,
                            defense=defense,
                            speed=spd, moveset=moves)
 
@@ -218,7 +218,7 @@ def generate_generic_healer(name: str = 'Healer') -> GenericHealer:
     spd: SpeedStat = SpeedStat(41)
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
-    return GenericHealer(name=name, character_type=CharacterType.HEALER, health=hp, attack=atk,
+    return GenericHealer(name=name, class_type=ClassType.HEALER, health=hp, attack=atk,
                          defense=defense,
                          speed=spd, moveset=moves)
 
@@ -240,7 +240,7 @@ def generate_generic_tank(name: str = 'Tank') -> GenericTank:
     spd: SpeedStat = SpeedStat(36)
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
-    return GenericTank(name=name, character_type=CharacterType.TANK, health=hp, attack=atk, defense=defense,
+    return GenericTank(name=name, class_type=ClassType.TANK, health=hp, attack=atk, defense=defense,
                        speed=spd, moveset=moves)
 
 

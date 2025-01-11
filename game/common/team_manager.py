@@ -1,5 +1,5 @@
 from game.commander_clash.character.character import *
-from game.common.enums import ObjectType, CountryType, CharacterType
+from game.common.enums import ObjectType, CountryType, ClassType
 from game.common.game_object import GameObject
 
 
@@ -15,7 +15,7 @@ class TeamManager(GameObject):
 
     Methods:
         speed_sort() - returns sorted list of team by fastest to slowest speed
-        filter_by_type(character_type) - returns list of characters of the specified CharacterType
+        filter_by_type(class_type) - returns list of characters of the specified ClassType
     """
 
     ''' 
@@ -118,12 +118,12 @@ class TeamManager(GameObject):
         """
         self.team = sorted(self.team, key=lambda character: (character.speed, character.rank_type.value), reverse=True)
 
-    # Method to filter the team by a character type
-    def filter_by_type(self, character_type: CharacterType) -> list[Character]:
+    # Method to filter the team by a class type
+    def filter_by_type(self, class_type: ClassType) -> list[Character]:
         """
-        Returns characters from this team that have the specified character_type.
+        Returns characters from this team that have the specified class_type.
         """
-        return [character for character in self.team if character.character_type is character_type]
+        return [character for character in self.team if character.class_type is class_type]
 
     def get_active_character(self, ordered_teams: list[tuple[Character | None, Character | None]],
                              active_pair_index: int) -> Character:
