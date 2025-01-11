@@ -119,6 +119,17 @@ class MasterController(Controller):
         # start by organizing the dead characters that died last turn if applicable
         gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
 
+        # now that dead characters are organized, check if the game is over
+        for client in clients:
+            # the game is over if everyone is defeated
+            if client.team_manager.everyone_is_defeated():
+                self.game_over = True
+
+        if self.game_over:
+            # add the final scores and return if the game is over; perform no more logic
+            self.add_final_client_scores(clients)
+            return
+
         # reset the turn info string for new information
         gameboard.turn_info += (f'\nUnordered active pair for turn {turn}: {[
             char.name if char is not None else None for char in gameboard.get_active_pair()
@@ -176,21 +187,7 @@ class MasterController(Controller):
 
         print(f'{gameboard.turn_info}')
 
-    # Return serialized version of game
-    def create_turn_log(self, clients: list[Player], turn: int):
-        data = dict()
-        data['tick'] = turn
-        data['clients'] = [client.to_json() for client in clients]
-
-        # Add things that should be thrown into the turn logs here
-        data['game_board'] = self.current_world_data['game_board']
-
-        return data
-
-    # Gather necessary data together in results file
-    def return_final_results(self, clients: list[Player], turn):
-        data = dict()
-
+    def add_final_client_scores(self, clients: list[Player]) -> None:
         client1: Player = clients[0]
         client2: Player = clients[1]
 
@@ -206,6 +203,21 @@ class MasterController(Controller):
         # if there is a clear winner (one team was defeated), add the winning score to the winner
         if winner is not None:
             winner.team_manager.score += WIN_SCORE
+
+    # Return serialized version of game
+    def create_turn_log(self, clients: list[Player], turn: int):
+        data = dict()
+        data['tick'] = turn
+        data['clients'] = [client.to_json() for client in clients]
+
+        # Add things that should be thrown into the turn logs here
+        data['game_board'] = self.current_world_data['game_board']
+
+        return data
+
+    # Gather necessary data together in results file
+    def return_final_results(self, clients: list[Player], turn):
+        data = dict()
 
         data['players'] = list()
 

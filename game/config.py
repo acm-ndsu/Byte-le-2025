@@ -86,4 +86,4 @@ DEFEATED_SCORE = 100                                                # The points
 WIN_SCORE = 200                                                     # The points to award for winning a game
 DIFFERENTIAL_BONUS = 150                                            # The points to award for each alive character on the winning team
 
-GENERIC_TRASH_NAME = 'Trash'                                # A name used for Generic Trash to convey a proper message to the players
+GENERIC_TRASH_NAME = 'Missing Character'                            # A name used for Generic Trash to convey a proper message to the players
