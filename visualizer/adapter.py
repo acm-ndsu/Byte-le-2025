@@ -32,7 +32,7 @@ class Adapter:
         self.bytesprites: list[ByteSprite] = []
         self.populate_bytesprite: pygame.sprite.Group = pygame.sprite.Group()
         self.main_backdrop: MainBackdrop = MainBackdrop(Vector(x=0, y=0))
-        self.game_backdrop: GameBackdrop = GameBackdrop(Vector(x=426, y=204))
+        self.game_backdrop: GameBackdrop = GameBackdrop(Vector(x=394, y=175))
         self.menu: MenuTemplate = Basic(screen, self.config.FONT, self.config.FONT_COLOR_ALT,
                                         self.config.BUTTON_COLORS, 'Commander Clash')
         self.scoreboard = ScoreboardTemplate(screen, Vector(x=38, y=13), Vector(x=1200, y=40), self.config.FONT,
