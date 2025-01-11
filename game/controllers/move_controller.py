@@ -12,6 +12,8 @@ class MoveController(Controller):
     it will access that move and call its `use()` method to attempt to activate it.
     """
 
+    fultra_attack_prev: int = 0
+
     def handle_logic(self, clients: list[Player], world: GameBoard, turn: int = 1) -> None:
         uroda_team_manager: TeamManager = clients[0].team_manager \
             if clients[0].team_manager.country_type == CountryType.URODA else clients[1].team_manager
@@ -39,6 +41,9 @@ class MoveController(Controller):
 
         # for every character, execute the logic for their move if applicable
         for user in active_chars:
+            if user.name.__contains__('Fultra'):
+                MoveController.fultra_attack_prev = user.attack.value
+
             # if the client's character died before their turn AND it is not a speed tie, continue to next iteration
             # if it is a speed tie and the character died before their turn, they can still act to simulate them
             # attacking at the same time
@@ -49,12 +54,18 @@ class MoveController(Controller):
             if user.selected_move is None:
                 continue
 
+            world.turn_info += f'\nStarting {user.name}\'s turn!\n'
+
             current_move: Move = user.selected_move
             is_normal_move: bool = user.selected_move == user.get_nm()
             user.took_action = True
 
             # if the character cannot use the desired move, continue to next iteration
             if user.special_points < current_move.cost:
+                world.turn_info += (f'\n{user.name} could not use {current_move.name} due to not having enough Special '
+                                    f'Points!\n'
+                                    f'{user.name}\'s Special Points: {user.special_points}. '
+                                    f'Needed Special Points: {current_move.cost}\n')
                 continue
 
             # get the possible targets based on the target type
@@ -62,9 +73,8 @@ class MoveController(Controller):
 
             # don't do anything if there are no available targets
             if len(primary_targets) == 0:
+                world.turn_info += f'\n{user.name} has no initial targets for {current_move.name}!\n'
                 continue
-
-            world.turn_info += f'\nStarting {user.name}\'s turn!\n'
 
             # call the move_logic file's method to handle the rest of the logic
             handle_move_logic(user, primary_targets, current_move, is_normal_move, world,
@@ -84,6 +94,10 @@ class MoveController(Controller):
 
                 if len(effect_targets) != 0:
                     handle_effect_logic(user, effect_targets, current_move.effect, world)
+                else:
+                    # add to the turn info there were no targets for the secondary effect of the move
+                    world.turn_info += (f'\n{user.name} has no targets for the secondary effect of '
+                                        f'{current_move.name}!\n')
 
                 # add any additional characters to defeated_characters
                 defeated_characters += [target for target in effect_targets if
@@ -99,8 +113,8 @@ class MoveController(Controller):
             self.__sync_targeted_characters(primary_targets, uroda_team_manager, turpis_team_manager, world)
             self.__sync_targeted_characters(effect_targets, uroda_team_manager, turpis_team_manager, world)
 
-        # sync the users that took their action
-        self.__sync_active_characters(active_chars, uroda_team_manager, turpis_team_manager, world)
+            # sync the users that took their action
+            self.__sync_active_characters(active_chars, uroda_team_manager, turpis_team_manager, world)
 
     def __defeated_char_logic(self, clients: list[Player], user: Character,
                               defeated_characters: list[Character], world: GameBoard) -> None:
@@ -211,8 +225,6 @@ class MoveController(Controller):
 
     def __sync_active_characters(self, active_chars: list[Character], uroda_team_manager: TeamManager,
                                  turpis_team_manager: TeamManager, world: GameBoard) -> None:
-        print(f'Syncing active chars {[char.name if char is not None else None for char in active_chars]}')
-
         # for every active character from the ordered_teams list, sync with the team manager and game map references
         for active_char in active_chars:
             tm_to_use: TeamManager = uroda_team_manager \
@@ -232,8 +244,6 @@ class MoveController(Controller):
 
             # sync the game map's reference of the character
             gm_character: Character = world.get_character_from(active_char.position)
-
-            print(f'Syncing game map reference for {active_char.name}')
 
             gm_character.attack = active_char.attack
             gm_character.defense = active_char.defense

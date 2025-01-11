@@ -50,9 +50,10 @@ def validate_team_selection(
 
         return characters
 
-    # if all 3 characters are the same, replace the selection 2 IF selection 2 is not generic trash
+    # if all 3 characters are the same ClassType, replace the selection 2 IF selections 1 & 3 are NOT generic trash
     if (classes_map[selection1] == classes_map[selection2] == classes_map[selection3]
-            and isinstance(selection2, SelectLeader)):
+            and
+            (selection1.value != SelectGeneric.GEN_TRASH.value and selection2.value != SelectGeneric.GEN_TRASH.value)):
         selection2 = SelectGeneric.GEN_TRASH
 
         gen1, trash, gen2 = [__convert_to_character(member) for member in [selection1, selection2, selection3]]

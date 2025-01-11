@@ -103,19 +103,15 @@ class MasterController(Controller):
 
     # Perform the main logic that happens per turn
     def turn_logic(self, clients: list[Player], turn):
-        print(f'Starting turn {turn}')
-
         gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
+
+        gameboard.turn_info = f'\nStarting turn {turn}'
 
         uroda_team_manager: TeamManager = clients[0].team_manager if (
                 clients[0].team_manager.country_type == CountryType.URODA) else clients[1].team_manager
 
         turpis_team_manager: TeamManager = clients[0].team_manager if (
                 clients[0].team_manager.country_type == CountryType.TURPIS) else clients[1].team_manager
-
-        # order the teams if it's the first turn so the game can start
-        # if turn == 1:
-        #     gameboard.order_teams(uroda_team_manager, turpis_team_manager)
 
         # increment the active_pair_index for the next turn
         gameboard.active_pair_index += 1
@@ -124,8 +120,9 @@ class MasterController(Controller):
         gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
 
         # reset the turn info string for new information
-        gameboard.turn_info = (f'Unordered active pair for turn {turn}: {[char.name if char is not None else None
-                                                                          for char in gameboard.get_active_pair()]}\n')
+        gameboard.turn_info += (f'\nUnordered active pair for turn {turn}: {[
+            char.name if char is not None else None for char in gameboard.get_active_pair()
+        ]}\n')
 
         # set each character's state to 'idle' in the gameboard's ordered_teams list
         for pair in gameboard.ordered_teams:
@@ -157,10 +154,6 @@ class MasterController(Controller):
                     pass
 
         self.move_controller.handle_logic(clients, gameboard, turn)
-
-        print(f'Gameboard turn order: {[(pair[0].name if pair[0] is not None else None,
-                                        pair[1].name if pair[1] is not None else None) 
-                                        for pair in gameboard.ordered_teams]}')
 
         # NOTE: when there are 6 characters alive, every json file whose turn is a multiple of 3 will show
         # all characters as not taken a turn yet. This is fine unless the visualizer needs it for something!
