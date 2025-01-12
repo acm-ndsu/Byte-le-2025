@@ -83,10 +83,6 @@ def validate_team_selection(
     for cls, count in class_counts.items():
         if count > 2:
             for i in range(len(classes)):
-                # # don't replace the leader slot
-                # if i == 1:
-                #     continue
-
                 if classes[i] == cls:
                     # make the tuple of valid_team enums a list to handle it better
                     valid_team: list[SelectLeader | SelectGeneric] = list(valid_team)
@@ -110,34 +106,6 @@ def validate_team_selection(
 
     # return a list of the characters in the order they would appear in the GameBoard
     return characters
-
-    # gen1, leader, gen2 = [__convert_to_character(enum) for enum in enums]
-    #
-    # # if the leader is the same class as both generics (e.g., Tank, Tank, Tank), the leader must be replaced with trash
-    # # this should only be done if the leader is an actual Leader object
-    # if gen1.class_type == leader.class_type == gen2.class_type:
-    #     leader = GenericTrash()
-    #
-    # if not isinstance(gen1, Generic):
-    #     gen1 = GenericTrash()
-    #
-    # if not isinstance(gen2, Generic):
-    #     gen2 = GenericTrash()
-    #
-    # if not isinstance(leader, Leader):
-    #     leader = GenericTrash()
-    #
-    # characters: list[Character] = [gen1, leader, gen2]
-    #
-    # # make the names unique
-    # __differentiate_names(characters)
-    #
-    # for x in range(0, 3):
-    #     characters[x].index = x
-    #
-    # # return a list of the characters in the order they would appear in the GameBoard
-    # return characters
-
 
 def __convert_to_character(enum: SelectGeneric | SelectLeader):
     """
