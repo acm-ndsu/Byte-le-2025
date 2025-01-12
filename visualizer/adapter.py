@@ -1,5 +1,4 @@
 import os
-
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 import pygame
@@ -33,7 +32,7 @@ class Adapter:
         self.bytesprites: list[ByteSprite] = []
         self.populate_bytesprite: pygame.sprite.Group = pygame.sprite.Group()
         self.main_backdrop: MainBackdrop = MainBackdrop(Vector(x=0, y=0))
-        self.game_backdrop: GameBackdrop = GameBackdrop(Vector(x=426, y=204))
+        self.game_backdrop: GameBackdrop = GameBackdrop(Vector(x=394, y=175))
         self.menu: MenuTemplate = Basic(screen, self.config.FONT, self.config.FONT_COLOR_ALT,
                                         self.config.BUTTON_COLORS, 'Commander Clash')
         self.scoreboard = ScoreboardTemplate(screen, Vector(x=38, y=13), Vector(x=1200, y=40), self.config.FONT,
@@ -146,7 +145,7 @@ class Adapter:
         # any logic for rendering text, buttons, and other visuals
         text = Text(self.screen, f'{self.turn_number:3d} / {self.turn_max:3d}', 48, color=self.config.FONT_COLOR,
                     font_name=self.config.FONT)
-        text.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().midtop), Vector(0, 50)).as_tuple()
+        text.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().midtop), Vector(0, 100)).as_tuple()
         text.render()
 
         self.urodaTeam.render()

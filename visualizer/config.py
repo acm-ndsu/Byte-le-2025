@@ -76,12 +76,12 @@ class Config:
     __FONT_COLOR: str = '#000000'
     __FONT_COLOR_ALT: str = '#FFFFFF'
     __BUTTON_COLORS: ButtonColors = ButtonColors(
-        bg_color='#66396D',
-        bg_color_hover='#967BB6',
-        bg_color_clicked='#522888',
-        fg_color='#B97F24',
-        fg_color_hover='#BF9553',
-        fg_color_clicked='#CDC7D9'
+        bg_color='#8C7753',             # Idle darker tan shade for the background
+        bg_color_hover='#A38E68',       # Hovered slightly lighter tan
+        bg_color_clicked='#735F41',     # Clicked darker brown-tan
+        fg_color='#000000',             # Idle black text
+        fg_color_hover='#2D2D2D',       # Hovered dark gray text
+        fg_color_clicked='#494949'      # Clicked lighter gray text
     )
 
     @property

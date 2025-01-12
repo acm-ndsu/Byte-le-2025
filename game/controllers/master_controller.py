@@ -6,9 +6,9 @@ from game.common.player import Player
 from game.common.team_manager import TeamManager
 from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN, WIN_SCORE, DIFFERENTIAL_BONUS
 from game.controllers.controller import Controller
-from game.controllers.swap_controller import SwapController
-from game.controllers.select_move_controller import SelectMoveController
 from game.controllers.move_controller import MoveController
+from game.controllers.select_move_controller import SelectMoveController
+from game.controllers.swap_controller import SwapController
 
 
 class MasterController(Controller):
@@ -105,15 +105,13 @@ class MasterController(Controller):
     def turn_logic(self, clients: list[Player], turn):
         gameboard: GameBoard = GameBoard().from_json(self.current_world_data['game_board'])
 
+        gameboard.turn_info = f'\nStarting turn {turn}'
+
         uroda_team_manager: TeamManager = clients[0].team_manager if (
                 clients[0].team_manager.country_type == CountryType.URODA) else clients[1].team_manager
 
         turpis_team_manager: TeamManager = clients[0].team_manager if (
                 clients[0].team_manager.country_type == CountryType.TURPIS) else clients[1].team_manager
-
-        # order the teams if it's the first turn so the game can start
-        if turn == 1:
-            gameboard.order_teams(uroda_team_manager, turpis_team_manager)
 
         # increment the active_pair_index for the next turn
         gameboard.active_pair_index += 1
@@ -121,8 +119,33 @@ class MasterController(Controller):
         # start by organizing the dead characters that died last turn if applicable
         gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
 
+        # now that dead characters are organized, check if the game is over
+        for client in clients:
+            # the game is over if everyone is defeated
+            if client.team_manager.everyone_is_defeated():
+                self.game_over = True
+
+        if self.game_over:
+            # add the final scores and return if the game is over; perform no more logic
+            self.add_final_client_scores(clients)
+            return
+
         # reset the turn info string for new information
-        gameboard.turn_info = ''
+        gameboard.turn_info += (f'\nUnordered active pair for turn {turn}: {[
+            char.name if char is not None else None for char in gameboard.get_active_pair()
+        ]}\n')
+
+        # set each character's state to 'idle' in the gameboard's ordered_teams list
+        for pair in gameboard.ordered_teams:
+            for char in pair:
+                if char is not None:
+                    char.state = 'idle'
+
+        # set each character's state to 'idle' in the game map
+        # do this by getting all characters by country and making the dict values a list
+        for char in list(gameboard.get_characters(CountryType.URODA).values()) + list(
+                gameboard.get_characters(CountryType.TURPIS).values()):
+            char.state = 'idle'
 
         for client in clients:
             # set each character's state to 'idle' in the client's team manager
@@ -143,7 +166,8 @@ class MasterController(Controller):
 
         self.move_controller.handle_logic(clients, gameboard, turn)
 
-        # loop again to handle tasks after all logic is handled for the turn
+        # NOTE: when there are 6 characters alive, every json file whose turn is a multiple of 3 will show
+        # all characters as not taken a turn yet. This is fine unless the visualizer needs it for something!
         for client in clients:
             # if everyone took their action in the given team manager, set their took_action bool to False
             if client.team_manager.everyone_took_action():
@@ -161,21 +185,9 @@ class MasterController(Controller):
         # update the current world json by setting it to the game board's updated state
         self.current_world_data['game_board'] = gameboard.to_json()
 
-    # Return serialized version of game
-    def create_turn_log(self, clients: list[Player], turn: int):
-        data = dict()
-        data['tick'] = turn
-        data['clients'] = [client.to_json() for client in clients]
+        print(f'{gameboard.turn_info}')
 
-        # Add things that should be thrown into the turn logs here
-        data['game_board'] = self.current_world_data['game_board']
-
-        return data
-
-    # Gather necessary data together in results file
-    def return_final_results(self, clients: list[Player], turn):
-        data = dict()
-
+    def add_final_client_scores(self, clients: list[Player]) -> None:
         client1: Player = clients[0]
         client2: Player = clients[1]
 
@@ -191,6 +203,21 @@ class MasterController(Controller):
         # if there is a clear winner (one team was defeated), add the winning score to the winner
         if winner is not None:
             winner.team_manager.score += WIN_SCORE
+
+    # Return serialized version of game
+    def create_turn_log(self, clients: list[Player], turn: int):
+        data = dict()
+        data['tick'] = turn
+        data['clients'] = [client.to_json() for client in clients]
+
+        # Add things that should be thrown into the turn logs here
+        data['game_board'] = self.current_world_data['game_board']
+
+        return data
+
+    # Gather necessary data together in results file
+    def return_final_results(self, clients: list[Player], turn):
+        data = dict()
 
         data['players'] = list()
 

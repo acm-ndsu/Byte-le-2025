@@ -96,14 +96,18 @@ class TestSelectMoveController(unittest.TestCase):
                                               uroda_team_manager=self.uroda_team_manager,
                                               turpis_team_manager=self.turpis_team_manager)
 
+        # set the active pair index
+        self.gameboard.active_pair_index = 0
+
         self.gameboard.generate_map()
 
     def test_given_valid_enum(self) -> None:
         # the active character is the attacker, and its selected move should be the normal move
         self.select_move_controller.handle_actions(ActionType.USE_NM, self.uroda_client, self.gameboard)
 
-        # test that the attacker's selected move is the normal move
-        self.assertEqual(self.uroda_attacker.selected_move.name, self.attacker_moveset.get_nm().name)
+        # test that the attacker's selected move is the normal move in the team manager
+        self.assertEqual(self.uroda_client.team_manager.get_character(self.uroda_attacker.name).selected_move.name,
+                         self.attacker_moveset.get_nm().name)
 
         # test that the attacker's selected move is reflected in the ordered_teams list in the gameboard
         self.assertEqual(self.gameboard.get_char_from_ordered_teams(self.uroda_attacker.name).selected_move.name,
@@ -115,7 +119,8 @@ class TestSelectMoveController(unittest.TestCase):
 
         # test special 1
         self.select_move_controller.handle_actions(ActionType.USE_S1, self.uroda_client, self.gameboard)
-        self.assertEqual(self.uroda_attacker.selected_move.name, self.attacker_moveset.get_s1().name)
+        self.assertEqual(self.uroda_client.team_manager.get_character(self.uroda_attacker.name).selected_move.name,
+                         self.attacker_moveset.get_s1().name)
 
         self.assertEqual(self.gameboard.get_char_from_ordered_teams(self.uroda_attacker.name).selected_move.name,
                          self.attacker_moveset.get_s1().name)
@@ -125,7 +130,8 @@ class TestSelectMoveController(unittest.TestCase):
 
         # test special 2
         self.select_move_controller.handle_actions(ActionType.USE_S2, self.uroda_client, self.gameboard)
-        self.assertEqual(self.uroda_attacker.selected_move.name, self.attacker_moveset.get_s2().name)
+        self.assertEqual(self.uroda_client.team_manager.get_character(self.uroda_attacker.name).selected_move.name,
+                         self.attacker_moveset.get_s2().name)
 
         self.assertEqual(self.gameboard.get_char_from_ordered_teams(self.uroda_attacker.name).selected_move.name,
                          self.attacker_moveset.get_s2().name)
