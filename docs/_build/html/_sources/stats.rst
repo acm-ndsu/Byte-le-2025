@@ -21,8 +21,8 @@ Attack Stat
    :width: 90
    :align: center
 
-Attack is the amount of base damage a character can deal when using an Attack move. Essentially, it is the strength of
-the character, reflected by an integer between 0 and 100.
+Attack is the amount of base damage a character can deal when using an Attack Move without any modifiers.
+Essentially, it is the strength of the character, reflected by an integer between 0 and 100.
 
 For example, if the attack stat is 50, the character will attempt to deal 50 points of damage to the target.
 
@@ -41,8 +41,6 @@ integer between 0 - 100.
 For example, if the defense stat is 50, and the incoming damage is 50, the character will prevent 50% of the damage
 and take 25 points of damage.
 
-To access a character's stat stat, you can do the following:
-
 Speed Stat
 ----------
 
@@ -50,8 +48,9 @@ Speed Stat
    :width: 90
    :align: center
 
-Speed is the stat that determines the turn order of your team and who gets to act first each turn. Visit
-:doc:`game_logic` for more details about turn order and how the speed stat affects it.
+Speed is the stat that determines the order of your team and who gets to act first each turn. Visit
+:doc:`game_logic` for more details about turn order
+how the speed stat affects it.
 
 Accessing a Character's Stats
 ---------------------------------
