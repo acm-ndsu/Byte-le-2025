@@ -37,37 +37,37 @@ class Stat(GameObject):
         self.value: int | float = base_value
 
     # override the hashable methods to easily compare stats
-    def __eq__(self, other: Self | int) -> bool:
+    def __eq__(self, other: Self) -> bool:
         if not isinstance(other, Stat):
             return False
 
         return self.value == other.value
 
-    def __gt__(self, other: Self | int) -> bool:
+    def __gt__(self, other: Self) -> bool:
         if not isinstance(other, Stat):
             return False
 
         return self.value > other.value
 
-    def __lt__(self, other: Self | int) -> bool:
+    def __lt__(self, other: Self) -> bool:
         if not isinstance(other, Stat):
             return False
 
         return self.value < other.value
 
-    def __ge__(self, other: Self | int) -> bool:
+    def __ge__(self, other: Self) -> bool:
         if not isinstance(other, Stat):
             return False
 
         return self.value >= other.value
 
-    def __le__(self, other: Self | int) -> bool:
+    def __le__(self, other: Self) -> bool:
         if not isinstance(other, Stat | int):
             return False
 
         return self.value <= other.value
 
-    def __ne__(self, other: Self | int) -> bool:
+    def __ne__(self, other: Self) -> bool:
         if not isinstance(other, Stat):
             return False
 

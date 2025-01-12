@@ -175,8 +175,8 @@ class TestMoveController(unittest.TestCase):
         mock.assert_not_called()
 
     def test_speed_tie(self) -> None:
-        # set the game board's active_pair_index to 0
-        self.gameboard.active_pair_index = 0
+        # set the game board's active_pair_index to 2 (teams aren't ordered by speed currently)
+        self.gameboard.active_pair_index = 2
 
         # uroda attacker and turpis attacker should be attacking each other at the same time
         self.move_controller.handle_logic(self.clients, self.gameboard)
@@ -199,8 +199,8 @@ class TestMoveController(unittest.TestCase):
         # the attacker references cannot be compared in ordered_teams since their instances were popped off the list
 
     def test_speed_tie_both_defeated(self) -> None:
-        # set the game board's active_pair_index to 0
-        self.gameboard.active_pair_index = 0
+        # set the game board's active_pair_index to 2 for both attackers
+        self.gameboard.active_pair_index = 2
 
         # set the health of both attackers to be 1
         self.uroda_attacker.current_health = 1
@@ -224,9 +224,6 @@ class TestMoveController(unittest.TestCase):
         # set the game board's active_pair_index to 0
         self.gameboard.active_pair_index = 0
 
-        # remove the uroda and turpis attacker from the ordered teams list
-        self.gameboard.ordered_teams.pop(0)
-
         # set turpis tank health to 1
         self.turpis_tank.current_health = 1
 
@@ -246,8 +243,8 @@ class TestMoveController(unittest.TestCase):
         self.assertTrue(self.turpis_tank == self.gameboard.get_character_from(self.turpis_tank.position))
 
     def test_both_teams_are_defeated_with_speed_tie(self) -> None:
-        # set the game board's active_pair_index to 0
-        self.gameboard.active_pair_index = 0
+        # set the game board's active_pair_index to 2
+        self.gameboard.active_pair_index = 2
 
         # set the special points so the attackers can use their aoe
         self.uroda_attacker.special_points = 5
@@ -353,8 +350,6 @@ class TestMoveController(unittest.TestCase):
         # don't want the turpis tank to take its turn since that will deal damage
         self.turpis_tank.selected_move = None
 
-        self.gameboard.ordered_teams.pop(0)
-
         self.move_controller.handle_logic(self.clients, self.gameboard)
 
         self.assertEqual(self.uroda_attacker.current_health, 26)
@@ -380,8 +375,6 @@ class TestMoveController(unittest.TestCase):
 
         # don't want the turpis tank to take its turn since that will deal damage
         self.turpis_tank.selected_move = None
-
-        self.gameboard.ordered_teams.pop(0)
 
         self.move_controller.handle_logic(self.clients, self.gameboard)
 
