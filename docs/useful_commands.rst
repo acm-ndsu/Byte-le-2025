@@ -8,7 +8,7 @@ Useful Commands
 
 .. role:: red
 
-Running the launcher
+Running the Launcher
 ====================
 
 There are required packages necessary for running the game. Run the following command to install them all:
@@ -66,7 +66,7 @@ debugging. There will also be logs generated in the ``logs`` folder, showing wha
 the JSON format.
 
 Visualize
-----------
+---------
 
 .. code-block::
 

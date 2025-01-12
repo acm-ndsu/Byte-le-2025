@@ -297,9 +297,12 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attack">Attack</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defense">Defense</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speed">Speed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#health">Health</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attack-stat">Attack Stat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defense-stat">Defense Stat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-stat">Speed Stat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-a-character-s-stats">Accessing a Character’s Stats</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-stats">Comparing Stats</a></li>
 </ul>
             </nav>
         </div>
@@ -313,27 +316,80 @@
                   
   <section id="stats">
 <h1>Stats<a class="headerlink" href="#stats" title="Link to this heading">#</a></h1>
-<p>Every character has a unique set of stats, including attack, defense, and speed.</p>
-<section id="attack">
-<h2>Attack<a class="headerlink" href="#attack" title="Link to this heading">#</a></h2>
+<p>Every character has a unique set of stats, including health, attack, defense, and speed.</p>
+<section id="health">
+<h2>Health<a class="headerlink" href="#health" title="Link to this heading">#</a></h2>
+<a class="reference internal image-reference" href="_images/hp_bar_7.png"><img alt="_images/hp_bar_7.png" class="align-center" src="_images/hp_bar_7.png" style="width: 175px;" /></a>
+<p>Health… represents how healthy a character is. What did you expect? The health will be represented by a character’s
+<code class="docutils literal notranslate"><span class="pre">current_health</span></code> over their <code class="docutils literal notranslate"><span class="pre">max_health</span></code>, such as <code class="docutils literal notranslate"><span class="pre">current_health/max_health</span></code>.</p>
+</section>
+<section id="attack-stat">
+<h2>Attack Stat<a class="headerlink" href="#attack-stat" title="Link to this heading">#</a></h2>
 <a class="reference internal image-reference" href="_images/attack_buff.png"><img alt="_images/attack_buff.png" class="align-center" src="_images/attack_buff.png" style="width: 90px;" /></a>
 <p>Attack is the amount of base damage a character can deal when using an Attack move. Essentially, it is the strength of
 the character, reflected by an integer between 0 and 100.</p>
 <p>For example, if the attack stat is 50, the character will attempt to deal 50 points of damage to the target.</p>
+<p>To access a character’s attack stat, you can do the following:</p>
 </section>
-<section id="defense">
-<h2>Defense<a class="headerlink" href="#defense" title="Link to this heading">#</a></h2>
+<section id="defense-stat">
+<h2>Defense Stat<a class="headerlink" href="#defense-stat" title="Link to this heading">#</a></h2>
 <a class="reference internal image-reference" href="_images/defense_buff.png"><img alt="_images/defense_buff.png" class="align-center" src="_images/defense_buff.png" style="width: 90px;" /></a>
 <p>Defense is a percentage of the amount of damage a character can prevent from taking from an Attack, represented by an
 integer between 0 - 100.</p>
 <p>For example, if the defense stat is 50, and the incoming damage is 50, the character will prevent 50% of the damage
 and take 25 points of damage.</p>
+<p>To access a character’s stat stat, you can do the following:</p>
 </section>
-<section id="speed">
-<h2>Speed<a class="headerlink" href="#speed" title="Link to this heading">#</a></h2>
+<section id="speed-stat">
+<h2>Speed Stat<a class="headerlink" href="#speed-stat" title="Link to this heading">#</a></h2>
 <a class="reference internal image-reference" href="_images/speed_buff.png"><img alt="_images/speed_buff.png" class="align-center" src="_images/speed_buff.png" style="width: 90px;" /></a>
 <p>Speed is the stat that determines the turn order of your team and who gets to act first each turn. Visit
 <a class="reference internal" href="game_logic.html"><span class="doc">Game Logic</span></a> for more details about turn order and how the speed stat affects it.</p>
+</section>
+<section id="accessing-a-character-s-stats">
+<h2>Accessing a Character’s Stats<a class="headerlink" href="#accessing-a-character-s-stats" title="Link to this heading">#</a></h2>
+<p>Here is how you can access any of a character’s stats:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">character</span><span class="o">.</span><span class="n">current_health</span>
+<span class="n">character</span><span class="o">.</span><span class="n">max_health</span>
+<span class="n">character</span><span class="o">.</span><span class="n">attack</span>
+<span class="n">character</span><span class="o">.</span><span class="n">defense</span>
+<span class="n">character</span><span class="o">.</span><span class="n">speed</span>
+</pre></div>
+</div>
+<p>Here is how you can access the base values (what the original stat of the character’s stat is; this is static)
+and the modified values (the value that will constantly change with stat buffs and debuffs) of the attack,
+defense, and speed stats:</p>
+<p>Accessing the base values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">character</span><span class="o">.</span><span class="n">attack</span><span class="o">.</span><span class="n">base_value</span>
+<span class="n">character</span><span class="o">.</span><span class="n">defense</span><span class="o">.</span><span class="n">base_value</span>
+<span class="n">character</span><span class="o">.</span><span class="n">speed</span><span class="o">.</span><span class="n">base_value</span>
+</pre></div>
+</div>
+<p>Accessing the modified values:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">character</span><span class="o">.</span><span class="n">attack</span><span class="o">.</span><span class="n">value</span>
+<span class="n">character</span><span class="o">.</span><span class="n">defense</span><span class="o">.</span><span class="n">value</span>
+<span class="n">character</span><span class="o">.</span><span class="n">speed</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+</div>
+</section>
+<section id="comparing-stats">
+<h2>Comparing Stats<a class="headerlink" href="#comparing-stats" title="Link to this heading">#</a></h2>
+<p>It may be useful to compare stats to others, and you can easily do so! You can treat the attack, defense, and speed
+stats like regular integers. You can also compare any stat with any stat (e.g., attack == speed). You can perform the
+following comparisons below with any of the stats. These are just a few examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">character</span><span class="o">.</span><span class="n">attack</span> <span class="o">==</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
+<span class="n">character</span><span class="o">.</span><span class="n">defense</span> <span class="o">==</span> <span class="n">other_character</span><span class="o">.</span><span class="n">defense</span>
+<span class="n">character</span><span class="o">.</span><span class="n">speed</span> <span class="o">==</span> <span class="n">other_character</span><span class="o">.</span><span class="n">speed</span>
+
+<span class="n">character</span><span class="o">.</span><span class="n">attack</span> <span class="o">&gt;</span> <span class="n">other_character</span><span class="o">.</span><span class="n">defense</span>
+<span class="n">character</span><span class="o">.</span><span class="n">speed</span> <span class="o">&gt;=</span> <span class="n">other_character</span><span class="o">.</span><span class="n">defense</span>
+
+<span class="n">character</span><span class="o">.</span><span class="n">defense</span> <span class="o">&lt;</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
+<span class="n">character</span><span class="o">.</span><span class="n">speed</span> <span class="o">&lt;=</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
+
+<span class="n">character</span><span class="o">.</span><span class="n">speed</span> <span class="o">!=</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -383,9 +439,12 @@ and take 25 points of damage.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attack">Attack</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defense">Defense</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speed">Speed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#health">Health</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attack-stat">Attack Stat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defense-stat">Defense Stat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-stat">Speed Stat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-a-character-s-stats">Accessing a Character’s Stats</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-stats">Comparing Stats</a></li>
 </ul>
   </nav></div>
 
