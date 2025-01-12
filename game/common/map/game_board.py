@@ -508,6 +508,9 @@ class GameBoard(GameObject):
         if uroda_team_manager is None or turpis_team_manager is None:
             return
 
+        uroda_team_manager.speed_sort()
+        turpis_team_manager.speed_sort()
+
         # contains the pairs of characters for each team; tuples will contain Character or None values
         result: list[tuple[Character | None, Character | None]] = []
 

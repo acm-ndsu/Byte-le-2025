@@ -1,8 +1,8 @@
-from game.common.player import Player
-from game.common.map.game_board import GameBoard
 from game.common.enums import ActionType
-from game.controllers.controller import Controller
+from game.common.map.game_board import GameBoard
+from game.common.player import Player
 from game.common.team_manager import *
+from game.controllers.controller import Controller
 
 
 class SwapController(Controller):
@@ -25,17 +25,13 @@ class SwapController(Controller):
         # index will be 0 if Uroda, 1 if Turpis
         tuple_index_to_use: int = client.team_manager.country_type.value - 1
 
-        active_char_from_ot: Character | None = active_chars[tuple_index_to_use]
+        active_character: Character | None = active_chars[tuple_index_to_use]
 
         # if the active character from the ordered_teams list is None, it's not its turn to do anything yet
-        if active_char_from_ot is None:
+        if active_character is None:
             return
 
-        active_character: Character = client.team_manager.get_active_character()
-
-        # if the character from the ordered list is not the same as the team manager's active character, do nothing
-        if active_char_from_ot.name != active_character.name:
-            return
+        # active_character: Character = client.team_manager.get_active_character()
 
         pos_mod: Vector
 
@@ -68,6 +64,9 @@ class SwapController(Controller):
         if not world.is_valid_coords(new_vector):
             world.turn_info += (f'\n{active_character.name} tried to swap to coordinate {new_vector} '
                                 f'but couldn\'t be moved off the map!\n')
+
+            # sync the active character if they can't move
+            self.__sync_character_references(active_character, None, client, world)
             return
 
         # Get character to swap to if there is one
@@ -98,7 +97,7 @@ class SwapController(Controller):
                                 f'\n{swapped_character.name}\'s position before: {new_vector} -> '
                                 f'{swapped_character.name}\'s position after: {swapped_character.position}\n')
 
-    def __sync_character_references(self, active_character: Character, swapped_character: Character,
+    def __sync_character_references(self, active_character: Character, swapped_character: Character | None,
                                     client: Player, world: GameBoard) -> None:
         """
         A helper method to ensure that all character references are synchronized. The controller ensures the
@@ -114,14 +113,14 @@ class SwapController(Controller):
 
         if ot_active_char is not None:
             ot_active_char.position = active_character.position
-            ot_active_char.took_action = True
-            ot_active_char.selected_move = None
+            ot_active_char.took_action = active_character.took_action
+            ot_active_char.selected_move = active_character.selected_move
 
             # update the team manager reference of the character
             tm_active_char: Character = client.team_manager.get_character(active_character.name)
             tm_active_char.position = active_character.position
-            tm_active_char.took_action = True
-            tm_active_char.selected_move = None
+            tm_active_char.took_action = active_character.took_action
+            tm_active_char.selected_move = active_character.selected_move
 
         # after all swapping is done, update references for the swapped character if applicable
         if swapped_character is not None:

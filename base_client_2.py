@@ -54,16 +54,34 @@ class Client(UserClient):
         if turn == 1:
             self.first_turn_init(team_manager)
 
-        active_character = team_manager.get_active_character()
+        # get your active character for the turn; may be None
+        active_character = self.get_my_active_char(team_manager, world)
 
-        # determine if the current character is healthy
+        # if there is no active character for the turn, return an empty list
+        if active_character is None:
+            return []
+
+        # determine if the active character is healthy
         current_state = State.HEALTHY if self.get_health_percentage(active_character) >= 0.50 else State.UNHEALTHY
 
+        actions: list[ActionType]
+
         if current_state == State.HEALTHY:
-            # if the current character from the team is healthy, use its Normal Move
+            # if the active character from my team is healthy, use its Normal Move
             actions = [ActionType.USE_NM]
         else:
-            # if unhealthy, randomly swap in a direction or attack
+            # if unhealthy, randomly decide to swap in a direction or attack
             actions = [random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])]
 
         return actions
+
+    def get_my_active_char(self, team_manager: TeamManager, world: GameBoard) -> Character | None:
+        """
+        Returns your active character based on which characters have already acted. If None is returned, that means
+        none of your characters can act again until the turn order refreshes. This also means your team has fewer
+        characters than the opponent.
+        """
+
+        active_character = team_manager.get_active_character(world.ordered_teams, world.active_pair_index)
+
+        return active_character

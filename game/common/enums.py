@@ -76,6 +76,7 @@ class SelectGeneric(Enum):
     GEN_ATTACKER = 1
     GEN_HEALER = 2
     GEN_TANK = 3
+    GEN_TRASH = 4
 
 
 class MoveType(Enum):

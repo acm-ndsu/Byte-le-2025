@@ -37,6 +37,7 @@ class Character(GameObject):
         self.country_type: CountryType = country_type
         self.is_dead: bool = False
         self.selected_move: Move | None = None
+        self.index: int = -1
 
     def __eq__(self, other: Self | int) -> bool:
         if not isinstance(other, self.__class__):
@@ -230,6 +231,17 @@ class Character(GameObject):
                              f'{selected_move.__class__.__name__} and has the value of {selected_move}')
         self.__selected_move: Move | None = selected_move
 
+    @property
+    def index(self) -> int:
+        return self.__index
+
+    @index.setter
+    def index(self, index: int) -> None:
+        if index is None or not isinstance(index, int):
+            raise ValueError(f'{self.__class__.__name__}.index must be an int. It is a(n) '
+                             f'{index.__class__.__name__} and has the value of {index}')
+        self.__index: int = index
+
     def get_nm(self):
         return self.moveset.get_nm()
 
@@ -249,6 +261,7 @@ class Character(GameObject):
     def to_json(self) -> dict:
         data: dict = super().to_json()
         data['name'] = self.name
+        data['index'] = self.index
         data['class_type'] = self.class_type.value
         data['current_health'] = self.current_health
         data['max_health'] = self.max_health
@@ -283,6 +296,7 @@ class Character(GameObject):
     def from_json(self, data: dict) -> Self:
         super().from_json(data)
         self.name: str = data['name']
+        self.index: int = data['index']
         self.class_type: ClassType = ClassType(data['class_type'])
         self.current_health: int = data['current_health']
         self.max_health: int = data['max_health']
@@ -332,6 +346,7 @@ class GenericAttacker(Generic):
         super().__init__(name, class_type, health, attack, defense, speed,
                          position, country_type, moveset)
 
+        # Object type given in char_position_generation based on country as well
         self.class_type: ClassType = ClassType.ATTACKER
 
     def to_json(self) -> dict:
@@ -350,6 +365,7 @@ class GenericHealer(Generic):
         super().__init__(name, class_type, health, attack, defense, speed,
                          position, country_type, moveset)
 
+        # Object type given in char_position_generation based on country as well
         self.class_type: ClassType = ClassType.HEALER
 
     def to_json(self) -> dict:
@@ -368,6 +384,7 @@ class GenericTank(Generic):
         super().__init__(name, class_type, health, attack, defense, speed,
                          position, country_type, moveset)
 
+        # Object type given in char_position_generation based on country as well
         self.class_type: ClassType = ClassType.TANK
 
     def to_json(self) -> dict:
@@ -389,9 +406,9 @@ class GenericTrash(Generic):
         self.class_type: ClassType = ClassType.ATTACKER
 
         # set the moveset here since it'll remain consistent
-        self.moveset = Moveset((Debuff('Trashed Attack', TargetType.SELF, 0, None, -10, ObjectType.ATTACK_STAT),
-                                Debuff('Trashed Defense', TargetType.SELF, 0, None, -10, ObjectType.DEFENSE_STAT),
-                                Debuff('Trashed Speed', TargetType.SELF, 0, None, -10, ObjectType.SPEED_STAT)))
+        self.moveset = Moveset((Debuff('Trashed Attack', TargetType.SELF, 0, None, -5, ObjectType.ATTACK_STAT),
+                                Debuff('Trashed Defense', TargetType.SELF, 0, None, -5, ObjectType.DEFENSE_STAT),
+                                Debuff('Trashed Speed', TargetType.SELF, 0, None, -5, ObjectType.SPEED_STAT)))
 
     def to_json(self) -> dict:
         return super().to_json()

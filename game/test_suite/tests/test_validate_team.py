@@ -39,7 +39,7 @@ class TestValidateTeam(unittest.TestCase):
         self.assertTrue(team[2].name[-1], 3)
 
     def test_team_of_one_class_type(self) -> None:
-        # if a player tries to make a team with all one character type (e.g., Tank, Tank, Tank), the leader should be
+        # if a player tries to make a team with all one class type (e.g., Tank, Tank, Tank), the leader should be
         # replaced with Generic Trash
         self.invalid_team: tuple[SelectGeneric, SelectLeader, SelectGeneric] = (SelectGeneric.GEN_ATTACKER,
                                                                                 SelectLeader.FULTRA,

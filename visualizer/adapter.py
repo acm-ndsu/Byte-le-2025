@@ -1,17 +1,23 @@
 import os
-
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+
 import pygame
 from game.config import *
 from typing import Callable, Any
-from visualizer.bytesprites.exampleTileBS import TileBytespriteFactoryExample
-from visualizer.bytesprites.exampleWallBS import WallBytespriteFactoryExample
-from visualizer.bytesprites.exampleBS import AvatarBytespriteFactoryExample
+
 from game.utils.vector import Vector
+from game.common.enums import ObjectType
+from visualizer.config import Config
+from visualizer.bytesprites.charactersBS import CharactersBS
+from visualizer.bytesprites.tileBS import TileBS
+from visualizer.templates.scoreboard_template import ScoreboardTemplate
+from visualizer.templates.team_info_template import TeamInfoTemplate
 from visualizer.utils.text import Text
 from visualizer.bytesprites.bytesprite import ByteSprite
-from visualizer.templates.menu_templates import Basic, MenuTemplate
+from visualizer.templates.menu_template import Basic, MenuTemplate
 from visualizer.templates.playback_template import PlaybackTemplate, PlaybackButtons
+from visualizer.sprites.game_backdrop import GameBackdrop
+from visualizer.sprites.main_backdrop import MainBackdrop
 
 
 class Adapter:
@@ -22,10 +28,20 @@ class Adapter:
 
     def __init__(self, screen):
         self.screen: pygame.Surface = screen
+        self.config: Config = Config()
         self.bytesprites: list[ByteSprite] = []
         self.populate_bytesprite: pygame.sprite.Group = pygame.sprite.Group()
-        self.menu: MenuTemplate = Basic(screen, 'Basic Title')
-        self.playback: PlaybackTemplate = PlaybackTemplate(screen)
+        self.main_backdrop: MainBackdrop = MainBackdrop(Vector(x=0, y=0))
+        self.game_backdrop: GameBackdrop = GameBackdrop(Vector(x=394, y=175))
+        self.menu: MenuTemplate = Basic(screen, self.config.FONT, self.config.FONT_COLOR_ALT,
+                                        self.config.BUTTON_COLORS, 'Commander Clash')
+        self.scoreboard = ScoreboardTemplate(screen, Vector(x=38, y=13), Vector(x=1200, y=40), self.config.FONT,
+                                             self.config.FONT_COLOR)
+        self.playback: PlaybackTemplate = PlaybackTemplate(screen, self.config.FONT, self.config.BUTTON_COLORS)
+        self.urodaTeam: TeamInfoTemplate = TeamInfoTemplate(screen, Vector(x=0, y=67), Vector(x=426, y=586),
+                                                            self.config.FONT, self.config.FONT_COLOR, 1)
+        self.turpisTeam: TeamInfoTemplate = TeamInfoTemplate(screen, Vector(x=854, y=67), Vector(x=426, y=586),
+                                                             self.config.FONT, self.config.FONT_COLOR, 2)
         self.turn_number: int = 0
         self.turn_max: int = MAX_TICKS
 
@@ -79,24 +95,39 @@ class Adapter:
         """
         ...
 
+    # re-renders the animation
     def recalc_animation(self, turn_log: dict) -> None:
         """
         This method is called every time the turn changes
         :param turn_log: A dictionary containing the entire turn state
         :return: None
         """
+        self.scoreboard.recalc_animation(turn_log)
+        self.urodaTeam.recalc_animation(turn_log)
+        self.turpisTeam.recalc_animation(turn_log)
         self.turn_number = turn_log['tick']
 
-    def populate_bytesprite_factories(self) -> dict[int, Callable[[pygame.Surface], ByteSprite]]:
+    def populate_bytesprite_factories(self) -> dict[int: Callable[[pygame.Surface], ByteSprite]]:
         """
         Instantiate all bytesprites for each objectType and add them here using the value of ObjectType as the key
         and the factory function as the value
         :return: dict[int, Callable[[pygame.Surface], ByteSprite]]
         """
         return {
-            4: AvatarBytespriteFactoryExample.create_bytesprite,
-            7: TileBytespriteFactoryExample.create_bytesprite,
-            8: WallBytespriteFactoryExample.create_bytesprite,
+            ObjectType.TILE.value: TileBS.create_bytesprite,
+            ObjectType.ANAHITA.value: CharactersBS.create_anahita_bytesprite,
+            ObjectType.BERRY.value: CharactersBS.create_berry_bytesprite,
+            ObjectType.CALMUS.value: CharactersBS.create_calmus_bytesprite,
+            ObjectType.FULTRA.value: CharactersBS.create_fultra_bytesprite,
+            ObjectType.IRWIN.value: CharactersBS.create_irwin_bytesprite,
+            ObjectType.NINLIL.value: CharactersBS.create_ninlil_bytesprite,
+            ObjectType.URODA_GENERIC_ATTACKER.value: CharactersBS.create_uroda_gen_attacker_bytesprite,
+            ObjectType.URODA_GENERIC_HEALER.value: CharactersBS.create_uroda_gen_healer_bytesprite,
+            ObjectType.URODA_GENERIC_TANK.value: CharactersBS.create_uroda_gen_tank_bytesprite,
+            ObjectType.TURPIS_GENERIC_ATTACKER.value: CharactersBS.create_turpis_gen_attack_bytesprite,
+            ObjectType.TURPIS_GENERIC_HEALER.value: CharactersBS.create_turpis_gen_healer_bytesprite,
+            ObjectType.TURPIS_GENERIC_TANK.value: CharactersBS.create_turpis_gen_tank_bytesprite,
+            ObjectType.GENERIC_TRASH.value: CharactersBS.create_gen_trash_bytesprite
         }
 
     def render(self) -> None:
@@ -105,11 +136,24 @@ class Adapter:
         during the playback phase.
         :return: None
         """
-        text = Text(self.screen, f'{self.turn_number} / {self.turn_max}', 48)
-        text.rect.center = Vector(*self.screen.get_rect().midtop).add_y(50).as_tuple()
+        # render backdrops first with pygame draw method
+        render_backdrops: pygame.sprite.Group = pygame.sprite.Group()
+        self.main_backdrop.add(render_backdrops)
+        self.game_backdrop.add(render_backdrops)
+        render_backdrops.draw(self.screen)
+
+        # any logic for rendering text, buttons, and other visuals
+        text = Text(self.screen, f'{self.turn_number:3d} / {self.turn_max:3d}', 48, color=self.config.FONT_COLOR,
+                    font_name=self.config.FONT)
+        text.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().midtop), Vector(0, 100)).as_tuple()
         text.render()
+
+        self.urodaTeam.render()
+        self.turpisTeam.render()
+        self.scoreboard.render()
         self.playback.playback_render()
 
+    # is used in post render - post render is used to clear the playback buttons
     def clean_up(self) -> None:
         """
         This method is called after rendering each frame.
@@ -137,7 +181,7 @@ class Adapter:
 
     def results_render(self) -> None:
         """
-        This renders the end screen for the visualizer
+        This renders the results for the game / the end screen
         :return:
         """
         self.menu.results_render()

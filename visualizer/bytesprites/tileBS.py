@@ -1,5 +1,6 @@
 import os
 
+import pygame
 import pygame as pyg
 
 from visualizer.bytesprites.bytesprite import ByteSprite
@@ -14,5 +15,5 @@ class TileBS(ByteSpriteFactory):
 
     @staticmethod
     def create_bytesprite(screen: pyg.Surface) -> ByteSprite:
-        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/spritesheets/TileSS.png'), 1,
-                          7, TileBS.update)
+        return ByteSprite(screen, os.path.join(os.getcwd(), 'visualizer/images/spritesheets/tile.png'), 1,
+                          7, TileBS.update, colorkey=pygame.Color(0, 0, 0, 0))
