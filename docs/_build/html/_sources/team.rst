@@ -2,7 +2,7 @@
 Making a Team
 =============
 
-Hiring the best mercenaries will be what aids you in winning this decisive battle. How you choose your characters --
+Now that you have seen the characters for hire, it's time to create your team! How you choose your characters --
 and who you choose -- matters!
 
 
@@ -29,27 +29,9 @@ It is important to order the enums in the order you'd like them to appear on the
 the first Generic that will be on the top position; the second represents the Leader which will always start in the
 middle; the third represents the second Generic that will be on the bottom.
 
-!!!!!!!!!!!!!!!!! ADD SCREENSHOT OF GAME BOARD AND EXAMPLE SELECTED TEAM !!!!!!!!!!!!!!!!!
+.. figure:: ./_static/images/./uroda_team_ex.png
 
-
-Selecting Generics
-------------------
-
-When selecting your Generic characters, you can choose between 3 options:
-
-- Generic Attacker
-- Generic Healer
-- Generic Tank
-
-
-The enums to select them are the following:
-
-.. code-block::
-
-    SelectGeneric.GEN_ATTACKER
-    SelectGeneric.GEN_HEALER
-    SelectGeneric.GEN_TANK
-
+    A team selection of a Generic Tank, Leader Ninlil, and another Generic Tank.
 
 Selecting Leaders
 -----------------
@@ -81,6 +63,25 @@ The enums to select any one of these characters are the following:
     SelectLeader.IRWIN
 
 
+Selecting Generics
+------------------
+
+When selecting your Generic characters, you can choose between 3 options:
+
+- Generic Attacker
+- Generic Healer
+- Generic Tank
+
+
+The :doc:`enums` to select them are the following:
+
+.. code-block::
+
+    SelectGeneric.GEN_ATTACKER
+    SelectGeneric.GEN_HEALER
+    SelectGeneric.GEN_TANK
+
+
 Valid Team Selections
 ---------------------
 
@@ -91,16 +92,17 @@ characters of duplicate CharacterTypes:
 .. code-block:: python
 
     return (SelectGeneric.GEN_TANK, SelectLeader.CALMUS, SelectGeneric.GEN_HEALER)
-    return (SelectGeneric.GEN_HEALER, SelectLeader.CALMUS, SelectGeneric.GEN_TANK)
+    return (SelectGeneric.GEN_ATTACKER, SelectLeader.CALMUS, SelectGeneric.GEN_TANK)
 
     return (SelectGeneric.GEN_HEALER, SelectLeader.FULTRA, SelectGeneric.GEN_TANK)
 
     return (SelectGeneric.GEN_TANK, SelectLeader.ANAHITA, SelectGeneric.GEN_TANK)
     return (SelectGeneric.GEN_HEALER, SelectLeader.FULTRA, SelectGeneric.GEN_HEALER)
+    return (SelectGeneric.GEN_ATTACKER, SelectLeader.CALMUS, SelectGeneric.GEN_ATTACKER)
 
 The first and second examples show that your Leader's ClassType can be the same as *one (1)* Generic's ClassType.
 
-The third example shows a team with every character having a unique ClassType.
+The third example shows a team with every character having a unique ClassType (Healer, Attacker, Tank).
 
 The fourth and fifth examples show how the two Generic characters can have the same ClassType, but the Leader
 *must* have a different ClassType.
@@ -109,30 +111,38 @@ The fourth and fifth examples show how the two Generic characters can have the s
 Malformed Character Selection
 -----------------------------
 
-In the case you try to cheat (🫵🤨) and submit a malformed team, you will *not* receive all the characters you desire,
-so be mindful. Any character that is determined malformed will be replaced with a different character: Generic Trash!
-Read more about Generic Trash in :doc:`characters`.
+In the case you to the dishonorable thing and try to cheat (🫵🤨) and submit a malformed team, you will *not*
+receive all the characters you desire, so be mindful. Any character that is determined malformed will be replaced
+with a different character: Generic Trash! Read more about Generic Trash in :doc:`characters`.
 
 Here are examples of malformed character selections:
 
 .. code-block:: python
 
-    return (SelectGeneric.GEN_TANK, SelectLeader.CALMUS, SelectGeneric.GEN_TANK)
-
-    return (SelectGeneric.GEN_HEALER, SelectGeneric.GEN_ATTACKER, SelectGeneric.GEN_TANK)
-
     return (SelectLeader.CALMUS, SelectGeneric.GEN_TANK, SelectLeader.ANAHITA)
 
     return (SelectGeneric.GEN_HEALER, SelectGeneric.GEN_ATTACKER, SelectGeneric.GEN_TANK)
 
-The first example shows that all 3 characters have the same ClassType. In this case, the Leader will be replaced with
-Generic Trash.
+    return (SelectLeader.CALMUS, SelectLeader.CALMUS, SelectLeader.CALMUS)
 
-The second example shows that 3 Generics were selected with no Leader. In this case, the second Generic will be
-replaced with Generic Trash.
+    return (SelectLeader.CALMUS, SelectLeader.CALMUS, SelectGeneric.GEN_ATTACKER)
+    return (SelectGeneric.GEN_ATTACKER, SelectLeader.CALMUS, SelectLeader.CALMUS)
 
-The third example shows that the ``SelectLeader`` enums are where ``SelectGeneric`` enums should be, and the
-``SelectGeneric`` enum is where the ``SelectLeader`` enum should be. In this case, *all 3* characters are replaced with
-Generic Trash.
+    return (SelectGeneric.GEN_TANK, SelectLeader.CALMUS, SelectGeneric.GEN_TANK)
+
+The first example is malformed since the ``SelectLeader`` enums are where the ``SelectGeneric`` enums should be, and
+the ``SelectGeneric`` enum is where the ``SelectLeader`` enum should be. Every character would be replaced with Generic
+Trash.
+
+The second example is malformed since it's full of generics. The Generic Attacker would be replaced with Generic Trash.
+
+The third example is malformed since it's full of Leader characters. The first and third SelectLeader enums would
+be replaced with Generic Trash.
+
+The fourth and fifth example are malformed since they have a single SelectLeader enum where a SelectGeneric enum
+should be. That enum would be replaced with Generic Trash.
+
+The last example has three (3) characters that have the same ClassType of Tank. The *Leader* would be replaced with
+Generic Trash in this case.
 
 Be mindful on how you order the tuple when selecting your team (unless you want to attempt to win at a deficit).

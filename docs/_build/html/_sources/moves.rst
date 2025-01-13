@@ -150,6 +150,6 @@ TargetType.SELF            The user of the move will be affected
 TargetType.ADJACENT_ALLIES Only character's *adjacent* to the user will be affected. This only applies to the user's
                            team, not the opponents
 TargetType.ENTIRE_TEAM     *Every* character on the user's team will be affected, regardless of adjacency
-TargetType.SINGLE_OPP      The opposing character *across* the user on the game map will be affected.
-TargetType.ALL_OPPS        *Every* opposing character on the opposing team will be affected.
+TargetType.SINGLE_OPP      The opposing character *across* the user on the game map will be affected
+TargetType.ALL_OPPS        *Every* opposing character on the opposing team will be affected
 ========================== =============================================================================================

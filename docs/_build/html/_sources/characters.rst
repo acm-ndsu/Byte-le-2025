@@ -6,6 +6,19 @@ For drafting your team of mercenaries to win the final battle against the opposi
 can hire. Here is the collection of characters available for hire. Look into them closely and draft the best team for
 VICTORY!!!
 
+Class Types
+===============
+
+There are three (3) class types a character can be:
+
+=========================== =========================================================================================
+Class Type                  Description
+=========================== =========================================================================================
+Attacker                    Focuses on dealing damage
+Healer                      Focuses on healing the team/themselves
+Tank                        Focuses on taking hits and retaliating
+=========================== =========================================================================================
+
 
 Leaders
 =======
@@ -30,14 +43,14 @@ Moveset
 Normal Move
 ======================== ====================================
 Name                     Plasma Arrow
-Move Type                Attack
-Target Type              Single Opponent
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     0
 Additional Damage Points 0
 
-Effect Move Type         Buff
-Effect Target Type       Self
-Stat Affected            Attack
+Effect MoveType          BUFF
+Effect TargetType        SELF
+Stat Affected            ATTACK
 Buff Amount              +1
 ======================== ====================================
 
@@ -46,14 +59,14 @@ Buff Amount              +1
 Special 1
 ======================== ====================================
 Name                     Overhaul
-Move Type                Heal
-Target Type              Self
+MoveType                 HEAL
+TargetType               SELF
 Cost                     2
 Heal Points              30
 
-Effect Move Type         Debuff
-Effect Target Type       Self
-Stat Affected            Attack
+Effect MoveType          DEBUFF
+Effect TargetType        SELF
+Stat Affected            ATTACK
 Debuff Amount            -3
 ======================== ====================================
 
@@ -62,13 +75,13 @@ Debuff Amount            -3
 Special 2
 ======================== ====================================
 Name                     Lighting Rod
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     5
 Additional Damage Points 0
 
-Effect Move Type         Attack
-Effect Target Type       All Opps
+Effect MoveType          ATTACK
+Effect TargetType        ALL_OPPS
 Damage Points            20
 ======================== ====================================
 
@@ -93,8 +106,8 @@ Moveset
 Normal Move
 ======================== ====================================
 Name                     Little Angy
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     0
 Additional Damage Points 5
 
@@ -106,13 +119,13 @@ Effect                   None
 Special 1
 ======================== ====================================
 Name                     Smol Rage
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     2
 Additional Damage Points 10
 
-Effect Move Type         Debuff
-Effect Target Type       Self
+Effect MoveType          DEBUFF
+Effect TargetType        SELF
 Stat Affected            Speed
 Debuff Amount            -3
 ======================== ====================================
@@ -122,13 +135,13 @@ Debuff Amount            -3
 Special 2
 ======================== ====================================
 Name                     Tiny Titan
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     5
 Additional Damage Points 15
 
-Effect Move Type         Debuff
-Effect Target Type       Self
+Effect MoveType          DEBUFF
+Effect TargetType        SELF
 Stat Affected            Speed
 Debuff Amount            -5
 ======================== ====================================
@@ -153,13 +166,13 @@ Moveset
 Normal Move
 ======================== ====================================
 Name                     Whirlpool
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     0
 Additional Damage Points 2
 
-Effect Move Type         Heal
-Effect Target Type       Self
+Effect MoveType          HEAL
+Effect TargetType        SELF
 Heal Points              15
 ======================== ====================================
 
@@ -168,10 +181,10 @@ Heal Points              15
 Special 1
 ======================== ====================================
 Name                     Empower Shower
-Move Type                Buff
-Target Type              Entire Team
+MoveType                 BUFF
+TargetType               ENTIRE_TEAM
 Cost                     2
-Stat Affected            Attack
+Stat Affected            ATTACK
 Buff Amount              +2
 
 Effect                   None
@@ -182,13 +195,13 @@ Effect                   None
 Special 2
 ======================== ====================================
 Name                     Oasis
-Move Type                Heal
-Target Type              Adjacent Allies
+MoveType                 HEAL
+TargetType               ADJACENT_ALLIES
 Cost                     4
 Heal Points              75
 
-Effect Move Type         Attack
-Effect Target Type       Self
+Effect MoveType          ATTACK
+Effect TargetType        SELF
 Damage points            20
 ======================== ====================================
 
@@ -212,13 +225,13 @@ Moveset
 Normal Move
 ======================== ====================================
 Name                     Healing Potion
-Move Type                Heal
-Target Type              Entire Team
+MoveType                 HEAL
+TargetType               ENTIRE_TEAM
 Cost                     0
 Heal Points              6
 
-Effect Move Type         Heal
-Effect Target Type       Self
+Effect MoveType          HEAL
+Effect TargetType        SELF
 Heal Points              6
 ======================== ====================================
 
@@ -227,10 +240,10 @@ Heal Points              6
 Special 1
 ======================== ====================================
 Name                     Debuff Potion
-Move Type                Debuff
-Target Type              Single Opp
+MoveType                 DEBUFF
+TargetType               SINGLE_OPP
 Cost                     1
-Stat Affected            Attack
+Stat Affected            ATTACK
 Debuff Amount            -2
 
 Effect                   None
@@ -241,15 +254,15 @@ Effect                   None
 Special 2
 ======================== ====================================
 Name                     Buffing Potion
-Move Type                Buff
-Target Type              Adjacent Allies
+MoveType                 BUFF
+TargetType               ADJACENT_ALLIES
 Cost                     4
-Stat Affected            Attack
+Stat Affected            ATTACK
 Buff Amount              +5
 
-Effect Move Type         Buff
-Effect Target Type       Self
-Stat Affected            Attack
+Effect MoveType          BUFF
+Effect TargetType        SELF
+Stat Affected            ATTACK
 Buff Amount              +5
 ======================== ====================================
 
@@ -273,8 +286,8 @@ Moveset
 Normal Move
 ======================== ====================================
 Name                     Flame Slash
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     0
 Additional Damage Points 5
 
@@ -286,14 +299,14 @@ Effect                   None
 Special 1
 ======================== ====================================
 Name                     Flash Boost
-Move Type                Buff
-Target Type              Self
+MoveType                 BUFF
+TargetType               SELF
 Cost                     3
-Stat Affected            Attack
+Stat Affected            ATTACK
 Buff Amount              +4
 
-Effect Move Type         Attack
-Effect Target Type       Self
+Effect MoveType          ATTACK
+Effect TargetType        SELF
 Damage Points            10
 ======================== ====================================
 
@@ -302,14 +315,14 @@ Damage Points            10
 Special 2
 ======================== ====================================
 Name                     Berserk
-Move Type                Buff
-Target Type              Entire Team
+MoveType                 BUFF
+TargetType               ENTIRE_TEAM
 Cost                     5
-Stat Affected            Attack
+Stat Affected            ATTACK
 Buff Amount              +15
 
-Effect Move Type         Attack
-Effect Target Type       Self
+Effect MoveType          ATTACK
+Effect TargetType        SELF
 Damage Points            35
 ======================== ====================================
 
@@ -333,13 +346,13 @@ Moveset
 Normal Move
 ======================== ====================================
 Name                     Striking Defense
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     0
 Additional Damage Points 1
 
-Effect Move Type         Buff
-Effect Target Type       Self
+Effect MoveType          BUFF
+Effect TargetType        SELF
 Stat Affected            Defense
 Buff Amount              +1
 ======================== ====================================
@@ -349,13 +362,13 @@ Buff Amount              +1
 Special 1
 ======================== ====================================
 Name                     Weakening Strike
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     3
 Additional Damage Points 5
 
-Effect Move Type         Debuff
-Effect Target Type       Self
+Effect MoveType          DEBUFF
+Effect TargetType        SELF
 Stat Affected            Defense
 Debuff Amount            -3
 ======================== ====================================
@@ -365,13 +378,13 @@ Debuff Amount            -3
 Special 2
 ======================== ====================================
 Name                     Close Combat
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     5
 Additional Damage Points 10
 
-Effect Move Type         Debuff
-Effect Target Type       Self
+Effect MoveType          DEBUFF
+Effect TargetType        SELF
 Stat Affected            Defense
 Debuff Amount            -15
 ======================== ====================================
@@ -399,8 +412,8 @@ Moveset
 Normal Move
 ======================== ====================================
 Name                     Stab
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     0
 Additional Damage Points 5
 
@@ -412,8 +425,8 @@ Effect                   None
 Special 1
 ======================== ====================================
 Name                     Great Stab
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     1
 Additional Damage Points 10
 
@@ -425,13 +438,13 @@ Effect                   None
 Special 2
 ======================== ====================================
 Name                     Giant Slash
-Move Type                Attack
-Target Type              All Opps
+MoveType                 ATTACK
+TargetType               ALL_OPPS
 Cost                     2
 Additional Damage Points 7
 
-Effect Move Type         Debuff
-Effect Target Type       Self
+Effect MoveType          DEBUFF
+Effect TargetType        SELF
 Stat Affected            Speed
 Debuff Amount            -1
 ======================== ====================================
@@ -456,8 +469,8 @@ Moveset
 Normal Move
 ======================== ====================================
 Name                     Whack
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     0
 Additional Damage Points 1
 
@@ -469,8 +482,8 @@ Effect                   None
 Special 1
 ======================== ====================================
 Name                     First Aid
-Move Type                Heal
-Target Type              Self
+MoveType                 HEAL
+TargetType               SELF
 Cost                     0
 Heal Points              10
 
@@ -482,8 +495,8 @@ Effect                   None
 Special 2
 ======================== ====================================
 Name                     Team Heal
-Move Type                Heal
-Target Type              Entire Team
+MoveType                 HEAL
+TargetType               ENTIRE_TEAM
 Cost                     3
 Heal Points              25
 
@@ -510,8 +523,8 @@ Moveset
 Normal Move
 ======================== ====================================
 Name                     Slap
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     0
 Additional Damage Points 2
 
@@ -523,8 +536,8 @@ Effect                   None
 Special 1
 ======================== ====================================
 Name                     Shield Rush
-Move Type                Attack
-Target Type              All Opps
+MoveType                 ATTACK
+TargetType               ALL_OPPS
 Cost                     2
 Additional Damage Points 4
 
@@ -536,13 +549,13 @@ Effect                   None
 Special 2
 ======================== ====================================
 Name                     Stomp
-Move Type                Attack
-Target Type              Single Opp
+MoveType                 ATTACK
+TargetType               SINGLE_OPP
 Cost                     3
 Additional Damage Points 0
 
-Effect Move Type         Debuff
-Effect Target Type       Single Opp
+Effect MoveType          DEBUFF
+Effect TargetType        SINGLE_OPP
 Stat Affected            Speed
 Debuff Amount            -1
 ======================== ====================================
@@ -568,10 +581,10 @@ Moveset
 Normal Move
 ======================== ====================================
 Name                     Trashed Attack
-Move Type                Debuff
-Target Type              Self
+MoveType                 DEBUFF
+TargetType               SELF
 Cost                     0
-Stat Affected            Attack
+Stat Affected            ATTACK
 Debuff Amount            -10
 
 Effect                   None
@@ -582,8 +595,8 @@ Effect                   None
 Special 1
 ======================== ====================================
 Name                     Trashed Defense
-Move Type                Debuff
-Target Type              Self
+MoveType                 DEBUFF
+TargetType               SELF
 Cost                     0
 Stat Affected            Defense
 Debuff Amount            -10
@@ -596,8 +609,8 @@ Effect                   None
 Special 2
 ======================== ====================================
 Name                     Trashed Speed
-Move Type                Debuff
-Target Type              Self
+MoveType                 DEBUFF
+TargetType               SELF
 Cost                     0
 Stat Affected            Speed
 Debuff Amount            -10
