@@ -3,7 +3,6 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 import pygame
 from game.utils.vector import Vector
-from game.config import GENERIC_TRASH_NAME
 
 
 class Headshot(pygame.sprite.Sprite):

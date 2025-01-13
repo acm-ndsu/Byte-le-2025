@@ -1,4 +1,7 @@
 import os
+
+from visualizer.sprites.active import Active
+
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 import pygame
@@ -30,6 +33,9 @@ class CharacterInfoTemplate(InfoTemplate):
 
         self.headshot: Headshot = Headshot(top_left=Vector.add_vectors(topleft, Vector(x=15, y=23)))
         self.headshot.add(self.render_list)
+
+        self.active: Active = Active(top_left=Vector.add_vectors(topleft, Vector(x=55, y=10)))
+        self.active.add(self.render_list)
 
         self.hp_bar: HPBar = HPBar(top_left=Vector.add_vectors(topleft, Vector(x=89, y=23)))
         self.hp_bar.add(self.render_list)
@@ -70,6 +76,13 @@ class CharacterInfoTemplate(InfoTemplate):
 
         # Get which headshot to grab
         self.headshot.character = f'{character.name.split(" ", 2)[0].lower()}_{character.name.split(" ", 2)[1].lower()}'
+
+        # Get if the character is active
+        active_pair_index: int = turn_log['game_board']['active_pair_index']
+        if turn_log['game_board']['ordered_teams'][active_pair_index][character.country_type.value - 1] is None:
+            self.active.transparent = True
+        else:
+            self.active.transparent = False if character.name == turn_log['game_board']['ordered_teams'][active_pair_index][character.country_type.value - 1]['name'] else True
 
         # Get hp and sp of character
         self.hp_bar.hp = int(ceil((float(character.current_health) / float(character.max_health)) * 10))
