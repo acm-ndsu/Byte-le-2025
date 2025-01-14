@@ -54,9 +54,9 @@ Ties
 It is possible for ties to occur in this game. This will occur as long as both teams have the same amount of characters
 alive
 
-============================= ===== ===== =====
-Characters Lost on Both Teams 0     1     2
-============================= ===== ===== =====
-:gold:`Uroda Team`            450   400   350
-:purple:`Turpis Team`         450   400   350
-============================= ===== ===== =====
+================================== ===== ===== ===== =====
+Characters Remaining on Both Teams 0     1     2     3
+================================== ===== ===== ===== =====
+:gold:`Uroda Team`                 300   350   400   450
+:purple:`Turpis Team`              300   350   400   450
+================================== ===== ===== ===== =====
