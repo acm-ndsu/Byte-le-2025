@@ -25,11 +25,13 @@ class SelectMoveController(Controller):
         user: Character | None = active_chars[tuple_index_to_use]
 
         if user is None:
+            world.turn_info += f'\n{client.team_name} doesn\'t have an active character'
             return
 
         # if the user took action already, don't do anything
-        if user.took_action:
-            return
+        # if user.took_action:
+        #     world.turn_info += f'\n{user.name} already took their action when getting to the select move controller'
+        #     return
 
         current_move: Move
 
