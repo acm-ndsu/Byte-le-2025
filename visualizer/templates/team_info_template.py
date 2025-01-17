@@ -39,7 +39,8 @@ class TeamInfoTemplate(InfoTemplate):
         team_name: str = [client['team_name']
                           for client in turn_log['clients']
                           if client['team_manager']['country_type'] == self.country][0]
-        self.country_text.text = f'{"Uroda" if self.country == 1 else "Turpis"}: {team_name}'[:30]
+        team_name = team_name[:20] + '...' if len(team_name) > 20 else team_name
+        self.country_text.text = f'{"Uroda" if self.country == 1 else "Turpis"}: {team_name}'
         self.character1.recalc_animation(turn_log)
         self.character2.recalc_animation(turn_log)
         self.character3.recalc_animation(turn_log)
