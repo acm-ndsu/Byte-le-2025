@@ -1,5 +1,6 @@
 import os
 
+from game.common.team_manager import TeamManager
 from visualizer.sprites.active import Active
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
@@ -31,49 +32,52 @@ class CharacterInfoTemplate(InfoTemplate):
         self.backdrop: CharacterInfoBackdrop = CharacterInfoBackdrop(top_left=topleft)
         self.backdrop.add(self.render_list)
 
-        self.headshot: Headshot = Headshot(top_left=Vector.add_vectors(topleft, Vector(x=15, y=23)))
+        self.name: Text = Text(screen, text="name", font_size=32, font_name=self.font, color=self.color,
+                               position=Vector.add_vectors(topleft, Vector(x=15, y=13)))
+
+        self.headshot: Headshot = Headshot(top_left=Vector.add_vectors(topleft, Vector(x=15, y=53)))
         self.headshot.add(self.render_list)
 
-        self.active: Active = Active(top_left=Vector.add_vectors(topleft, Vector(x=55, y=10)))
+        self.active: Active = Active(top_left=Vector.add_vectors(topleft, Vector(x=55, y=40)))
         self.active.add(self.render_list)
 
-        self.hp_bar: HPBar = HPBar(top_left=Vector.add_vectors(topleft, Vector(x=89, y=23)))
+        self.hp_bar: HPBar = HPBar(top_left=Vector.add_vectors(topleft, Vector(x=84, y=63)))
         self.hp_bar.add(self.render_list)
 
         self.hp_bar_text: Text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                      position=Vector.add_vectors(topleft, Vector(x=296, y=19)))
+                                      position=Vector.add_vectors(topleft, Vector(x=249, y=59)))
 
-        self.sp_bar = SPBar(top_left=Vector.add_vectors(topleft, Vector(x=89, y=62)))
+        self.sp_bar = SPBar(top_left=Vector.add_vectors(topleft, Vector(x=84, y=92)))
         self.sp_bar.add(self.render_list)
 
         self.sp_bar_text: Text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                      position=Vector.add_vectors(topleft, Vector(x=202, y=58)))
+                                      position=Vector.add_vectors(topleft, Vector(x=189, y=88)))
 
-        self.attack_stat = AttackStat(top_left=Vector.add_vectors(topleft, Vector(x=15, y=106)))
+        self.attack_stat = AttackStat(top_left=Vector.add_vectors(topleft, Vector(x=40, y=136)))
         self.attack_stat.add(self.render_list)
 
         self.attack_stat_text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                     position=Vector.add_vectors(topleft, Vector(x=64, y=109)))
+                                     position=Vector.add_vectors(topleft, Vector(x=84, y=139)))
 
-        self.defense_stat = DefenseStat(top_left=Vector.add_vectors(topleft, Vector(x=121, y=106)))
+        self.defense_stat = DefenseStat(top_left=Vector.add_vectors(topleft, Vector(x=146, y=136)))
         self.defense_stat.add(self.render_list)
 
         self.defense_stat_text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                      position=Vector.add_vectors(topleft, Vector(x=170, y=109)))
+                                      position=Vector.add_vectors(topleft, Vector(x=190, y=139)))
 
-        self.speed_stat = SpeedStat(top_left=Vector.add_vectors(topleft, Vector(x=224, y=106)))
+        self.speed_stat = SpeedStat(top_left=Vector.add_vectors(topleft, Vector(x=249, y=136)))
         self.speed_stat.add(self.render_list)
 
         self.speed_stat_text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                    position=Vector.add_vectors(topleft, Vector(x=273, y=109)))
+                                    position=Vector.add_vectors(topleft, Vector(x=293, y=139)))
 
     def recalc_animation(self, turn_log: dict) -> None:
         # Get character we are recalculating
-        team: list[Character] = turn_log['clients'][self.country - 1]['team_manager']['team']
-        dead_team: list[Character] = turn_log['clients'][self.country - 1]['team_manager']['dead_team']
+        team_manager: TeamManager = TeamManager().from_json(data=turn_log['clients'][0]['team_manager'] if turn_log['clients'][0]['team_manager']['country_type'] == self.country else turn_log['clients'][1]['team_manager'])
+        character: Character = [char for char in team_manager.team + team_manager.dead_team if char.index == self.index][0]
 
-        character: Character = Character().from_json(data=[char for char in team + dead_team if char['index'] == self.index][0])
-
+        # Get character name
+        self.name.text = character.name
         # Get which headshot to grab
         self.headshot.character = f'{character.name.split(" ", 2)[0].lower()}_{character.name.split(" ", 2)[1].lower()}'
 
@@ -105,6 +109,7 @@ class CharacterInfoTemplate(InfoTemplate):
 
     def render(self) -> None:
         super().render()
+        self.name.render()
         self.hp_bar_text.render()
         self.sp_bar_text.render()
         self.attack_stat_text.render()

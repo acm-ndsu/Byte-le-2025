@@ -32,13 +32,12 @@ class Headshot(pygame.sprite.Sprite):
             'uroda_attacker': pygame.image.load(os.path.join(os.getcwd(),'visualizer/images/staticsprites/headshot/uroda_generic_attacker_headshot.png')),
             'uroda_tank': pygame.image.load(os.path.join(os.getcwd(),'visualizer/images/staticsprites/headshot/uroda_generic_tank_headshot.png')),
             'uroda_healer': pygame.image.load(os.path.join(os.getcwd(),'visualizer/images/staticsprites/headshot/uroda_generic_healer_headshot.png')),
-            'uroda_missing': pygame.image.load(os.path.join(os.getcwd(),'visualizer/images/staticsprites/headshot/generic_trash_headshot.png')),
-            'turpis_missing': pygame.image.load(os.path.join(os.getcwd(), 'visualizer/images/staticsprites/headshot/generic_trash_headshot.png')),
-            'generic_trash': pygame.image.load(os.path.join(os.getcwd(), 'visualizer/images/staticsprites/headshot/generic_trash_headshot.png')),
+            'uroda_missing': pygame.image.load(os.path.join(os.getcwd(),'visualizer/images/staticsprites/headshot/atleastheshappy.png')),
+            'turpis_missing': pygame.image.load(os.path.join(os.getcwd(), 'visualizer/images/staticsprites/headshot/atleastheshappy.png')),
         }
 
-        self.image: pygame.Surface = self.images['generic_trash']
-        self.character: str | int = 'generic_trash'
+        self.image: pygame.Surface = self.images['uroda_missing']
+        self.character: str | int = 'uroda_missing'
         self.rect = self.image.get_rect()
         self.rect.topleft = top_left.as_tuple()
 
