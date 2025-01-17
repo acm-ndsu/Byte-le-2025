@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=2b91c5f0"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -274,7 +274,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -290,6 +292,21 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-move">Normal Move</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-move-1">Special Move 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-move-2">Special Move 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#swapping">Swapping</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swap-up">Swap Up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swap-down">Swap Down</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -301,6 +318,62 @@
                   
   <section id="taking-character-actions">
 <h1>Taking Character Actions<a class="headerlink" href="#taking-character-actions" title="Link to this heading">#</a></h1>
+<p>Players will use <a class="reference internal" href="enums.html"><span class="doc">Enums</span></a> to control their party</p>
+<section id="normal-move">
+<h2>Normal Move<a class="headerlink" href="#normal-move" title="Link to this heading">#</a></h2>
+<p>The Normal Move is the base move for every character. This Move
+is used to fill your special point meter, which is used for Moves
+called Specials. Every Normal Move costs zero special points.</p>
+<p>To use a character’s Normal Move, set your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list to be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">USE_NM</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list will be what your code
+returns at the end of the <code class="docutils literal notranslate"><span class="pre">take_turn()</span></code> method, and the order will determine
+which character – in order of speed priority – does the listed action.</p>
+</section>
+<section id="special-move-1">
+<h2>Special Move 1<a class="headerlink" href="#special-move-1" title="Link to this heading">#</a></h2>
+<p>The Special Move 1 is a low special point Move and costs for this Move
+vary by Move.</p>
+<p>To use a character’s Special Move 1, set your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list to be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">USE_S1</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="special-move-2">
+<h2>Special Move 2<a class="headerlink" href="#special-move-2" title="Link to this heading">#</a></h2>
+<p>The Special Move 2 is a high special point Move and costs for this Move
+vary by Move.</p>
+<p>To use a character’s Special Move 2, set your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list to be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">USE_S2</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="swapping">
+<h2>Swapping<a class="headerlink" href="#swapping" title="Link to this heading">#</a></h2>
+<p>A character can also Swap, allowing a character to switch places
+with an adjacent character <em>on their team</em>, but it will not allow you to move out of
+bounds. If a match up is not going well for a character on your team, this
+enables you to tactically move to a better position! The Swapping Enums
+are listed below.</p>
+<section id="swap-up">
+<h3>Swap Up<a class="headerlink" href="#swap-up" title="Link to this heading">#</a></h3>
+<p>A character can use Swap Up to Swap with a character above them.</p>
+<p>To use a character’s Swap Up, set your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list to be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">SWAP_UP</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="swap-down">
+<h3>Swap Down<a class="headerlink" href="#swap-down" title="Link to this heading">#</a></h3>
+<p>A character can use Swap Down to Swap with a character below them.</p>
+<p>To use a character’s Swap Down, set your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list to be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">SWAP_DOWN</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 
 
@@ -338,6 +411,29 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-move">Normal Move</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-move-1">Special Move 1</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-move-2">Special Move 2</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#swapping">Swapping</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swap-up">Swap Up</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swap-down">Swap Down</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
