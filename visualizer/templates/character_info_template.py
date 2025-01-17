@@ -1,5 +1,6 @@
 import os
 
+from game.common.team_manager import TeamManager
 from visualizer.sprites.active import Active
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
@@ -72,10 +73,8 @@ class CharacterInfoTemplate(InfoTemplate):
 
     def recalc_animation(self, turn_log: dict) -> None:
         # Get character we are recalculating
-        team: list[Character] = turn_log['clients'][self.country - 1]['team_manager']['team']
-        dead_team: list[Character] = turn_log['clients'][self.country - 1]['team_manager']['dead_team']
-
-        character: Character = Character().from_json(data=[char for char in team + dead_team if char['index'] == self.index][0])
+        team_manager: TeamManager = TeamManager().from_json(data=turn_log['clients'][0]['team_manager'] if turn_log['clients'][0]['team_manager']['country_type'] == self.country else turn_log['clients'][1]['team_manager'])
+        character: Character = [char for char in team_manager.team + team_manager.dead_team if char.index == self.index][0]
 
         # Get character name
         self.name.text = character.name
