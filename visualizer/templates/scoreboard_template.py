@@ -13,14 +13,14 @@ class ScoreboardTemplate(InfoTemplate):
     def __init__(self, screen: pygame.Surface, topleft: Vector, size: Vector, font: str, color: str) -> None:
         super().__init__(screen, topleft, size, font, color)
 
-        self.uroda_score: Text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                             position=Vector.add_vectors(topleft, Vector(x=30, y=9)))
+        self.uroda_score: Text = Text(screen, text="0", font_size=42, font_name=self.font, color=self.color,
+                                             position=Vector.add_vectors(topleft, Vector(x=340, y=65)))
 
-        self.turpis_score: Text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                             position=Vector.add_vectors(topleft, Vector(x=884, y=9)))
+        self.turpis_score: Text = Text(screen, text="0", font_size=42, font_name=self.font, color=self.color,
+                                             position=Vector.add_vectors(topleft, Vector(x=1200, y=65)))
 
-        self.turn: Text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                             position=Vector.add_vectors(topleft, Vector(x=252, y=9)))
+        self.turn: Text = Text(screen, text="0", font_size=48, font_name=self.font, color=self.color,
+                                             position=Vector.add_vectors(topleft, Vector(x=600, y=100)))
 
     def recalc_animation(self, turn_log: dict) -> None:
         clients = sorted(turn_log['clients'], key=lambda client: client.get('team_manager', {'country_type': 0})['country_type'])
@@ -30,3 +30,9 @@ class ScoreboardTemplate(InfoTemplate):
         self.uroda_score.text = str(scores[0])
         self.turpis_score.text = str(scores[1])
         self.turn.text = f'{turn}/{MAX_TICKS}'
+
+    def render(self) -> None:
+        super().render()
+        self.uroda_score.render()
+        self.turpis_score.render()
+        self.turn.render()
