@@ -48,10 +48,12 @@ class MoveController(Controller):
             # if it is a speed tie and the character died before their turn, they can still act to simulate them
             # attacking at the same time
             if user.is_dead and not is_speed_tie:
+                world.turn_info += f'\n{user.name} died before they could take their turn!\n'
                 continue
 
             # move to next iteration if no move was selected
             if user.selected_move is None:
+                world.turn_info += f'\n{user.name} didn\'t execute a Move because they didn\'t have one selected!\n'
                 continue
 
             world.turn_info += f'\nStarting {user.name}\'s turn!\n'
