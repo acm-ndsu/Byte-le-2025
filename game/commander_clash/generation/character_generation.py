@@ -14,14 +14,14 @@ This file is used to create the different leaders and generic characters. In thi
 def generate_anahita() -> Leader:
     # We first make the secondary effect for readability
     # We then create the primary move and add the secondary effect to it
-    nm_effect: HealEffect = HealEffect(target_type=TargetType.SELF, heal_points=15)
+    nm_effect: HealEffect = HealEffect(target_type=TargetType.SELF, heal_points=30)
     nm: Attack = Attack(name='Whirlpool', target_type=TargetType.SINGLE_OPP, effect=nm_effect, damage_points=2)
 
     s1: Buff = Buff(name='Empower Shower', target_type=TargetType.ENTIRE_TEAM, cost=2, effect=None, buff_amount=2,
                     stat_to_affect=ObjectType.ATTACK_STAT)
 
     s2_effect: AttackEffect = AttackEffect(target_type=TargetType.SELF, damage_points=20)
-    s2: Heal = Heal(name='Oasis', target_type=TargetType.ADJACENT_ALLIES, cost=4, effect=s2_effect, heal_points=75)
+    s2: Heal = Heal(name='Oasis', target_type=TargetType.ADJACENT_ALLIES, cost=4, effect=s2_effect, heal_points=80)
 
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
