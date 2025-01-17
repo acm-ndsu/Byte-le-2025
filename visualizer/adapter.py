@@ -2,6 +2,7 @@ import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 import pygame
+import random
 from game.config import *
 from typing import Callable, Any
 
@@ -33,17 +34,16 @@ class Adapter:
         self.populate_bytesprite: pygame.sprite.Group = pygame.sprite.Group()
         self.main_backdrop: MainBackdrop = MainBackdrop(Vector(x=0, y=0))
         self.game_backdrop: GameBackdrop = GameBackdrop(Vector(x=394, y=175))
+        self.game_backdrop.season = random.randint(0, 3)
         self.menu: MenuTemplate = Basic(screen, self.config.FONT, self.config.FONT_COLOR_ALT,
                                         self.config.BUTTON_COLORS, 'Commander Clash')
-        self.scoreboard = ScoreboardTemplate(screen, Vector(x=38, y=13), Vector(x=1200, y=40), self.config.FONT,
+        self.scoreboard = ScoreboardTemplate(screen, Vector(x=0, y=0), Vector(x=1200, y=40), self.config.FONT,
                                              self.config.FONT_COLOR)
         self.playback: PlaybackTemplate = PlaybackTemplate(screen, self.config.FONT, self.config.BUTTON_COLORS)
-        self.urodaTeam: TeamInfoTemplate = TeamInfoTemplate(screen, Vector(x=0, y=67), Vector(x=426, y=586),
+        self.urodaTeam: TeamInfoTemplate = TeamInfoTemplate(screen, Vector(x=-10, y=55), Vector(x=426, y=586),
                                                             self.config.FONT, self.config.FONT_COLOR, 1)
-        self.turpisTeam: TeamInfoTemplate = TeamInfoTemplate(screen, Vector(x=854, y=67), Vector(x=426, y=586),
+        self.turpisTeam: TeamInfoTemplate = TeamInfoTemplate(screen, Vector(x=854, y=55), Vector(x=426, y=586),
                                                              self.config.FONT, self.config.FONT_COLOR, 2)
-        self.turn_number: int = 0
-        self.turn_max: int = MAX_TICKS
 
     # Define any methods button may run
 
@@ -105,7 +105,6 @@ class Adapter:
         self.scoreboard.recalc_animation(turn_log)
         self.urodaTeam.recalc_animation(turn_log)
         self.turpisTeam.recalc_animation(turn_log)
-        self.turn_number = turn_log['tick']
 
     def populate_bytesprite_factories(self) -> dict[int: Callable[[pygame.Surface], ByteSprite]]:
         """
@@ -141,12 +140,6 @@ class Adapter:
         self.main_backdrop.add(render_backdrops)
         self.game_backdrop.add(render_backdrops)
         render_backdrops.draw(self.screen)
-
-        # any logic for rendering text, buttons, and other visuals
-        text = Text(self.screen, f'{self.turn_number:3d} / {self.turn_max:3d}', 48, color=self.config.FONT_COLOR,
-                    font_name=self.config.FONT)
-        text.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().midtop), Vector(0, 100)).as_tuple()
-        text.render()
 
         self.urodaTeam.render()
         self.turpisTeam.render()
