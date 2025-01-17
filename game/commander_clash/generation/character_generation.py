@@ -157,10 +157,10 @@ def generate_irwin() -> Leader:
     nm_effect = BuffEffect(target_type=TargetType.SELF, buff_amount=1, stat_to_affect=ObjectType.DEFENSE_STAT)
     nm: Attack = Attack(name='Impale', target_type=TargetType.SINGLE_OPP, damage_points=1, effect=nm_effect)
 
-    s1_effect = DebuffEffect(target_type=TargetType.SINGLE_OPP, debuff_amount=3, stat_to_affect=ObjectType.DEFENSE_STAT)
+    s1_effect = DebuffEffect(target_type=TargetType.SINGLE_OPP, debuff_amount=-3, stat_to_affect=ObjectType.DEFENSE_STAT)
     s1: Attack = Attack(name='Stab Repeatedly', target_type=TargetType.SINGLE_OPP, cost=3, effect=s1_effect)
 
-    s2_effect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=15, stat_to_affect=ObjectType.DEFENSE_STAT)
+    s2_effect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-15, stat_to_affect=ObjectType.DEFENSE_STAT)
     s2: Attack = Attack(name='Ultra Stab', target_type=TargetType.SINGLE_OPP, cost=5, damage_points=10,
                         effect=s2_effect)
 
