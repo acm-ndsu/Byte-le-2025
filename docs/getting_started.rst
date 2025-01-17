@@ -35,8 +35,7 @@ You can find more information on :doc:`characters`, as well as :doc:`stats` and 
 Tournament Structure
 ====================
 
-Each pairing of teams will have two games against each other. After one game, both teams will switch countries
-affiliations (i.e., if first with :purple:`Turpis`, will next be :gold:`Uroda`). The points gained from both
+Each pairing of teams will have one game against each other. The points gained from both
 games will be added to those teams' total points in the tournament.
 
 For more information on tournament structure and scoring, please visit :doc:`scoring`.
