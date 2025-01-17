@@ -44,13 +44,13 @@ class CharacterInfoTemplate(InfoTemplate):
         self.hp_bar.add(self.render_list)
 
         self.hp_bar_text: Text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                      position=Vector.add_vectors(topleft, Vector(x=291, y=59)))
+                                      position=Vector.add_vectors(topleft, Vector(x=249, y=59)))
 
         self.sp_bar = SPBar(top_left=Vector.add_vectors(topleft, Vector(x=84, y=92)))
         self.sp_bar.add(self.render_list)
 
         self.sp_bar_text: Text = Text(screen, text="0", font_size=32, font_name=self.font, color=self.color,
-                                      position=Vector.add_vectors(topleft, Vector(x=197, y=88)))
+                                      position=Vector.add_vectors(topleft, Vector(x=189, y=88)))
 
         self.attack_stat = AttackStat(top_left=Vector.add_vectors(topleft, Vector(x=40, y=136)))
         self.attack_stat.add(self.render_list)
