@@ -12,8 +12,6 @@ class MoveController(Controller):
     it will access that move and call its `use()` method to attempt to activate it.
     """
 
-    fultra_attack_prev: int = 0
-
     def handle_logic(self, clients: list[Player], world: GameBoard, turn: int = 1) -> None:
         uroda_team_manager: TeamManager = clients[0].team_manager \
             if clients[0].team_manager.country_type == CountryType.URODA else clients[1].team_manager
@@ -39,11 +37,13 @@ class MoveController(Controller):
         if is_speed_tie:
             world.turn_info += f'\nIt\'s a speed tie between {active_chars[0].name} and {active_chars[1].name}!\n'
 
+            # if both active characters have a selected move and a speed tie, organize by selected move priority
+            if active_chars[0].selected_move is not None and active_chars[1].selected_move is not None:
+                # reorganize the two characters based on their selected move priority instead of speed for speed ties
+                active_chars = sorted(active_chars, key=lambda character: character.selected_move.priority, reverse=True)
+
         # for every character, execute the logic for their move if applicable
         for user in active_chars:
-            if user.name.__contains__('Fultra'):
-                MoveController.fultra_attack_prev = user.attack.value
-
             # if the client's character died before their turn AND it is not a speed tie, continue to next iteration
             # if it is a speed tie and the character died before their turn, they can still act to simulate them
             # attacking at the same time
