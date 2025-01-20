@@ -42,8 +42,8 @@ def generate_anahita() -> Leader:
 def generate_berry() -> Leader:
     # We first make the secondary effect for readability
     # We then create the primary move and add the secondary effect to it
-    nm_effect: HealEffect = HealEffect(target_type=TargetType.SELF, heal_points=35)
-    nm: Heal = Heal(name='Healing Potion', target_type=TargetType.ENTIRE_TEAM, effect=nm_effect, heal_points=50)
+    nm_effect: HealEffect = HealEffect(target_type=TargetType.SELF, heal_points=5)
+    nm: Heal = Heal(name='Healing Potion', target_type=TargetType.ENTIRE_TEAM, effect=nm_effect, heal_points=10)
 
     s1: Debuff = Debuff(name='Debuff Potion', target_type=TargetType.SINGLE_OPP, cost=1, effect=None, debuff_amount=-2,
                         stat_to_affect=ObjectType.ATTACK_STAT)
@@ -236,9 +236,9 @@ def generate_generic_tank(name: str = 'Tank') -> GenericTank:
     s2: Attack = Attack(name='Stomp', target_type=TargetType.SINGLE_OPP, cost=3, effect=s2_effect,
                         damage_points=0)
 
-    hp: int = 55
+    hp: int = 75
     atk: AttackStat = AttackStat(30)
-    defense: DefenseStat = DefenseStat(50)
+    defense: DefenseStat = DefenseStat(30)
     spd: SpeedStat = SpeedStat(36)
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))

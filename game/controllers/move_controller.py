@@ -56,7 +56,7 @@ class MoveController(Controller):
                 world.turn_info += f'\n{user.name} didn\'t execute a Move because they didn\'t have one selected!\n'
                 continue
 
-            world.turn_info += f'\nStarting {user.name}\'s turn!\n'
+            world.turn_info += f'\n{user.name} wants to execute a Move!\n'
 
             current_move: Move = user.selected_move
             is_normal_move: bool = user.selected_move == user.get_nm()

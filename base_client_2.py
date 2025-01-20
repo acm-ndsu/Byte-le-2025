@@ -10,6 +10,7 @@ from game.common.team_manager import TeamManager
 class State(Enum):
     HEALTHY = auto()
     UNHEALTHY = auto()
+    ALMOST_DEAD = auto()
 
 
 class Client(UserClient):
@@ -54,11 +55,14 @@ class Client(UserClient):
         if turn == 1:
             self.first_turn_init(team_manager)
 
+        print(f'Active pair for turn {turn} in client file: {[char.name if char is not None else None for char in world.ordered_teams[world.active_pair_index]]}')
+
         # get your active character for the turn; may be None
         active_character = self.get_my_active_char(team_manager, world)
 
         # if there is no active character for the turn, return an empty list
         if active_character is None:
+            print(f'{team_manager.team_name} does not have an active character for turn {turn}')
             return []
 
         # determine if the active character is healthy
@@ -71,7 +75,11 @@ class Client(UserClient):
             actions = [ActionType.USE_NM]
         else:
             # if unhealthy, randomly decide to swap in a direction or attack
-            actions = [random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])]
+            action: ActionType = random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])
+
+            actions = [action]
+
+        print(f'{team_manager.team_name} action: {actions[0]}')
 
         return actions
 
