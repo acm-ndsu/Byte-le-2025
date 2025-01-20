@@ -138,8 +138,7 @@ class GameBoard(GameObject):
 
         self.turn_info: str = ''
 
-        # -1 indicates no index is selected yet
-        self.active_pair_index: int = -1
+        self.active_pair_index: int = 0
 
     @property
     def seed(self) -> int:
