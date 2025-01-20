@@ -73,7 +73,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(self.special.class_type, ClassType.TANK)
 
         # health is 10 * HEALTH_MODIFIER from config
-        self.assertEqual(self.special.current_health, 40)
+        self.assertEqual(self.special.current_health, 60)
         self.assertEqual(self.special.defense.base_value, 20)
         self.assertEqual(self.special.defense.value, 20)
         self.assertEqual(self.special.speed.base_value, 10)

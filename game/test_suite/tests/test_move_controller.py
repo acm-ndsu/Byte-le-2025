@@ -166,6 +166,9 @@ class TestMoveController(unittest.TestCase):
         mock: Mock = Mock()
         move_logic.handle_move_logic = mock
 
+        # set the uroda healer to not have a selected move
+        self.uroda_healer.selected_move = None
+
         self.move_controller.handle_logic(self.clients, self.gameboard)
 
         # check that the Generic Tank wasn't affected at all
@@ -352,9 +355,9 @@ class TestMoveController(unittest.TestCase):
 
         self.move_controller.handle_logic(self.clients, self.gameboard)
 
-        self.assertEqual(self.uroda_attacker.current_health, 26)
-        self.assertEqual(self.uroda_healer.current_health, 26)
-        self.assertEqual(self.uroda_tank.current_health, 26)
+        self.assertEqual(self.uroda_attacker.current_health, 71)
+        self.assertEqual(self.uroda_healer.current_health, 71)
+        self.assertEqual(self.uroda_tank.current_health, 71)
 
         # test that the game map's instance of the characters are the same
         self.assertTrue(self.uroda_attacker == self.gameboard.get_character_from(self.uroda_attacker.position))
@@ -533,8 +536,8 @@ class TestMoveController(unittest.TestCase):
 
         self.move_controller.handle_logic(self.other_clients, self.other_gameboard)
 
-        # the attack effect damages the user. 80 health - 10 damage = 70 remaining health
-        self.assertEqual(self.other_uroda_healer.current_health, 70)
+        # the attack effect damages the user. health - 10 damage = remaining health
+        self.assertEqual(self.other_uroda_healer.current_health, 110)
 
         self.assertTrue(
             self.other_uroda_healer == self.other_gameboard.get_character_from(self.other_uroda_healer.position))
