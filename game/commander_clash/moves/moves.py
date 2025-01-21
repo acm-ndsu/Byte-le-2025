@@ -12,6 +12,7 @@ class Move(AbstractMove):
         self.object_type = ObjectType.MOVE
         self.cost: int = cost
         self.effect: Effect | None = effect
+        self.priority: int = 0
 
     @property
     def name(self) -> str:
@@ -51,6 +52,7 @@ class Move(AbstractMove):
         data['name'] = self.name
         data['cost'] = self.cost
         data['effect'] = self.effect.to_json() if self.effect is not None else None
+        data['priority'] = self.priority
 
         return data
 
@@ -76,6 +78,8 @@ class Move(AbstractMove):
             elif move_type == MoveType.DEBUFF:
                 self.effect: DebuffEffect | None = DebuffEffect().from_json(data['effect'])
 
+        self.priority = data['priority']
+
         return self
 
 
@@ -87,6 +91,7 @@ class Attack(Move, AbstractAttack):
         self.damage_points: int = damage_points
         self.object_type = ObjectType.ATTACK_MOVE
         self.move_type = MoveType.ATTACK
+        self.priority = 1
 
     def __eq__(self, other: Self | int) -> bool:
         if not isinstance(other, self.__class__):
@@ -106,6 +111,7 @@ class Heal(Move, AbstractHeal):
         self.heal_points: int = heal_points
         self.object_type = ObjectType.HEAL_MOVE
         self.move_type = MoveType.HEAL
+        self.priority = 4
 
     def __eq__(self, other: Self | int) -> bool:
         if not isinstance(other, self.__class__):
@@ -127,6 +133,7 @@ class Buff(Move, AbstractBuff):
         self.move_type = MoveType.BUFF
         self.buff_amount: int = buff_amount
         self.stat_to_affect: ObjectType = stat_to_affect
+        self.priority = 3
 
     def __eq__(self, other: Self | int) -> bool:
         if not isinstance(other, self.__class__):
@@ -149,6 +156,7 @@ class Debuff(Move, AbstractDebuff):
         self.move_type = MoveType.DEBUFF
         self.debuff_amount: int = debuff_amount
         self.stat_to_affect: ObjectType = stat_to_affect
+        self.priority = 2
 
     def __eq__(self, other: Self | int) -> bool:
         if not isinstance(other, self.__class__):

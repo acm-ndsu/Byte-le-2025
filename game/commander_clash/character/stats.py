@@ -37,40 +37,38 @@ class Stat(GameObject):
         self.value: int | float = base_value
 
     # override the hashable methods to easily compare stats
-    def __eq__(self, other: Self | int) -> bool:
-        if not isinstance(other, Stat | int | int):
+    def __eq__(self, other: Self) -> bool:
+        if not isinstance(other, Stat):
             return False
 
-        return (self.object_type == other.object_type
-                and self.base_value == other.base_value
-                and self.value == other.value)
+        return self.value == other.value
 
-    def __gt__(self, other: Self | int) -> bool:
-        if not isinstance(other, Stat | int):
+    def __gt__(self, other: Self) -> bool:
+        if not isinstance(other, Stat):
             return False
 
         return self.value > other.value
 
-    def __lt__(self, other: Self | int) -> bool:
-        if not isinstance(other, Stat | int):
+    def __lt__(self, other: Self) -> bool:
+        if not isinstance(other, Stat):
             return False
 
         return self.value < other.value
 
-    def __ge__(self, other: Self | int) -> bool:
-        if not isinstance(other, Stat | int):
+    def __ge__(self, other: Self) -> bool:
+        if not isinstance(other, Stat):
             return False
 
         return self.value >= other.value
 
-    def __le__(self, other: Self | int) -> bool:
+    def __le__(self, other: Self) -> bool:
         if not isinstance(other, Stat | int):
             return False
 
         return self.value <= other.value
 
-    def __ne__(self, other: Self | int) -> bool:
-        if not isinstance(other, Stat | int):
+    def __ne__(self, other: Self) -> bool:
+        if not isinstance(other, Stat):
             return False
 
         return self.value != other.value
@@ -141,14 +139,6 @@ class AttackStat(Stat):
         super().__init__(base_value)
         self.object_type = ObjectType.ATTACK_STAT
 
-    def __eq__(self, other: Self | int) -> bool:
-        if not isinstance(other, AttackStat | int | int):
-            return False
-
-        return (self.object_type == other.object_type
-                and self.base_value == other.base_value
-                and self.value == other.value)
-
     def is_maxed(self):
         return self.value == ATTACK_MAXIMUM
 
@@ -168,14 +158,6 @@ class DefenseStat(Stat):
         super().__init__(base_value)
         self.object_type = ObjectType.DEFENSE_STAT
 
-    def __eq__(self, other: Self | int) -> bool:
-        if not isinstance(other, DefenseStat | int | int):
-            return False
-
-        return (self.object_type == other.object_type
-                and self.base_value == other.base_value
-                and self.value == other.value)
-
     def is_maxed(self):
         return self.value == DEFENSE_MAXIMUM
 
@@ -194,14 +176,6 @@ class SpeedStat(Stat):
     def __init__(self, base_value: int = 1):
         super().__init__(base_value)
         self.object_type = ObjectType.SPEED_STAT
-
-    def __eq__(self, other: Self | int) -> bool:
-        if not isinstance(other, SpeedStat | int | int):
-            return False
-
-        return (self.object_type == other.object_type
-                and self.base_value == other.base_value
-                and self.value == other.value)
 
     def is_maxed(self):
         return self.value == SPEED_MAXIMUM

@@ -2,6 +2,7 @@ import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 
 import pygame
+from pygame import Rect
 
 from typing import Any
 from game.utils.vector import Vector
@@ -41,10 +42,10 @@ class MenuTemplate:
 
         # the next two variables shouldn't be type hinted. The center is a tuple of two ints (i.e., tuple[int, int])
         self.start_button.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
-                                                           Vector(0, 100)).as_tuple()
+                                                           Vector(0, 150)).as_tuple()
 
         self.results_button.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
-                                                             Vector(0, 100)).as_tuple()
+                                                             Vector(0, 150)).as_tuple()
 
     def start_events(self, event: pygame.event) -> Any:
         """
@@ -94,9 +95,12 @@ class Basic(MenuTemplate):
         super().__init__(screen, font, text_color, button_colors)
         self.title: Text = Text(screen, title, 48, color=self.text_color, font_name=self.font)
         self.title.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
-                                                    Vector(0, -100)).as_tuple()
-
+                                                    Vector(0, -150)).as_tuple()
         self.winning_team_name: Text = Text(screen, '', 0, color=self.text_color, font_name=self.font)
+        self.uroda_team_name: Text = Text(screen, '', 36, color=self.text_color, font_name=self.font)
+        self.turpis_team_name: Text = Text(screen, '', 36, color=self.text_color, font_name=self.font)
+        self.uroda_score: Text = Text(screen, '', 36, color=self.text_color, font_name=self.font)
+        self.turpis_score: Text = Text(screen, '', 36, color=self.text_color, font_name=self.font)
 
     def start_render(self) -> None:
         """
@@ -112,20 +116,54 @@ class Basic(MenuTemplate):
         :param results:
         :return: None
         """
-        winning_teams = self.__get_winning_teams(results['players'])
-        self.winning_team_name = Text(self.screen, winning_teams, 36, color=self.text_color, font_name=self.font)
-        self.winning_team_name.rect.center = self.screen.get_rect().center
+
+        winning_teams_info = self.__get_winning_teams(results['players'])
+        if len(winning_teams_info) == 2:
+            winning_teams_info = f'Winners: {winning_teams_info[0][:30] + "..." if len(winning_teams_info[0]) > 30 else winning_teams_info[0]}, {winning_teams_info[1][:30] + "..." if len(winning_teams_info[1]) > 30 else winning_teams_info[1]}'
+        else:
+            winning_teams_info = f'Winner: {winning_teams_info[0][:30] + "..." if len(winning_teams_info[0]) > 30 else winning_teams_info[0]}'
+        self.winning_team_name = Text(self.screen, winning_teams_info, 36, color=self.text_color, font_name=self.font)
+        self.winning_team_name.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
+                                                              Vector(0, -90)).as_tuple()
+
+        # Get each teams names and scores
+        uroda_player = results['players'][0] if results['players'][0]['team_manager']['country_type'] == 1 else \
+            results['players'][1]
+        turpis_player = results['players'][0] if results['players'][0]['team_manager']['country_type'] == 2 else \
+            results['players'][1]
+
+        self.uroda_team_name.text = uroda_player['team_name']
+        self.uroda_team_name.text = self.uroda_team_name.text[:30] + "..." if len(self.uroda_team_name.text) > 30 else self.uroda_team_name.text
+        self.uroda_score.text = f'Score: {uroda_player['team_manager']['score']}'
+        self.turpis_team_name.text = turpis_player['team_name']
+        self.turpis_team_name.text = self.turpis_team_name.text[:30] + "..." if len(self.turpis_team_name.text) > 30 else self.turpis_team_name.text
+
+        self.turpis_score.text = f'Score: {turpis_player['team_manager']['score']}'
+
+        self.uroda_team_name.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
+                                                              Vector(0, -40)).as_tuple()
+        self.turpis_team_name.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
+                                                               Vector(0, 40)).as_tuple()
+        self.uroda_score.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
+                                                          Vector(0, -10)).as_tuple()
+        self.turpis_score.rect.center = Vector.add_vectors(Vector(*self.screen.get_rect().center),
+                                                           Vector(0, 70)).as_tuple()
 
     def results_render(self) -> None:
         """
         This renders the results screen by placing the title and winning team name(s) on the screen.
         :return:
         """
+        self.screen.fill(color=(0, 0, 0), rect=Rect(0, 0, 1280, 720))  # Hardcoded values, should be config values
         super().results_render()
         self.title.render()
         self.winning_team_name.render()
+        self.uroda_team_name.render()
+        self.turpis_team_name.render()
+        self.uroda_score.render()
+        self.turpis_score.render()
 
-    def __get_winning_teams(self, players: list) -> str:
+    def __get_winning_teams(self, players: list) -> list[str]:
         """
         This method will get the winning team name(s) and return that string. If there is a tie, all teams that created
         the tie will be included.
@@ -135,7 +173,4 @@ class Basic(MenuTemplate):
         max_score = max(map(lambda player: player['team_manager']['score'], players))  # Gets the max score from all results
 
         # Compares each player in the given list to the max score
-        winners: list = [player['team_name'] for player in players if player['team_manager']['score'] == max_score]
-
-        # Prints the winner(s) from the final results
-        return f'{"Winners" if len(winners) > 1 else "Winner"}: {", ".join(winners)}'
+        return [player['team_name'] for player in players if player['team_manager']['score'] == max_score]
