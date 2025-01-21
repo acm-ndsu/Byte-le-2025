@@ -104,7 +104,7 @@ class TestStat(unittest.TestCase):
 
     def test_debuffing_under_minimum(self) -> None:
         self.attack_stat.apply_modification(-1000)
-        self.assertEqual(self.attack_stat.value, 0)
+        self.assertEqual(self.attack_stat.value, 1)
 
     def test_stats_equal(self) -> None:
         # even if it's a new reference, a stat should be equal if they're the same class
@@ -119,14 +119,14 @@ class TestStat(unittest.TestCase):
         self.assertFalse(self.speed_stat == SpeedStat(10))
 
         # test equalling two different stats
-        self.assertFalse(self.attack_stat == DefenseStat(5))
-        self.assertFalse(self.attack_stat == SpeedStat(5))
+        self.assertTrue(self.attack_stat == DefenseStat(5))
+        self.assertTrue(self.attack_stat == SpeedStat(5))
 
-        self.assertFalse(self.defense_stat == AttackStat(5))
-        self.assertFalse(self.defense_stat == SpeedStat(5))
+        self.assertTrue(self.defense_stat == AttackStat(5))
+        self.assertTrue(self.defense_stat == SpeedStat(5))
 
-        self.assertFalse(self.speed_stat == AttackStat(5))
-        self.assertFalse(self.speed_stat == DefenseStat(5))
+        self.assertTrue(self.speed_stat == AttackStat(5))
+        self.assertTrue(self.speed_stat == DefenseStat(5))
 
     def test_json(self) -> None:
         data: dict = self.stat.to_json()

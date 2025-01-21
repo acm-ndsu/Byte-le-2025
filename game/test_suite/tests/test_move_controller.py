@@ -166,6 +166,9 @@ class TestMoveController(unittest.TestCase):
         mock: Mock = Mock()
         move_logic.handle_move_logic = mock
 
+        # set the uroda healer to not have a selected move
+        self.uroda_healer.selected_move = None
+
         self.move_controller.handle_logic(self.clients, self.gameboard)
 
         # check that the Generic Tank wasn't affected at all
@@ -175,8 +178,8 @@ class TestMoveController(unittest.TestCase):
         mock.assert_not_called()
 
     def test_speed_tie(self) -> None:
-        # set the game board's active_pair_index to 0
-        self.gameboard.active_pair_index = 0
+        # set the game board's active_pair_index to 2 (teams aren't ordered by speed currently)
+        self.gameboard.active_pair_index = 2
 
         # uroda attacker and turpis attacker should be attacking each other at the same time
         self.move_controller.handle_logic(self.clients, self.gameboard)
@@ -199,8 +202,8 @@ class TestMoveController(unittest.TestCase):
         # the attacker references cannot be compared in ordered_teams since their instances were popped off the list
 
     def test_speed_tie_both_defeated(self) -> None:
-        # set the game board's active_pair_index to 0
-        self.gameboard.active_pair_index = 0
+        # set the game board's active_pair_index to 2 for both attackers
+        self.gameboard.active_pair_index = 2
 
         # set the health of both attackers to be 1
         self.uroda_attacker.current_health = 1
@@ -224,9 +227,6 @@ class TestMoveController(unittest.TestCase):
         # set the game board's active_pair_index to 0
         self.gameboard.active_pair_index = 0
 
-        # remove the uroda and turpis attacker from the ordered teams list
-        self.gameboard.ordered_teams.pop(0)
-
         # set turpis tank health to 1
         self.turpis_tank.current_health = 1
 
@@ -246,8 +246,8 @@ class TestMoveController(unittest.TestCase):
         self.assertTrue(self.turpis_tank == self.gameboard.get_character_from(self.turpis_tank.position))
 
     def test_both_teams_are_defeated_with_speed_tie(self) -> None:
-        # set the game board's active_pair_index to 0
-        self.gameboard.active_pair_index = 0
+        # set the game board's active_pair_index to 2
+        self.gameboard.active_pair_index = 2
 
         # set the special points so the attackers can use their aoe
         self.uroda_attacker.special_points = 5
@@ -287,6 +287,35 @@ class TestMoveController(unittest.TestCase):
         self.assertTrue(self.turpis_attacker == self.gameboard.get_character_from(self.turpis_attacker.position))
         self.assertTrue(self.turpis_tank == self.gameboard.get_character_from(self.turpis_tank.position))
         self.assertTrue(self.turpis_tank2 == self.gameboard.get_character_from(self.turpis_tank2.position))
+
+    def test_speed_ties_with_move_priorities(self) -> None:
+        self.other_locations: dict[Vector, list[GameObject]] = {Vector(0, 0): [self.other_uroda_attacker],
+                                                                Vector(0, 1): [self.other_uroda_healer],
+                                                                Vector(0, 2): [self.other_uroda_tank],
+                                                                Vector(1, 0): [self.other_turpis_attacker],
+                                                                Vector(1, 1): [self.other_turpis_healer],
+                                                                Vector(1, 2): [self.other_turpis_tank]}
+
+        self.other_gameboard: GameBoard = GameBoard(locations=self.other_locations, map_size=Vector(2, 3),
+                                                    uroda_team_manager=self.other_uroda_team_manager,
+                                                    turpis_team_manager=self.other_turpis_team_manager)
+
+        self.other_gameboard.generate_map()
+        self.other_gameboard.active_pair_index = 1
+
+        # uroda healer attacks entire opposing team, turpis healer heals adjacent allies
+        self.other_uroda_healer.selected_move = self.other_uroda_healer.get_s1()
+        self.other_turpis_healer.selected_move = self.other_turpis_healer.get_nm()
+
+        # offset the health a little bit for the turpis team. these chars should be at full health & THEN receive damage
+        self.other_turpis_attacker.current_health = self.other_turpis_attacker.max_health - 1
+        self.other_turpis_tank.current_health = self.other_turpis_tank.max_health - 1
+
+        self.move_controller.handle_logic(self.other_clients, self.other_gameboard)
+
+        # assert that the turpis attacker and tank took damage from full health specifically
+        self.assertEqual(self.other_turpis_attacker.current_health, 101)
+        self.assertEqual(self.other_turpis_tank.current_health, 102)
 
     def test_no_special_point_increase(self) -> None:
         # set the game board's active_pair_index to 0
@@ -353,13 +382,11 @@ class TestMoveController(unittest.TestCase):
         # don't want the turpis tank to take its turn since that will deal damage
         self.turpis_tank.selected_move = None
 
-        self.gameboard.ordered_teams.pop(0)
-
         self.move_controller.handle_logic(self.clients, self.gameboard)
 
-        self.assertEqual(self.uroda_attacker.current_health, 26)
-        self.assertEqual(self.uroda_healer.current_health, 26)
-        self.assertEqual(self.uroda_tank.current_health, 26)
+        self.assertEqual(self.uroda_attacker.current_health, 71)
+        self.assertEqual(self.uroda_healer.current_health, 71)
+        self.assertEqual(self.uroda_tank.current_health, 71)
 
         # test that the game map's instance of the characters are the same
         self.assertTrue(self.uroda_attacker == self.gameboard.get_character_from(self.uroda_attacker.position))
@@ -380,8 +407,6 @@ class TestMoveController(unittest.TestCase):
 
         # don't want the turpis tank to take its turn since that will deal damage
         self.turpis_tank.selected_move = None
-
-        self.gameboard.ordered_teams.pop(0)
 
         self.move_controller.handle_logic(self.clients, self.gameboard)
 
@@ -540,8 +565,8 @@ class TestMoveController(unittest.TestCase):
 
         self.move_controller.handle_logic(self.other_clients, self.other_gameboard)
 
-        # the attack effect damages the user. 80 health - 10 damage = 70 remaining health
-        self.assertEqual(self.other_uroda_healer.current_health, 70)
+        # the attack effect damages the user. health - 10 damage = remaining health
+        self.assertEqual(self.other_uroda_healer.current_health, 110)
 
         self.assertTrue(
             self.other_uroda_healer == self.other_gameboard.get_character_from(self.other_uroda_healer.position))

@@ -71,7 +71,8 @@ def validate_team_selection(
     # reevaluate the enums after checking for misplaced enums
     valid_team: tuple[SelectLeader | SelectGeneric, SelectLeader | SelectGeneric,
                       SelectLeader | SelectGeneric] = (selection1, selection2, selection3)
-    classes: list[ClassType | None] = [classes_map.get(member, None) for member in valid_team]
+    classes: list[ClassType | None] = [classes_map.get(member, None) for member in valid_team
+                                       if member.value != SelectGeneric.GEN_TRASH.value]
 
     # count occurrences of each class by mapping the ClassType to an int representing the count
     class_counts = {ClassType.ATTACKER: 0, ClassType.HEALER: 0, ClassType.TANK: 0}
