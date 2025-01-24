@@ -110,10 +110,10 @@ def generate_ninlil() -> Leader:
     s2: Attack = Attack(name='Tiny Titan', target_type=TargetType.SINGLE_OPP, cost=5, effect=s2_effect,
                         damage_points=15)
 
-    hp: int = 46
+    hp: int = 41
     atk: AttackStat = AttackStat(47)
     defense: DefenseStat = DefenseStat(37)
-    spd: SpeedStat = SpeedStat(30)
+    spd: SpeedStat = SpeedStat(35)
 
     moves: Moveset = Moveset((nm, s1, s2))
 
@@ -129,12 +129,12 @@ def generate_ninlil() -> Leader:
 def generate_calmus() -> Leader:
     nm: Attack = Attack(name='Flame Slash', target_type=TargetType.SINGLE_OPP, effect=None, damage_points=5)
 
-    s1_effect = AttackEffect(target_type=TargetType.SELF, damage_points=10)
-    s1: Buff = Buff(name='Flash Boost', target_type=TargetType.SELF, cost=3, effect=s1_effect, buff_amount=4,
+    s1_effect = AttackEffect(target_type=TargetType.SELF, damage_points=20)
+    s1: Buff = Buff(name='Flash Boost', target_type=TargetType.SELF, cost=3, effect=s1_effect, buff_amount=2,
                     stat_to_affect=ObjectType.ATTACK_STAT)
 
-    s2_effect: AttackEffect = AttackEffect(target_type=TargetType.SELF, damage_points=35)
-    s2: Buff = Buff(name='Berserk', target_type=TargetType.ENTIRE_TEAM, cost=5, effect=s2_effect, buff_amount=15,
+    s2_effect: AttackEffect = AttackEffect(target_type=TargetType.SELF, damage_points=45)
+    s2: Buff = Buff(name='Berserk', target_type=TargetType.ENTIRE_TEAM, cost=5, effect=s2_effect, buff_amount=7,
                     stat_to_affect=ObjectType.ATTACK_STAT)
 
     # Then we add the finished moves into a moveset
@@ -214,9 +214,9 @@ def generate_generic_healer(name: str = 'Healer') -> GenericHealer:
     s2: Heal = Heal(name='Team Heal', target_type=TargetType.ENTIRE_TEAM, cost=3,
                     heal_points=70)
 
-    hp: int = 39
+    hp: int = 35
     atk: AttackStat = AttackStat(36)
-    defense: DefenseStat = DefenseStat(36)
+    defense: DefenseStat = DefenseStat(40)
     spd: SpeedStat = SpeedStat(39)
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
@@ -228,13 +228,13 @@ def generate_generic_healer(name: str = 'Healer') -> GenericHealer:
 def generate_generic_tank(name: str = 'Tank') -> GenericTank:
     nm: Attack = Attack(name='Slap', target_type=TargetType.SINGLE_OPP, damage_points=2)
 
-    s1: Attack = Attack(name='Shield Rush', target_type=TargetType.ALL_OPPS, cost=2, damage_points=4)
-
     # Discuss damage_points for this one
-    s2_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SINGLE_OPP, debuff_amount=-1,
+    s1_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SINGLE_OPP, debuff_amount=-1,
                                            stat_to_affect=ObjectType.SPEED_STAT)
-    s2: Attack = Attack(name='Stomp', target_type=TargetType.SINGLE_OPP, cost=3, effect=s2_effect,
-                        damage_points=0)
+    s1: Attack = Attack(name='Stomp', target_type=TargetType.SINGLE_OPP, cost=3, effect=s1_effect,
+                        damage_points=10)
+
+    s2: Attack = Attack(name='Shield Rush', target_type=TargetType.ALL_OPPS, cost=3, damage_points=7)
 
     hp: int = 75
     atk: AttackStat = AttackStat(30)
