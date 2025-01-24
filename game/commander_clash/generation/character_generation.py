@@ -82,10 +82,10 @@ def generate_fultra() -> Leader:
     s2: Attack = Attack(name='Lightning Rod', target_type=TargetType.SINGLE_OPP, cost=5, effect=s2_effect,
                         damage_points=3)
 
-    hp: int = 33
+    hp: int = 40
     atk: AttackStat = AttackStat(50)
     defense: DefenseStat = DefenseStat(36)
-    spd: SpeedStat = SpeedStat(41)
+    spd: SpeedStat = SpeedStat(34)
 
     moves: Moveset = Moveset((nm, s1, s2))
 
