@@ -24,7 +24,7 @@ class Client(UserClient):
         order (e.g., (Generic, Leader, Leader)), whichever selection is incorrect will be swapped with a default value
         of Generic Attacker.
         """
-        return 'From Da Woodz', (SelectGeneric.GEN_ATTACKER, SelectLeader.BERRY, SelectGeneric.GEN_ATTACKER)
+        return 'From Da Woodz', (SelectGeneric.GEN_HEALER, SelectLeader.CALMUS, SelectGeneric.GEN_TANK)
 
     def first_turn_init(self, team_manager: TeamManager):
         """
@@ -74,8 +74,6 @@ class Client(UserClient):
             action: ActionType = random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])
 
             actions = [action]
-
-        print(f'{team_manager.team_name} action: {actions[0]}')
 
         return actions
 

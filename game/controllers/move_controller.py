@@ -138,6 +138,9 @@ class MoveController(Controller):
             defeated_char.state = 'defeated'
             client_to_use.team_manager.score += DEFEATED_SCORE
 
+            world.turn_info += (f'\nClient {client_to_use.team_name} gained {DEFEATED_SCORE} points!\n'
+                                f'Current score for {client_to_use.team_name}: {client_to_use.team_manager.score}!\n')
+
             # add the defeated character to the recently died list of the game board
             world.recently_died.append(defeated_char)
 
