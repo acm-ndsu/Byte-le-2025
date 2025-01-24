@@ -30,7 +30,7 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
   
   <!-- So that users can add custom icons -->
@@ -323,6 +323,19 @@
 <style> .purple {color:#A020F0; font-weight:bold; font-size:16px} </style>
 <style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style><section id="take-heed">
 <h2>TAKE HEED<a class="headerlink" href="#take-heed" title="Link to this heading">#</a></h2>
+<p>You may need to create a virtual environment before beginning, as it will create a new environment to install any needed
+packages. When in your project file, you can run the following commands if you are on Windows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -m venv ./</span>
+<span class="go">./Scripts/activate</span>
+</pre></div>
+</div>
+<p>or if you are on Linux:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python3 -m venv ./</span>
+<span class="go">./bin/activate</span>
+</pre></div>
+</div>
+<p>this will create a virtual environment for your project and activate, or use, it. Any other commands can be ran within
+this environment, including the next one.</p>
 <p>Please run the following command to install the necessary packages to run the game:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pip install -r requirements.txt</span>
 </pre></div>
@@ -340,8 +353,7 @@ max health, attack, speed, and defense.</p>
 </section>
 <section id="tournament-structure">
 <h2>Tournament Structure<a class="headerlink" href="#tournament-structure" title="Link to this heading">#</a></h2>
-<p>Each pairing of teams will have two games against each other. After one game, both teams will switch countries
-affiliations (i.e., if first with <span class="purple">Turpis</span>, will next be <span class="gold">Uroda</span>). The points gained from both
+<p>Each pairing of teams will have one game against each other. The points gained from both
 games will be added to those teams’ total points in the tournament.</p>
 <p>For more information on tournament structure and scoring, please visit <a class="reference internal" href="scoring.html"><span class="doc">Scoring</span></a>.</p>
 </section>

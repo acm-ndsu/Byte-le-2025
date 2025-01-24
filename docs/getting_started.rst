@@ -13,6 +13,24 @@ Getting Started
 TAKE HEED
 =========
 
+You may need to create a virtual environment before beginning, as it will create a new environment to install any needed
+packages. When in your project file, you can run the following commands if you are on Windows:
+
+.. code-block:: console
+
+    python -m venv ./
+    ./Scripts/activate
+
+or if you are on Linux:
+
+.. code-block:: console
+
+    python3 -m venv ./
+    ./bin/activate
+
+this will create a virtual environment for your project and activate, or use, it. Any other commands can be ran within
+this environment, including the next one.
+
 Please run the following command to install the necessary packages to run the game:
 
 .. code-block:: console
