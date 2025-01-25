@@ -7,13 +7,8 @@ Every character has a unique set of stats, including health, attack, defense, an
 Health
 ------
 
-<<<<<<< HEAD
 .. figure:: ./_static/gifs/health_bar.gif
    :width: 215
-=======
-.. image:: ./_static/images/hp_bar_7.png
-   :width: 175
->>>>>>> main
    :align: center
 
 Health... represents how healthy a character is. What did you expect? The health will be represented by a character's

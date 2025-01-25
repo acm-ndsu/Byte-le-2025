@@ -274,13 +274,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<<<<<<< HEAD
 <button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
 </button>
-=======
-
->>>>>>> main
 </div></div>
       
     </div>
@@ -296,7 +292,6 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-<<<<<<< HEAD
             <div>
                 <h2> Contents </h2>
             </div>
@@ -305,21 +300,22 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#priority-of-actions">Priority of Actions</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swapping">Swapping</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-control">Speed Control</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">Example 1</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">Example 2</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">Example 3</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-outspeed">Example 1: Outspeed</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-speed-ties">Example 2: Speed Ties</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-speed-ties-with-move-priorities">Example 3: Speed Ties with Move Priorities</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-stat-values">Maximum Stat Values</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-stat-values">Minimum Stat Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-and-minimum-stat-values">Maximum and Minimum Stat Values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-values">Maximum Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-value">Minimum Value</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#move-logic-helper-methods-put-me-in-helper-rst">Move Logic Helper Methods (put me in helper.rst)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gameboard-helper-methods-put-me-in-helper-rst">Gameboard Helper Methods (put me in helper.rst)</a></li>
 </ul>
             </nav>
-=======
->>>>>>> main
         </div>
     </div>
 </div>
@@ -331,9 +327,12 @@
                   
   <section id="game-logic">
 <h1>Game Logic<a class="headerlink" href="#game-logic" title="Link to this heading">#</a></h1>
-<<<<<<< HEAD
 <style> .purple {color:#A020F0; font-weight:bold; font-size:16px} </style>
-<style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style><p>The mechanics of this game are similar to many RPGs, but they are still unique in how some things are handled. Here
+<style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style>
+<style> .red {color:#BC0C25; font-weight:bold; font-size:16px} </style>
+<style> .blue {color:#1769BC; font-weight:bold; font-size:16px} </style>
+<style> .gold {color:#E1C564; font-weight:bold; font-size:16px} </style>
+<style> .green {color:#469B34; font-weight:bold; font-size:16px} </style><p>The mechanics of this game are similar to many RPGs, but they are still unique in how some things are handled. Here
 is how the game logic works for this game.</p>
 <section id="priority-of-actions">
 <h2>Priority of Actions<a class="headerlink" href="#priority-of-actions" title="Link to this heading">#</a></h2>
@@ -349,8 +348,8 @@ performs a Move. If <em>both</em> characters wanted to swap, they would swap as 
 <p>If 2 characters plan on performing a Move as their action, this is when the Speed stat truly matters. When managing the
 Speed of two characters, there is the possibility of <em>speed ties</em> occurring. Here are examples on how the following
 situations would play out.</p>
-<section id="example-1">
-<h4>Example 1<a class="headerlink" href="#example-1" title="Link to this heading">#</a></h4>
+<section id="example-1-outspeed">
+<h4>Example 1: Outspeed<a class="headerlink" href="#example-1-outspeed" title="Link to this heading">#</a></h4>
 <p>Characters taking action:</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -371,8 +370,8 @@ situations would play out.</p>
 <p>In this example, the <span class="gold">Uroda Attacker</span> will perform a Move first. If, for example, it’s an Attack that would kill
 the <span class="purple">Turpis Tank</span>, the Turpis Tank would be defeated and cannot take the action it previously wanted to.</p>
 </section>
-<section id="example-2">
-<h4>Example 2<a class="headerlink" href="#example-2" title="Link to this heading">#</a></h4>
+<section id="example-2-speed-ties">
+<h4>Example 2: Speed Ties<a class="headerlink" href="#example-2-speed-ties" title="Link to this heading">#</a></h4>
 <p>Characters taking action:</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -391,11 +390,11 @@ the <span class="purple">Turpis Tank</span>, the Turpis Tank would be defeated a
 </li>
 </ul>
 <p>In this example, a speed tie is present. Say the <span class="gold">Uroda Attacker</span> and <span class="purple">Turpis Attacker</span> both want to
-use an Attack and are both could be defeated. In this case, both would be able to attack <em>and</em> be defeated at the
+use an Attack and both could be defeated. In this case, both would be able to attack <em>and</em> be defeated at the
 end of the turn.</p>
 </section>
-<section id="example-3">
-<h4>Example 3<a class="headerlink" href="#example-3" title="Link to this heading">#</a></h4>
+<section id="example-3-speed-ties-with-move-priorities">
+<h4>Example 3: Speed Ties with Move Priorities<a class="headerlink" href="#example-3-speed-ties-with-move-priorities" title="Link to this heading">#</a></h4>
 <p>Characters taking action:</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -413,19 +412,37 @@ end of the turn.</p>
 </dl>
 </li>
 </ul>
-<p>THIS EXAMPLE IS BAD FIX LOGIC FIRST</p>
 <p>In this example, another speed tie is present. Say the <span class="gold">Uroda Attacker</span> wants to use an Attack since the
-<span class="purple">Turpis Healer</span> is almost defeated, but the <span class="purple">Turpis Healer</span> wants to use a Heal. Since these would
-happen at the same time, the <span class="gold">Uroda Attacker’s</span> damage would be applied first, but then the
-<span class="purple">Turpis Healer’s</span> healing would be applied next. Regardless, due to the</p>
+<span class="purple">Turpis Healer</span> is almost defeated, but the <span class="purple">Turpis Healer</span> wants to use a Heal. Since they have the
+same speed and are using different types of Moves, the order of what happens here is determined by Move priorities.</p>
+<p>Here are all MoveTypes and their Move priorities:</p>
+<ol class="arabic simple">
+<li><p><span class="green">Heal</span></p></li>
+<li><p><span class="red">Buff</span></p></li>
+<li><p><span class="blue">Debuff</span></p></li>
+<li><p><span class="gold">Attack</span></p></li>
+</ol>
+<p>This means that the <span class="purple">Turpis Healer</span> would apply it’s Heal Move <em>first</em>, and then the <span class="gold">Uroda Attacker</span>
+would attack <em>after</em>.</p>
 </section>
 </section>
 </section>
-<section id="maximum-stat-values">
-<h2>Maximum Stat Values<a class="headerlink" href="#maximum-stat-values" title="Link to this heading">#</a></h2>
+<section id="maximum-and-minimum-stat-values">
+<h2>Maximum and Minimum Stat Values<a class="headerlink" href="#maximum-and-minimum-stat-values" title="Link to this heading">#</a></h2>
+<section id="maximum-values">
+<h3>Maximum Values<a class="headerlink" href="#maximum-values" title="Link to this heading">#</a></h3>
+<p>Stats have a maximum value they could reach to prevent absurd values and outputs from damage calculations. The
+maximum values depend on the Stat.</p>
+<ul class="simple">
+<li><p>Attack Maximum: 99</p></li>
+<li><p>Defense Maximum: 75</p></li>
+<li><p>Speed Maximum: 99</p></li>
+</ul>
 </section>
-<section id="minimum-stat-values">
-<h2>Minimum Stat Values<a class="headerlink" href="#minimum-stat-values" title="Link to this heading">#</a></h2>
+<section id="minimum-value">
+<h3>Minimum Value<a class="headerlink" href="#minimum-value" title="Link to this heading">#</a></h3>
+<p>The minimum value for all stats is 1.</p>
+</section>
 </section>
 <section id="move-logic-helper-methods-put-me-in-helper-rst">
 <h2>Move Logic Helper Methods (put me in helper.rst)<a class="headerlink" href="#move-logic-helper-methods-put-me-in-helper-rst" title="Link to this heading">#</a></h2>
@@ -433,8 +450,6 @@ happen at the same time, the <span class="gold">Uroda Attacker’s</span> damage
 <section id="gameboard-helper-methods-put-me-in-helper-rst">
 <h2>Gameboard Helper Methods (put me in helper.rst)<a class="headerlink" href="#gameboard-helper-methods-put-me-in-helper-rst" title="Link to this heading">#</a></h2>
 </section>
-=======
->>>>>>> main
 </section>
 
 
@@ -473,7 +488,6 @@ happen at the same time, the <span class="gold">Uroda Attacker’s</span> damage
             
             
               
-<<<<<<< HEAD
                 <dialog id="pst-secondary-sidebar-modal"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
@@ -487,15 +501,18 @@ happen at the same time, the <span class="gold">Uroda Attacker’s</span> damage
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#priority-of-actions">Priority of Actions</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swapping">Swapping</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-control">Speed Control</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">Example 1</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">Example 2</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">Example 3</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-outspeed">Example 1: Outspeed</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-speed-ties">Example 2: Speed Ties</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-speed-ties-with-move-priorities">Example 3: Speed Ties with Move Priorities</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-stat-values">Maximum Stat Values</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-stat-values">Minimum Stat Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-and-minimum-stat-values">Maximum and Minimum Stat Values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-values">Maximum Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-value">Minimum Value</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#move-logic-helper-methods-put-me-in-helper-rst">Move Logic Helper Methods (put me in helper.rst)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gameboard-helper-methods-put-me-in-helper-rst">Gameboard Helper Methods (put me in helper.rst)</a></li>
 </ul>
@@ -503,8 +520,6 @@ happen at the same time, the <span class="gold">Uroda Attacker’s</span> damage
 
 </div></div>
               
-=======
->>>>>>> main
             
           </div>
           <footer class="bd-footer-content">

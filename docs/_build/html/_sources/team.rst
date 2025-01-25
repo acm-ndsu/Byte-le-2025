@@ -36,11 +36,7 @@ middle; the third represents the second Generic that will be on the bottom.
 Selecting Leaders
 -----------------
 
-<<<<<<< HEAD
 When selecting your Leader character, remember that you can choose between 6 options. There are 2 leaders per ClassType:
-=======
-When selecting your Leader character, you can choose between 6 options. There are 2 leaders per ClassType:
->>>>>>> main
 
 Attacker ClassType:
     - Fultra
@@ -57,11 +53,7 @@ Tank ClassType:
 
 The enums to select any one of these characters are the following:
 
-<<<<<<< HEAD
 .. code-block:: python
-=======
-.. code-block::
->>>>>>> main
 
     SelectLeader.FULTRA
     SelectLeader.NINLIL
@@ -83,11 +75,7 @@ When selecting your Generic characters, you can choose between 3 options:
 
 The :doc:`enums` to select them are the following:
 
-<<<<<<< HEAD
 .. code-block:: python
-=======
-.. code-block::
->>>>>>> main
 
     SelectGeneric.GEN_ATTACKER
     SelectGeneric.GEN_HEALER

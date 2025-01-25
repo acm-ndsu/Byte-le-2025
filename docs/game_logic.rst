@@ -6,9 +6,17 @@ Game Logic
 
     <style> .purple {color:#A020F0; font-weight:bold; font-size:16px} </style>
     <style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style>
+    <style> .red {color:#BC0C25; font-weight:bold; font-size:16px} </style>
+    <style> .blue {color:#1769BC; font-weight:bold; font-size:16px} </style>
+    <style> .gold {color:#E1C564; font-weight:bold; font-size:16px} </style>
+    <style> .green {color:#469B34; font-weight:bold; font-size:16px} </style>
 
 .. role:: purple
 .. role:: gold
+.. role:: red
+.. role:: blue
+.. role:: gold
+.. role:: green
 
 The mechanics of this game are similar to many RPGs, but they are still unique in how some things are handled. Here
 is how the game logic works for this game.
@@ -47,8 +55,8 @@ In this example, the :gold:`Uroda Attacker` will perform a Move first. If, for e
 the :purple:`Turpis Tank`, the Turpis Tank would be defeated and cannot take the action it previously wanted to.
 
 
-Example 2: Speed Tie
-....................
+Example 2: Speed Ties
+.....................
 
 Characters taking action:
 
@@ -78,19 +86,30 @@ same speed and are using different types of Moves, the order of what happens her
 
 Here are all MoveTypes and their Move priorities:
 
-1.
+#. :green:`Heal`
+#. :red:`Buff`
+#. :blue:`Debuff`
+#. :gold:`Attack`
+
+This means that the :purple:`Turpis Healer` would apply it's Heal Move *first*, and then the :gold:`Uroda Attacker`
+would attack *after*.
 
 
-Maximum Stat Values
-===================
+Maximum and Minimum Stat Values
+===============================
+
+Maximum Values
+--------------
+
+Stats have a maximum value they could reach to prevent absurd values and outputs from damage calculations. The
+maximum values depend on the Stat.
+
+- Attack Maximum: 99
+- Defense Maximum: 75
+- Speed Maximum: 99
 
 
-Minimum Stat Values
-===================
+Minimum Value
+-------------
 
-
-Move Logic Helper Methods (put me in helper.rst)
-================================================
-
-Gameboard Helper Methods (put me in helper.rst)
-===============================================
+The minimum value for all stats is 1.
