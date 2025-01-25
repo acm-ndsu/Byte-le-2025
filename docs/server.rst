@@ -55,12 +55,6 @@ prompt you to submit ``base_client_2.py``.
 Once uploaded to the server, your bot will run against other submitted bots to determine placing. You can submit as
 many times as you'd like during the duration of the competition, but do not excessively upload please.
 
-Code Time-Outs
-==============
-
-Every team is allowed a maximum of 0.1 seconds for their code to execute. If your code takes longer than this
-allotted time, the code will not be executed. This is to ensure the competition runs smoothly and pushes
-competitors to write efficient code. Good luck, and think hard!
 
 Leaderboard
 -----------
@@ -139,3 +133,10 @@ or
     python launcher.pyz c l -h
 
 will show you the help descriptions of all client and leaderboard commands respectively.
+
+Code Time-Outs
+==============
+
+Every team is allowed a maximum of 0.1 seconds for their code to execute. If your code takes longer than this
+allotted time, the code will not be executed. This is to ensure the competition runs smoothly and pushes
+competitors to write efficient code. Good luck, and think hard!
