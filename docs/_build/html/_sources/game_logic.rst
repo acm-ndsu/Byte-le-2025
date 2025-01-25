@@ -2,6 +2,7 @@
 Game Logic
 ==========
 
+<<<<<<< HEAD
 .. raw:: html
 
     <style> .purple {color:#A020F0; font-weight:bold; font-size:16px} </style>
@@ -93,3 +94,5 @@ Move Logic Helper Methods (put me in helper.rst)
 
 Gameboard Helper Methods (put me in helper.rst)
 ===============================================
+=======
+>>>>>>> main

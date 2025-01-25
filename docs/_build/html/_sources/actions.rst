@@ -2,6 +2,7 @@
 Taking Character Actions
 ========================
 
+<<<<<<< HEAD
 To control your characters, you do so by using :doc:`enums`.
 
 
@@ -82,3 +83,5 @@ Note
 
 Note that a character is still able to swap to a space even if an ally isn't positioned there. That is, *your characters
 will always be able to swap as long as it is not out of bounds*.
+=======
+>>>>>>> main

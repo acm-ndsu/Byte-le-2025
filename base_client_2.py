@@ -10,6 +10,7 @@ from game.common.team_manager import TeamManager
 class State(Enum):
     HEALTHY = auto()
     UNHEALTHY = auto()
+    ALMOST_DEAD = auto()
 
 
 class Client(UserClient):
@@ -24,7 +25,7 @@ class Client(UserClient):
         order (e.g., (Generic, Leader, Leader)), whichever selection is incorrect will be swapped with a default value
         of Generic Attacker.
         """
-        return 'Fighting Fury', (SelectGeneric.GEN_HEALER, SelectLeader.FULTRA, SelectGeneric.GEN_HEALER)
+        return 'Tiny Titans', (SelectGeneric.GEN_TANK, SelectLeader.NINLIL, SelectGeneric.GEN_TANK)
 
     def first_turn_init(self, team_manager: TeamManager):
         """
@@ -70,8 +71,10 @@ class Client(UserClient):
             # if the active character from my team is healthy, use its Normal Move
             actions = [ActionType.USE_NM]
         else:
-            # if unhealthy, randomly decide to swap in a direction or attack
-            actions = [random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])]
+            # if unhealthy, randomly decide to swap in a direction or use special 1
+            action: ActionType = random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])
+
+            actions = [action]
 
         return actions
 

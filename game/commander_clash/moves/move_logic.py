@@ -3,7 +3,7 @@ import math
 from game.commander_clash.character.character import Character
 from game.commander_clash.character.stats import Stat
 from game.commander_clash.moves.moves import *
-from game.common.enums import MoveType, CountryType
+from game.common.enums import MoveType
 from game.common.map.game_board import GameBoard
 from game.common.team_manager import TeamManager
 from game.config import MINIMUM_DAMAGE, SPECIAL_POINT_LIMIT

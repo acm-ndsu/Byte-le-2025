@@ -55,6 +55,21 @@ if __name__ == '__main__':
     all_subpar = spar.add_parser('gen,run,vis', aliases=['grv'],
                                  help='Generate, Run, Visualize! "grv -h" shows more options')
 
+    all_subpar.add_argument('-log', action='store', type=str, nargs='?',
+                            const=-1, default=None, dest="logpath", help="Specify a log path")
+
+    all_subpar.add_argument('-end_time', action='store', default=-1, type=int, nargs='?', dest='end_time',
+                            help='Sets the time for how long the visualizer will pause on the results screen')
+
+    all_subpar.add_argument('-skip_start', action='store_true', default=False, dest='skip_start',
+                            help='Skips the first screen of the visualizer to make viewing the game faster')
+
+    all_subpar.add_argument('-playback_speed', action='store', default=1.0, type=float, nargs='?',
+                            dest='playback_speed', help='Adjusts the playback speed of the visualizer')
+
+    all_subpar.add_argument('-fullscreen', action='store_true', default=False,
+                            dest='fullscreen', help='Determines whether to display the visualizer in fullscreen or not')
+
     gr_subpar = spar.add_parser('gen,run', aliases=['gr'], help='Generates and runs the game without '
                                                                 'visualization. Can be helpful for testing!')
 
@@ -153,7 +168,9 @@ if __name__ == '__main__':
         generate()
         engine = Engine(False)
         engine.loop()
-        visualiser = ByteVisualiser()
+        visualiser = ByteVisualiser(end_time=par_args.end_time, skip_start=par_args.skip_start,
+                                    playback_speed=par_args.playback_speed, fullscreen=par_args.fullscreen,
+                                    log_dir=par_args.logpath)
         visualiser.loop()
 
     elif action in ['version', 'ver']:

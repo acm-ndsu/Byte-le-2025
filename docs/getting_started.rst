@@ -53,8 +53,8 @@ You can find more information on :doc:`characters`, as well as :doc:`stats` and 
 Tournament Structure
 ====================
 
-Each pairing of teams will have one game against each other. The points gained from both
-games will be added to those teams' total points in the tournament.
+Each pairing of teams will have one game against each other. The points gained from that game
+will be added to those teams' total points in the tournament.
 
 For more information on tournament structure and scoring, please visit :doc:`scoring`.
 

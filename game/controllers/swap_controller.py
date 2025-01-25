@@ -50,7 +50,7 @@ class SwapController(Controller):
                 return
 
         # Set active_character's took_action to True as their turn has started
-        active_character.took_action = True
+        # active_character.took_action = True
 
         # used in the turn_info string
         position_before: Vector = active_character.position

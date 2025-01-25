@@ -113,8 +113,8 @@ class MasterController(Controller):
         turpis_team_manager: TeamManager = clients[0].team_manager if (
                 clients[0].team_manager.country_type == CountryType.TURPIS) else clients[1].team_manager
 
-        # increment the active_pair_index for the next turn
-        gameboard.active_pair_index += 1
+        # # increment the active_pair_index for the next turn
+        # gameboard.active_pair_index += 1
 
         # start by organizing the dead characters that died last turn if applicable
         gameboard.clean_up_dead_characters(uroda_team_manager, turpis_team_manager)
@@ -177,10 +177,13 @@ class MasterController(Controller):
                 # ensure the team is ordered by speed after everyone took their turn
                 client.team_manager.speed_sort()
 
+        # increment the active_pair_index for the next turn
+        gameboard.active_pair_index += 1
+
         # repopulate the ordered_teams property if the active_pair_index is the length of the list and reset that value
-        if gameboard.active_pair_index == len(gameboard.ordered_teams) - 1:
+        if gameboard.active_pair_index == len(gameboard.ordered_teams):
             gameboard.order_teams(uroda_team_manager, turpis_team_manager)
-            gameboard.active_pair_index = -1
+            gameboard.active_pair_index = 0
 
         # update the current world json by setting it to the game board's updated state
         self.current_world_data['game_board'] = gameboard.to_json()
