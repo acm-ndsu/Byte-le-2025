@@ -38,6 +38,7 @@ question of yours, you may consult a commander (developer) over at any time.
    actions
    game_logic
    scoring
+   helper
    enums
    visualizer
    credits

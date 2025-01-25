@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Taking Character Actions &#8212; Byte-le Royale 2025 1.0.0  documentation</title>
+    <title>Helper Methods &amp; Code &#8212; Byte-le Royale 2025 1.0.0  documentation</title>
   
   
   
@@ -43,11 +43,11 @@
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'actions';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'helper';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Game Logic" href="game_logic.html" />
-    <link rel="prev" title="Making a Team" href="team.html" />
+    <link rel="next" title="Enums" href="enums.html" />
+    <link rel="prev" title="Scoring" href="scoring.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -146,10 +146,10 @@
 <li class="toctree-l1"><a class="reference internal" href="moves.html">Moves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="characters.html">Characters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="team.html">Making a Team</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Taking Character Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actions.html">Taking Character Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="game_logic.html">Game Logic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scoring.html">Scoring</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helper.html">Helper Methods &amp; Code</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Helper Methods &amp; Code</a></li>
 <li class="toctree-l1"><a class="reference internal" href="enums.html">Enums</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
@@ -212,7 +212,7 @@
       
       
       
-      <li><a href="_sources/actions.rst" target="_blank"
+      <li><a href="_sources/helper.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -288,7 +288,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Taking Character Actions</h1>
+    <h1>Helper Methods & Code</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -298,15 +298,8 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-move">Normal Move</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-move-1">Special Move 1</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-move-2">Special Move 2</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#swapping">Swapping</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swap-up">Swap Up</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swap-down">Swap Down</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#note">Note</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#move-logic-helper-methods">Move Logic Helper Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gameboard-helper-methods-put-me-in-helper-rst">Gameboard Helper Methods (put me in helper.rst)</a></li>
 </ul>
             </nav>
         </div>
@@ -318,68 +311,14 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="taking-character-actions">
-<h1>Taking Character Actions<a class="headerlink" href="#taking-character-actions" title="Link to this heading">#</a></h1>
-<p>To control your characters, you do so by using <a class="reference internal" href="enums.html"><span class="doc">Enums</span></a>.</p>
-<section id="normal-move">
-<h2>Normal Move<a class="headerlink" href="#normal-move" title="Link to this heading">#</a></h2>
-<p>The Normal Move is the base move for every character. This Move
-is used to fill your Special Point meter, which is used for Moves
-called Specials. <em>Every Normal Move costs zero special points</em>.</p>
-<p>To use a character’s Normal Move, set your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list to be:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">USE_NM</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list will be what your code
-returns at the end of the <code class="docutils literal notranslate"><span class="pre">take_turn()</span></code> method, and the order will determine
-which character – in order of speed priority – does the listed action.</p>
+  <section id="helper-methods-code">
+<h1>Helper Methods &amp; Code<a class="headerlink" href="#helper-methods-code" title="Link to this heading">#</a></h1>
+<p>This page contains useful methods and other code that may be useful to help you during your development.</p>
+<section id="move-logic-helper-methods">
+<h2>Move Logic Helper Methods<a class="headerlink" href="#move-logic-helper-methods" title="Link to this heading">#</a></h2>
 </section>
-<section id="special-move-1">
-<h2>Special Move 1<a class="headerlink" href="#special-move-1" title="Link to this heading">#</a></h2>
-<p>The Special Move 1 is a low special point Move, and costs for this Move
-vary by Move.</p>
-<p>To use a character’s Special Move 1, set your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list to be:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">USE_S1</span><span class="p">]</span>
-</pre></div>
-</div>
-</section>
-<section id="special-move-2">
-<h2>Special Move 2<a class="headerlink" href="#special-move-2" title="Link to this heading">#</a></h2>
-<p>The Special Move 2 is a high special point Move and costs for this Move
-vary by Move.</p>
-<p>To use a character’s Special Move 2, set your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list to be:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">USE_S2</span><span class="p">]</span>
-</pre></div>
-</div>
-</section>
-<section id="swapping">
-<h2>Swapping<a class="headerlink" href="#swapping" title="Link to this heading">#</a></h2>
-<p>A character can also Swap, allowing a character to switch places
-with an adjacent character <em>on their team</em>, but it will not allow you to move out of
-bounds. If a match up is not going well for a character on your team, this
-enables you to tactically move to a better position! The Swapping <a class="reference internal" href="enums.html"><span class="doc">Enums</span></a>
-are listed below.</p>
-<section id="swap-up">
-<h3>Swap Up<a class="headerlink" href="#swap-up" title="Link to this heading">#</a></h3>
-<p>A character can use Swap Up to Swap with a character above them.</p>
-<p>To use a character’s Swap Up, set your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list to be:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">SWAP_UP</span><span class="p">]</span>
-</pre></div>
-</div>
-</section>
-<section id="swap-down">
-<h3>Swap Down<a class="headerlink" href="#swap-down" title="Link to this heading">#</a></h3>
-<p>A character can use Swap Down to Swap with a character below them.</p>
-<p>To use a character’s Swap Down, set your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list to be:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">SWAP_DOWN</span><span class="p">]</span>
-</pre></div>
-</div>
-</section>
-<section id="note">
-<h3>Note<a class="headerlink" href="#note" title="Link to this heading">#</a></h3>
-<p>Note that a character is still able to swap to a space even if an ally isn’t positioned there. That is, <em>your characters
-will always be able to swap as long as it is not out of bounds</em>.</p>
-</section>
+<section id="gameboard-helper-methods-put-me-in-helper-rst">
+<h2>Gameboard Helper Methods (put me in helper.rst)<a class="headerlink" href="#gameboard-helper-methods-put-me-in-helper-rst" title="Link to this heading">#</a></h2>
 </section>
 </section>
 
@@ -395,20 +334,20 @@ will always be able to swap as long as it is not out of bounds</em>.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="team.html"
+       href="scoring.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Making a Team</p>
+        <p class="prev-next-title">Scoring</p>
       </div>
     </a>
     <a class="right-next"
-       href="game_logic.html"
+       href="enums.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Game Logic</p>
+        <p class="prev-next-title">Enums</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -429,15 +368,8 @@ will always be able to swap as long as it is not out of bounds</em>.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-move">Normal Move</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-move-1">Special Move 1</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-move-2">Special Move 2</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#swapping">Swapping</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swap-up">Swap Up</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swap-down">Swap Down</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#note">Note</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#move-logic-helper-methods">Move Logic Helper Methods</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gameboard-helper-methods-put-me-in-helper-rst">Gameboard Helper Methods (put me in helper.rst)</a></li>
 </ul>
   </nav></div>
 

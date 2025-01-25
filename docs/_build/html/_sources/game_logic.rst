@@ -113,9 +113,3 @@ Minimum Value
 -------------
 
 The minimum value for all stats is 1.
-
-Move Logic Helper Methods (put me in helper.rst)
-================================================
-
-Gameboard Helper Methods (put me in helper.rst)
-===============================================
