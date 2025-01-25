@@ -10,7 +10,7 @@ Game Logic
 .. role:: purple
 .. role:: gold
 
-The mechanics of this game are similar to many RPGs, but this is still unique in how some things are handled. Here
+The mechanics of this game are similar to many RPGs, but they are still unique in how some things are handled. Here
 is how the game logic works for this game.
 
 
@@ -22,7 +22,7 @@ Swapping
 
 Before any Move logic happens (anything related to Attacks, Heals, Buffs, or Debuffs), *swapping will always take
 priority and happen first*. If a character on the :gold:`Uroda` team wants to swap and a character on the
-:purple:`Turpis` team wants to attack, *the :gold:`Uroda` character would swap first* before the :purple:`Turpis`
+:purple:`Turpis` team wants to attack, *the* :gold:`Uroda` *character would swap first* before the :purple:`Turpis`
 performs a Move. If *both* characters wanted to swap, they would swap as normal.
 
 

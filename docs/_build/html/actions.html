@@ -303,6 +303,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#swapping">Swapping</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swap-up">Swap Up</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swap-down">Swap Down</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#note">Note</a></li>
 </ul>
 </li>
 </ul>
@@ -318,12 +319,12 @@
                   
   <section id="taking-character-actions">
 <h1>Taking Character Actions<a class="headerlink" href="#taking-character-actions" title="Link to this heading">#</a></h1>
-<p>Players will use <a class="reference internal" href="enums.html"><span class="doc">Enums</span></a> to control their party</p>
+<p>To control your characters, you do so by using <a class="reference internal" href="enums.html"><span class="doc">Enums</span></a>.</p>
 <section id="normal-move">
 <h2>Normal Move<a class="headerlink" href="#normal-move" title="Link to this heading">#</a></h2>
 <p>The Normal Move is the base move for every character. This Move
-is used to fill your special point meter, which is used for Moves
-called Specials. Every Normal Move costs zero special points.</p>
+is used to fill your Special Point meter, which is used for Moves
+called Specials. <em>Every Normal Move costs zero special points</em>.</p>
 <p>To use a character’s Normal Move, set your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list to be:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">USE_NM</span><span class="p">]</span>
 </pre></div>
@@ -334,7 +335,7 @@ which character – in order of speed priority – does the listed action.</p>
 </section>
 <section id="special-move-1">
 <h2>Special Move 1<a class="headerlink" href="#special-move-1" title="Link to this heading">#</a></h2>
-<p>The Special Move 1 is a low special point Move and costs for this Move
+<p>The Special Move 1 is a low special point Move, and costs for this Move
 vary by Move.</p>
 <p>To use a character’s Special Move 1, set your <code class="docutils literal notranslate"><span class="pre">actions</span></code> list to be:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">USE_S1</span><span class="p">]</span>
@@ -355,7 +356,7 @@ vary by Move.</p>
 <p>A character can also Swap, allowing a character to switch places
 with an adjacent character <em>on their team</em>, but it will not allow you to move out of
 bounds. If a match up is not going well for a character on your team, this
-enables you to tactically move to a better position! The Swapping Enums
+enables you to tactically move to a better position! The Swapping <a class="reference internal" href="enums.html"><span class="doc">Enums</span></a>
 are listed below.</p>
 <section id="swap-up">
 <h3>Swap Up<a class="headerlink" href="#swap-up" title="Link to this heading">#</a></h3>
@@ -372,6 +373,11 @@ are listed below.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">ActionType</span><span class="o">.</span><span class="n">SWAP_DOWN</span><span class="p">]</span>
 </pre></div>
 </div>
+</section>
+<section id="note">
+<h3>Note<a class="headerlink" href="#note" title="Link to this heading">#</a></h3>
+<p>Note that a character is still able to swap to a space even if an ally isn’t positioned there. That is, <em>your characters
+will always be able to swap as long as it is not out of bounds</em>.</p>
 </section>
 </section>
 </section>
@@ -428,6 +434,7 @@ are listed below.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#swapping">Swapping</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swap-up">Swap Up</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swap-down">Swap Down</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#note">Note</a></li>
 </ul>
 </li>
 </ul>

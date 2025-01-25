@@ -67,8 +67,8 @@ is different.
 Special Points
 --------------
 
-.. image:: ./_static/images/sp_bar_3.png
-   :width: 120
+.. image:: ./_static/gifs/sp_bar.gif
+   :width: 150
    :align: center
 
 Not all Moves can be used immediately. A character needs to build up the strength to use some moves by increasing
