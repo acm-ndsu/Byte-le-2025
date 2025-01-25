@@ -26,7 +26,7 @@ or if you are on Linux:
 .. code-block:: console
 
     python3 -m venv ./
-    ./bin/activate
+    source ./bin/activate
 
 this will create a virtual environment for your project and activate, or use, it. Any other commands can be ran within
 this environment, including the next one.
