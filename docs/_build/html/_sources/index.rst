@@ -39,8 +39,8 @@ question of yours, you may consult a commander (developer) over at any time.
    game_logic
    gameboard
    scoring
-   helper
    enums
+   helper
    visualizer
    credits
 

@@ -1,6 +1,6 @@
-=====================
-Helper Methods & Code
-=====================
+=================================
+Helper Methods, Code, & Debugging
+=================================
 
 This page contains useful methods and other code that may be useful to help you during your development.
 
@@ -74,13 +74,27 @@ Calculates how a stat will change when the current_move's buff or debuff amount 
     - A Debuff Move or DebuffEffect object will *decrease* the target's stat to affect
 - Returns an int representing the final value of the target's stat to affect if the modification would be applied
 
-Gameboard Helper Methods
-========================
+Debugging
+=========
 
-The Gameboard stores the information for all the characters and their locations. Here are methods that will help
-access the characters to analyze their states.
+To help you in debugging, here are a few tools to help you.
 
-Get Top Method
+The Visualizer
 --------------
 
-Returns the object at the top of the given coordinate
+Of course, the visualizer will be one of the best tools to use for debugging. You will see what your characters
+are doing easily, and the active character for each turn is also marked by a "!" next to their headshot.
+
+Printing Turn Info
+------------------
+
+To help provide information for what happened every turn without using the JSON files, every turn will be
+printed in your terminal. Every turn will start with "Starting turn <turn number>!" and will provide detailed
+descriptions of everything. This can be useful when paired with the visualizer!
+
+The Logs
+--------
+
+Lastly, whenever you generate and run a game, your ``logs`` folder will be created. This folder contains a
+``.json`` file for every turn and stores the information that happened for that turn. If you know how to read
+the format, this can also be helpful for looking in-depth at everything despite it's lower level analysis.

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Helper Methods &amp; Code &#8212; Byte-le Royale 2025 1.0.0  documentation</title>
+    <title>Helper Methods, Code, &amp; Debugging &#8212; Byte-le Royale 2025 1.0.0  documentation</title>
   
   
   
@@ -46,8 +46,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'helper';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Enums" href="enums.html" />
-    <link rel="prev" title="Scoring" href="scoring.html" />
+    <link rel="next" title="Visualizer" href="visualizer.html" />
+    <link rel="prev" title="Enums" href="enums.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -148,9 +148,10 @@
 <li class="toctree-l1"><a class="reference internal" href="team.html">Making a Team</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actions.html">Taking Character Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="game_logic.html">Game Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gameboard.html">The Gameboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scoring.html">Scoring</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Helper Methods &amp; Code</a></li>
 <li class="toctree-l1"><a class="reference internal" href="enums.html">Enums</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Helper Methods, Code, &amp; Debugging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
 </ul>
@@ -288,7 +289,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Helper Methods & Code</h1>
+    <h1>Helper Methods, Code, & Debugging</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -304,8 +305,10 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-stat-modification-method">Calculate Stat Modification Method</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gameboard-helper-methods">Gameboard Helper Methods</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-top-method">Get Top Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging">Debugging</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-visualizer">The Visualizer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#printing-turn-info">Printing Turn Info</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-logs">The Logs</a></li>
 </ul>
 </li>
 </ul>
@@ -319,8 +322,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="helper-methods-code">
-<h1>Helper Methods &amp; Code<a class="headerlink" href="#helper-methods-code" title="Link to this heading">#</a></h1>
+  <section id="helper-methods-code-debugging">
+<h1>Helper Methods, Code, &amp; Debugging<a class="headerlink" href="#helper-methods-code-debugging" title="Link to this heading">#</a></h1>
 <p>This page contains useful methods and other code that may be useful to help you during your development.</p>
 <section id="move-logic-helper-methods">
 <h2>Move Logic Helper Methods<a class="headerlink" href="#move-logic-helper-methods" title="Link to this heading">#</a></h2>
@@ -401,13 +404,25 @@ compared are the heal_points and the difference between the target’s max healt
 </ul>
 </section>
 </section>
-<section id="gameboard-helper-methods">
-<h2>Gameboard Helper Methods<a class="headerlink" href="#gameboard-helper-methods" title="Link to this heading">#</a></h2>
-<p>The Gameboard stores the information for all the characters and their locations. Here are methods that will help
-access the characters to analyze their states.</p>
-<section id="get-top-method">
-<h3>Get Top Method<a class="headerlink" href="#get-top-method" title="Link to this heading">#</a></h3>
-<p>Returns the object at the top of the given coordinate</p>
+<section id="debugging">
+<h2>Debugging<a class="headerlink" href="#debugging" title="Link to this heading">#</a></h2>
+<p>To help you in debugging, here are a few tools to help you.</p>
+<section id="the-visualizer">
+<h3>The Visualizer<a class="headerlink" href="#the-visualizer" title="Link to this heading">#</a></h3>
+<p>Of course, the visualizer will be one of the best tools to use for debugging. You will see what your characters
+are doing easily, and the active character for each turn is also marked by a “!” next to their headshot.</p>
+</section>
+<section id="printing-turn-info">
+<h3>Printing Turn Info<a class="headerlink" href="#printing-turn-info" title="Link to this heading">#</a></h3>
+<p>To help provide information for what happened every turn without using the JSON files, every turn will be
+printed in your terminal. Every turn will start with “Starting turn &lt;turn number&gt;!” and will provide detailed
+descriptions of everything. This can be useful when paired with the visualizer!</p>
+</section>
+<section id="the-logs">
+<h3>The Logs<a class="headerlink" href="#the-logs" title="Link to this heading">#</a></h3>
+<p>Lastly, whenever you generate and run a game, your <code class="docutils literal notranslate"><span class="pre">logs</span></code> folder will be created. This folder contains a
+<code class="docutils literal notranslate"><span class="pre">.json</span></code> file for every turn and stores the information that happened for that turn. If you know how to read
+the format, this can also be helpful for looking in-depth at everything despite it’s lower level analysis.</p>
 </section>
 </section>
 </section>
@@ -424,20 +439,20 @@ access the characters to analyze their states.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="scoring.html"
+       href="enums.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Scoring</p>
+        <p class="prev-next-title">Enums</p>
       </div>
     </a>
     <a class="right-next"
-       href="enums.html"
+       href="visualizer.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Enums</p>
+        <p class="prev-next-title">Visualizer</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -464,8 +479,10 @@ access the characters to analyze their states.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-stat-modification-method">Calculate Stat Modification Method</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gameboard-helper-methods">Gameboard Helper Methods</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-top-method">Get Top Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#debugging">Debugging</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-visualizer">The Visualizer</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#printing-turn-info">Printing Turn Info</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-logs">The Logs</a></li>
 </ul>
 </li>
 </ul>
