@@ -81,13 +81,17 @@ To receive the code and to begin commanding your own team of mercenaries, please
 
 When on GitHub, press the green ``<> Code`` button to drop down the menu:
 
-We highly recommend cloning with GitHub Desktop or downloading the ZIP folder.
+.. image:: ./_static/images/clone_repo.png
+
+We highly recommend cloning with GitHub Desktop or downloading the ZIP folder. Extra props if you can use the terminal!
 
 #. Open with GitHub Desktop
     * Allow the website to open GitHub Desktop if you have it downloaded already
     * Once in GitHub Desktop, the URL to the repository will be provided
     * Choose where you'd like it saved on your device
     * Click ``Clone`` and you're good to go!
+
+.. image:: ./_static/images/github_desktop.png
 
 #. Download ZIP
     * Click ``Download ZIP`` and find it in your Downloads.

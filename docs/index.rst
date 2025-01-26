@@ -37,6 +37,7 @@ question of yours, you may consult a commander (developer) over at any time.
    team
    actions
    game_logic
+   gameboard
    scoring
    helper
    enums

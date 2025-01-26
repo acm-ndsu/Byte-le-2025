@@ -29,7 +29,7 @@ It is important to order the enums in the order you'd like them to appear on the
 the first Generic that will be on the top position; the second represents the Leader which will always start in the
 middle; the third represents the second Generic that will be on the bottom.
 
-.. figure:: ./_static/images/./uroda_team_ex.png
+.. figure:: ./_static/images/uroda_team_ex.png
 
     A team selection of a Generic Tank, Leader Ninlil, and another Generic Tank.
 

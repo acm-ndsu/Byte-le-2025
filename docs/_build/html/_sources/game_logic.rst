@@ -95,11 +95,11 @@ This means that the :purple:`Turpis Healer` would apply it's Heal Move *first*, 
 would attack *after*.
 
 
-Maximum and Minimum Stat Values
-===============================
+Maximum and Minimum Values
+==========================
 
-Maximum Values
---------------
+Maximum Stat Values
+-------------------
 
 Stats have a maximum value they could reach to prevent absurd values and outputs from damage calculations. The
 maximum values depend on the Stat.
@@ -108,8 +108,12 @@ maximum values depend on the Stat.
 - Defense Maximum: 75
 - Speed Maximum: 99
 
-
-Minimum Value
--------------
+Minimum Stat Value
+------------------
 
 The minimum value for all stats is 1.
+
+Minimum Damage Value
+--------------------
+
+To ensure damage can always be dealt, the minimum damage that can be dealt is 1.
