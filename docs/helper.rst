@@ -1,6 +1,6 @@
-=================================
-Helper Methods, Code, & Debugging
-=================================
+==========================
+Helper Methods & Debugging
+==========================
 
 This page contains useful methods and other code that may be useful to help you during your development.
 
