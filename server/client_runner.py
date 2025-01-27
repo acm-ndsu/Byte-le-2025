@@ -429,7 +429,7 @@ class ClientRunner:
         """
         # do not remove comment below:
         # noinspection PyTypeChecker
-        fixtures: list[tuple[Submission, Submission]] = list(itertools.permutations(submissions, 2))
+        fixtures: list[tuple[Submission, Submission]] = list(itertools.permutations(submissions, self.config.NUMBER_OF_GAMES_AGAINST_SAME_TEAM))
         
         temp: list[tuple[Submission, ...]]
         self.number_of_unique_games = len(fixtures)
