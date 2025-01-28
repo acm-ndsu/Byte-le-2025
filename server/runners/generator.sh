@@ -1,1 +1,1 @@
-python3.11 launcher.pyz generate
+python3.12 launcher.pyz generate
