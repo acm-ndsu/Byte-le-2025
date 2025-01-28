@@ -38,6 +38,7 @@ ALLOWED_MODULES = ["game.client.user_client",       # modules that clients are s
                    "game.commander_clash.character.stats",
                    "game.commander_clash.moves.effects",
                    "game.commander_clash.moves.moves",
+                   "game.commander_clash.moves.move_logic",
                    "game.commander_clash.moves.moveset",
                    "game.utils.vector",
                    "typing",
