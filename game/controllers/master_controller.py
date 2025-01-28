@@ -194,10 +194,18 @@ class MasterController(Controller):
         client1: Player = clients[0]
         client2: Player = clients[1]
 
+        print('Adding additional client scores')
+
         # add the differential bonus to both teams (150 * # of alive characters)
         client1.team_manager.score += DIFFERENTIAL_BONUS * len(client1.team_manager.team)
 
+        print(f'{client1.team_name}\'s score after adding differential bonus {DIFFERENTIAL_BONUS * len(client1.team_manager.team)}: '
+              f'{client1.team_manager.score}')
+
         client2.team_manager.score += DIFFERENTIAL_BONUS * len(client2.team_manager.team)
+
+        print(f'{client2.team_name}\'s score after adding differential bonus{DIFFERENTIAL_BONUS * len(client2.team_manager.team)}: '
+              f'{client2.team_manager.score}')
 
         # client1 is the winner if client2's team is all dead
         winner: Player | None = client1 if client2.team_manager.everyone_is_defeated() else \
@@ -206,6 +214,9 @@ class MasterController(Controller):
         # if there is a clear winner (one team was defeated), add the winning score to the winner
         if winner is not None:
             winner.team_manager.score += WIN_SCORE
+
+        print(f'{winner.team_name}\'s score after adding winning score of {WIN_SCORE}: '
+              f'{client2.team_manager.score}')
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):

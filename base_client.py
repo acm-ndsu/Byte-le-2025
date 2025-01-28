@@ -24,7 +24,7 @@ class Client(UserClient):
         order (e.g., (Generic, Leader, Leader)), whichever selection is incorrect will be swapped with a default value
         of Generic Attacker.
         """
-        return 'From Da Woodz', (SelectGeneric.GEN_HEALER, SelectLeader.CALMUS, SelectGeneric.GEN_TANK)
+        return 'Da King\'z Blicky', (SelectGeneric.GEN_HEALER, SelectLeader.CALMUS, SelectGeneric.GEN_TANK)
 
     def first_turn_init(self, team_manager: TeamManager):
         """
@@ -69,11 +69,17 @@ class Client(UserClient):
         if current_state == State.HEALTHY:
             # if the active character from my team is healthy, use its Normal Move
             actions = [ActionType.USE_NM]
+        elif active_character.special_points >= active_character.get_s2().cost:
+            actions = [ActionType.USE_S2]
+        elif active_character.special_points >= active_character.get_s1().cost:
+            actions = [ActionType.USE_S1]
         else:
             # if unhealthy, randomly decide to swap in a direction or use special 1
             action: ActionType = random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])
 
             actions = [action]
+
+        print(f'{team_manager.team_name} action: {actions[0]}')
 
         return actions
 
