@@ -4,7 +4,7 @@ from game.common.enums import *
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import TeamManager
-from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN, WIN_SCORE, DIFFERENTIAL_BONUS
+from game.config import MAX_NUMBER_OF_ACTIONS_PER_TURN, WIN_SCORE, DIFFERENTIAL_BONUS, MAX_TICKS
 from game.controllers.controller import Controller
 from game.controllers.move_controller import MoveController
 from game.controllers.select_move_controller import SelectMoveController
@@ -188,6 +188,11 @@ class MasterController(Controller):
         # update the current world json by setting it to the game board's updated state
         self.current_world_data['game_board'] = gameboard.to_json()
 
+        # if this is the last turn, add final scores to the clients
+        if turn == MAX_TICKS:
+            self.add_final_client_scores(clients)
+            self.game_over = True
+
         print(f'{gameboard.turn_info}')
 
     def add_final_client_scores(self, clients: list[Player]) -> None:
@@ -204,7 +209,7 @@ class MasterController(Controller):
 
         client2.team_manager.score += DIFFERENTIAL_BONUS * len(client2.team_manager.team)
 
-        print(f'{client2.team_name}\'s score after adding differential bonus{DIFFERENTIAL_BONUS * len(client2.team_manager.team)}: '
+        print(f'{client2.team_name}\'s score after adding differential bonus {DIFFERENTIAL_BONUS * len(client2.team_manager.team)}: '
               f'{client2.team_manager.score}')
 
         # client1 is the winner if client2's team is all dead
@@ -215,8 +220,8 @@ class MasterController(Controller):
         if winner is not None:
             winner.team_manager.score += WIN_SCORE
 
-        print(f'{winner.team_name}\'s score after adding winning score of {WIN_SCORE}: '
-              f'{client2.team_manager.score}')
+            print(f'{winner.team_name}\'s score after adding winning score of {WIN_SCORE}: '
+                  f'{client2.team_manager.score}')
 
     # Return serialized version of game
     def create_turn_log(self, clients: list[Player], turn: int):
