@@ -6,6 +6,10 @@ For drafting your team of mercenaries to win the final battle against the opposi
 can hire. Here is the collection of characters available for hire. Look into them closely and draft the best team for
 VICTORY!!!
 
+*NOTE: A character's base health stat is increased by a multiplier of <multiplier number here>. This is to*
+*provide reasonable health amounts for every character. When the base health is listed, the actual health*
+*of the character will be listed after.*
+
 Class Types
 ===============
 
@@ -26,6 +30,11 @@ Leaders
 Fultra
 ------
 
+.. image:: ./_static/images/headshots/fultra_headshot.png
+   :width: 85
+   :align: center
+
+
 =============================== =============================================================
 Fultra's Character Info
 =============================== =============================================================
@@ -45,7 +54,7 @@ Normal Move
 Name                     Plasma Arrow
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     0
+SP Cost                  0
 Additional Damage Points 0
 
 Effect MoveType          BUFF
@@ -54,14 +63,13 @@ Stat Affected            ATTACK
 Buff Amount              +1
 ======================== ====================================
 
-
 ======================== ====================================
 Special 1
 ======================== ====================================
 Name                     Overhaul
 MoveType                 HEAL
 TargetType               SELF
-Cost                     2
+SP Cost                  2
 Heal Points              30
 
 Effect MoveType          DEBUFF
@@ -77,7 +85,7 @@ Special 2
 Name                     Lighting Rod
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     5
+SP Cost                  5
 Additional Damage Points 0
 
 Effect MoveType          ATTACK
@@ -88,6 +96,10 @@ Damage Points            20
 
 Ninlil
 ------
+
+.. image:: ./_static/images/headshots/ninlil_headshot.png
+   :width: 85
+   :align: center
 
 =============================== =============================================================
 Ninlil's Character Info
@@ -108,7 +120,7 @@ Normal Move
 Name                     Little Angy
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     0
+SP Cost                  0
 Additional Damage Points 5
 
 Effect                   None
@@ -121,7 +133,7 @@ Special 1
 Name                     Smol Rage
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     2
+SP Cost                  2
 Additional Damage Points 10
 
 Effect MoveType          DEBUFF
@@ -137,7 +149,7 @@ Special 2
 Name                     Tiny Titan
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     5
+SP Cost                  5
 Additional Damage Points 15
 
 Effect MoveType          DEBUFF
@@ -148,6 +160,10 @@ Debuff Amount            -5
 
 Anahita
 -------
+
+.. image:: ./_static/images/headshots/anahita_headshot.png
+   :width: 85
+   :align: center
 
 =============================== =============================================================
 Anahita's Character Info
@@ -168,7 +184,7 @@ Normal Move
 Name                     Whirlpool
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     0
+SP Cost                  0
 Additional Damage Points 2
 
 Effect MoveType          HEAL
@@ -183,7 +199,7 @@ Special 1
 Name                     Empower Shower
 MoveType                 BUFF
 TargetType               ENTIRE_TEAM
-Cost                     2
+SP Cost                  2
 Stat Affected            ATTACK
 Buff Amount              +2
 
@@ -197,7 +213,7 @@ Special 2
 Name                     Oasis
 MoveType                 HEAL
 TargetType               ADJACENT_ALLIES
-Cost                     4
+SP Cost                  4
 Heal Points              75
 
 Effect MoveType          ATTACK
@@ -207,6 +223,10 @@ Damage points            20
 
 Berry
 -----
+
+.. image:: ./_static/images/headshots/berry_headshot.png
+   :width: 85
+   :align: center
 
 =============================== =============================================================
 Berry's Character Info
@@ -227,7 +247,7 @@ Normal Move
 Name                     Healing Potion
 MoveType                 HEAL
 TargetType               ENTIRE_TEAM
-Cost                     0
+SP Cost                  0
 Heal Points              6
 
 Effect MoveType          HEAL
@@ -242,7 +262,7 @@ Special 1
 Name                     Debuff Potion
 MoveType                 DEBUFF
 TargetType               SINGLE_OPP
-Cost                     1
+SP Cost                  1
 Stat Affected            ATTACK
 Debuff Amount            -2
 
@@ -256,7 +276,7 @@ Special 2
 Name                     Buffing Potion
 MoveType                 BUFF
 TargetType               ADJACENT_ALLIES
-Cost                     4
+SP Cost                  4
 Stat Affected            ATTACK
 Buff Amount              +5
 
@@ -268,6 +288,10 @@ Buff Amount              +5
 
 Calmus
 ------
+
+.. image:: ./_static/images/headshots/calmus_headshot.png
+   :width: 85
+   :align: center
 
 =============================== =============================================================
 Calmus' Character Info
@@ -288,7 +312,7 @@ Normal Move
 Name                     Flame Slash
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     0
+SP Cost                  0
 Additional Damage Points 5
 
 Effect                   None
@@ -301,7 +325,7 @@ Special 1
 Name                     Flash Boost
 MoveType                 BUFF
 TargetType               SELF
-Cost                     3
+SP Cost                  3
 Stat Affected            ATTACK
 Buff Amount              +4
 
@@ -317,7 +341,7 @@ Special 2
 Name                     Berserk
 MoveType                 BUFF
 TargetType               ENTIRE_TEAM
-Cost                     5
+SP Cost                  5
 Stat Affected            ATTACK
 Buff Amount              +15
 
@@ -328,6 +352,10 @@ Damage Points            35
 
 Irwin
 -----
+
+.. image:: ./_static/images/headshots/irwin_headshot.png
+   :width: 85
+   :align: center
 
 =============================== =============================================================
 Irwin's Character Info
@@ -348,7 +376,7 @@ Normal Move
 Name                     Striking Defense
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     0
+SP Cost                  0
 Additional Damage Points 1
 
 Effect MoveType          BUFF
@@ -364,7 +392,7 @@ Special 1
 Name                     Weakening Strike
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     3
+SP Cost                  3
 Additional Damage Points 5
 
 Effect MoveType          DEBUFF
@@ -380,7 +408,7 @@ Special 2
 Name                     Close Combat
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     5
+SP Cost                  5
 Additional Damage Points 10
 
 Effect MoveType          DEBUFF
@@ -394,6 +422,14 @@ Generics
 
 Generic Attacker
 ----------------
+
+.. |u_atk| image:: ./_static/images/headshots/uroda_generic_attacker_headshot.png
+   :width: 45%
+
+.. |t_atk| image:: ./_static/images/headshots/turpis_generic_attacker_headshot.png
+   :width: 45%
+
+|u_atk| |t_atk|
 
 ================================= =============================================================
 Generic Attacker's Character Info
@@ -414,7 +450,7 @@ Normal Move
 Name                     Stab
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     0
+SP Cost                  0
 Additional Damage Points 5
 
 Effect                   None
@@ -427,7 +463,7 @@ Special 1
 Name                     Great Stab
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     1
+SP Cost                  1
 Additional Damage Points 10
 
 Effect                   None
@@ -440,7 +476,7 @@ Special 2
 Name                     Giant Slash
 MoveType                 ATTACK
 TargetType               ALL_OPPS
-Cost                     2
+SP Cost                  2
 Additional Damage Points 7
 
 Effect MoveType          DEBUFF
@@ -451,6 +487,14 @@ Debuff Amount            -1
 
 Generic Healer
 --------------
+
+.. image:: ./_static/images/headshots/uroda_generic_healer_headshot.png
+   :width: 85
+   :align: center
+
+.. image:: ./_static/images/headshots/turpis_generic_healer_headshot.png
+   :width: 85
+   :align: center
 
 =============================== =============================================================
 Generic Healer's Character Info
@@ -471,7 +515,7 @@ Normal Move
 Name                     Whack
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     0
+SP Cost                  0
 Additional Damage Points 1
 
 Effect                   None
@@ -484,7 +528,7 @@ Special 1
 Name                     First Aid
 MoveType                 HEAL
 TargetType               SELF
-Cost                     0
+SP Cost                  0
 Heal Points              10
 
 Effect                   None
@@ -497,7 +541,7 @@ Special 2
 Name                     Team Heal
 MoveType                 HEAL
 TargetType               ENTIRE_TEAM
-Cost                     3
+SP Cost                  3
 Heal Points              25
 
 Effect                   None
@@ -505,6 +549,14 @@ Effect                   None
 
 Generic Tank
 ------------
+
+.. image:: ./_static/images/headshots/uroda_generic_tank_headshot.png
+   :width: 85
+   :align: center
+
+.. image:: ./_static/images/headshots/turpis_generic_tank_headshot.png
+   :width: 85
+   :align: center
 
 =============================== =============================================================
 Generic Tank's Character Info
@@ -525,7 +577,7 @@ Normal Move
 Name                     Slap
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     0
+SP Cost                  0
 Additional Damage Points 2
 
 Effect                   None
@@ -538,7 +590,7 @@ Special 1
 Name                     Shield Rush
 MoveType                 ATTACK
 TargetType               ALL_OPPS
-Cost                     2
+SP Cost                  2
 Additional Damage Points 4
 
 Effect                   None
@@ -551,7 +603,7 @@ Special 2
 Name                     Stomp
 MoveType                 ATTACK
 TargetType               SINGLE_OPP
-Cost                     3
+SP Cost                  3
 Additional Damage Points 0
 
 Effect MoveType          DEBUFF
@@ -563,6 +615,10 @@ Debuff Amount            -1
 
 Generic Trash
 -------------
+
+.. image:: ./_static/images/headshots/atleastheshappy.png
+   :width: 85
+   :align: center
 
 =============================== =============================================================
 Generic Trash's Character Info
@@ -583,7 +639,7 @@ Normal Move
 Name                     Trashed Attack
 MoveType                 DEBUFF
 TargetType               SELF
-Cost                     0
+SP Cost                  0
 Stat Affected            ATTACK
 Debuff Amount            -10
 
@@ -597,7 +653,7 @@ Special 1
 Name                     Trashed Defense
 MoveType                 DEBUFF
 TargetType               SELF
-Cost                     0
+SP Cost                  0
 Stat Affected            Defense
 Debuff Amount            -10
 
@@ -611,7 +667,7 @@ Special 2
 Name                     Trashed Speed
 MoveType                 DEBUFF
 TargetType               SELF
-Cost                     0
+SP Cost                  0
 Stat Affected            Speed
 Debuff Amount            -10
 

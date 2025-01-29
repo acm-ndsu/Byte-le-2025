@@ -148,9 +148,10 @@
 <li class="toctree-l1"><a class="reference internal" href="team.html">Making a Team</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actions.html">Taking Character Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="game_logic.html">Game Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gameboard.html">The Gameboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scoring.html">Scoring</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helper.html">Helper Methods &amp; Code</a></li>
 <li class="toctree-l1"><a class="reference internal" href="enums.html">Enums</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helper.html">Helper Methods &amp; Debugging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
 </ul>
@@ -299,11 +300,19 @@
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#health">Health</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attack-stat">Attack Stat</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defense-stat">Defense Stat</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-stat">Speed Stat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Stats</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attack-stat">Attack Stat</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defense-stat">Defense Stat</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-stat">Speed Stat</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-a-character-s-stats">Accessing a Character’s Stats</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-stats">Comparing Stats</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-methods">Useful Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-maxed-method">Is Maxed Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-minimized-method">Is Minimized Method</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -325,53 +334,59 @@
 </figure>
 <p>Health… represents how healthy a character is. What did you expect? The health will be represented by a character’s
 <code class="docutils literal notranslate"><span class="pre">current_health</span></code> over their <code class="docutils literal notranslate"><span class="pre">max_health</span></code>, such as <code class="docutils literal notranslate"><span class="pre">current_health/max_health</span></code>.</p>
+<p><em>Please note that a character’s ``current_health`` and ``max_health`` are integers.</em></p>
 </section>
+<section id="id1">
+<h2>Stats<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>Knowing how to manage and monitor a character’s stats will be what sets your team apart from the others, so be sure
+to understand them well! How to access and use a character’s stats are below.</p>
+<p><em>Please note that the following stats are objects, not integers.</em></p>
 <section id="attack-stat">
-<h2>Attack Stat<a class="headerlink" href="#attack-stat" title="Link to this heading">#</a></h2>
+<h3>Attack Stat<a class="headerlink" href="#attack-stat" title="Link to this heading">#</a></h3>
 <a class="reference internal image-reference" href="_images/attack_buff.png"><img alt="_images/attack_buff.png" class="align-center" src="_images/attack_buff.png" style="width: 90px;" /></a>
 <p>Attack is the amount of base damage a character can deal when using an Attack Move without any modifiers.
 Essentially, it is the strength of the character, reflected by an integer between 0 and 100.</p>
 <p>For example, if the attack stat is 50, the character will attempt to deal 50 points of damage to the target.</p>
-<p>To access a character’s attack stat, you can do the following:</p>
 </section>
 <section id="defense-stat">
-<h2>Defense Stat<a class="headerlink" href="#defense-stat" title="Link to this heading">#</a></h2>
+<h3>Defense Stat<a class="headerlink" href="#defense-stat" title="Link to this heading">#</a></h3>
 <a class="reference internal image-reference" href="_images/defense_buff.png"><img alt="_images/defense_buff.png" class="align-center" src="_images/defense_buff.png" style="width: 90px;" /></a>
 <p>Defense is a percentage of the amount of damage a character can prevent from taking from an Attack, represented by an
-integer between 0 - 100.</p>
+integer between 0 - 75.</p>
 <p>For example, if the defense stat is 50, and the incoming damage is 50, the character will prevent 50% of the damage
 and take 25 points of damage.</p>
 </section>
 <section id="speed-stat">
-<h2>Speed Stat<a class="headerlink" href="#speed-stat" title="Link to this heading">#</a></h2>
+<h3>Speed Stat<a class="headerlink" href="#speed-stat" title="Link to this heading">#</a></h3>
 <a class="reference internal image-reference" href="_images/speed_buff.png"><img alt="_images/speed_buff.png" class="align-center" src="_images/speed_buff.png" style="width: 90px;" /></a>
 <p>Speed is the stat that determines the order of your team and who gets to act first each turn. Visit
 <a class="reference internal" href="game_logic.html"><span class="doc">Game Logic</span></a> for more details about turn order
 how the speed stat affects it.</p>
 </section>
+</section>
 <section id="accessing-a-character-s-stats">
 <h2>Accessing a Character’s Stats<a class="headerlink" href="#accessing-a-character-s-stats" title="Link to this heading">#</a></h2>
 <p>Here is how you can access any of a character’s stats:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">character</span><span class="o">.</span><span class="n">current_health</span>
-<span class="n">character</span><span class="o">.</span><span class="n">max_health</span>
-<span class="n">character</span><span class="o">.</span><span class="n">attack</span>
-<span class="n">character</span><span class="o">.</span><span class="n">defense</span>
-<span class="n">character</span><span class="o">.</span><span class="n">speed</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">active_character</span><span class="o">.</span><span class="n">current_health</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">max_health</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">attack</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">defense</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">speed</span>
 </pre></div>
 </div>
 <p>Here is how you can access the base values (what the original stat of the character’s stat is; this is static)
 and the modified values (the value that will constantly change with stat buffs and debuffs) of the attack,
 defense, and speed stats:</p>
 <p>Accessing the base values:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">character</span><span class="o">.</span><span class="n">attack</span><span class="o">.</span><span class="n">base_value</span>
-<span class="n">character</span><span class="o">.</span><span class="n">defense</span><span class="o">.</span><span class="n">base_value</span>
-<span class="n">character</span><span class="o">.</span><span class="n">speed</span><span class="o">.</span><span class="n">base_value</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">active_character</span><span class="o">.</span><span class="n">attack</span><span class="o">.</span><span class="n">base_value</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">defense</span><span class="o">.</span><span class="n">base_value</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">speed</span><span class="o">.</span><span class="n">base_value</span>
 </pre></div>
 </div>
 <p>Accessing the modified values:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">character</span><span class="o">.</span><span class="n">attack</span><span class="o">.</span><span class="n">value</span>
-<span class="n">character</span><span class="o">.</span><span class="n">defense</span><span class="o">.</span><span class="n">value</span>
-<span class="n">character</span><span class="o">.</span><span class="n">speed</span><span class="o">.</span><span class="n">value</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">active_character</span><span class="o">.</span><span class="n">attack</span><span class="o">.</span><span class="n">value</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">defense</span><span class="o">.</span><span class="n">value</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">speed</span><span class="o">.</span><span class="n">value</span>
 </pre></div>
 </div>
 </section>
@@ -380,19 +395,53 @@ defense, and speed stats:</p>
 <p>It may be useful to compare stats to others, and you can easily do so! You can treat the attack, defense, and speed
 stats like regular integers. You can also compare any stat with any stat (e.g., attack == speed). You can perform the
 following comparisons below with any of the stats. These are just a few examples:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">character</span><span class="o">.</span><span class="n">attack</span> <span class="o">==</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
-<span class="n">character</span><span class="o">.</span><span class="n">defense</span> <span class="o">==</span> <span class="n">other_character</span><span class="o">.</span><span class="n">defense</span>
-<span class="n">character</span><span class="o">.</span><span class="n">speed</span> <span class="o">==</span> <span class="n">other_character</span><span class="o">.</span><span class="n">speed</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">active_character</span><span class="o">.</span><span class="n">attack</span> <span class="o">==</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">defense</span> <span class="o">==</span> <span class="n">other_character</span><span class="o">.</span><span class="n">defense</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">speed</span> <span class="o">==</span> <span class="n">other_character</span><span class="o">.</span><span class="n">speed</span>
 
-<span class="n">character</span><span class="o">.</span><span class="n">attack</span> <span class="o">&gt;</span> <span class="n">other_character</span><span class="o">.</span><span class="n">defense</span>
-<span class="n">character</span><span class="o">.</span><span class="n">speed</span> <span class="o">&gt;=</span> <span class="n">other_character</span><span class="o">.</span><span class="n">defense</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">attack</span> <span class="o">&gt;</span> <span class="n">other_character</span><span class="o">.</span><span class="n">defense</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">speed</span> <span class="o">&gt;=</span> <span class="n">other_character</span><span class="o">.</span><span class="n">defense</span>
 
-<span class="n">character</span><span class="o">.</span><span class="n">defense</span> <span class="o">&lt;</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
-<span class="n">character</span><span class="o">.</span><span class="n">speed</span> <span class="o">&lt;=</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">defense</span> <span class="o">&lt;</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">speed</span> <span class="o">&lt;=</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
 
-<span class="n">character</span><span class="o">.</span><span class="n">speed</span> <span class="o">!=</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
+<span class="n">active_character</span><span class="o">.</span><span class="n">speed</span> <span class="o">!=</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
 </pre></div>
 </div>
+</section>
+<section id="useful-methods">
+<h2>Useful Methods<a class="headerlink" href="#useful-methods" title="Link to this heading">#</a></h2>
+<p>Here are useful methods to manage stats.</p>
+<section id="is-maxed-method">
+<h3>Is Maxed Method<a class="headerlink" href="#is-maxed-method" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_maxed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Returns True if the stat used is at its maximum value (the maximum value varies depending on the stat)</p></li>
+</ul>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">attack_is_maxed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">active_character</span><span class="o">.</span><span class="n">attack</span><span class="o">.</span><span class="n">is_maxed</span><span class="p">()</span>
+<span class="n">defense_is_maxed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">active_character</span><span class="o">.</span><span class="n">defense</span><span class="o">.</span><span class="n">is_maxed</span><span class="p">()</span>
+<span class="n">speed_is_maxed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">active_character</span><span class="o">.</span><span class="n">speed</span><span class="o">.</span><span class="n">is_maxed</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="is-minimized-method">
+<h3>Is Minimized Method<a class="headerlink" href="#is-minimized-method" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">is_minimized</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Returns True if the stat used is at its minimum value (the minimum value will always be 1 regardless of the stat)</p></li>
+</ul>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">attack_is_minimized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">active_character</span><span class="o">.</span><span class="n">attack</span><span class="o">.</span><span class="n">is_minimized</span><span class="p">()</span>
+<span class="n">defense_is_minimized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">active_character</span><span class="o">.</span><span class="n">defense</span><span class="o">.</span><span class="n">is_minimized</span><span class="p">()</span>
+<span class="n">speed_is_minimized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">active_character</span><span class="o">.</span><span class="n">speed</span><span class="o">.</span><span class="n">is_minimized</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
@@ -443,11 +492,19 @@ following comparisons below with any of the stats. These are just a few examples
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#health">Health</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attack-stat">Attack Stat</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defense-stat">Defense Stat</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-stat">Speed Stat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Stats</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attack-stat">Attack Stat</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defense-stat">Defense Stat</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-stat">Speed Stat</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#accessing-a-character-s-stats">Accessing a Character’s Stats</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparing-stats">Comparing Stats</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#useful-methods">Useful Methods</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-maxed-method">Is Maxed Method</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-minimized-method">Is Minimized Method</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

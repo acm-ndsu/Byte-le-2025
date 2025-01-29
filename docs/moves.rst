@@ -72,8 +72,8 @@ Special Points
    :align: center
 
 Not all Moves can be used immediately. A character needs to build up the strength to use some moves by increasing
-their :cyan:`Special Points`. :cyan:`Special Points` can be gained and lost during a match depending on the Move that's
-used. A character can gain a maximum of five (5) :cyan:`Special Points`. How :cyan:`Special Points` are gained and
+their :cyan:`Special Points`. :cyan:`Special Points` (abbreviated as ":cyan:`SP`") can be gained and lost during a match
+depending on the Move that's used. A character can gain a maximum of five (5) :cyan:`SP`. How :cyan:`SP` are gained and
 lost is explained in :ref:`Movesets<movesets>`.
 
 
@@ -89,11 +89,11 @@ into three (3) categories:
 Moveset Identifier        Description
 ========================= ==============================================================================================
 Normal Move               A character's default Move. By using a Normal Move, a character will gain +1
-                          :cyan:`Special Point`.
-Special 1                 A Move with some more "oomph" to it. This will *reduce* a character's :cyan:`Special Points`
+                          :cyan:`SP`.
+Special 1                 A Move with some more "oomph" to it. This will *reduce* a character's :cyan:`SP`
                           by the cost of the Move.
 Special 2                 A Move that tends to be a character's strongest. This will also *reduce* a character's
-                          :cyan:`Special Points` by the cost of the Move. *Special 2 is more expensive than Special 1.*
+                          :cyan:`SP` by the cost of the Move. *Special 2 is more expensive than Special 1.*
 ========================= ==============================================================================================
 
 Understanding how a character's Moveset will affect not just the user but all characters on the map will help when
@@ -108,14 +108,14 @@ To access a Character's Moveset, you can do the following:
 
 .. code-block::
 
-    character.moveset
+    active_character.moveset
 
 When you have access to a Moveset object, if you desire to use it as a dictionary object, you can call the
 ``as_dict()`` method.
 
 .. code-block::
 
-    moveset_dict = moveset.as_dict()
+    moveset_dict = active_character.moveset.as_dict()
 
 The structure of a Moveset as a dictionary object is below. Every key is a string, and the value is a Move object.
 
@@ -132,9 +132,9 @@ the following methods:
 
 .. code-block::
 
-    normal_move = character.get_nm()
-    special1 = character.get_s1()
-    special2 = character.get_s2()
+    normal_move = active_character.get_nm()
+    special1 = active_character.get_s1()
+    special2 = active_character.get_s2()
 
 
 Target Types

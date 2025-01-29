@@ -148,9 +148,10 @@
 <li class="toctree-l1"><a class="reference internal" href="team.html">Making a Team</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actions.html">Taking Character Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="game_logic.html">Game Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gameboard.html">The Gameboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scoring.html">Scoring</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helper.html">Helper Methods &amp; Code</a></li>
 <li class="toctree-l1"><a class="reference internal" href="enums.html">Enums</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helper.html">Helper Methods &amp; Debugging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
 </ul>
@@ -394,8 +395,8 @@ target(s) regardless of the attacker’s Attack stat or target’s Defense stat<
 <h2>Special Points<a class="headerlink" href="#special-points" title="Link to this heading">#</a></h2>
 <a class="reference internal image-reference" href="_images/sp_bar.gif"><img alt="_images/sp_bar.gif" class="align-center" src="_images/sp_bar.gif" style="width: 150px;" /></a>
 <p>Not all Moves can be used immediately. A character needs to build up the strength to use some moves by increasing
-their <span class="cyan">Special Points</span>. <span class="cyan">Special Points</span> can be gained and lost during a match depending on the Move that’s
-used. A character can gain a maximum of five (5) <span class="cyan">Special Points</span>. How <span class="cyan">Special Points</span> are gained and
+their <span class="cyan">Special Points</span>. <span class="cyan">Special Points</span> (abbreviated as “<span class="cyan">SP</span>”) can be gained and lost during a match
+depending on the Move that’s used. A character can gain a maximum of five (5) <span class="cyan">SP</span>. How <span class="cyan">SP</span> are gained and
 lost is explained in <a class="reference internal" href="#id1"><span class="std std-ref">Movesets</span></a>.</p>
 </section>
 <section id="movesets">
@@ -411,15 +412,15 @@ into three (3) categories:</p>
 <tbody>
 <tr class="row-even"><td><p>Normal Move</p></td>
 <td><p>A character’s default Move. By using a Normal Move, a character will gain +1
-<span class="cyan">Special Point</span>.</p></td>
+<span class="cyan">SP</span>.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Special 1</p></td>
-<td><p>A Move with some more “oomph” to it. This will <em>reduce</em> a character’s <span class="cyan">Special Points</span>
+<td><p>A Move with some more “oomph” to it. This will <em>reduce</em> a character’s <span class="cyan">SP</span>
 by the cost of the Move.</p></td>
 </tr>
 <tr class="row-even"><td><p>Special 2</p></td>
 <td><p>A Move that tends to be a character’s strongest. This will also <em>reduce</em> a character’s
-<span class="cyan">Special Points</span> by the cost of the Move. <em>Special 2 is more expensive than Special 1.</em></p></td>
+<span class="cyan">SP</span> by the cost of the Move. <em>Special 2 is more expensive than Special 1.</em></p></td>
 </tr>
 </tbody>
 </table>
@@ -430,12 +431,12 @@ forming a team.</p>
 <section id="accessing-a-character-s-moveset">
 <h3>Accessing a Character’s Moveset<a class="headerlink" href="#accessing-a-character-s-moveset" title="Link to this heading">#</a></h3>
 <p>To access a Character’s Moveset, you can do the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">character</span><span class="o">.</span><span class="n">moveset</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">active_character</span><span class="o">.</span><span class="n">moveset</span>
 </pre></div>
 </div>
 <p>When you have access to a Moveset object, if you desire to use it as a dictionary object, you can call the
 <code class="docutils literal notranslate"><span class="pre">as_dict()</span></code> method.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">moveset_dict</span> <span class="o">=</span> <span class="n">moveset</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">moveset_dict</span> <span class="o">=</span> <span class="n">active_character</span><span class="o">.</span><span class="n">moveset</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>The structure of a Moveset as a dictionary object is below. Every key is a string, and the value is a Move object.</p>
@@ -460,9 +461,9 @@ forming a team.</p>
 </div>
 <p>If an entire dictionary is not necessary, you can simply access an individual Move by using a Character reference and
 the following methods:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">normal_move</span> <span class="o">=</span> <span class="n">character</span><span class="o">.</span><span class="n">get_nm</span><span class="p">()</span>
-<span class="n">special1</span> <span class="o">=</span> <span class="n">character</span><span class="o">.</span><span class="n">get_s1</span><span class="p">()</span>
-<span class="n">special2</span> <span class="o">=</span> <span class="n">character</span><span class="o">.</span><span class="n">get_s2</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">normal_move</span> <span class="o">=</span> <span class="n">active_character</span><span class="o">.</span><span class="n">get_nm</span><span class="p">()</span>
+<span class="n">special1</span> <span class="o">=</span> <span class="n">active_character</span><span class="o">.</span><span class="n">get_s1</span><span class="p">()</span>
+<span class="n">special2</span> <span class="o">=</span> <span class="n">active_character</span><span class="o">.</span><span class="n">get_s2</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
