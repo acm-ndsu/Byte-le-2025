@@ -31,9 +31,10 @@ Fultra
 ------
 
 .. image:: ./_static/images/headshots/fultra_headshot.png
-   :width: 85
+   :width: 175
    :align: center
 
+|
 
 =============================== =============================================================
 Fultra's Character Info
@@ -98,8 +99,10 @@ Ninlil
 ------
 
 .. image:: ./_static/images/headshots/ninlil_headshot.png
-   :width: 85
+   :width: 175
    :align: center
+
+|
 
 =============================== =============================================================
 Ninlil's Character Info
@@ -162,8 +165,10 @@ Anahita
 -------
 
 .. image:: ./_static/images/headshots/anahita_headshot.png
-   :width: 85
+   :width: 175
    :align: center
+
+|
 
 =============================== =============================================================
 Anahita's Character Info
@@ -225,8 +230,10 @@ Berry
 -----
 
 .. image:: ./_static/images/headshots/berry_headshot.png
-   :width: 85
+   :width: 175
    :align: center
+
+|
 
 =============================== =============================================================
 Berry's Character Info
@@ -290,8 +297,10 @@ Calmus
 ------
 
 .. image:: ./_static/images/headshots/calmus_headshot.png
-   :width: 85
+   :width: 175
    :align: center
+
+|
 
 =============================== =============================================================
 Calmus' Character Info
@@ -354,8 +363,10 @@ Irwin
 -----
 
 .. image:: ./_static/images/headshots/irwin_headshot.png
-   :width: 85
+   :width: 175
    :align: center
+
+|
 
 =============================== =============================================================
 Irwin's Character Info
@@ -423,13 +434,15 @@ Generics
 Generic Attacker
 ----------------
 
-.. |u_atk| image:: ./_static/images/headshots/uroda_generic_attacker_headshot.png
-   :width: 45%
+.. figure:: ./_static/images/headshots/uroda_generic_attacker_headshot.png
+    :width: 155
 
-.. |t_atk| image:: ./_static/images/headshots/turpis_generic_attacker_headshot.png
-   :width: 45%
+    Uroda Generic Attacker
 
-|u_atk| |t_atk|
+.. figure:: ./_static/images/headshots/turpis_generic_attacker_headshot.png
+    :width: 155
+
+    Turpis Generic Attacker
 
 ================================= =============================================================
 Generic Attacker's Character Info
@@ -488,13 +501,15 @@ Debuff Amount            -1
 Generic Healer
 --------------
 
-.. image:: ./_static/images/headshots/uroda_generic_healer_headshot.png
-   :width: 85
-   :align: center
+.. figure:: ./_static/images/headshots/uroda_generic_healer_headshot.png
+    :width: 155
 
-.. image:: ./_static/images/headshots/turpis_generic_healer_headshot.png
-   :width: 85
-   :align: center
+    Uroda Generic Healer
+
+.. figure:: ./_static/images/headshots/turpis_generic_healer_headshot.png
+    :width: 155
+
+    Turpis Generic Healer
 
 =============================== =============================================================
 Generic Healer's Character Info
@@ -550,13 +565,15 @@ Effect                   None
 Generic Tank
 ------------
 
-.. image:: ./_static/images/headshots/uroda_generic_tank_headshot.png
-   :width: 85
-   :align: center
+.. figure:: ./_static/images/headshots/uroda_generic_tank_headshot.png
+    :width: 155
 
-.. image:: ./_static/images/headshots/turpis_generic_tank_headshot.png
-   :width: 85
-   :align: center
+    Uroda Generic Tank
+
+.. figure:: ./_static/images/headshots/turpis_generic_tank_headshot.png
+    :width: 155
+
+    Turpis Generic Tank
 
 =============================== =============================================================
 Generic Tank's Character Info
@@ -617,7 +634,7 @@ Generic Trash
 -------------
 
 .. image:: ./_static/images/headshots/atleastheshappy.png
-   :width: 85
+   :width: 175
    :align: center
 
 =============================== =============================================================
