@@ -71,21 +71,21 @@ def generate_berry() -> Leader:
 
 
 def generate_fultra() -> Leader:
-    nm_effect: BuffEffect = BuffEffect(target_type=TargetType.SELF, buff_amount=1)
-    nm: Attack = Attack(name='Plasma Arrow', target_type=TargetType.SINGLE_OPP, effect=nm_effect, damage_points=0)
+    nm_effect: BuffEffect = BuffEffect(target_type=TargetType.SELF, buff_amount=2)
+    nm: Attack = Attack(name='Plasma Arrow', target_type=TargetType.SINGLE_OPP, effect=nm_effect, damage_points=10)
 
-    s1_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-3,
+    s1_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-4,
                                            stat_to_affect=ObjectType.ATTACK_STAT)
     s1: Heal = Heal(name='Overhaul', target_type=TargetType.SELF, cost=2, effect=s1_effect, heal_points=100)
 
     s2_effect: AttackEffect = AttackEffect(target_type=TargetType.ALL_OPPS, damage_points=25)
     s2: Attack = Attack(name='Lightning Rod', target_type=TargetType.SINGLE_OPP, cost=5, effect=s2_effect,
-                        damage_points=3)
+                        damage_points=13)
 
-    hp: int = 40
-    atk: AttackStat = AttackStat(50)
+    hp: int = 43
+    atk: AttackStat = AttackStat(40)
     defense: DefenseStat = DefenseStat(36)
-    spd: SpeedStat = SpeedStat(34)
+    spd: SpeedStat = SpeedStat(41)
 
     moves: Moveset = Moveset((nm, s1, s2))
 
@@ -140,9 +140,9 @@ def generate_calmus() -> Leader:
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
 
-    hp: int = 60
+    hp: int = 65
     atk: AttackStat = AttackStat(45)
-    defense: DefenseStat = DefenseStat(35)
+    defense: DefenseStat = DefenseStat(30)
     spd: SpeedStat = SpeedStat(20)
 
     calmus: Leader = Leader(name='Calmus', class_type=ClassType.TANK, health=hp, attack=atk, defense=defense,
@@ -160,10 +160,10 @@ def generate_irwin() -> Leader:
     s1_effect = DebuffEffect(target_type=TargetType.SINGLE_OPP, debuff_amount=-3,
                              stat_to_affect=ObjectType.DEFENSE_STAT)
     s1: Attack = Attack(name='Weakening Strike', target_type=TargetType.SINGLE_OPP, cost=3, effect=s1_effect,
-                        damage_points=5)
+                        damage_points=12)
 
-    s2_effect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-15, stat_to_affect=ObjectType.DEFENSE_STAT)
-    s2: Attack = Attack(name='Close Combat', target_type=TargetType.SINGLE_OPP, cost=5, damage_points=10,
+    s2_effect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-6, stat_to_affect=ObjectType.DEFENSE_STAT)
+    s2: Attack = Attack(name='Close Combat', target_type=TargetType.SINGLE_OPP, cost=5, damage_points=20,
                         effect=s2_effect)
 
     hp: int = 55
@@ -211,7 +211,7 @@ def generate_generic_healer(name: str = 'Healer') -> GenericHealer:
     s1: Heal = Heal(name='First Aid', target_type=TargetType.SELF, cost=0, heal_points=50)
 
     # Discuss heal_points for this one
-    s2: Heal = Heal(name='Team Heal', target_type=TargetType.ENTIRE_TEAM, cost=3,
+    s2: Heal = Heal(name='Team Heal', target_type=TargetType.ENTIRE_TEAM, cost=4,
                     heal_points=70)
 
     hp: int = 35

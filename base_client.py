@@ -24,7 +24,7 @@ class Client(UserClient):
         order (e.g., (Generic, Leader, Leader)), whichever selection is incorrect will be swapped with a default value
         of Generic Attacker.
         """
-        return 'From Da Woodz', (SelectGeneric.GEN_HEALER, SelectLeader.CALMUS, SelectGeneric.GEN_TANK)
+        return 'From Da Woodz', (SelectGeneric.GEN_HEALER, SelectLeader.FULTRA, SelectGeneric.GEN_HEALER)
 
     def first_turn_init(self, team_manager: TeamManager):
         """
