@@ -13,7 +13,7 @@ The Gameboard
 Layout
 ======
 
-The map is a 2x3 grid. On the map, :gold:`Uroda` will *always* be on the left, and :purple:`Turpis` will
+The map is a 3x2 grid. On the map, :gold:`Uroda` will *always* be on the left, and :purple:`Turpis` will
 *always* be on the right. Characters will be displayed on their country's respective side.
 
 :gold:`NOTE: Two characters cannot be on the same spot (i.e., overlap). They will either swap spaces or not `
@@ -21,7 +21,7 @@ The map is a 2x3 grid. On the map, :gold:`Uroda` will *always* be on the left, a
 
 .. figure:: ./_static/images/game_map.png
 
-    Six characters displayed on a 2x3 grid.
+    Six characters displayed on a 3x2 grid.
 
 Structure
 =========
@@ -162,7 +162,7 @@ map.
     
 - ``coords``: A Vector object representing the coordinate to access
 - Returns True if the given coordinates are within the bounds of the game map's size.
-    - Examples for a 2x3 map:
+    - Examples for a 3x2 map:
         - world.is_valid_coords(Vector(0, 0) -> True
         - world.is_valid_coords(Vector(3, 0)) -> False
         - world.is_valid_coords(Vector(0, 4)) -> False

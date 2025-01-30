@@ -13,6 +13,11 @@ The Screen
 The scores are above the top left and top right corners displaying the game with the characters. The turn counter
 is centered on the top.
 
+Understanding the Visualizer
+============================
+
+
+
 Controls
 ========
 

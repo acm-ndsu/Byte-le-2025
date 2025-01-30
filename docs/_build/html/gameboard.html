@@ -337,14 +337,14 @@
 <style> .purple {color:#A020F0; font-weight:bold; font-size:16px} </style>
 <style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style><section id="layout">
 <h2>Layout<a class="headerlink" href="#layout" title="Link to this heading">#</a></h2>
-<p>The map is a 2x3 grid. On the map, <span class="gold">Uroda</span> will <em>always</em> be on the left, and <span class="purple">Turpis</span> will
+<p>The map is a 3x2 grid. On the map, <span class="gold">Uroda</span> will <em>always</em> be on the left, and <span class="purple">Turpis</span> will
 <em>always</em> be on the right. Characters will be displayed on their country’s respective side.</p>
 <p><span class="gold">NOTE: Two characters cannot be on the same spot (i.e., overlap). They will either swap spaces or not `
 :gold:`be present at all on the board.</span></p>
 <figure class="align-default" id="id1">
 <img alt="_images/game_map.png" src="_images/game_map.png" />
 <figcaption>
-<p><span class="caption-text">Six characters displayed on a 2x3 grid.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+<p><span class="caption-text">Six characters displayed on a 3x2 grid.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -470,7 +470,7 @@ map.</p>
 <li><dl class="simple">
 <dt>Returns True if the given coordinates are within the bounds of the game map’s size.</dt><dd><ul>
 <li><dl class="simple">
-<dt>Examples for a 2x3 map:</dt><dd><ul>
+<dt>Examples for a 3x2 map:</dt><dd><ul>
 <li><p>world.is_valid_coords(Vector(0, 0) -&gt; True</p></li>
 <li><p>world.is_valid_coords(Vector(3, 0)) -&gt; False</p></li>
 <li><p>world.is_valid_coords(Vector(0, 4)) -&gt; False</p></li>

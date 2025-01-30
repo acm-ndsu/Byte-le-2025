@@ -11,7 +11,7 @@ VICTORY!!!
 *of the character will be listed after.*
 
 Class Types
-===============
+===========
 
 There are three (3) class types a character can be:
 
@@ -27,8 +27,8 @@ Tank                        Focuses on taking hits and retaliating
 Leaders
 =======
 
-Fultra
-------
+Fultra the Pompous
+------------------
 
 .. image:: ./_static/images/headshots/fultra_headshot.png
    :width: 175
@@ -95,8 +95,8 @@ Damage Points            20
 ======================== ====================================
 
 
-Ninlil
-------
+Ninlil the Mighty
+-----------------
 
 .. image:: ./_static/images/headshots/ninlil_headshot.png
    :width: 175
@@ -161,8 +161,8 @@ Stat Affected            Speed
 Debuff Amount            -5
 ======================== ====================================
 
-Anahita
--------
+Anahita the Altruistic
+----------------------
 
 .. image:: ./_static/images/headshots/anahita_headshot.png
    :width: 175
@@ -226,8 +226,8 @@ Effect TargetType        SELF
 Damage points            20
 ======================== ====================================
 
-Berry
------
+Berry the Wild
+--------------
 
 .. image:: ./_static/images/headshots/berry_headshot.png
    :width: 175
@@ -293,8 +293,8 @@ Stat Affected            ATTACK
 Buff Amount              +5
 ======================== ====================================
 
-Calmus
-------
+Calmus the Ignited
+------------------
 
 .. image:: ./_static/images/headshots/calmus_headshot.png
    :width: 175
@@ -359,8 +359,8 @@ Effect TargetType        SELF
 Damage Points            35
 ======================== ====================================
 
-Irwin
------
+Irwin the Scarred
+-----------------
 
 .. image:: ./_static/images/headshots/irwin_headshot.png
    :width: 175
