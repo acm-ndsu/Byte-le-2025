@@ -108,14 +108,15 @@ The fourth and fifth examples show how the two Generic characters can have the s
 *must* have a different ClassType.
 
 
-Malformed Character Selection
------------------------------
+Invalid Character Selection
+---------------------------
 
-In the case you to the dishonorable thing and try to cheat (🫵🤨) and submit a malformed team, you will *not*
-receive all the characters you desire, so be mindful. Any character that is determined malformed will be replaced
-with a different character: Generic Trash! Read more about Generic Trash in :doc:`characters`.
+In the case you to the dishonorable thing and try to cheat (🫵🤨) or make an innocent mistake (🥺👉👈) and submit an
+invalid team, you will *not* receive all the characters you desire, so be mindful. Any character that is
+determined invalid will be replaced with a different character: Generic Trash! Read more about
+Generic Trash in :doc:`characters`.
 
-Here are examples of malformed character selections:
+Here are examples of invalid character selections:
 
 .. code-block:: python
 
@@ -130,16 +131,16 @@ Here are examples of malformed character selections:
 
     return (SelectGeneric.GEN_TANK, SelectLeader.CALMUS, SelectGeneric.GEN_TANK)
 
-The first example is malformed since the ``SelectLeader`` enums are where the ``SelectGeneric`` enums should be, and
+The first example is invalid since the ``SelectLeader`` enums are where the ``SelectGeneric`` enums should be, and
 the ``SelectGeneric`` enum is where the ``SelectLeader`` enum should be. Every character would be replaced with Generic
 Trash.
 
-The second example is malformed since it's full of generics. The Generic Attacker would be replaced with Generic Trash.
+The second example is invalid since it's full of generics. The Generic Attacker would be replaced with Generic Trash.
 
-The third example is malformed since it's full of Leader characters. The first and third SelectLeader enums would
+The third example is invalid since it's full of Leader characters. The first and third SelectLeader enums would
 be replaced with Generic Trash.
 
-The fourth and fifth example are malformed since they have a single SelectLeader enum where a SelectGeneric enum
+The fourth and fifth example are invalid since they have a single SelectLeader enum where a SelectGeneric enum
 should be. That enum would be replaced with Generic Trash.
 
 The last example has three (3) characters that have the same ClassType of Tank. The *Leader* would be replaced with

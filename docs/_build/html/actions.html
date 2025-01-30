@@ -299,6 +299,12 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actions-list">Actions List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#active-character">Active Character</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gameboard-s-ordered-team">Gameboard’s Ordered Team</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-cycle-continues">How the Cycle Continues</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-move">Normal Move</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-move-1">Special Move 1</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-move-2">Special Move 2</a></li>
@@ -322,6 +328,61 @@
   <section id="taking-character-actions">
 <h1>Taking Character Actions<a class="headerlink" href="#taking-character-actions" title="Link to this heading">#</a></h1>
 <p>To control your characters, you do so by using <a class="reference internal" href="enums.html"><span class="doc">Enums</span></a>.</p>
+<section id="actions-list">
+<h2>Actions List<a class="headerlink" href="#actions-list" title="Link to this heading">#</a></h2>
+<p>As you code, your <code class="docutils literal notranslate"><span class="pre">take_turn()</span></code> method <em>needs</em> to return a list. That list is current named as <code class="docutils literal notranslate"><span class="pre">actions</span></code>. This
+list needs to consist of only ActionType enums.</p>
+<p>Even though a list is being returned, <em>only the first enum in the list will be executed</em>. Please be mindful of this
+as you code!</p>
+</section>
+<section id="active-character">
+<h2>Active Character<a class="headerlink" href="#active-character" title="Link to this heading">#</a></h2>
+<p>As you code, the character that is taking action is not determined by you, but by the environment. Every character will
+take their turn in a cyclic manner based on their Speed stat.</p>
+<p>In your <code class="docutils literal notranslate"><span class="pre">take_turn()</span></code> method, your <code class="docutils literal notranslate"><span class="pre">active_character</span></code> for the turn is already provided for you, but here’s how it
+changes so you understand the game cycle.</p>
+<section id="gameboard-s-ordered-team">
+<h3>Gameboard’s Ordered Team<a class="headerlink" href="#gameboard-s-ordered-team" title="Link to this heading">#</a></h3>
+<p>The gameboard stores a list of tuples which is called <code class="docutils literal notranslate"><span class="pre">ordered_teams</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ordered_teams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Character</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Character</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="n">world</span><span class="o">.</span><span class="n">ordered_teams</span>
+</pre></div>
+</div>
+<p>Each tuple is ordered by a Uroda character in the first index, and a Turpis character in the second index (this
+ordering does not interfere with character taking their turns if one is faster than the other, so don’t worry about
+that). Either index can be a None value <em>if</em> that respective team has less characters than the other.</p>
+<p>To know which pairing would be taking their turn for either team, you can use the gameboard’s <code class="docutils literal notranslate"><span class="pre">active_pair_index</span></code>
+variable to access the correct pair:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">active_pair_for_turn</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Character</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Character</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">world</span><span class="o">.</span><span class="n">ordered_teams</span><span class="p">[</span><span class="n">world</span><span class="o">.</span><span class="n">active_pair_index</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>With this, you can see what character from the opposing team will also be taking action their action
+<em>if applicable</em>. Remember - if a value in the tuple is None, that means that team cannot have a character taking an
+action that turn. Again, the order of the tuples are (Uroda character,  Turpis character).</p>
+</section>
+<section id="how-the-cycle-continues">
+<h3>How the Cycle Continues<a class="headerlink" href="#how-the-cycle-continues" title="Link to this heading">#</a></h3>
+<p>As stated previously, your <code class="docutils literal notranslate"><span class="pre">active_character</span></code> rotates cyclically based on your team manager’s <code class="docutils literal notranslate"><span class="pre">team</span></code> list.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">alive_team</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Character</span><span class="p">]</span> <span class="o">=</span> <span class="n">team_manager</span><span class="o">.</span><span class="n">team</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">active_pair_index</span></code> for the gameboard will <em>always reset to the first index after reaching the last index
+of the</em> <code class="docutils literal notranslate"><span class="pre">ordered_teams</span></code> <em>list</em>. Here is the order of events for how the process works:</p>
+<ol class="arabic simple">
+<li><p>Let the active pair take their turn</p></li>
+<li><dl class="simple">
+<dt>Increment the <code class="docutils literal notranslate"><span class="pre">active_pair_index</span></code></dt><dd><ul class="simple">
+<li><p>Repeat until the last pair of <code class="docutils literal notranslate"><span class="pre">ordered_teams</span></code> executes their turn</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Remove any dead characters from the gameboard and team managers</p></li>
+<li><p>Reorganize <code class="docutils literal notranslate"><span class="pre">ordered_teams</span></code> based on every alive character’s speed stat</p></li>
+<li><p>Set the <code class="docutils literal notranslate"><span class="pre">active_pair_index</span></code> to 0</p></li>
+<li><p>Go back to step 1</p></li>
+</ol>
+</section>
+</section>
 <section id="normal-move">
 <h2>Normal Move<a class="headerlink" href="#normal-move" title="Link to this heading">#</a></h2>
 <p>The Normal Move is the base move for every character. This Move
@@ -430,6 +491,12 @@ will always be able to swap as long as it is not out of bounds</em>.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actions-list">Actions List</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#active-character">Active Character</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gameboard-s-ordered-team">Gameboard’s Ordered Team</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#how-the-cycle-continues">How the Cycle Continues</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#normal-move">Normal Move</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-move-1">Special Move 1</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-move-2">Special Move 2</a></li>
