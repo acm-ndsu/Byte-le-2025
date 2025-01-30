@@ -212,9 +212,19 @@ class MasterController(Controller):
         print(f'{client2.team_name}\'s score after adding differential bonus {DIFFERENTIAL_BONUS * len(client2.team_manager.team)}: '
               f'{client2.team_manager.score}')
 
-        # client1 is the winner if client2's team is all dead
-        winner: Player | None = client1 if client2.team_manager.everyone_is_defeated() else \
-            client2 if client1.team_manager.everyone_is_defeated() else None
+        winner: Player | None
+
+        if client1.team_manager.everyone_is_defeated() and client2.team_manager.everyone_is_defeated():
+            # if both teams were defeated (tie), there is no winner
+            winner = None
+        elif client2.team_manager.everyone_is_defeated():
+            # the winner is client1 if client2 was defeated
+            winner = client1
+        elif client1.team_manager.everyone_is_defeated():
+            # the winner is client2 if client1 was defeated
+            winner = client2
+        else:
+            winner = None
 
         # if there is a clear winner (one team was defeated), add the winning score to the winner
         if winner is not None:
