@@ -56,8 +56,9 @@ When it comes to Attack Moves and Attack Effects, they are similar in that they 
 is different.
 
 - Attack Moves
-    - Uses the attacker's Attack stat and the target's Defense stat in the damage formula to return a final value
-    - Refer to :doc:`game_logic` for the damage formula
+    - Uses the attacker's Attack stat, the move's ``damage_points`` variable, and the target's Defense stat in
+      the damage formula to return a final value
+    - Refer to :doc:`helper` for the damage formula
 
 - Attack Effects
     - *Only uses an integer* to deal damage to the target(s)
