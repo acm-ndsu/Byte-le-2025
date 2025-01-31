@@ -5,6 +5,7 @@ from game.commander_clash.character.character import Character
 from game.common.enums import *
 from game.common.map.game_board import GameBoard
 from game.common.team_manager import TeamManager
+from game.commander_clash.moves.move_logic import *
 
 
 class State(Enum):
@@ -70,6 +71,10 @@ class Client(UserClient):
         if current_state == State.HEALTHY:
             # if the active character from my team is healthy, use its Normal Move
             actions = [ActionType.USE_NM]
+        elif active_character.special_points >= active_character.get_s2().cost:
+            actions = [ActionType.USE_S2]
+        elif active_character.special_points >= active_character.get_s1().cost:
+            actions = [ActionType.USE_S1]
         else:
             # if unhealthy, randomly decide to swap in a direction or use special 1
             action: ActionType = random.choice([ActionType.SWAP_UP, ActionType.SWAP_DOWN, ActionType.USE_NM])
