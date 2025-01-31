@@ -80,7 +80,7 @@ def generate_fultra() -> Leader:
 
     s2_effect: AttackEffect = AttackEffect(target_type=TargetType.ALL_OPPS, damage_points=25)
     s2: Attack = Attack(name='Lightning Rod', target_type=TargetType.SINGLE_OPP, cost=5, effect=s2_effect,
-                        damage_points=13)
+                        damage_points=20)
 
     hp: int = 43
     atk: AttackStat = AttackStat(40)
@@ -99,16 +99,16 @@ def generate_fultra() -> Leader:
 
 
 def generate_ninlil() -> Leader:
-    nm: Attack = Attack(name='Little Angy', target_type=TargetType.SINGLE_OPP, effect=None, damage_points=5)
+    nm: Attack = Attack(name='Little Angy', target_type=TargetType.SINGLE_OPP, effect=None, damage_points=10)
 
     s1_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-3,
                                            stat_to_affect=ObjectType.SPEED_STAT)
-    s1: Attack = Attack(name='Smol Rage', target_type=TargetType.SINGLE_OPP, cost=2, effect=s1_effect, damage_points=10)
+    s1: Attack = Attack(name='Smol Rage', target_type=TargetType.SINGLE_OPP, cost=2, effect=s1_effect, damage_points=25)
 
     s2_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-5,
                                            stat_to_affect=ObjectType.SPEED_STAT)
     s2: Attack = Attack(name='Tiny Titan', target_type=TargetType.SINGLE_OPP, cost=5, effect=s2_effect,
-                        damage_points=15)
+                        damage_points=45)
 
     hp: int = 41
     atk: AttackStat = AttackStat(47)
@@ -184,12 +184,12 @@ def generate_generic_attacker(name: str = 'Attacker') -> GenericAttacker:
     # We then create the primary move and add the secondary effect to it
     nm: Attack = Attack(name='Stab', target_type=TargetType.SINGLE_OPP, damage_points=5)
 
-    s1: Attack = Attack(name='Great Stab', target_type=TargetType.SINGLE_OPP, cost=1, damage_points=10)
+    s1: Attack = Attack(name='Great Stab', target_type=TargetType.SINGLE_OPP, cost=1, damage_points=15)
 
     # Discuss damage_points for this one
     s2_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-1,
                                            stat_to_affect=ObjectType.SPEED_STAT)
-    s2: Attack = Attack(name='Giant Slash', target_type=TargetType.SINGLE_OPP, cost=2, effect=s2_effect,
+    s2: Attack = Attack(name='Giant Slash', target_type=TargetType.SINGLE_OPP, cost=3, effect=s2_effect,
                         damage_points=30)
 
     hp: int = 40
