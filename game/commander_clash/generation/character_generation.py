@@ -45,7 +45,7 @@ def generate_berry() -> Leader:
     nm_effect: HealEffect = HealEffect(target_type=TargetType.SELF, heal_points=5)
     nm: Heal = Heal(name='Healing Potion', target_type=TargetType.ENTIRE_TEAM, effect=nm_effect, heal_points=10)
 
-    s1: Debuff = Debuff(name='Debuff Potion', target_type=TargetType.SINGLE_OPP, cost=1, effect=None, debuff_amount=-2,
+    s1: Debuff = Debuff(name='Debuff Potion', target_type=TargetType.SINGLE_OPP, cost=2, effect=None, debuff_amount=-2,
                         stat_to_affect=ObjectType.ATTACK_STAT)
 
     s2_effect: BuffEffect = BuffEffect(target_type=TargetType.SELF, buff_amount=3,
@@ -76,7 +76,7 @@ def generate_fultra() -> Leader:
 
     s1_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-4,
                                            stat_to_affect=ObjectType.ATTACK_STAT)
-    s1: Heal = Heal(name='Overhaul', target_type=TargetType.SELF, cost=2, effect=s1_effect, heal_points=100)
+    s1: Heal = Heal(name='Overhaul', target_type=TargetType.SELF, cost=2, effect=s1_effect, heal_points=120)
 
     s2_effect: AttackEffect = AttackEffect(target_type=TargetType.ALL_OPPS, damage_points=25)
     s2: Attack = Attack(name='Lightning Rod', target_type=TargetType.SINGLE_OPP, cost=5, effect=s2_effect,
@@ -157,14 +157,12 @@ def generate_irwin() -> Leader:
     nm_effect = BuffEffect(target_type=TargetType.SELF, buff_amount=1, stat_to_affect=ObjectType.DEFENSE_STAT)
     nm: Attack = Attack(name='Striking Defense', target_type=TargetType.SINGLE_OPP, damage_points=1, effect=nm_effect)
 
-    s1_effect = DebuffEffect(target_type=TargetType.SINGLE_OPP, debuff_amount=-3,
-                             stat_to_affect=ObjectType.DEFENSE_STAT)
-    s1: Attack = Attack(name='Weakening Strike', target_type=TargetType.SINGLE_OPP, cost=3, effect=s1_effect,
-                        damage_points=12)
+    s1: Attack = Attack(name='Weakening Strike', target_type=TargetType.SINGLE_OPP, cost=3, effect=None,
+                        damage_points=15)
 
-    s2_effect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-6, stat_to_affect=ObjectType.DEFENSE_STAT)
-    s2: Attack = Attack(name='Close Combat', target_type=TargetType.SINGLE_OPP, cost=5, damage_points=20,
-                        effect=s2_effect)
+    s2_effect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-8, stat_to_affect=ObjectType.DEFENSE_STAT)
+    s2: Buff = Buff(name='My Soldiers Rage', target_type=TargetType.ADJACENT_ALLIES, cost=5, buff_amount=8,
+                             effect=s2_effect)
 
     hp: int = 55
     atk: AttackStat = AttackStat(30)
@@ -191,8 +189,8 @@ def generate_generic_attacker(name: str = 'Attacker') -> GenericAttacker:
     # Discuss damage_points for this one
     s2_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-1,
                                            stat_to_affect=ObjectType.SPEED_STAT)
-    s2: Attack = Attack(name='Giant Slash', target_type=TargetType.ALL_OPPS, cost=2, effect=s2_effect,
-                        damage_points=7)
+    s2: Attack = Attack(name='Giant Slash', target_type=TargetType.SINGLE_OPP, cost=2, effect=s2_effect,
+                        damage_points=30)
 
     hp: int = 40
     atk: AttackStat = AttackStat(45)
@@ -231,7 +229,7 @@ def generate_generic_tank(name: str = 'Tank') -> GenericTank:
     # Discuss damage_points for this one
     s1_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SINGLE_OPP, debuff_amount=-1,
                                            stat_to_affect=ObjectType.SPEED_STAT)
-    s1: Attack = Attack(name='Stomp', target_type=TargetType.SINGLE_OPP, cost=3, effect=s1_effect,
+    s1: Attack = Attack(name='Stomp', target_type=TargetType.SINGLE_OPP, cost=1, effect=s1_effect,
                         damage_points=10)
 
     s2: Attack = Attack(name='Shield Rush', target_type=TargetType.ALL_OPPS, cost=3, damage_points=7)
