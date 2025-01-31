@@ -56,10 +56,10 @@ def generate_berry() -> Leader:
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
 
-    hp: int = 40
+    hp: int = 41
     atk: AttackStat = AttackStat(1)
     defense: DefenseStat = DefenseStat(50)
-    spd: SpeedStat = SpeedStat(69)
+    spd: SpeedStat = SpeedStat(68)
 
     berry: Leader = Leader(name='Berry', class_type=ClassType.HEALER, health=hp, attack=atk, defense=defense,
                            speed=spd,
@@ -134,16 +134,16 @@ def generate_calmus() -> Leader:
                     stat_to_affect=ObjectType.ATTACK_STAT)
 
     s2_effect: AttackEffect = AttackEffect(target_type=TargetType.SELF, damage_points=45)
-    s2: Buff = Buff(name='Berserk', target_type=TargetType.ENTIRE_TEAM, cost=5, effect=s2_effect, buff_amount=7,
+    s2: Buff = Buff(name='Berserk', target_type=TargetType.ENTIRE_TEAM, cost=5, effect=s2_effect, buff_amount=5,
                     stat_to_affect=ObjectType.ATTACK_STAT)
 
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
 
-    hp: int = 65
-    atk: AttackStat = AttackStat(45)
+    hp: int = 63
+    atk: AttackStat = AttackStat(35)
     defense: DefenseStat = DefenseStat(30)
-    spd: SpeedStat = SpeedStat(20)
+    spd: SpeedStat = SpeedStat(32)
 
     calmus: Leader = Leader(name='Calmus', class_type=ClassType.TANK, health=hp, attack=atk, defense=defense,
                             speed=spd, moveset=moves)
