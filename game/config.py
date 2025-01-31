@@ -83,8 +83,9 @@ SPECIAL_POINT_LIMIT = 5                                             # The highes
 
 MINIMUM_DAMAGE = 1                                                  # Base damage to be dealt to prevent negative ints
 
-DEFEATED_SCORE = 100                                                # The points to award for each defeated character
-WIN_SCORE = 200                                                     # The points to award for winning a game
-DIFFERENTIAL_BONUS = 150                                            # The points to award for each alive character on the winning team
+DEFEATED_BONUS = 100                                                # The points to award for each defeated character
+DIFFERENTIAL_BONUS = 150                                            # The points to award for each alive character on either team
+WIN_BONUS = 250                                                     # The points to award for completely defeating the opposing team
+
 
 GENERIC_TRASH_NAME = 'Missing Character'                            # A name used for Generic Trash to convey a proper message to the players

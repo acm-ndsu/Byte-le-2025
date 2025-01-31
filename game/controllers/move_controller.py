@@ -2,7 +2,7 @@ from game.commander_clash.moves.move_logic import handle_move_logic, handle_effe
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import *
-from game.config import DEFEATED_SCORE
+from game.config import DEFEATED_BONUS
 from game.controllers.controller import Controller
 
 
@@ -136,9 +136,9 @@ class MoveController(Controller):
         for defeated_char in defeated_characters:
             defeated_char.is_dead = True
             defeated_char.state = 'defeated'
-            client_to_use.team_manager.score += DEFEATED_SCORE
+            client_to_use.team_manager.score += DEFEATED_BONUS
 
-            world.turn_info += (f'\nClient {client_to_use.team_name} gained {DEFEATED_SCORE} points for defeating '
+            world.turn_info += (f'\nClient {client_to_use.team_name} gained {DEFEATED_BONUS} points for defeating '
                                 f'{defeated_char.name}!\n'
                                 f'Current score for {client_to_use.team_name}: {client_to_use.team_manager.score}!\n')
 
