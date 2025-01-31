@@ -16,8 +16,8 @@ Layout
 The map is a 3x2 grid. On the map, :gold:`Uroda` will *always* be on the left, and :purple:`Turpis` will
 *always* be on the right. Characters will be displayed on their country's respective side.
 
-:gold:`NOTE: Two characters cannot be on the same spot (i.e., overlap). They will either swap spaces or not `
-:gold:`be present at all on the board.`
+:gold:`NOTE: Two characters cannot be on the same spot (i.e., overlap). They will either swap spaces
+or not be present at all on the board.`
 
 .. figure:: ./_static/images/game_map.png
 
@@ -135,20 +135,6 @@ Returns the object at the top of the given coordinate's GameObjectContainer
     
 - ``coords``: A Vector object representing the coordinate to access
 - Returns a GameObject (superclass of a Character object) or None if the coordinate was not in the game map dictionary.
-
-Object Is Found At Method
--------------------------
-
-Takes a Vector object and ObjectType enum as parameters. Will determine if the ObjectType 
-is found in the GameObjectContainer at that coordinate.
-
-.. code-block:: python
-
-    def object_is_found_at(self, coords: Vector, object_type: ObjectType) -> bool
-
-- ``coords``: A Vector object representing the coordinate to access
-- ``object_type``: An ObjectType enum to search for at the given coordinate
-- Returns True if the ObjectType is found. False otherwise
 
 Is Valid Coords Method
 ----------------------

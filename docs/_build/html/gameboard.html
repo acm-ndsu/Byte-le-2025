@@ -314,7 +314,6 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gameboard">Gameboard</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-top-method">Get Top Method</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#object-is-found-at-method">Object Is Found At Method</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-valid-coords-method">Is Valid Coords Method</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-characters-method">Get Characters Method</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-character-from-method">Get Character From Method</a></li>
@@ -339,8 +338,8 @@
 <h2>Layout<a class="headerlink" href="#layout" title="Link to this heading">#</a></h2>
 <p>The map is a 3x2 grid. On the map, <span class="gold">Uroda</span> will <em>always</em> be on the left, and <span class="purple">Turpis</span> will
 <em>always</em> be on the right. Characters will be displayed on their country’s respective side.</p>
-<p><span class="gold">NOTE: Two characters cannot be on the same spot (i.e., overlap). They will either swap spaces or not `
-:gold:`be present at all on the board.</span></p>
+<p><span class="gold">NOTE: Two characters cannot be on the same spot (i.e., overlap). They will either swap spaces
+or not be present at all on the board.</span></p>
 <figure class="align-default" id="id1">
 <img alt="_images/game_map.png" src="_images/game_map.png" />
 <figcaption>
@@ -443,19 +442,6 @@ they will not be displayed.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">coords</span></code>: A Vector object representing the coordinate to access</p></li>
 <li><p>Returns a GameObject (superclass of a Character object) or None if the coordinate was not in the game map dictionary.</p></li>
-</ul>
-</section>
-<section id="object-is-found-at-method">
-<h3>Object Is Found At Method<a class="headerlink" href="#object-is-found-at-method" title="Link to this heading">#</a></h3>
-<p>Takes a Vector object and ObjectType enum as parameters. Will determine if the ObjectType
-is found in the GameObjectContainer at that coordinate.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">object_is_found_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">:</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">object_type</span><span class="p">:</span> <span class="n">ObjectType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">coords</span></code>: A Vector object representing the coordinate to access</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">object_type</span></code>: An ObjectType enum to search for at the given coordinate</p></li>
-<li><p>Returns True if the ObjectType is found. False otherwise</p></li>
 </ul>
 </section>
 <section id="is-valid-coords-method">
@@ -585,7 +571,6 @@ can’t be found or if no character is at the coordinate.</p>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gameboard">Gameboard</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-top-method">Get Top Method</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#object-is-found-at-method">Object Is Found At Method</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#is-valid-coords-method">Is Valid Coords Method</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-characters-method">Get Characters Method</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#get-character-from-method">Get Character From Method</a></li>

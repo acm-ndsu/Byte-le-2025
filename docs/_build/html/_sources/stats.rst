@@ -145,7 +145,7 @@ Is Minimized Method
 
     def is_minimized(self) -> bool:
 
-- Returns True if the stat used is at its minimum value (the minimum value will always be 1 regardless of the stat)
+- Returns True if the stat used is at its minimum value (the minimum value will always be 1, regardless of the stat)
 
 Examples:
 
