@@ -34,6 +34,9 @@ def generate(seed: int = random.randint(0, 1000000000)):
         else:
             turpis_team_manager = team_manager
 
+    # Write game map to file
+    # write_json_file(data, GAME_MAP_FILE)
+
     # create the gameboard with the team managers so the ordered_teams list can be populated immediately
     temp: GameBoard = GameBoard(seed, Vector(2, 3), info[0], False,
                                 uroda_team_manager, turpis_team_manager)

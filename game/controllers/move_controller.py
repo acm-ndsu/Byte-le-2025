@@ -2,7 +2,7 @@ from game.commander_clash.moves.move_logic import handle_move_logic, handle_effe
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import *
-from game.config import DEFEATED_SCORE
+from game.config import DEFEATED_BONUS
 from game.controllers.controller import Controller
 
 
@@ -101,9 +101,10 @@ class MoveController(Controller):
                     world.turn_info += (f'\n{user.name} has no targets for the secondary effect of '
                                         f'{current_move.name}!\n')
 
-                # add any additional characters to defeated_characters
+                # add any additional characters to defeated_characters IF the effect does damage
                 defeated_characters += [target for target in effect_targets if
-                                        target not in defeated_characters and target.current_health == 0]
+                                        target not in defeated_characters and target.current_health == 0 and
+                                        user.selected_move.effect.object_type == ObjectType.ATTACK_EFFECT]
 
             for char in defeated_characters:
                 world.turn_info += f'\n{user.name} defeated {char.name}!\n'
@@ -136,7 +137,11 @@ class MoveController(Controller):
         for defeated_char in defeated_characters:
             defeated_char.is_dead = True
             defeated_char.state = 'defeated'
-            client_to_use.team_manager.score += DEFEATED_SCORE
+            client_to_use.team_manager.score += DEFEATED_BONUS
+
+            world.turn_info += (f'\nClient {client_to_use.team_name} gained {DEFEATED_BONUS} points for defeating '
+                                f'{defeated_char.name}!\n'
+                                f'Current score for {client_to_use.team_name}: {client_to_use.team_manager.score}!\n')
 
             # add the defeated character to the recently died list of the game board
             world.recently_died.append(defeated_char)

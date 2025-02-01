@@ -6,7 +6,7 @@ from game.common.enums import ActionType, CountryType
 from game.common.map.game_board import GameBoard
 from game.common.player import Player
 from game.common.team_manager import TeamManager
-from game.config import DEFEATED_SCORE
+from game.config import DEFEATED_BONUS
 from game.controllers.master_controller import MasterController
 from game.utils.vector import Vector
 
@@ -120,6 +120,6 @@ class TestMasterController(unittest.TestCase):
         self.assertTrue(len(self.client2.team_manager.dead_team) == 1)
 
         # the uroda client should still have points gained for defeated an opposing character
-        self.assertEqual(self.client1.team_manager.score, DEFEATED_SCORE)
+        self.assertEqual(self.client1.team_manager.score, DEFEATED_BONUS)
 
         self.assertTrue(len(self.gameboard.game_map) == 5)
