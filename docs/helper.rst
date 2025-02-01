@@ -97,4 +97,4 @@ The Logs
 
 Lastly, whenever you generate and run a game, your ``logs`` folder will be created. This folder contains a
 ``.json`` file for every turn and stores the information that happened for that turn. If you know how to read
-the format, this can also be helpful for looking in-depth at everything despite it's lower level analysis.
+the format, this can also be helpful for looking in-depth at everything despite its lower level analysis.

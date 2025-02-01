@@ -46,7 +46,7 @@ Vector objects are what represent coordinates. They also come with different met
 Add To Vector Method
 ....................
 
-Adds a given Vector objects coordinates to the Vector object being used and returns a new
+Adds a given Vector object's coordinates to the Vector object being used and returns a new
 Vector object.
 
 .. code-block:: python
@@ -60,8 +60,8 @@ Vector object.
 Add X Y Method
 ..............
 
-Similar to the ``add_to_vector()`` method, this will take two ints ``x`` and ``y`` as parameters,
-add them to the Vector object being used, and return a new Vector with the summed coordiantes.
+Similar to the ``add_to_vector()`` method, this will take two ints ``(x, y)`` as parameters,
+add them to the Vector object being used, and return a new Vector with the summed coordinates.
 
 .. code-block:: python
 
@@ -98,12 +98,13 @@ with the summed coordinates.
         return self.add_to_vector(Vector(y=y))
 
 - ``y``: An int representing the y coordinate
+  - In the code example you can use ``Vector(y=y)`` to only specify the ``y`` and let the ``x`` value be the default
 - Returns a new Vector object with the summed coordinates
 
 As Tuple Method
 ...............
 
-Returns the Vector objects coordinates as a tuple object.
+Returns the Vector object's coordinates as a tuple object.
 
 .. code-block:: python
 
@@ -157,7 +158,7 @@ Get Characters Method
 ---------------------
 
 Uses a CountryType enum as a parameter and returns a dictionary object
-with Vector: Character key-value pairings. All characters returned would be from the given
+with {Vector: Character} key-value pairings. All characters returned would be from the given
 country's team. If None is given instead of an enum, *all* characters from *both* teams will be
 returned.
 

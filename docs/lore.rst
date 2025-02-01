@@ -32,7 +32,7 @@ The Roster
 - Anahita (Healer): excellent at healing using water-based magic
 - Berry (Healer): excellent at healing and providing extra support to her army
 - Fultra (Attacker): deals strong, electric damage with his bow
-- Ninlil (Attacker): deals heavy damage using wind-based magic in her axeg
+- Ninlil (Attacker): deals heavy damage using wind-based magic in her axe
 - Calmus (Tank): takes hits and retaliates with potent fire magic that's used to make himself stronger
 - Irwin (Tank): uses advanced technology (a large shield and light armor made of a special metal) to
   increase his defenses

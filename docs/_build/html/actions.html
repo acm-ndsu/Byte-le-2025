@@ -153,6 +153,7 @@
 <li class="toctree-l1"><a class="reference internal" href="enums.html">Enums</a></li>
 <li class="toctree-l1"><a class="reference internal" href="helper.html">Helper Methods &amp; Debugging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lore.html">The Lore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
 </ul>
 
@@ -330,7 +331,7 @@
 <p>To control your characters, you do so by using <a class="reference internal" href="enums.html"><span class="doc">Enums</span></a>.</p>
 <section id="actions-list">
 <h2>Actions List<a class="headerlink" href="#actions-list" title="Link to this heading">#</a></h2>
-<p>As you code, your <code class="docutils literal notranslate"><span class="pre">take_turn()</span></code> method <em>needs</em> to return a list. That list is current named as <code class="docutils literal notranslate"><span class="pre">actions</span></code>. This
+<p>As you code, your <code class="docutils literal notranslate"><span class="pre">take_turn()</span></code> method <em>needs</em> to return a list. That list is currently named <code class="docutils literal notranslate"><span class="pre">actions</span></code>. This
 list needs to consist of only ActionType enums.</p>
 <p>Even though a list is being returned, <em>only the first enum in the list will be executed</em>. Please be mindful of this
 as you code! (This is simply due to the engine. Could it have been changed? … yes, but we aren’t paid for this. :D)</p>
@@ -338,7 +339,7 @@ as you code! (This is simply due to the engine. Could it have been changed? … 
 <section id="active-character">
 <h2>Active Character<a class="headerlink" href="#active-character" title="Link to this heading">#</a></h2>
 <p>As you code, the character that is taking action is not determined by you, but by the environment. Every character will
-take their turn in a cyclic manner based on their Speed stat.</p>
+take their turn in a cyclical manner based on their Speed stat.</p>
 <p>In your <code class="docutils literal notranslate"><span class="pre">take_turn()</span></code> method, your <code class="docutils literal notranslate"><span class="pre">active_character</span></code> for the turn is already provided for you, but here’s how it
 changes so you understand the game cycle.</p>
 <section id="gameboard-s-ordered-team">

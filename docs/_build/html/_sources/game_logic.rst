@@ -37,7 +37,11 @@ performs a Move. If *both* characters wanted to swap, they would swap as normal.
 Speed Control
 -------------
 
-If 2 characters plan on performing a Move as their action, this is when the Speed stat truly matters. When managing the
+When it comes to characters taking their turn, note that each teams' fastest character would act first. For example,
+say the :gold:`Uroda` team has characters with the respective speeds: ``[30, 50, 40]``. The order would
+instead be: ``[50, 40, 30]``.
+
+If 2 characters plan on performing a Move as their action, this is when the Speed Stat truly matters. When managing the
 Speed of two characters, there is the possibility of *speed ties* occurring. Here are examples on how the following
 situations would play out.
 
@@ -111,7 +115,7 @@ maximum values depend on the Stat.
 Minimum Stat Value
 ------------------
 
-The minimum value for all stats is 1.
+The minimum value for all Stats is 1.
 
 Minimum Damage Value
 --------------------

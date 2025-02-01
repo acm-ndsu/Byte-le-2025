@@ -25,7 +25,7 @@ Method                     Points          Description
                                            Go get 'em!
 :blue:`Differential Bonus` 150             These points will be awarded for every character that is alive on your team
                                            by the end of a game. These will always be rewarded, even on the losing team.
-:gold:`Winner's Bonus`     250             Your country *completely* defeated the other and :gold:`won` the war
+:gold:`Winner's Bonus`     250             Your country *completely* defeated the other and :gold:`won` the battle
                                            - congratulations! Now the land can know peace. Here's a little extra
                                            something for your efforts!
 ========================== =============== =============================================================================

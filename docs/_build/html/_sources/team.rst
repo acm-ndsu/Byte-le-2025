@@ -111,7 +111,7 @@ The fourth and fifth examples show how the two Generic characters can have the s
 Invalid Character Selection
 ---------------------------
 
-In the case you to the dishonorable thing and try to cheat (🫵🤨) or make an innocent mistake (🥺👉👈) and submit an
+In the case you do the dishonorable thing and try to cheat (🫵🤨) or make an innocent mistake (🥺👉👈) and submit an
 invalid team, you will *not* receive all the characters you desire, so be mindful. Any character that is
 determined invalid will be replaced with a different character: Generic Trash! Read more about
 Generic Trash in :doc:`characters`.

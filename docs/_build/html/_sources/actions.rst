@@ -8,7 +8,7 @@ To control your characters, you do so by using :doc:`enums`.
 Actions List
 ============
 
-As you code, your ``take_turn()`` method *needs* to return a list. That list is current named as ``actions``. This
+As you code, your ``take_turn()`` method *needs* to return a list. That list is currently named ``actions``. This
 list needs to consist of only ActionType enums.
 
 Even though a list is being returned, *only the first enum in the list will be executed*. Please be mindful of this
@@ -19,7 +19,7 @@ Active Character
 ================
 
 As you code, the character that is taking action is not determined by you, but by the environment. Every character will
-take their turn in a cyclic manner based on their Speed stat.
+take their turn in a cyclical manner based on their Speed stat.
 
 In your ``take_turn()`` method, your ``active_character`` for the turn is already provided for you, but here's how it
 changes so you understand the game cycle.
