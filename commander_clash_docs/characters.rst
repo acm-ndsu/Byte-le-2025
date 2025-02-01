@@ -388,7 +388,8 @@ Name                     Reinforce
 MoveType                 BUFF
 TargetType               SELF
 SP Cost                  0
-Buff Amount              1
+Stat Affected            DEFENSE
+Buff Amount              2
 
 Effect MoveType          HEAL
 Effect TargetType        SELF
@@ -419,6 +420,7 @@ Name                     My Soldiers' Rage
 MoveType                 BUFF
 TargetType               ADJACENT_ALLIES
 SP Cost                  5
+Stat Affected            ATTACK
 Buff Amount              7
 
 Effect MoveType          DEBUFF
@@ -578,7 +580,7 @@ Generic Tank
 Generic Tank's Character Info
 =============================== =============================================================
 Class Type                      Tank
-Base Health                     54 (750)
+Base Health                     54 (540)
 Base Attack                     30
 Base Defense                    33
 Base Speed                      33
