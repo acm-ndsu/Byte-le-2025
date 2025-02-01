@@ -65,7 +65,7 @@ Running the Game
 Python Version
 --------------
 
-Make sure to uninstall the Visual Studio version of python if you have Visual Studio installed.
+Make sure to uninstall the visual studio version of python if you have visual studio installed.
 You can do this by re-running the installer and unselecting the python development kit then clicking update.
 
 :gold:`We require using Python version 3.12.` You can go to the
@@ -95,7 +95,7 @@ We highly recommend cloning with GitHub Desktop or downloading the ZIP folder. E
 
 #. Download ZIP
     * Click ``Download ZIP`` and find it in your Downloads.
-    * Extract the files and save it somewhere on your device.
+    * Extract the files and save it some where on your device.
     * Use your IDE/text editor (Visual Studio Code is recommended) of choice and open the extracted folder downloaded.
     * You're ready to code!
 
