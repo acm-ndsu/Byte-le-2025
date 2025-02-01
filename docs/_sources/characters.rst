@@ -578,7 +578,7 @@ Generic Tank
 Generic Tank's Character Info
 =============================== =============================================================
 Class Type                      Tank
-Base Health                     54 (750)
+Base Health                     54 (540)
 Base Attack                     30
 Base Defense                    33
 Base Speed                      33
