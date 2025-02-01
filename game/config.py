@@ -9,7 +9,7 @@ what they do already. Refer to this file to clear any confusion, and make any ch
 
 # Runtime settings / Restrictions --------------------------------------------------------------------------------------
 # The engine requires these to operate
-MAX_TICKS = 300                                     # max number of ticks the server will run regardless of game state
+MAX_TICKS = 350                                     # max number of ticks the server will run regardless of game state
 TQDM_BAR_FORMAT = "Game running at {rate_fmt} "     # how TQDM displays the bar
 TQDM_UNITS = " turns"                               # units TQDM takes in the bar
 
@@ -71,7 +71,7 @@ class Debug:                    # Keeps track of the current debug level of the 
 
 # Other Settings Here --------------------------------------------------------------------------------------------------
 
-HEALTH_MODIFIER = 6                                                 # The modfier to increase a character's health
+HEALTH_MODIFIER = 10                                                # The modfier to increase a character's health
 
 STAT_MINIMUM = 1                                                    # The lowest number a stat can reach
 
