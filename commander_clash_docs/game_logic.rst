@@ -108,9 +108,9 @@ Maximum Stat Values
 Stats have a maximum value they could reach to prevent absurd values and outputs from damage calculations. The
 maximum values depend on the Stat.
 
-- Attack Maximum: 99
+- Attack Maximum: 100
 - Defense Maximum: 75
-- Speed Maximum: 99
+- Speed Maximum: 100
 
 Minimum Stat Value
 ------------------
