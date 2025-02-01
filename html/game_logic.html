@@ -1,0 +1,574 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Game Logic &#8212; Byte-le Royale 2025 1.0.0  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=2b91c5f0"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'game_logic';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The Gameboard" href="gameboard.html" />
+    <link rel="prev" title="Taking Character Actions" href="actions.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Byte-le Royale 2025 1.0.0  documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="useful_commands.html">Useful Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">The Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stats.html">Stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moves.html">Moves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="characters.html">Characters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Making a Team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actions.html">Taking Character Actions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Game Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gameboard.html">The Gameboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scoring.html">Scoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enums.html">Enums</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helper.html">Helper Methods &amp; Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lore.html">The Lore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/game_logic.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Game Logic</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#priority-of-actions">Priority of Actions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swapping">Swapping</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-control">Speed Control</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-outspeed">Example 1: Outspeed</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-speed-ties">Example 2: Speed Ties</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-speed-ties-with-move-priorities">Example 3: Speed Ties with Move Priorities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-and-minimum-values">Maximum and Minimum Values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-stat-values">Maximum Stat Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-stat-value">Minimum Stat Value</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-damage-value">Minimum Damage Value</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="game-logic">
+<h1>Game Logic<a class="headerlink" href="#game-logic" title="Link to this heading">#</a></h1>
+<style> .purple {color:#A020F0; font-weight:bold; font-size:16px} </style>
+<style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style>
+<style> .red {color:#BC0C25; font-weight:bold; font-size:16px} </style>
+<style> .blue {color:#1769BC; font-weight:bold; font-size:16px} </style>
+<style> .gold {color:#E1C564; font-weight:bold; font-size:16px} </style>
+<style> .green {color:#469B34; font-weight:bold; font-size:16px} </style><p>The mechanics of this game are similar to many RPGs, but they are still unique in how some things are handled. Here
+is how the game logic works for this game.</p>
+<section id="priority-of-actions">
+<h2>Priority of Actions<a class="headerlink" href="#priority-of-actions" title="Link to this heading">#</a></h2>
+<section id="swapping">
+<h3>Swapping<a class="headerlink" href="#swapping" title="Link to this heading">#</a></h3>
+<p>Before any Move logic happens (anything related to Attacks, Heals, Buffs, or Debuffs), <em>swapping will always take
+priority and happen first</em>. If a character on the <span class="gold">Uroda</span> team wants to swap and a character on the
+<span class="purple">Turpis</span> team wants to attack, <em>the</em> <span class="gold">Uroda</span> <em>character would swap first</em> before the <span class="purple">Turpis</span>
+performs a Move. If <em>both</em> characters wanted to swap, they would swap as normal.</p>
+</section>
+<section id="speed-control">
+<h3>Speed Control<a class="headerlink" href="#speed-control" title="Link to this heading">#</a></h3>
+<p>When it comes to characters taking their turn, note that each teams’ fastest character would act first. For example,
+say the <span class="gold">Uroda</span> team has characters with the respective speeds: <code class="docutils literal notranslate"><span class="pre">[30,</span> <span class="pre">50,</span> <span class="pre">40]</span></code>. The order would
+instead be: <code class="docutils literal notranslate"><span class="pre">[50,</span> <span class="pre">40,</span> <span class="pre">30]</span></code>.</p>
+<p>If 2 characters plan on performing a Move as their action, this is when the Speed Stat truly matters. When managing the
+Speed of two characters, there is the possibility of <em>speed ties</em> occurring. Here are examples on how the following
+situations would play out.</p>
+<section id="example-1-outspeed">
+<h4>Example 1: Outspeed<a class="headerlink" href="#example-1-outspeed" title="Link to this heading">#</a></h4>
+<p>Characters taking action:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><span class="gold">Uroda Attacker</span></dt><dd><ul>
+<li><p>Speed: 40</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><span class="purple">Turpis Tank</span></dt><dd><ul>
+<li><p>Speed: 30</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>In this example, the <span class="gold">Uroda Attacker</span> will perform a Move first. If, for example, it’s an Attack that would kill
+the <span class="purple">Turpis Tank</span>, the Turpis Tank would be defeated and cannot take the action it previously wanted to.</p>
+</section>
+<section id="example-2-speed-ties">
+<h4>Example 2: Speed Ties<a class="headerlink" href="#example-2-speed-ties" title="Link to this heading">#</a></h4>
+<p>Characters taking action:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><span class="gold">Uroda Attacker</span></dt><dd><ul>
+<li><p>Speed: 40</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><span class="purple">Turpis Attacker</span></dt><dd><ul>
+<li><p>Speed: 40</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>In this example, a speed tie is present. Say the <span class="gold">Uroda Attacker</span> and <span class="purple">Turpis Attacker</span> both want to
+use an Attack and both could be defeated. In this case, both would be able to attack <em>and</em> be defeated at the
+end of the turn.</p>
+</section>
+<section id="example-3-speed-ties-with-move-priorities">
+<h4>Example 3: Speed Ties with Move Priorities<a class="headerlink" href="#example-3-speed-ties-with-move-priorities" title="Link to this heading">#</a></h4>
+<p>Characters taking action:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><span class="gold">Uroda Attacker</span></dt><dd><ul>
+<li><p>Speed: 40</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><span class="purple">Turpis Healer</span></dt><dd><ul>
+<li><p>Speed: 40</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>In this example, another speed tie is present. Say the <span class="gold">Uroda Attacker</span> wants to use an Attack since the
+<span class="purple">Turpis Healer</span> is almost defeated, but the <span class="purple">Turpis Healer</span> wants to use a Heal. Since they have the
+same speed and are using different types of Moves, the order of what happens here is determined by Move priorities.</p>
+<p>Here are all MoveTypes and their Move priorities:</p>
+<ol class="arabic simple">
+<li><p><span class="green">Heal</span></p></li>
+<li><p><span class="red">Buff</span></p></li>
+<li><p><span class="blue">Debuff</span></p></li>
+<li><p><span class="gold">Attack</span></p></li>
+</ol>
+<p>This means that the <span class="purple">Turpis Healer</span> would apply it’s Heal Move <em>first</em>, and then the <span class="gold">Uroda Attacker</span>
+would attack <em>after</em>.</p>
+</section>
+</section>
+</section>
+<section id="maximum-and-minimum-values">
+<h2>Maximum and Minimum Values<a class="headerlink" href="#maximum-and-minimum-values" title="Link to this heading">#</a></h2>
+<section id="maximum-stat-values">
+<h3>Maximum Stat Values<a class="headerlink" href="#maximum-stat-values" title="Link to this heading">#</a></h3>
+<p>Stats have a maximum value they could reach to prevent absurd values and outputs from damage calculations. The
+maximum values depend on the Stat.</p>
+<ul class="simple">
+<li><p>Attack Maximum: 99</p></li>
+<li><p>Defense Maximum: 75</p></li>
+<li><p>Speed Maximum: 99</p></li>
+</ul>
+</section>
+<section id="minimum-stat-value">
+<h3>Minimum Stat Value<a class="headerlink" href="#minimum-stat-value" title="Link to this heading">#</a></h3>
+<p>The minimum value for all Stats is 1.</p>
+</section>
+<section id="minimum-damage-value">
+<h3>Minimum Damage Value<a class="headerlink" href="#minimum-damage-value" title="Link to this heading">#</a></h3>
+<p>To ensure damage can always be dealt, the minimum damage that can be dealt is 1.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="actions.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Taking Character Actions</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="gameboard.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">The Gameboard</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#priority-of-actions">Priority of Actions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swapping">Swapping</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-control">Speed Control</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-outspeed">Example 1: Outspeed</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-speed-ties">Example 2: Speed Ties</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3-speed-ties-with-move-priorities">Example 3: Speed Ties with Move Priorities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-and-minimum-values">Maximum and Minimum Values</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-stat-values">Maximum Stat Values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-stat-value">Minimum Stat Value</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-damage-value">Minimum Damage Value</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By NDSU ACM Byte-le 2025 Dev Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 1974-2025, NDSU ACM.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
