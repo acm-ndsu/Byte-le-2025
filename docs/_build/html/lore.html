@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>The Lore &#8212; Byte-le Royale 2025 1.0.0  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=2b91c5f0"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'lore';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Credits" href="credits.html" />
+    <link rel="prev" title="Visualizer" href="visualizer.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">Byte-le Royale 2025 1.0.0  documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="useful_commands.html">Useful Commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="server.html">The Server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stats.html">Stats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="moves.html">Moves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="characters.html">Characters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="team.html">Making a Team</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actions.html">Taking Character Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="game_logic.html">Game Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gameboard.html">The Gameboard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="scoring.html">Scoring</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enums.html">Enums</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helper.html">Helper Methods &amp; Debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">The Lore</a></li>
+<li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/lore.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>The Lore</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-story-lore">The Story Lore</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-characters-lore">The Characters’ Lore</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-roster">The Roster</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anahita-the-altruistic">Anahita the Altruistic</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#berry-the-wild">Berry the Wild</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Background</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fultra-the-pompous">Fultra the Pompous</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Background</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ninlil-the-mighty">Ninlil the Mighty</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Background</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calmus-the-ignited">Calmus the Ignited</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Background</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#irwin-the-scarred">Irwin the Scarred</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Background</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="the-lore">
+<h1>The Lore<a class="headerlink" href="#the-lore" title="Link to this heading">#</a></h1>
+<p>This page is not required to read at all for the competition (it’s a lot). However, if you wish to read more about
+the world and characters created, it will all be here for your enjoyment.</p>
+<p>Everything will be listed as bullet points to avoid “bricks” of text, but the content is still good!</p>
+<section id="the-story-lore">
+<h2>The Story Lore<a class="headerlink" href="#the-story-lore" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>A long-winded war has been taking place between two nations – Uroda in the west, and Turpis in the east</p></li>
+<li><p>In the past, Turpis and Uroda used to be one nation called Tatem. Due to a civil war 200 years ago,
+they split up into the two nations</p></li>
+<li><p>Since the split of the two nations, Uroda has been a prosperous land, filled with beautiful lands and wealth</p></li>
+<li><p>Turpis, however, slowly fell into ruin due to reckless attempts at advancing technology at an unruly pace.
+The land became useless for growing crops, and the nation fell into severe poverty</p></li>
+<li><p>Turpis, despite being in poverty, is pouring all their last resources into the war. This is a huge
+gamble, as losing the war would lead to the collapse of the nation</p></li>
+<li><p>This new war broke out because Turpis’ leader desires to restore the original nation of Tatem and to rule over
+it, saving Turpis and having access to the wealth Uroda currently has</p></li>
+<li><p>For 2 years, the nations have fought, and either nation could still win. With the war being so close, each
+nation is desperate to do anything to win</p></li>
+</ul>
+</section>
+<section id="the-characters-lore">
+<h2>The Characters’ Lore<a class="headerlink" href="#the-characters-lore" title="Link to this heading">#</a></h2>
+<section id="the-roster">
+<h3>The Roster<a class="headerlink" href="#the-roster" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Anahita (Healer): excellent at healing using water-based magic</p></li>
+<li><p>Berry (Healer): excellent at healing and providing extra support to her army</p></li>
+<li><p>Fultra (Attacker): deals strong, electric damage with his bow</p></li>
+<li><p>Ninlil (Attacker): deals heavy damage using wind-based magic in her axe</p></li>
+<li><p>Calmus (Tank): takes hits and retaliates with potent fire magic that’s used to make himself stronger</p></li>
+<li><p>Irwin (Tank): uses advanced technology (a large shield and light armor made of a special metal) to
+increase his defenses</p></li>
+</ul>
+</section>
+<section id="anahita-the-altruistic">
+<h3>Anahita the Altruistic<a class="headerlink" href="#anahita-the-altruistic" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Full Name: Anahita Altu</p></li>
+</ul>
+<section id="background">
+<h4>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Anahita is the daughter of another nations’ greatest solider, Lac the Stout</p></li>
+<li><p>Throughout Anahita’s life, she’s looked up to her father and originally planned to become a soldier like him</p></li>
+<li><p>However, while at the age of 10, Anahita witnessed her father get brutally wounded by a gang of bandits that
+planned to destroy him</p></li>
+<li><p>At that time, Anahita was working on using her water magic to heal people</p></li>
+<li><p>Sadly, her healing powers were not strong enough to heal her father before he passed way from his injuries</p></li>
+<li><p>Ever since that day, she’s been devoted to healing others and helping the unfortunate</p></li>
+<li><p>And while doing so, she takes jobs to eliminate those that hurt others in other nations, prioritizing saving
+civilians</p></li>
+<li><p>And to this day, she’ still hunting down the bandits that killed her father</p></li>
+<li><p>With her kind, selfless personality, she is known as “Anahita the Altruistic”</p></li>
+</ul>
+</section>
+</section>
+<section id="berry-the-wild">
+<h3>Berry the Wild<a class="headerlink" href="#berry-the-wild" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Full Name: Berry Berry Lune</p></li>
+</ul>
+<section id="id1">
+<h4>Background<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Berry used to be a shop keeper in Turpis when she was young, selling a variety of potions</p></li>
+<li><p>However, with her carefree and curious personality, she started to experiment</p></li>
+<li><p>She specializes in healing and supporting others, but can make potions that can be quite detrimental</p></li>
+<li><p>She has no family and is simply a free spirit that chases where the money takes her, which is how she became
+a mercenary, working for whoever hires her</p></li>
+<li><p>Being a mercenary, she’s able to experiment with many potions, finding ways to make them stronger and more potent</p></li>
+<li><p>Her craze for these potion experiments on her enemies has granted her the title “Berry the Wild” or “Wildberry” in
+many nations</p></li>
+</ul>
+</section>
+</section>
+<section id="fultra-the-pompous">
+<h3>Fultra the Pompous<a class="headerlink" href="#fultra-the-pompous" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Full name: Fultra Von Drefou</p></li>
+</ul>
+<section id="id2">
+<h4>Background<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Fultra grew up in a very wealthy family, having everything he ever could’ve wanted</p></li>
+<li><p>He lived in a mansion, had servants to tend to his needs, and he didn’t need to lift a finger</p></li>
+<li><p>Due to his parents’ obsession with money, Fultra faced extreme child negation</p></li>
+<li><p>He would constantly do things to gain his parents’ approval/attention, only to be brushed off</p></li>
+<li><p>Fultra eventually ran away from home as a young teen, taking a lot of money from the safe and some of his
+family’s possessions – most importantly his grandfather’s bow and quiver</p></li>
+<li><p>Fultra tried to live a quiet life but simply couldn’t since he was used to living so lavishly</p></li>
+<li><p>He eventually bought himself a decent house and hired many people to help train him in combat</p></li>
+<li><p>He decided to leave the lavish life he knew and to become a mercenary, wanting to become famous so his parents
+would finally acknowledge him</p></li>
+<li><p>This path was also what his grandfather did, using electric magic to enhance his bow and arrows</p></li>
+<li><p>While Fultra tried to change his life style, living exuberantly was all he knew</p></li>
+<li><p>So while he became a famous mercenary with a keen eye, he’s also known for not wearing traditional armor/mercenary
+clothing. Instead, he wears light clothing such as his signature tank top and goggles</p></li>
+<li><p>His reasoning is that since he can strike from afar, he’ll defeat his opponents before they can even hurt him</p></li>
+<li><p>His style has granted him the title “Fultra the Pompous”</p></li>
+</ul>
+</section>
+</section>
+<section id="ninlil-the-mighty">
+<h3>Ninlil the Mighty<a class="headerlink" href="#ninlil-the-mighty" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Full name: Ninlil Typho</p></li>
+</ul>
+<section id="id3">
+<h4>Background<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Ninlil has constantly been bullied her whole life for her tiny size (she’s 3 feet tall)</p></li>
+<li><p>She abruptly stopped growing at the age 4 and has been stuck at that height ever since</p></li>
+<li><p>To compensate for being vertically challenged, she would work out and help out in the small village where she
+grew up. This includes partaking in hunting, fishing, lumber work, etc</p></li>
+<li><p>However, due to her size, she could barely pick up any of the tools used since they were as large as she was</p></li>
+<li><p>People then started to assume she was stupid for constantly trying to help, and she gained the local nickname
+of “Lil Ninny”</p></li>
+<li><p>However, the constant bullying and belittling she faced did not deter her</p></li>
+<li><p>She decided to train and to become known for her strength rather than her size</p></li>
+<li><p>She left her village as an early teen to work under other mercenaries</p></li>
+<li><p>By harnessing the power of wind-based magic and increasing her strength, she accomplished her dream and is
+feared by most for her sheer power</p></li>
+<li><p>She is now known as “Ninlil the Mighty”</p></li>
+</ul>
+</section>
+</section>
+<section id="calmus-the-ignited">
+<h3>Calmus the Ignited<a class="headerlink" href="#calmus-the-ignited" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Full name: Calmus Flak</p></li>
+</ul>
+<section id="id4">
+<h4>Background<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Calmus’ parents died when he was 6 due to war in another nation</p></li>
+<li><p>After the war, he had to care of his sister who was 1 year old at the time and live with his grandmother</p></li>
+<li><p>Wrecked with sorrow, he did not know how to handle his emotions properly, and would take them out on
+others, wishing he could’ve saved his parents despite his young age</p></li>
+<li><p>His grandmother helped him get through this and helped him use these emotions and harness them in fire magic</p></li>
+<li><p>As he grew, his flame grew hotter, and he was able to control them to take shape into certain objects</p></li>
+<li><p>He eventually decided to become a mercenary to prevent wars from getting to the point that he witnessed
+at a young age</p></li>
+<li><p>Before he left his grandmother and little sister, his grandmother gave him his father’s prized scimitar</p></li>
+<li><p>The scimitar has become part of Calmus’ identity, forcing all to fear the crescent-shaped sword and his
+shield of flames</p></li>
+<li><p>With his prowess, fiery personality, and strong, defensive fighting style, he’s gained the title of
+“Calmus the Ignited”</p></li>
+</ul>
+</section>
+</section>
+<section id="irwin-the-scarred">
+<h3>Irwin the Scarred<a class="headerlink" href="#irwin-the-scarred" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Full name: Irwin Devo</p></li>
+</ul>
+<section id="id5">
+<h4>Background<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>Irwin’s life has never been easy, and it stems from him being a troublemaker from a young age</p></li>
+<li><p>Abandoned by his parents, he lived in poverty, a vagabond</p></li>
+<li><p>He would sleep in trash heaps and wander from town to town, looking for anyone to help him (to no avail)</p></li>
+<li><p>Eventually, a man named Darrell, who was the leader of a gang of bandits, found Irwin and took him in</p></li>
+<li><p>He was fed, clothed, and learned how cruel the world was</p></li>
+<li><p>The group of bandits trained him, and he eventually became a prominent member at the age of 14</p></li>
+<li><p>Eventually, the bandits were raiding a town in a distant nation for money</p></li>
+<li><p>A solider named Lac the Stout lived in this town and tried to defend his home by
+himself (he was the only soldier there, so he fought to allow everyone a chance to escape, including his daughter)</p></li>
+<li><p>Irwin, who had only fought and never killed anyone, was terrified to see such a foe</p></li>
+<li><p>However, Lac got the better of Darrell and defeated him, the only man Irwin could call a father</p></li>
+<li><p>In a blind rage, Irwin caught Lac off guard and defeated him</p></li>
+<li><p>In the middle of the chaos, Irwin saw a little girl, terrified of what she had just witnessed</p></li>
+<li><p>After Lac was defeated, other soldiers from the nation had finally arrived, forcing the bandits to flee</p></li>
+<li><p>At the age of 15, Irwin became the new leader of the bandits since he had the most potential out of all of them</p></li>
+<li><p>Years later, he transformed the bandits into a group of mercenaries to help them have a steady income</p></li>
+<li><p>While being mercenaries, Irwin has gained many scars through his defensive yet reckless fighting style,
+giving him the title of “Irwin the Scarred”</p></li>
+</ul>
+</section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="visualizer.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Visualizer</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="credits.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Credits</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-story-lore">The Story Lore</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-characters-lore">The Characters’ Lore</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-roster">The Roster</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anahita-the-altruistic">Anahita the Altruistic</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#berry-the-wild">Berry the Wild</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Background</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fultra-the-pompous">Fultra the Pompous</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Background</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ninlil-the-mighty">Ninlil the Mighty</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Background</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calmus-the-ignited">Calmus the Ignited</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Background</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#irwin-the-scarred">Irwin the Scarred</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Background</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By NDSU ACM Byte-le 2025 Dev Team
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 1974-2025, NDSU ACM.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

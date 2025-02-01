@@ -58,12 +58,15 @@ is different.
 - Attack Moves
     - Uses the attacker's Attack Stat, the move's ``damage_points`` variable, and the target's Defense Stat in
       the damage formula to return a final value
+    - The ``damage_points`` integer is added to the character's attack stat for extra oomph
     - Refer to :doc:`helper` for the damage formula
 
 - Attack Effects
-    - *Only uses an integer* to deal damage to the target(s)
+    - *Only uses the integer* ``damage_points`` to deal damage to the target(s) without any extra calculations
     - For example, if a Move has an Attack Effect that has 20 damage points, it will deal 20 damage to the
       target(s) regardless of the attacker's Attack Stat or target's Defense Stat
+
+
 
 Special Points
 --------------
@@ -148,7 +151,7 @@ and the target(s) associated with it.
 TargetType                 Associated Targets
 ========================== =============================================================================================
 TargetType.SELF            The user of the move will be affected
-TargetType.ADJACENT_ALLIES Only character's *adjacent* to the user will be affected. This only applies to the user's
+TargetType.ADJACENT_ALLIES Only characters *adjacent* to the user will be affected. This only applies to the user's
                            team, not the opponents
 TargetType.ENTIRE_TEAM     *Every* character on the user's team will be affected, regardless of adjacency
 TargetType.SINGLE_OPP      The opposing character *across* the user on the game map will be affected

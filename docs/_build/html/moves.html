@@ -153,6 +153,7 @@
 <li class="toctree-l1"><a class="reference internal" href="enums.html">Enums</a></li>
 <li class="toctree-l1"><a class="reference internal" href="helper.html">Helper Methods &amp; Debugging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lore.html">The Lore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
 </ul>
 
@@ -375,6 +376,7 @@ is different.</p>
 <dt>Attack Moves</dt><dd><ul>
 <li><p>Uses the attacker’s Attack Stat, the move’s <code class="docutils literal notranslate"><span class="pre">damage_points</span></code> variable, and the target’s Defense Stat in
 the damage formula to return a final value</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">damage_points</span></code> integer is added to the character’s attack stat for extra oomph</p></li>
 <li><p>Refer to <a class="reference internal" href="helper.html"><span class="doc">Helper Methods &amp; Debugging</span></a> for the damage formula</p></li>
 </ul>
 </dd>
@@ -382,7 +384,7 @@ the damage formula to return a final value</p></li>
 </li>
 <li><dl class="simple">
 <dt>Attack Effects</dt><dd><ul>
-<li><p><em>Only uses an integer</em> to deal damage to the target(s)</p></li>
+<li><p><em>Only uses the integer</em> <code class="docutils literal notranslate"><span class="pre">damage_points</span></code> to deal damage to the target(s) without any extra calculations</p></li>
 <li><p>For example, if a Move has an Attack Effect that has 20 damage points, it will deal 20 damage to the
 target(s) regardless of the attacker’s Attack Stat or target’s Defense Stat</p></li>
 </ul>
@@ -484,7 +486,7 @@ and the target(s) associated with it.</p>
 <td><p>The user of the move will be affected</p></td>
 </tr>
 <tr class="row-odd"><td><p>TargetType.ADJACENT_ALLIES</p></td>
-<td><p>Only character’s <em>adjacent</em> to the user will be affected. This only applies to the user’s
+<td><p>Only characters <em>adjacent</em> to the user will be affected. This only applies to the user’s
 team, not the opponents</p></td>
 </tr>
 <tr class="row-even"><td><p>TargetType.ENTIRE_TEAM</p></td>
