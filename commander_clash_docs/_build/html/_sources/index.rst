@@ -36,6 +36,7 @@ question of yours, you may consult a commander (developer) at any time.
    stats
    moves
    characters
+   character_cont
    team
    actions
    game_logic
