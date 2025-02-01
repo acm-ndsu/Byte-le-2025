@@ -2,6 +2,12 @@
 Stats
 =====
 
+.. raw:: html
+
+    <style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style>
+
+.. role:: gold
+
 Every character has a unique set of stats, including health, attack, defense, and speed.
 
 Health
@@ -14,7 +20,7 @@ Health
 Health... represents how healthy a character is. What did you expect? The health will be represented by a character's
 ``current_health`` over their ``max_health``, such as ``current_health/max_health``.
 
-*Please note that a character's ``current_health`` and ``max_health`` are integers.*
+*Please note that a character's* ``current_health`` *and* ``max_health`` *are integers.*
 
 Stats
 =====
@@ -22,17 +28,39 @@ Stats
 Knowing how to manage and monitor a character's stats will be what sets your team apart from the others, so be sure
 to understand them well! How to access and use a character's stats are below.
 
-*Please note that the following stats are objects, not integers.*
+:gold:`Please note that the following stats are objects, not integers. They have properties that are integers.`
+
+Visual Icons
+------------
+
+Each stat is depicted by an icon on the :doc:`visualizer`.
+
+- Sword for the Attack Stat
+- Shield for the Defense Stat
+- Boot with wing for the Speed Stat
+
+If any of these icons have an *up* arrow, that means it is buffed (i.e., the stat's value is
+*greater* than its base value). If any of the icons have a *down* arrow, that means it is debuffed
+(i.e., the stat's value is *less* than its base value).
+
 
 Attack Stat
 -----------
 
-.. image:: ./_static/images/attack_buff.png
+.. image:: ./_static/images/stats/attack_buff.png
+   :width: 90
+   :align: center
+
+.. image:: ./_static/images/stats/attack_neutral.png
+   :width: 90
+   :align: center
+
+.. image:: ./_static/images/stats/attack_debuff.png
    :width: 90
    :align: center
 
 Attack is the amount of base damage a character can deal when using an Attack Move without any modifiers.
-Essentially, it is the strength of the character, reflected by an integer between 0 and 100.
+Essentially, it is the strength of the character, reflected by an integer between 1-100 inclusive.
 
 For example, if the attack stat is 50, the character will attempt to deal 50 points of damage to the target.
 
@@ -40,12 +68,20 @@ For example, if the attack stat is 50, the character will attempt to deal 50 poi
 Defense Stat
 ------------
 
-.. image:: ./_static/images/defense_buff.png
+.. image:: ./_static/images/stats/defense_buff.png
+   :width: 90
+   :align: center
+
+.. image:: ./_static/images/stats/defense_neutral.png
+   :width: 90
+   :align: center
+
+.. image:: ./_static/images/stats/defense_debuff.png
    :width: 90
    :align: center
 
 Defense is a percentage of the amount of damage a character can prevent from taking from an Attack, represented by an
-integer between 0 - 75.
+integer between 1-75 inclusive.
 
 For example, if the defense stat is 50, and the incoming damage is 50, the character will prevent 50% of the damage
 and take 25 points of damage.
@@ -53,13 +89,21 @@ and take 25 points of damage.
 Speed Stat
 ----------
 
-.. image:: ./_static/images/speed_buff.png
+.. image:: ./_static/images/stats/speed_buff.png
    :width: 90
    :align: center
 
-Speed is the stat that determines the order of your team and who gets to act first each turn. Visit
-:doc:`game_logic` for more details about turn order
-how the speed stat affects it.
+.. image:: ./_static/images/stats/speed_neutral.png
+   :width: 90
+   :align: center
+
+.. image:: ./_static/images/stats/speed_debuff.png
+   :width: 90
+   :align: center
+
+Speed is the stat that determines the order of your team and who gets to act first each turn. It is represented by a
+value between 1-100 inclusive. Visit :doc:`game_logic` for more details about turn order and how the speed stat
+affects it.
 
 Accessing a Character's Stats
 =============================

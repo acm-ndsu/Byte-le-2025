@@ -301,6 +301,7 @@
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#health">Health</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Stats</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visual-icons">Visual Icons</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attack-stat">Attack Stat</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defense-stat">Defense Stat</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-stat">Speed Stat</a></li>
@@ -326,7 +327,7 @@
                   
   <section id="stats">
 <h1>Stats<a class="headerlink" href="#stats" title="Link to this heading">#</a></h1>
-<p>Every character has a unique set of stats, including health, attack, defense, and speed.</p>
+<style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style><p>Every character has a unique set of stats, including health, attack, defense, and speed.</p>
 <section id="health">
 <h2>Health<a class="headerlink" href="#health" title="Link to this heading">#</a></h2>
 <figure class="align-center">
@@ -334,34 +335,52 @@
 </figure>
 <p>Health… represents how healthy a character is. What did you expect? The health will be represented by a character’s
 <code class="docutils literal notranslate"><span class="pre">current_health</span></code> over their <code class="docutils literal notranslate"><span class="pre">max_health</span></code>, such as <code class="docutils literal notranslate"><span class="pre">current_health/max_health</span></code>.</p>
-<p><em>Please note that a character’s ``current_health`` and ``max_health`` are integers.</em></p>
+<p><em>Please note that a character’s</em> <code class="docutils literal notranslate"><span class="pre">current_health</span></code> <em>and</em> <code class="docutils literal notranslate"><span class="pre">max_health</span></code> <em>are integers.</em></p>
 </section>
 <section id="id1">
 <h2>Stats<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>Knowing how to manage and monitor a character’s stats will be what sets your team apart from the others, so be sure
 to understand them well! How to access and use a character’s stats are below.</p>
-<p><em>Please note that the following stats are objects, not integers.</em></p>
+<p><span class="gold">Please note that the following stats are objects, not integers. They have properties that are integers.</span></p>
+<section id="visual-icons">
+<h3>Visual Icons<a class="headerlink" href="#visual-icons" title="Link to this heading">#</a></h3>
+<p>Each stat is depicted by an icon on the <a class="reference internal" href="visualizer.html"><span class="doc">Visualizer</span></a>.</p>
+<ul class="simple">
+<li><p>Sword for the Attack Stat</p></li>
+<li><p>Shield for the Defense Stat</p></li>
+<li><p>Boot with wing for the Speed Stat</p></li>
+</ul>
+<p>If any of these icons have an <em>up</em> arrow, that means it is buffed (i.e., the stat’s value is
+<em>greater</em> than its base value). If any of the icons have a <em>down</em> arrow, that means it is debuffed
+(i.e., the stat’s value is <em>less</em> than its base value).</p>
+</section>
 <section id="attack-stat">
 <h3>Attack Stat<a class="headerlink" href="#attack-stat" title="Link to this heading">#</a></h3>
 <a class="reference internal image-reference" href="_images/attack_buff.png"><img alt="_images/attack_buff.png" class="align-center" src="_images/attack_buff.png" style="width: 90px;" /></a>
+<a class="reference internal image-reference" href="_images/attack_neutral.png"><img alt="_images/attack_neutral.png" class="align-center" src="_images/attack_neutral.png" style="width: 90px;" /></a>
+<a class="reference internal image-reference" href="_images/attack_debuff.png"><img alt="_images/attack_debuff.png" class="align-center" src="_images/attack_debuff.png" style="width: 90px;" /></a>
 <p>Attack is the amount of base damage a character can deal when using an Attack Move without any modifiers.
-Essentially, it is the strength of the character, reflected by an integer between 0 and 100.</p>
+Essentially, it is the strength of the character, reflected by an integer between 1-100 inclusive.</p>
 <p>For example, if the attack stat is 50, the character will attempt to deal 50 points of damage to the target.</p>
 </section>
 <section id="defense-stat">
 <h3>Defense Stat<a class="headerlink" href="#defense-stat" title="Link to this heading">#</a></h3>
 <a class="reference internal image-reference" href="_images/defense_buff.png"><img alt="_images/defense_buff.png" class="align-center" src="_images/defense_buff.png" style="width: 90px;" /></a>
+<a class="reference internal image-reference" href="_images/defense_neutral.png"><img alt="_images/defense_neutral.png" class="align-center" src="_images/defense_neutral.png" style="width: 90px;" /></a>
+<a class="reference internal image-reference" href="_images/defense_debuff.png"><img alt="_images/defense_debuff.png" class="align-center" src="_images/defense_debuff.png" style="width: 90px;" /></a>
 <p>Defense is a percentage of the amount of damage a character can prevent from taking from an Attack, represented by an
-integer between 0 - 75.</p>
+integer between 1-75 inclusive.</p>
 <p>For example, if the defense stat is 50, and the incoming damage is 50, the character will prevent 50% of the damage
 and take 25 points of damage.</p>
 </section>
 <section id="speed-stat">
 <h3>Speed Stat<a class="headerlink" href="#speed-stat" title="Link to this heading">#</a></h3>
 <a class="reference internal image-reference" href="_images/speed_buff.png"><img alt="_images/speed_buff.png" class="align-center" src="_images/speed_buff.png" style="width: 90px;" /></a>
-<p>Speed is the stat that determines the order of your team and who gets to act first each turn. Visit
-<a class="reference internal" href="game_logic.html"><span class="doc">Game Logic</span></a> for more details about turn order
-how the speed stat affects it.</p>
+<a class="reference internal image-reference" href="_images/speed_neutral.png"><img alt="_images/speed_neutral.png" class="align-center" src="_images/speed_neutral.png" style="width: 90px;" /></a>
+<a class="reference internal image-reference" href="_images/speed_debuff.png"><img alt="_images/speed_debuff.png" class="align-center" src="_images/speed_debuff.png" style="width: 90px;" /></a>
+<p>Speed is the stat that determines the order of your team and who gets to act first each turn. It is represented by a
+value between 1-100 inclusive. Visit <a class="reference internal" href="game_logic.html"><span class="doc">Game Logic</span></a> for more details about turn order and how the speed stat
+affects it.</p>
 </section>
 </section>
 <section id="accessing-a-character-s-stats">
@@ -493,6 +512,7 @@ following comparisons below with any of the stats. These are just a few examples
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#health">Health</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Stats</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visual-icons">Visual Icons</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attack-stat">Attack Stat</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#defense-stat">Defense Stat</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-stat">Speed Stat</a></li>

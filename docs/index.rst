@@ -24,6 +24,8 @@ Before you do so, however, it is best that you understand the art of war. Please
 scroll (documentation) and refer to it anytime you find yourself lost. If this scroll does not appear to answer a
 question of yours, you may consult a commander (developer) at any time.
 
+.. image:: ./_static/images/cover_art.png
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
