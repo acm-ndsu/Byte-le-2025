@@ -327,7 +327,7 @@
                   
   <section id="stats">
 <h1>Stats<a class="headerlink" href="#stats" title="Link to this heading">#</a></h1>
-<style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style><p>Every character has a unique set of stats, including health, attack, defense, and speed.</p>
+<style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style><p>Every character has a unique set of Stats, including health, attack, defense, and speed.</p>
 <section id="health">
 <h2>Health<a class="headerlink" href="#health" title="Link to this heading">#</a></h2>
 <figure class="align-center">
@@ -344,15 +344,15 @@ to understand them well! How to access and use a character’s stats are below.<
 <p><span class="gold">Please note that the following stats are objects, not integers. They have properties that are integers.</span></p>
 <section id="visual-icons">
 <h3>Visual Icons<a class="headerlink" href="#visual-icons" title="Link to this heading">#</a></h3>
-<p>Each stat is depicted by an icon on the <a class="reference internal" href="visualizer.html"><span class="doc">Visualizer</span></a>.</p>
+<p>Each Stat is depicted by an icon on the <a class="reference internal" href="visualizer.html"><span class="doc">Visualizer</span></a>.</p>
 <ul class="simple">
 <li><p>Sword for the Attack Stat</p></li>
 <li><p>Shield for the Defense Stat</p></li>
 <li><p>Boot with wing for the Speed Stat</p></li>
 </ul>
-<p>If any of these icons have an <em>up</em> arrow, that means it is buffed (i.e., the stat’s value is
+<p>If any of these icons have an <em>up</em> arrow, that means it is buffed (i.e., the Stat’s value is
 <em>greater</em> than its base value). If any of the icons have a <em>down</em> arrow, that means it is debuffed
-(i.e., the stat’s value is <em>less</em> than its base value).</p>
+(i.e., the Stat’s value is <em>less</em> than its base value).</p>
 </section>
 <section id="attack-stat">
 <h3>Attack Stat<a class="headerlink" href="#attack-stat" title="Link to this heading">#</a></h3>
@@ -361,7 +361,7 @@ to understand them well! How to access and use a character’s stats are below.<
 <a class="reference internal image-reference" href="_images/attack_debuff.png"><img alt="_images/attack_debuff.png" class="align-center" src="_images/attack_debuff.png" style="width: 90px;" /></a>
 <p>Attack is the amount of base damage a character can deal when using an Attack Move without any modifiers.
 Essentially, it is the strength of the character, reflected by an integer between 1-100 inclusive.</p>
-<p>For example, if the attack stat is 50, the character will attempt to deal 50 points of damage to the target.</p>
+<p>For example, if the attack Stat is 50, the character will attempt to deal 50 points of damage to the target.</p>
 </section>
 <section id="defense-stat">
 <h3>Defense Stat<a class="headerlink" href="#defense-stat" title="Link to this heading">#</a></h3>
@@ -370,7 +370,7 @@ Essentially, it is the strength of the character, reflected by an integer betwee
 <a class="reference internal image-reference" href="_images/defense_debuff.png"><img alt="_images/defense_debuff.png" class="align-center" src="_images/defense_debuff.png" style="width: 90px;" /></a>
 <p>Defense is a percentage of the amount of damage a character can prevent from taking from an Attack, represented by an
 integer between 1-75 inclusive.</p>
-<p>For example, if the defense stat is 50, and the incoming damage is 50, the character will prevent 50% of the damage
+<p>For example, if the defense Stat is 50, and the incoming damage is 50, the character will prevent 50% of the damage
 and take 25 points of damage.</p>
 </section>
 <section id="speed-stat">
@@ -378,8 +378,8 @@ and take 25 points of damage.</p>
 <a class="reference internal image-reference" href="_images/speed_buff.png"><img alt="_images/speed_buff.png" class="align-center" src="_images/speed_buff.png" style="width: 90px;" /></a>
 <a class="reference internal image-reference" href="_images/speed_neutral.png"><img alt="_images/speed_neutral.png" class="align-center" src="_images/speed_neutral.png" style="width: 90px;" /></a>
 <a class="reference internal image-reference" href="_images/speed_debuff.png"><img alt="_images/speed_debuff.png" class="align-center" src="_images/speed_debuff.png" style="width: 90px;" /></a>
-<p>Speed is the stat that determines the order of your team and who gets to act first each turn. It is represented by a
-value between 1-100 inclusive. Visit <a class="reference internal" href="game_logic.html"><span class="doc">Game Logic</span></a> for more details about turn order and how the speed stat
+<p>Speed is the Stat that determines the order of your team and who gets to act first each turn. It is represented by a
+value between 1-100 inclusive. Visit <a class="reference internal" href="game_logic.html"><span class="doc">Game Logic</span></a> for more details about turn order and how the speed Stat
 affects it.</p>
 </section>
 </section>
@@ -393,8 +393,8 @@ affects it.</p>
 <span class="n">active_character</span><span class="o">.</span><span class="n">speed</span>
 </pre></div>
 </div>
-<p>Here is how you can access the base values (what the original stat of the character’s stat is; this is static)
-and the modified values (the value that will constantly change with stat buffs and debuffs) of the attack,
+<p>Here is how you can access the base values (what the original Stat of the character’s Stat is; this is static)
+and the modified values (the value that will constantly change with Stat buffs and debuffs) of the attack,
 defense, and speed stats:</p>
 <p>Accessing the base values:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">active_character</span><span class="o">.</span><span class="n">attack</span><span class="o">.</span><span class="n">base_value</span>
@@ -412,7 +412,7 @@ defense, and speed stats:</p>
 <section id="comparing-stats">
 <h2>Comparing Stats<a class="headerlink" href="#comparing-stats" title="Link to this heading">#</a></h2>
 <p>It may be useful to compare stats to others, and you can easily do so! You can treat the attack, defense, and speed
-stats like regular integers. You can also compare any stat with any stat (e.g., attack == speed). You can perform the
+stats like regular integers. You can also compare any Stat with any Stat (e.g., attack == speed). You can perform the
 following comparisons below with any of the stats. These are just a few examples:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">active_character</span><span class="o">.</span><span class="n">attack</span> <span class="o">==</span> <span class="n">other_character</span><span class="o">.</span><span class="n">attack</span>
 <span class="n">active_character</span><span class="o">.</span><span class="n">defense</span> <span class="o">==</span> <span class="n">other_character</span><span class="o">.</span><span class="n">defense</span>
@@ -437,7 +437,7 @@ following comparisons below with any of the stats. These are just a few examples
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Returns True if the stat used is at its maximum value (the maximum value varies depending on the stat)</p></li>
+<li><p>Returns True if the Stat used is at its maximum value (the maximum value varies depending on the Stat)</p></li>
 </ul>
 <p>Examples:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">attack_is_maxed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">active_character</span><span class="o">.</span><span class="n">attack</span><span class="o">.</span><span class="n">is_maxed</span><span class="p">()</span>
@@ -452,7 +452,7 @@ following comparisons below with any of the stats. These are just a few examples
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>Returns True if the stat used is at its minimum value (the minimum value will always be 1 regardless of the stat)</p></li>
+<li><p>Returns True if the Stat used is at its minimum value (the minimum value will always be 1, regardless of the Stat)</p></li>
 </ul>
 <p>Examples:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">attack_is_minimized</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">active_character</span><span class="o">.</span><span class="n">attack</span><span class="o">.</span><span class="n">is_minimized</span><span class="p">()</span>

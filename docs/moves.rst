@@ -23,7 +23,7 @@ composition, so pay attention to how they function!
 Types of Moves
 --------------
 
-There are four (4) types of Moves that a character's Moveset can contain:
+There are four types of Moves that a character's Moveset can contain:
 
 ================= ========================================================================================
 Move Type         Description
@@ -39,7 +39,7 @@ Effects
 -------
 
 Some Moves are useful for a character because they have secondary Effects. If a Move has a secondary Effect, the
-character is essentially performing two (2) Moves in one turn! Effects fall under the same four (4) categories:
+character is essentially performing two Moves in one turn! Effects fall under the same four categories:
 
 - :gold:`Attack`
 - :green:`Heal`
@@ -56,14 +56,17 @@ When it comes to Attack Moves and Attack Effects, they are similar in that they 
 is different.
 
 - Attack Moves
-    - Uses the attacker's Attack stat, the move's ``damage_points`` variable, and the target's Defense stat in
+    - Uses the attacker's Attack Stat, the move's ``damage_points`` variable, and the target's Defense Stat in
       the damage formula to return a final value
+    - The ``damage_points`` integer is added to the character's attack stat for extra oomph
     - Refer to :doc:`helper` for the damage formula
 
 - Attack Effects
-    - *Only uses an integer* to deal damage to the target(s)
+    - *Only uses the integer* ``damage_points`` to deal damage to the target(s) without any extra calculations
     - For example, if a Move has an Attack Effect that has 20 damage points, it will deal 20 damage to the
-      target(s) regardless of the attacker's Attack stat or target's Defense stat
+      target(s) regardless of the attacker's Attack Stat or target's Defense Stat
+
+
 
 Special Points
 --------------
@@ -74,7 +77,7 @@ Special Points
 
 Not all Moves can be used immediately. A character needs to build up the strength to use some moves by increasing
 their :cyan:`Special Points`. :cyan:`Special Points` (abbreviated as ":cyan:`SP`") can be gained and lost during a match
-depending on the Move that's used. A character can gain a maximum of five (5) :cyan:`SP`. How :cyan:`SP` are gained and
+depending on the Move that's used. A character can gain a maximum of five :cyan:`SP`. How :cyan:`SP` are gained and
 lost is explained in :ref:`Movesets<movesets>`.
 
 
@@ -84,7 +87,7 @@ Movesets
 .. _movesets:
 
 To contain a character's Moves, they have an attribute called a Moveset. A Moveset will contain 3 Moves that are broken
-into three (3) categories:
+into three categories:
 
 ========================= ==============================================================================================
 Moveset Identifier        Description

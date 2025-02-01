@@ -12,7 +12,7 @@ As you code, your ``take_turn()`` method *needs* to return a list. That list is 
 list needs to consist of only ActionType enums.
 
 Even though a list is being returned, *only the first enum in the list will be executed*. Please be mindful of this
-as you code!
+as you code! (This is simply due to the engine. Could it have been changed? ... yes, but we aren't paid for this. :D)
 
 
 Active Character

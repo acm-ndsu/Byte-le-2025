@@ -8,7 +8,7 @@ Stats
 
 .. role:: gold
 
-Every character has a unique set of stats, including health, attack, defense, and speed.
+Every character has a unique set of Stats, including health, attack, defense, and speed.
 
 Health
 ======
@@ -33,15 +33,15 @@ to understand them well! How to access and use a character's stats are below.
 Visual Icons
 ------------
 
-Each stat is depicted by an icon on the :doc:`visualizer`.
+Each Stat is depicted by an icon on the :doc:`visualizer`.
 
 - Sword for the Attack Stat
 - Shield for the Defense Stat
 - Boot with wing for the Speed Stat
 
-If any of these icons have an *up* arrow, that means it is buffed (i.e., the stat's value is
+If any of these icons have an *up* arrow, that means it is buffed (i.e., the Stat's value is
 *greater* than its base value). If any of the icons have a *down* arrow, that means it is debuffed
-(i.e., the stat's value is *less* than its base value).
+(i.e., the Stat's value is *less* than its base value).
 
 
 Attack Stat
@@ -62,7 +62,7 @@ Attack Stat
 Attack is the amount of base damage a character can deal when using an Attack Move without any modifiers.
 Essentially, it is the strength of the character, reflected by an integer between 1-100 inclusive.
 
-For example, if the attack stat is 50, the character will attempt to deal 50 points of damage to the target.
+For example, if the attack Stat is 50, the character will attempt to deal 50 points of damage to the target.
 
 
 Defense Stat
@@ -83,7 +83,7 @@ Defense Stat
 Defense is a percentage of the amount of damage a character can prevent from taking from an Attack, represented by an
 integer between 1-75 inclusive.
 
-For example, if the defense stat is 50, and the incoming damage is 50, the character will prevent 50% of the damage
+For example, if the defense Stat is 50, and the incoming damage is 50, the character will prevent 50% of the damage
 and take 25 points of damage.
 
 Speed Stat
@@ -101,8 +101,8 @@ Speed Stat
    :width: 90
    :align: center
 
-Speed is the stat that determines the order of your team and who gets to act first each turn. It is represented by a
-value between 1-100 inclusive. Visit :doc:`game_logic` for more details about turn order and how the speed stat
+Speed is the Stat that determines the order of your team and who gets to act first each turn. It is represented by a
+value between 1-100 inclusive. Visit :doc:`game_logic` for more details about turn order and how the speed Stat
 affects it.
 
 Accessing a Character's Stats
@@ -118,8 +118,8 @@ Here is how you can access any of a character's stats:
     active_character.defense
     active_character.speed
 
-Here is how you can access the base values (what the original stat of the character's stat is; this is static)
-and the modified values (the value that will constantly change with stat buffs and debuffs) of the attack,
+Here is how you can access the base values (what the original Stat of the character's Stat is; this is static)
+and the modified values (the value that will constantly change with Stat buffs and debuffs) of the attack,
 defense, and speed stats:
 
 Accessing the base values:
@@ -142,7 +142,7 @@ Comparing Stats
 ===============
 
 It may be useful to compare stats to others, and you can easily do so! You can treat the attack, defense, and speed
-stats like regular integers. You can also compare any stat with any stat (e.g., attack == speed). You can perform the
+stats like regular integers. You can also compare any Stat with any Stat (e.g., attack == speed). You can perform the
 following comparisons below with any of the stats. These are just a few examples:
 
 .. code-block::
@@ -172,7 +172,7 @@ Is Maxed Method
 
     def is_maxed(self) -> bool:
 
-- Returns True if the stat used is at its maximum value (the maximum value varies depending on the stat)
+- Returns True if the Stat used is at its maximum value (the maximum value varies depending on the Stat)
 
 Examples:
 
@@ -189,7 +189,7 @@ Is Minimized Method
 
     def is_minimized(self) -> bool:
 
-- Returns True if the stat used is at its minimum value (the minimum value will always be 1 regardless of the stat)
+- Returns True if the Stat used is at its minimum value (the minimum value will always be 1, regardless of the Stat)
 
 Examples:
 

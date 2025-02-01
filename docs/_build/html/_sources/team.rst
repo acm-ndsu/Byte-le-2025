@@ -9,8 +9,8 @@ and who you choose -- matters!
 Team Formation
 --------------
 
-Every team consists of *three (3) characters*. No more, and no less! Teams will consist of *one (1) Leader* and
-*two (2) Generic* characters. By finding a good combination of your hired team, victory for your country is assured!
+Every team consists of *three characters*. No more, and no less! Teams will consist of *one Leader* and
+*two Generic* characters. By finding a good combination of your hired team, victory for your country is assured!
 
 When forming a team, you do so by modifying the return statement of your ``team_data()`` method. Recall that this
 method returns a tuple containing 2 objects: a string literal and a nested tuple containing three enums in a specific
@@ -86,7 +86,7 @@ Valid Team Selections
 ---------------------
 
 When selecting a team, duplicate characters are allowed, but to an extent. Every team is allowed to have a *maximum of
-two (2)* characters with the same ClassType. The following will provide examples of valid team selections with
+two* characters with the same ClassType. The following will provide examples of valid team selections with
 characters of duplicate CharacterTypes:
 
 .. code-block:: python
@@ -100,7 +100,7 @@ characters of duplicate CharacterTypes:
     return (SelectGeneric.GEN_HEALER, SelectLeader.FULTRA, SelectGeneric.GEN_HEALER)
     return (SelectGeneric.GEN_ATTACKER, SelectLeader.CALMUS, SelectGeneric.GEN_ATTACKER)
 
-The first and second examples show that your Leader's ClassType can be the same as *one (1)* Generic's ClassType.
+The first and second examples show that your Leader's ClassType can be the same as *one* Generic's ClassType.
 
 The third example shows a team with every character having a unique ClassType (Healer, Attacker, Tank).
 
@@ -143,7 +143,7 @@ be replaced with Generic Trash.
 The fourth and fifth example are invalid since they have a single SelectLeader enum where a SelectGeneric enum
 should be. That enum would be replaced with Generic Trash.
 
-The last example has three (3) characters that have the same ClassType of Tank. The *Leader* would be replaced with
+The last example has three characters that have the same ClassType of Tank. The *Leader* would be replaced with
 Generic Trash in this case.
 
 Be mindful on how you order the tuple when selecting your team (unless you want to attempt to win at a deficit).

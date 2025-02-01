@@ -321,8 +321,8 @@
 and who you choose – matters!</p>
 <section id="team-formation">
 <h2>Team Formation<a class="headerlink" href="#team-formation" title="Link to this heading">#</a></h2>
-<p>Every team consists of <em>three (3) characters</em>. No more, and no less! Teams will consist of <em>one (1) Leader</em> and
-<em>two (2) Generic</em> characters. By finding a good combination of your hired team, victory for your country is assured!</p>
+<p>Every team consists of <em>three characters</em>. No more, and no less! Teams will consist of <em>one Leader</em> and
+<em>two Generic</em> characters. By finding a good combination of your hired team, victory for your country is assured!</p>
 <p>When forming a team, you do so by modifying the return statement of your <code class="docutils literal notranslate"><span class="pre">team_data()</span></code> method. Recall that this
 method returns a tuple containing 2 objects: a string literal and a nested tuple containing three enums in a specific
 order.</p>
@@ -390,7 +390,7 @@ middle; the third represents the second Generic that will be on the bottom.</p>
 <section id="valid-team-selections">
 <h2>Valid Team Selections<a class="headerlink" href="#valid-team-selections" title="Link to this heading">#</a></h2>
 <p>When selecting a team, duplicate characters are allowed, but to an extent. Every team is allowed to have a <em>maximum of
-two (2)</em> characters with the same ClassType. The following will provide examples of valid team selections with
+two</em> characters with the same ClassType. The following will provide examples of valid team selections with
 characters of duplicate CharacterTypes:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="p">(</span><span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_TANK</span><span class="p">,</span> <span class="n">SelectLeader</span><span class="o">.</span><span class="n">CALMUS</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_HEALER</span><span class="p">)</span>
 <span class="k">return</span> <span class="p">(</span><span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_ATTACKER</span><span class="p">,</span> <span class="n">SelectLeader</span><span class="o">.</span><span class="n">CALMUS</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_TANK</span><span class="p">)</span>
@@ -402,7 +402,7 @@ characters of duplicate CharacterTypes:</p>
 <span class="k">return</span> <span class="p">(</span><span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_ATTACKER</span><span class="p">,</span> <span class="n">SelectLeader</span><span class="o">.</span><span class="n">CALMUS</span><span class="p">,</span> <span class="n">SelectGeneric</span><span class="o">.</span><span class="n">GEN_ATTACKER</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The first and second examples show that your Leader’s ClassType can be the same as <em>one (1)</em> Generic’s ClassType.</p>
+<p>The first and second examples show that your Leader’s ClassType can be the same as <em>one</em> Generic’s ClassType.</p>
 <p>The third example shows a team with every character having a unique ClassType (Healer, Attacker, Tank).</p>
 <p>The fourth and fifth examples show how the two Generic characters can have the same ClassType, but the Leader
 <em>must</em> have a different ClassType.</p>
@@ -434,7 +434,7 @@ Trash.</p>
 be replaced with Generic Trash.</p>
 <p>The fourth and fifth example are invalid since they have a single SelectLeader enum where a SelectGeneric enum
 should be. That enum would be replaced with Generic Trash.</p>
-<p>The last example has three (3) characters that have the same ClassType of Tank. The <em>Leader</em> would be replaced with
+<p>The last example has three characters that have the same ClassType of Tank. The <em>Leader</em> would be replaced with
 Generic Trash in this case.</p>
 <p>Be mindful on how you order the tuple when selecting your team (unless you want to attempt to win at a deficit).</p>
 </section>

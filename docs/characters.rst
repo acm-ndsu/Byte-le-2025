@@ -13,7 +13,7 @@ VICTORY!!!
 Class Types
 ===========
 
-There are three (3) class types a character can be:
+There are three class types a character can be:
 
 =========================== =========================================================================================
 Class Type                  Description

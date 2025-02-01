@@ -28,7 +28,7 @@ or if you are on Linux:
     python3 -m venv ./
     source ./bin/activate
 
-this will create a virtual environment for your project and activate, or use, it. Any other commands can be ran within
+This will create a virtual environment for your project and activate, or use, it. Any other commands can be ran within
 this environment, including the next one.
 
 Please run the following command to install the necessary packages to run the game:
@@ -43,12 +43,12 @@ Objective
 =========
 
 Your objective is to create the perfect team of three mercenaries to defeat your opponents within 350 turns and claim
-victory over the battle. Your team will consist of two generic soldiers and one leader. Each character as a special set
-of moves, including three actions that they may use on their turn. Some of these actions may cost some special points to
-use, which is gathered by using their standard move. Each character will also have their own stats, including their
-max health, attack, speed, and defense.
+victory over the battle. Your team will consist of two generic soldiers and one leader. Each character has a special
+set of Moves. When executing their turn, they can choose one of these Moves to use. Some of these Moves may cost
+special points to use, which is gathered by using their Normal Move. Each character will also have their own
+stats, including their current health, max health, attack, speed, and defense.
 
-You can find more information on :doc:`characters`, as well as :doc:`stats` and :doc:`moves` in their respective docs.
+You can find more information on :doc:`characters`, as well as :doc:`stats` and :doc:`moves` in their respective pages.
 
 Tournament Structure
 ====================
@@ -65,8 +65,8 @@ Running the Game
 Python Version
 --------------
 
-Make sure to uninstall the visual studio version of python if you have visual studio installed.
-You can do this by re-running the installer and unselecting the python development kit then clicking update.
+Make sure to uninstall the Visual Studio Code version of Python if you have Visual Studio Code installed.
+You can do this by re-running the installer and unselecting the Python development kit then clicking update.
 
 :gold:`We require using Python version 3.12.` You can go to the
 `official Python website <https://www.python.org/downloads/release/python-3125/>`_ to download it.
@@ -95,7 +95,7 @@ We highly recommend cloning with GitHub Desktop or downloading the ZIP folder. E
 
 #. Download ZIP
     * Click ``Download ZIP`` and find it in your Downloads.
-    * Extract the files and save it some where on your device.
+    * Extract the files and save it somewhere on your device.
     * Use your IDE/text editor (Visual Studio Code is recommended) of choice and open the extracted folder downloaded.
     * You're ready to code!
 

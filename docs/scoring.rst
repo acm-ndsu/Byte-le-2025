@@ -25,28 +25,23 @@ Method                     Points          Description
                                            Go get 'em!
 :blue:`Differential Bonus` 150             These points will be awarded for every character that is alive on your team
                                            by the end of a game. These will always be rewarded, even on the losing team.
-:gold:`Winner's Bonus`     200             Your country :gold:`won` the war - congratulations! Now the land can know
-                                           peace. Here's a little extra something for your efforts!
+:gold:`Winner's Bonus`     250             Your country *completely* defeated the other and :gold:`won` the war
+                                           - congratulations! Now the land can know peace. Here's a little extra
+                                           something for your efforts!
 ========================== =============== =============================================================================
 
 Points Table
 ------------
 
-Here's a table showing how the score will change depending on how many characters are alive on the winning team.
+Here's a table showing how the score will change depending on how many characters are alive on the winning team
+(the winning team having defeated all characters from the opposing team).
 
 ============================================== ===== ===== =====
 Number of Remaining Characters on Winning Team 3     2     1
 ============================================== ===== ===== =====
-:gold:`Winner`                                 950   800   650
+:gold:`Winner`                                 1000  850   700
 :red:`Loser`                                   0     100   200
 ============================================== ===== ===== =====
-
-
-Final Score Formula
--------------------
-
-``# of defeated characters (100)`` + ``# of alive characters on your team (150)`` + ``winner's bonus``
-
 
 Ties
 ----
@@ -60,3 +55,11 @@ Characters Remaining on Both Teams 0     1     2     3
 :gold:`Uroda Team`                 300   350   400   450
 :purple:`Turpis Team`              300   350   400   450
 ================================== ===== ===== ===== =====
+
+Final Score Formula
+-------------------
+
+``# of defeated characters (100)`` + ``# of alive characters on your team (150)`` + ``winner's bonus if applicable``
+
+Regardless of if there is a clear winner or not, the formula will help you to calculate any other potential scores
+to predict the outcome of games.

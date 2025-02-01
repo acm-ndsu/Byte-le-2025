@@ -331,7 +331,7 @@
 composition, so pay attention to how they function!</p>
 <section id="types-of-moves">
 <h2>Types of Moves<a class="headerlink" href="#types-of-moves" title="Link to this heading">#</a></h2>
-<p>There are four (4) types of Moves that a character’s Moveset can contain:</p>
+<p>There are four types of Moves that a character’s Moveset can contain:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Move Type</p></th>
@@ -358,7 +358,7 @@ composition, so pay attention to how they function!</p>
 <section id="effects">
 <h2>Effects<a class="headerlink" href="#effects" title="Link to this heading">#</a></h2>
 <p>Some Moves are useful for a character because they have secondary Effects. If a Move has a secondary Effect, the
-character is essentially performing two (2) Moves in one turn! Effects fall under the same four (4) categories:</p>
+character is essentially performing two Moves in one turn! Effects fall under the same four categories:</p>
 <ul class="simple">
 <li><p><span class="gold">Attack</span></p></li>
 <li><p><span class="green">Heal</span></p></li>
@@ -373,7 +373,7 @@ is different.</p>
 <ul class="simple">
 <li><dl class="simple">
 <dt>Attack Moves</dt><dd><ul>
-<li><p>Uses the attacker’s Attack stat, the move’s <code class="docutils literal notranslate"><span class="pre">damage_points</span></code> variable, and the target’s Defense stat in
+<li><p>Uses the attacker’s Attack Stat, the move’s <code class="docutils literal notranslate"><span class="pre">damage_points</span></code> variable, and the target’s Defense Stat in
 the damage formula to return a final value</p></li>
 <li><p>Refer to <a class="reference internal" href="helper.html"><span class="doc">Helper Methods &amp; Debugging</span></a> for the damage formula</p></li>
 </ul>
@@ -384,7 +384,7 @@ the damage formula to return a final value</p></li>
 <dt>Attack Effects</dt><dd><ul>
 <li><p><em>Only uses an integer</em> to deal damage to the target(s)</p></li>
 <li><p>For example, if a Move has an Attack Effect that has 20 damage points, it will deal 20 damage to the
-target(s) regardless of the attacker’s Attack stat or target’s Defense stat</p></li>
+target(s) regardless of the attacker’s Attack Stat or target’s Defense Stat</p></li>
 </ul>
 </dd>
 </dl>
@@ -397,13 +397,13 @@ target(s) regardless of the attacker’s Attack stat or target’s Defense stat<
 <a class="reference internal image-reference" href="_images/sp_bar.gif"><img alt="_images/sp_bar.gif" class="align-center" src="_images/sp_bar.gif" style="width: 150px;" /></a>
 <p>Not all Moves can be used immediately. A character needs to build up the strength to use some moves by increasing
 their <span class="cyan">Special Points</span>. <span class="cyan">Special Points</span> (abbreviated as “<span class="cyan">SP</span>”) can be gained and lost during a match
-depending on the Move that’s used. A character can gain a maximum of five (5) <span class="cyan">SP</span>. How <span class="cyan">SP</span> are gained and
+depending on the Move that’s used. A character can gain a maximum of five <span class="cyan">SP</span>. How <span class="cyan">SP</span> are gained and
 lost is explained in <a class="reference internal" href="#id1"><span class="std std-ref">Movesets</span></a>.</p>
 </section>
 <section id="movesets">
 <h2>Movesets<a class="headerlink" href="#movesets" title="Link to this heading">#</a></h2>
 <p id="id1">To contain a character’s Moves, they have an attribute called a Moveset. A Moveset will contain 3 Moves that are broken
-into three (3) categories:</p>
+into three categories:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Moveset Identifier</p></th>
