@@ -39,6 +39,8 @@ def handle_move_logic(user: Character, targets: list[Character], current_move: M
     if is_normal_move:
         next_sp: int = user.special_points + 1
 
+        world.turn_info += f'\n{user.name} gained +1 special point! {user.name}\'s special points: {user.special_points}\n'
+
         # prevent the special points from going over the cap
         user.special_points = next_sp if next_sp <= SPECIAL_POINT_LIMIT else user.special_points
 

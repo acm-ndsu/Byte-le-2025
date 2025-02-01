@@ -101,9 +101,10 @@ class MoveController(Controller):
                     world.turn_info += (f'\n{user.name} has no targets for the secondary effect of '
                                         f'{current_move.name}!\n')
 
-                # add any additional characters to defeated_characters
+                # add any additional characters to defeated_characters IF the effect does damage
                 defeated_characters += [target for target in effect_targets if
-                                        target not in defeated_characters and target.current_health == 0]
+                                        target not in defeated_characters and target.current_health == 0 and
+                                        user.selected_move.effect.object_type == ObjectType.ATTACK_EFFECT]
 
             for char in defeated_characters:
                 world.turn_info += f'\n{user.name} defeated {char.name}!\n'

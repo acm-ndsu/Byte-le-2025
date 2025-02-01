@@ -230,7 +230,7 @@ class MasterController(Controller):
         if winner is not None:
             winner.team_manager.score += WIN_BONUS
 
-            print(f'{winner.team_name}\'s score after adding winning score of {WIN_BONUS}: '
+            print(f'{winner.team_name}\'s score after adding winning bonus of {WIN_BONUS}: '
                   f'{client2.team_manager.score}')
 
     # Return serialized version of game
