@@ -9,7 +9,7 @@ what they do already. Refer to this file to clear any confusion, and make any ch
 
 # Runtime settings / Restrictions --------------------------------------------------------------------------------------
 # The engine requires these to operate
-MAX_TICKS = 250                                     # max number of ticks the server will run regardless of game state
+MAX_TICKS = 300                                     # max number of ticks the server will run regardless of game state
 TQDM_BAR_FORMAT = "Game running at {rate_fmt} "     # how TQDM displays the bar
 TQDM_UNITS = " turns"                               # units TQDM takes in the bar
 
@@ -83,8 +83,9 @@ SPECIAL_POINT_LIMIT = 5                                             # The highes
 
 MINIMUM_DAMAGE = 1                                                  # Base damage to be dealt to prevent negative ints
 
-DEFEATED_SCORE = 100                                                # The points to award for each defeated character
-WIN_SCORE = 200                                                     # The points to award for winning a game
-DIFFERENTIAL_BONUS = 150                                            # The points to award for each alive character on the winning team
+DEFEATED_BONUS = 100                                                # The points to award for each defeated character
+DIFFERENTIAL_BONUS = 150                                            # The points to award for each alive character on either team
+WIN_BONUS = 250                                                     # The points to award for completely defeating the opposing team
+
 
 GENERIC_TRASH_NAME = 'Missing Character'                            # A name used for Generic Trash to convey a proper message to the players

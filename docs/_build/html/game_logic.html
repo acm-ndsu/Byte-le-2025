@@ -30,7 +30,7 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
   
   <!-- So that users can add custom icons -->
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=2b91c5f0"></script>
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -274,7 +274,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -290,6 +292,27 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#priority-of-actions">Priority of Actions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swapping">Swapping</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-control">Speed Control</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">Example 1</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">Example 2</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">Example 3</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-stat-values">Maximum Stat Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-stat-values">Minimum Stat Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#move-logic-helper-methods-put-me-in-helper-rst">Move Logic Helper Methods (put me in helper.rst)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gameboard-helper-methods-put-me-in-helper-rst">Gameboard Helper Methods (put me in helper.rst)</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -301,6 +324,107 @@
                   
   <section id="game-logic">
 <h1>Game Logic<a class="headerlink" href="#game-logic" title="Link to this heading">#</a></h1>
+<style> .purple {color:#A020F0; font-weight:bold; font-size:16px} </style>
+<style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style><p>The mechanics of this game are similar to many RPGs, but this is still unique in how some things are handled. Here
+is how the game logic works for this game.</p>
+<section id="priority-of-actions">
+<h2>Priority of Actions<a class="headerlink" href="#priority-of-actions" title="Link to this heading">#</a></h2>
+<section id="swapping">
+<h3>Swapping<a class="headerlink" href="#swapping" title="Link to this heading">#</a></h3>
+<p>Before any Move logic happens (anything related to Attacks, Heals, Buffs, or Debuffs), <em>swapping will always take
+priority and happen first</em>. If a character on the <span class="gold">Uroda</span> team wants to swap and a character on the
+<span class="purple">Turpis</span> team wants to attack, <em>the :gold:`Uroda` character would swap first</em> before the <span class="purple">Turpis</span>
+performs a Move. If <em>both</em> characters wanted to swap, they would swap as normal.</p>
+</section>
+<section id="speed-control">
+<h3>Speed Control<a class="headerlink" href="#speed-control" title="Link to this heading">#</a></h3>
+<p>If 2 characters plan on performing a Move as their action, this is when the Speed stat truly matters. When managing the
+Speed of two characters, there is the possibility of <em>speed ties</em> occurring. Here are examples on how the following
+situations would play out.</p>
+<section id="example-1">
+<h4>Example 1<a class="headerlink" href="#example-1" title="Link to this heading">#</a></h4>
+<p>Characters taking action:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><span class="gold">Uroda Attacker</span></dt><dd><ul>
+<li><p>Speed: 40</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><span class="purple">Turpis Tank</span></dt><dd><ul>
+<li><p>Speed: 30</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>In this example, the <span class="gold">Uroda Attacker</span> will perform a Move first. If, for example, it’s an Attack that would kill
+the <span class="purple">Turpis Tank</span>, the Turpis Tank would be defeated and cannot take the action it previously wanted to.</p>
+</section>
+<section id="example-2">
+<h4>Example 2<a class="headerlink" href="#example-2" title="Link to this heading">#</a></h4>
+<p>Characters taking action:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><span class="gold">Uroda Attacker</span></dt><dd><ul>
+<li><p>Speed: 40</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><span class="purple">Turpis Attacker</span></dt><dd><ul>
+<li><p>Speed: 40</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>In this example, a speed tie is present. Say the <span class="gold">Uroda Attacker</span> and <span class="purple">Turpis Attacker</span> both want to
+use an Attack and are both could be defeated. In this case, both would be able to attack <em>and</em> be defeated at the
+end of the turn.</p>
+</section>
+<section id="example-3">
+<h4>Example 3<a class="headerlink" href="#example-3" title="Link to this heading">#</a></h4>
+<p>Characters taking action:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><span class="gold">Uroda Attacker</span></dt><dd><ul>
+<li><p>Speed: 40</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><span class="purple">Turpis Healer</span></dt><dd><ul>
+<li><p>Speed: 40</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>THIS EXAMPLE IS BAD FIX LOGIC FIRST</p>
+<p>In this example, another speed tie is present. Say the <span class="gold">Uroda Attacker</span> wants to use an Attack since the
+<span class="purple">Turpis Healer</span> is almost defeated, but the <span class="purple">Turpis Healer</span> wants to use a Heal. Since these would
+happen at the same time, the <span class="gold">Uroda Attacker’s</span> damage would be applied first, but then the
+<span class="purple">Turpis Healer’s</span> healing would be applied next. Regardless, due to the</p>
+</section>
+</section>
+</section>
+<section id="maximum-stat-values">
+<h2>Maximum Stat Values<a class="headerlink" href="#maximum-stat-values" title="Link to this heading">#</a></h2>
+</section>
+<section id="minimum-stat-values">
+<h2>Minimum Stat Values<a class="headerlink" href="#minimum-stat-values" title="Link to this heading">#</a></h2>
+</section>
+<section id="move-logic-helper-methods-put-me-in-helper-rst">
+<h2>Move Logic Helper Methods (put me in helper.rst)<a class="headerlink" href="#move-logic-helper-methods-put-me-in-helper-rst" title="Link to this heading">#</a></h2>
+</section>
+<section id="gameboard-helper-methods-put-me-in-helper-rst">
+<h2>Gameboard Helper Methods (put me in helper.rst)<a class="headerlink" href="#gameboard-helper-methods-put-me-in-helper-rst" title="Link to this heading">#</a></h2>
+</section>
 </section>
 
 
@@ -338,6 +462,35 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#priority-of-actions">Priority of Actions</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#swapping">Swapping</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#speed-control">Speed Control</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1">Example 1</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2">Example 2</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example-3">Example 3</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-stat-values">Maximum Stat Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-stat-values">Minimum Stat Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#move-logic-helper-methods-put-me-in-helper-rst">Move Logic Helper Methods (put me in helper.rst)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gameboard-helper-methods-put-me-in-helper-rst">Gameboard Helper Methods (put me in helper.rst)</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
