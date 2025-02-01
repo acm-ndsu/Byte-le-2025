@@ -44,8 +44,8 @@ question of yours, you may consult a commander (developer) at any time.
    enums
    helper
    visualizer
-   lore
    credits
+   lore
 
 Search Page
 ===========
