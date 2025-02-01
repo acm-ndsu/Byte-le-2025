@@ -153,11 +153,13 @@ def generate_calmus() -> Leader:
 
 
 def generate_irwin() -> Leader:
-    nm_effect = BuffEffect(target_type=TargetType.SELF, buff_amount=1, stat_to_affect=ObjectType.DEFENSE_STAT)
-    nm: Attack = Attack(name='Striking Defense', target_type=TargetType.SINGLE_OPP, damage_points=1, effect=nm_effect)
+    nm: Buff = Buff(name='Reinforce', target_type=TargetType.SELF, buff_amount=1, effect=None,
+                    stat_to_affect=ObjectType.DEFENSE_STAT)
 
-    s1: Attack = Attack(name='Shield Bash', target_type=TargetType.SINGLE_OPP, cost=3, effect=None,
-                        damage_points=20)
+    s1_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SINGLE_OPP, debuff_amount=-2,
+                                           stat_to_affect=ObjectType.ATTACK_STAT)
+    s1: Attack = Attack(name='Weakening Bash', target_type=TargetType.SINGLE_OPP, cost=3, effect=None,
+                        damage_points=30)
 
     s2_effect = DebuffEffect(target_type=TargetType.SELF, debuff_amount=-7, stat_to_affect=ObjectType.DEFENSE_STAT)
     s2: Buff = Buff(name='My Soldiers\'s Rage', target_type=TargetType.ADJACENT_ALLIES, cost=5, buff_amount=7,
