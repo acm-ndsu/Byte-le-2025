@@ -153,6 +153,7 @@
 <li class="toctree-l1"><a class="reference internal" href="enums.html">Enums</a></li>
 <li class="toctree-l1"><a class="reference internal" href="helper.html">Helper Methods &amp; Debugging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lore.html">The Lore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
 </ul>
 
@@ -361,7 +362,7 @@ objects on the map!</p>
 <p>Vector objects are what represent coordinates. They also come with different methods to simplify common functions.</p>
 <section id="add-to-vector-method">
 <h4>Add To Vector Method<a class="headerlink" href="#add-to-vector-method" title="Link to this heading">#</a></h4>
-<p>Adds a given Vector objects coordinates to the Vector object being used and returns a new
+<p>Adds a given Vector object’s coordinates to the Vector object being used and returns a new
 Vector object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_to_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_vector</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">Vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">other_vector</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">other_vector</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
@@ -374,8 +375,8 @@ Vector object.</p>
 </section>
 <section id="add-x-y-method">
 <h4>Add X Y Method<a class="headerlink" href="#add-x-y-method" title="Link to this heading">#</a></h4>
-<p>Similar to the <code class="docutils literal notranslate"><span class="pre">add_to_vector()</span></code> method, this will take two ints <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> as parameters,
-add them to the Vector object being used, and return a new Vector with the summed coordiantes.</p>
+<p>Similar to the <code class="docutils literal notranslate"><span class="pre">add_to_vector()</span></code> method, this will take two ints <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> as parameters,
+add them to the Vector object being used, and return a new Vector with the summed coordinates.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_x_y</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Vector</span><span class="p">:</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_to_vector</span><span class="p">(</span><span class="n">Vector</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
 </pre></div>
@@ -408,13 +409,14 @@ with the summed coordinates.</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: An int representing the y coordinate</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: An int representing the y coordinate
+- In the code example you can use <code class="docutils literal notranslate"><span class="pre">Vector(y=y)</span></code> to only specify the <code class="docutils literal notranslate"><span class="pre">y</span></code> and let the <code class="docutils literal notranslate"><span class="pre">x</span></code> value be the default</p></li>
 <li><p>Returns a new Vector object with the summed coordinates</p></li>
 </ul>
 </section>
 <section id="as-tuple-method">
 <h4>As Tuple Method<a class="headerlink" href="#as-tuple-method" title="Link to this heading">#</a></h4>
-<p>Returns the Vector objects coordinates as a tuple object.</p>
+<p>Returns the Vector object’s coordinates as a tuple object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">as_tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
 </pre></div>
@@ -473,7 +475,7 @@ map.</p>
 <section id="get-characters-method">
 <h3>Get Characters Method<a class="headerlink" href="#get-characters-method" title="Link to this heading">#</a></h3>
 <p>Uses a CountryType enum as a parameter and returns a dictionary object
-with Vector: Character key-value pairings. All characters returned would be from the given
+with {Vector: Character} key-value pairings. All characters returned would be from the given
 country’s team. If None is given instead of an enum, <em>all</em> characters from <em>both</em> teams will be
 returned.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_characters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">country</span><span class="p">:</span> <span class="n">CountryType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Vector</span><span class="p">,</span> <span class="n">Character</span><span class="p">]</span>
