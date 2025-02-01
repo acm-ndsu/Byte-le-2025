@@ -141,7 +141,7 @@ Additional Damage Points 25
 
 Effect MoveType          DEBUFF
 Effect TargetType        SELF
-Stat Affected            Speed
+Stat Affected            SPEED
 Debuff Amount            -3
 ======================== ====================================
 
@@ -157,7 +157,7 @@ Additional Damage Points 45
 
 Effect MoveType          DEBUFF
 Effect TargetType        SELF
-Stat Affected            Speed
+Stat Affected            SPEED
 Debuff Amount            -5
 ======================== ====================================
 
@@ -425,7 +425,7 @@ Buff Amount              7
 
 Effect MoveType          DEBUFF
 Effect TargetType        SELF
-Stat Affected            Defense
+Stat Affected            DEFENSE
 Debuff Amount            -7
 ======================== ====================================
 
@@ -613,7 +613,7 @@ Additional Damage Points 10
 
 Effect MoveType          DEBUFF
 Effect TargetType        SINGLE_OPP
-Stat Affected            Speed
+Stat Affected            SPEED
 Debuff Amount            -1
 ======================== ====================================
 
@@ -672,7 +672,7 @@ Name                     Trashed Defense
 MoveType                 DEBUFF
 TargetType               SELF
 SP Cost                  0
-Stat Affected            Defense
+Stat Affected            DEFENSE
 Debuff Amount            -10
 
 Effect                   None
@@ -686,7 +686,7 @@ Name                     Trashed Speed
 MoveType                 DEBUFF
 TargetType               SELF
 SP Cost                  0
-Stat Affected            Speed
+Stat Affected            SPEED
 Debuff Amount            -10
 
 Effect                   None
