@@ -9,8 +9,8 @@ and who you choose -- matters!
 Team Formation
 --------------
 
-Every team consists of *three (3) characters*. No more, and no less! Teams will consist of *one (1) Leader* and
-*two (2) Generic* characters. By finding a good combination of your hired team, victory for your country is assured!
+Every team consists of *three characters*. No more, and no less! Teams will consist of *one Leader* and
+*two Generic* characters. By finding a good combination of your hired team, victory for your country is assured!
 
 When forming a team, you do so by modifying the return statement of your ``team_data()`` method. Recall that this
 method returns a tuple containing 2 objects: a string literal and a nested tuple containing three enums in a specific
@@ -36,7 +36,7 @@ middle; the third represents the second Generic that will be on the bottom.
 Selecting Leaders
 -----------------
 
-When selecting your Leader character, you can choose between 6 options. There are 2 leaders per ClassType:
+When selecting your Leader character, remember that you can choose between 6 options. There are 2 leaders per ClassType:
 
 Attacker ClassType:
     - Fultra
@@ -53,7 +53,7 @@ Tank ClassType:
 
 The enums to select any one of these characters are the following:
 
-.. code-block::
+.. code-block:: python
 
     SelectLeader.FULTRA
     SelectLeader.NINLIL
@@ -75,7 +75,7 @@ When selecting your Generic characters, you can choose between 3 options:
 
 The :doc:`enums` to select them are the following:
 
-.. code-block::
+.. code-block:: python
 
     SelectGeneric.GEN_ATTACKER
     SelectGeneric.GEN_HEALER
@@ -86,7 +86,7 @@ Valid Team Selections
 ---------------------
 
 When selecting a team, duplicate characters are allowed, but to an extent. Every team is allowed to have a *maximum of
-two (2)* characters with the same ClassType. The following will provide examples of valid team selections with
+two* characters with the same ClassType. The following will provide examples of valid team selections with
 characters of duplicate CharacterTypes:
 
 .. code-block:: python
@@ -100,7 +100,7 @@ characters of duplicate CharacterTypes:
     return (SelectGeneric.GEN_HEALER, SelectLeader.FULTRA, SelectGeneric.GEN_HEALER)
     return (SelectGeneric.GEN_ATTACKER, SelectLeader.CALMUS, SelectGeneric.GEN_ATTACKER)
 
-The first and second examples show that your Leader's ClassType can be the same as *one (1)* Generic's ClassType.
+The first and second examples show that your Leader's ClassType can be the same as *one* Generic's ClassType.
 
 The third example shows a team with every character having a unique ClassType (Healer, Attacker, Tank).
 
@@ -108,14 +108,15 @@ The fourth and fifth examples show how the two Generic characters can have the s
 *must* have a different ClassType.
 
 
-Malformed Character Selection
------------------------------
+Invalid Character Selection
+---------------------------
 
-In the case you to the dishonorable thing and try to cheat (🫵🤨) and submit a malformed team, you will *not*
-receive all the characters you desire, so be mindful. Any character that is determined malformed will be replaced
-with a different character: Generic Trash! Read more about Generic Trash in :doc:`characters`.
+In the case you do the dishonorable thing and try to cheat (🫵🤨) or make an innocent mistake (🥺👉👈) and submit an
+invalid team, you will *not* receive all the characters you desire, so be mindful. Any character that is
+determined invalid will be replaced with a different character: Generic Trash! Read more about
+Generic Trash in :doc:`characters`.
 
-Here are examples of malformed character selections:
+Here are examples of invalid character selections:
 
 .. code-block:: python
 
@@ -130,19 +131,19 @@ Here are examples of malformed character selections:
 
     return (SelectGeneric.GEN_TANK, SelectLeader.CALMUS, SelectGeneric.GEN_TANK)
 
-The first example is malformed since the ``SelectLeader`` enums are where the ``SelectGeneric`` enums should be, and
+The first example is invalid since the ``SelectLeader`` enums are where the ``SelectGeneric`` enums should be, and
 the ``SelectGeneric`` enum is where the ``SelectLeader`` enum should be. Every character would be replaced with Generic
 Trash.
 
-The second example is malformed since it's full of generics. The Generic Attacker would be replaced with Generic Trash.
+The second example is invalid since it's full of generics. The Generic Attacker would be replaced with Generic Trash.
 
-The third example is malformed since it's full of Leader characters. The first and third SelectLeader enums would
+The third example is invalid since it's full of Leader characters. The first and third SelectLeader enums would
 be replaced with Generic Trash.
 
-The fourth and fifth example are malformed since they have a single SelectLeader enum where a SelectGeneric enum
+The fourth and fifth example are invalid since they have a single SelectLeader enum where a SelectGeneric enum
 should be. That enum would be replaced with Generic Trash.
 
-The last example has three (3) characters that have the same ClassType of Tank. The *Leader* would be replaced with
+The last example has three characters that have the same ClassType of Tank. The *Leader* would be replaced with
 Generic Trash in this case.
 
 Be mindful on how you order the tuple when selecting your team (unless you want to attempt to win at a deficit).

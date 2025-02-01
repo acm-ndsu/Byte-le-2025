@@ -30,7 +30,7 @@
   <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=a3416100" />
   
   <!-- So that users can add custom icons -->
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/documentation_options.js?v=2b91c5f0"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -149,9 +149,12 @@
 <li class="toctree-l1"><a class="reference internal" href="team.html">Making a Team</a></li>
 <li class="toctree-l1"><a class="reference internal" href="actions.html">Taking Character Actions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="game_logic.html">Game Logic</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gameboard.html">The Gameboard</a></li>
 <li class="toctree-l1"><a class="reference internal" href="scoring.html">Scoring</a></li>
 <li class="toctree-l1"><a class="reference internal" href="enums.html">Enums</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helper.html">Helper Methods &amp; Debugging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lore.html">The Lore</a></li>
 <li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
 </ul>
 
@@ -313,13 +316,14 @@
   <section id="welcome-to-the-commander-clash-training-scroll">
 <h1>Welcome to the Commander Clash Training Scroll!<a class="headerlink" href="#welcome-to-the-commander-clash-training-scroll" title="Link to this heading">#</a></h1>
 <style> .purple {color:#A020F0; font-weight:bold; font-size:16px} </style>
-<style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style><p>For many years this battle has been fought, between the waring nations of <span class="purple">Turpis</span> and <span class="gold">Uroda</span>.
-For many years each nation has been waiting for the decisive battle that could bring an end to the war. Neither nation
+<style> .gold {color:#D4AF37; font-weight:bold; font-size:16px} </style><p>For many years, this battle has been fought between the warring nations of <span class="purple">Turpis</span> and <span class="gold">Uroda</span>.
+For many years, each nation has been waiting for the decisive battle that could bring an end to the war. Neither nation
 expected such a battle to be fought by mercenaries, but these are desperate times indeed. That is where you come in,
-captain. You much organize and lead your group of mercenaries to battle and deliver us the end of the war!</p>
-<p>Before you do so, however, it is best that you understand the art of war. Please, review and learn from this training
+Captain. You must organize and lead your group of mercenaries to battle and deliver us the end of the war!</p>
+<p>Before you do so, however, it is best that you understand the art of war. Please review and learn from this training
 scroll (documentation) and refer to it anytime you find yourself lost. If this scroll does not appear to answer a
-question of yours, you may consult a commander (developer) over at any time.</p>
+question of yours, you may consult a commander (developer) at any time.</p>
+<img alt="_images/cover_art.png" src="_images/cover_art.png" />
 <div class="toctree-wrapper compound">
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -341,15 +345,15 @@ question of yours, you may consult a commander (developer) over at any time.</p>
 <li class="toctree-l2"><a class="reference internal" href="server.html#registering">Registering</a></li>
 <li class="toctree-l2"><a class="reference internal" href="server.html#client-commands">Client Commands</a></li>
 <li class="toctree-l2"><a class="reference internal" href="server.html#extra-help">Extra Help</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server.html#code-time-outs">Code Time-Outs</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="stats.html">Stats</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="stats.html#health">Health</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stats.html#attack-stat">Attack Stat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stats.html#defense-stat">Defense Stat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stats.html#speed-stat">Speed Stat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stats.html#id1">Stats</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stats.html#accessing-a-character-s-stats">Accessing a Character’s Stats</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stats.html#comparing-stats">Comparing Stats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stats.html#useful-methods">Useful Methods</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="moves.html">Moves</a><ul>
@@ -371,22 +375,33 @@ question of yours, you may consult a commander (developer) over at any time.</p>
 <li class="toctree-l2"><a class="reference internal" href="team.html#selecting-leaders">Selecting Leaders</a></li>
 <li class="toctree-l2"><a class="reference internal" href="team.html#selecting-generics">Selecting Generics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="team.html#valid-team-selections">Valid Team Selections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="team.html#malformed-character-selection">Malformed Character Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="team.html#invalid-character-selection">Invalid Character Selection</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="actions.html">Taking Character Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actions.html">Taking Character Actions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#actions-list">Actions List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#active-character">Active Character</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#normal-move">Normal Move</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#special-move-1">Special Move 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#special-move-2">Special Move 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="actions.html#swapping">Swapping</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="game_logic.html">Game Logic</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="game_logic.html#priority-of-actions">Priority of Actions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="game_logic.html#maximum-stat-values">Maximum Stat Values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="game_logic.html#minimum-stat-values">Minimum Stat Values</a></li>
-<li class="toctree-l2"><a class="reference internal" href="game_logic.html#move-logic-helper-methods-put-me-in-helper-rst">Move Logic Helper Methods (put me in helper.rst)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="game_logic.html#gameboard-helper-methods-put-me-in-helper-rst">Gameboard Helper Methods (put me in helper.rst)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="game_logic.html#maximum-and-minimum-values">Maximum and Minimum Values</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gameboard.html">The Gameboard</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gameboard.html#layout">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gameboard.html#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gameboard.html#gameboard">Gameboard</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="scoring.html">Scoring</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="scoring.html#points-table">Points Table</a></li>
-<li class="toctree-l2"><a class="reference internal" href="scoring.html#final-score-formula">Final Score Formula</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scoring.html#ties">Ties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scoring.html#final-score-formula">Final Score Formula</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="enums.html">Enums</a><ul>
@@ -401,8 +416,26 @@ question of yours, you may consult a commander (developer) over at any time.</p>
 <li class="toctree-l2"><a class="reference internal" href="enums.html#objecttype">ObjectType*</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helper.html">Helper Methods &amp; Debugging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="helper.html#move-logic-helper-methods">Move Logic Helper Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="helper.html#debugging">Debugging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="visualizer.html">Visualizer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="visualizer.html#the-screen">The Screen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualizer.html#active-character-indicator">Active Character Indicator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualizer.html#controls">Controls</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lore.html">The Lore</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lore.html#the-story-lore">The Story Lore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lore.html#the-characters-lore">The Characters’ Lore</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="credits.html">Credits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="credits.html#thank-you-thank-you-thank-you">THANK YOU, THANK YOU, THANK YOU!</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <section id="search-page">

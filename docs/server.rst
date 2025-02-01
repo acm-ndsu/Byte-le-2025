@@ -133,3 +133,10 @@ or
     python launcher.pyz c l -h
 
 will show you the help descriptions of all client and leaderboard commands respectively.
+
+Code Time-Outs
+==============
+
+Every team is allowed a maximum of 0.1 seconds for their code to execute. If your code takes longer than this
+allotted time, the code will not be executed. This is to ensure the competition runs smoothly and pushes
+competitors to write efficient code. Good luck, and think hard!

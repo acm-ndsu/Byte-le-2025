@@ -100,6 +100,19 @@ def calculate_healing(target: Character, current_move: AbstractHeal) -> int:
     return min(current_move.heal_points, target.max_health - target.current_health)
 
 
+def calculate_stat_modification(target: Character, current_move: AbstractBuff | AbstractDebuff) -> int:
+    """
+    Calculates how a stat will change when the current_move's buff or debuff amount is applied to it.
+    """
+    stat_to_affect: Stat = __get_stat_object_to_affect(target, current_move)
+
+    # calculate the final value by adding either the buff or debuff amount from the current move
+    final_value: int = stat_to_affect.value + current_move.buff_amount if isinstance(current_move, AbstractBuff) \
+        else stat_to_affect.value + current_move.debuff_amount
+
+    return final_value
+
+
 def __calc_and_apply_damage(user: Character, targets: list[Character], current_move: AbstractAttack, world: GameBoard):
     """
     Calculates the damage to deal for every target and applies it to the target's health.
