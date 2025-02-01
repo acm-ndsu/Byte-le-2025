@@ -259,7 +259,7 @@ Heal Points              20
 
 Effect MoveType          HEAL
 Effect TargetType        SELF
-Heal Points              5
+Heal Points              10
 ======================== ====================================
 
 
@@ -390,7 +390,9 @@ TargetType               SELF
 SP Cost                  0
 Buff Amount              1
 
-Effect                   None
+Effect MoveType          HEAL
+Effect TargetType        SELF
+Heal Points              30
 ======================== ====================================
 
 
@@ -553,7 +555,7 @@ Special 2
 Name                     Team Heal
 MoveType                 HEAL
 TargetType               ENTIRE_TEAM
-SP Cost                  4
+SP Cost                  3
 Heal Points              120
 
 Effect                   None
@@ -576,10 +578,10 @@ Generic Tank
 Generic Tank's Character Info
 =============================== =============================================================
 Class Type                      Tank
-Base Health                     75 (750)
+Base Health                     54 (750)
 Base Attack                     30
-Base Defense                    30
-Base Speed                      36
+Base Defense                    33
+Base Speed                      33
 =============================== =============================================================
 
 Moveset
