@@ -42,7 +42,7 @@ def generate_anahita() -> Leader:
 def generate_berry() -> Leader:
     # We first make the secondary effect for readability
     # We then create the primary move and add the secondary effect to it
-    nm_effect: HealEffect = HealEffect(target_type=TargetType.SELF, heal_points=5)
+    nm_effect: HealEffect = HealEffect(target_type=TargetType.SELF, heal_points=10)
     nm: Heal = Heal(name='Healing Potion', target_type=TargetType.ENTIRE_TEAM, effect=nm_effect, heal_points=20)
 
     s1: Debuff = Debuff(name='Debuff Potion', target_type=TargetType.SINGLE_OPP, cost=2, effect=None, debuff_amount=-2,
@@ -152,7 +152,8 @@ def generate_calmus() -> Leader:
 
 
 def generate_irwin() -> Leader:
-    nm: Buff = Buff(name='Reinforce', target_type=TargetType.SELF, buff_amount=1, effect=None,
+    nm_effect: HealEffect = HealEffect(target_type=TargetType.SELF, heal_points=30)
+    nm: Buff = Buff(name='Reinforce', target_type=TargetType.SELF, buff_amount=2, effect=nm_effect,
                     stat_to_affect=ObjectType.DEFENSE_STAT)
 
     s1_effect: DebuffEffect = DebuffEffect(target_type=TargetType.SINGLE_OPP, debuff_amount=-3,
@@ -208,7 +209,7 @@ def generate_generic_healer(name: str = 'Healer') -> GenericHealer:
 
     s1: Heal = Heal(name='First Aid', target_type=TargetType.SELF, cost=0, heal_points=85)
 
-    s2: Heal = Heal(name='Team Heal', target_type=TargetType.ENTIRE_TEAM, cost=4,
+    s2: Heal = Heal(name='Team Heal', target_type=TargetType.ENTIRE_TEAM, cost=3,
                     heal_points=120)
 
     hp: int = 35
@@ -231,10 +232,10 @@ def generate_generic_tank(name: str = 'Tank') -> GenericTank:
 
     s2: Attack = Attack(name='Shoulder Rush', target_type=TargetType.ALL_OPPS, cost=3, damage_points=7)
 
-    hp: int = 75
+    hp: int = 54
     atk: AttackStat = AttackStat(30)
-    defense: DefenseStat = DefenseStat(30)
-    spd: SpeedStat = SpeedStat(36)
+    defense: DefenseStat = DefenseStat(33)
+    spd: SpeedStat = SpeedStat(33)
     # Then we add the finished moves into a moveset
     moves: Moveset = Moveset((nm, s1, s2))
     return GenericTank(name=name, class_type=ClassType.TANK, health=hp, attack=atk, defense=defense,
