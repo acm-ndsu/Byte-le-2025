@@ -104,7 +104,8 @@ class MoveController(Controller):
                 # add any additional characters to defeated_characters IF the effect does damage
                 defeated_characters += [target for target in effect_targets if
                                         target not in defeated_characters and target.current_health == 0 and
-                                        user.selected_move.effect.object_type == ObjectType.ATTACK_EFFECT]
+                                        user.selected_move.effect.object_type == ObjectType.ATTACK_EFFECT
+                                        and user.object_type != target.object_type]
 
             for char in defeated_characters:
                 world.turn_info += f'\n{user.name} defeated {char.name}!\n'
@@ -240,6 +241,7 @@ class MoveController(Controller):
             # sync the client's team manager reference of the character
             tm_character: Character = tm_to_use.get_character(active_char.name)
 
+            tm_character.current_health = active_char.current_health
             tm_character.attack = active_char.attack
             tm_character.defense = active_char.defense
             tm_character.speed = active_char.speed
@@ -252,6 +254,7 @@ class MoveController(Controller):
             # sync the game map's reference of the character
             gm_character: Character = world.get_character_from(active_char.position)
 
+            gm_character.current_health = active_char.current_health
             gm_character.attack = active_char.attack
             gm_character.defense = active_char.defense
             gm_character.speed = active_char.speed

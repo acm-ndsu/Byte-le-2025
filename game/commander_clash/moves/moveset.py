@@ -61,7 +61,7 @@ class Moveset(GameObject):
         self.__moves = moves
 
     def get_nm(self) -> Move:
-        return self.moves['NA']
+        return self.moves['NM']
 
     def get_s1(self) -> Move:
         return self.moves['S1']
