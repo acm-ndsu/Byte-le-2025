@@ -15,7 +15,7 @@ Credits
 THANK YOU, THANK YOU, THANK YOU!
 ================================
 
-A HUGE thank you to everyone that competed this year in Byte-le! We hope is was memorable and very enjoyable for
+A HUGE thank you to everyone that competed this year in Byte-le! We hope this was memorable and very enjoyable for
 you all!
 
 And an even BIIIIIIGGER thank you to everyone that helped make this year's game possible. Any contribution to the
@@ -60,6 +60,13 @@ Thank you to:
 
 ----
 
+.. figure:: ./_static/images/credits/katelinn.png
+    :width: 400
+
+    Katelinn Beck the Baker (:purple:`Turpis`)
+
+----
+
 Featuring Alumni:
 
 .. figure:: ./_static/images/credits/jean.png
@@ -79,3 +86,10 @@ Featuring Alumni:
     :width: 400
 
     Mason Myles the Supportive (:gold:`Uroda`)
+
+----
+
+.. figure:: ./_static/images/credits/carson.png
+    :width: 400
+
+    Carson Keeping the Hungry (:gold:`Uroda`)
