@@ -43,7 +43,7 @@ class TestMoveset(unittest.TestCase):
         data: dict = self.moveset.to_json()
         other_moveset: Moveset = Moveset().from_json(data)
 
-        self.assertEqual(['NA', 'S1', 'S2'], list(self.moveset.moves.keys()))
+        self.assertEqual(['NM', 'S1', 'S2'], list(self.moveset.moves.keys()))
 
         for move, other_move in zip(self.moveset.moves.values(), other_moveset.moves.values()):
             self.assertEqual(move.object_type, other_move.object_type)

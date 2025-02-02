@@ -76,7 +76,7 @@ class Moveset(GameObject):
         """
         Helper method to make the dict for the moveset.
         """
-        keys: tuple[str, str, str] = ('NA', 'S1', 'S2')
+        keys: tuple[str, str, str] = ('NM', 'S1', 'S2')
         return dict(zip(keys, moves))
 
     def to_json(self) -> dict:
