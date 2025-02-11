@@ -12,7 +12,7 @@ def verify_code(filename: str) -> ([], bool, bool):
     with open(filename, 'r') as f:
         contents = f.read()
 
-    contents = contents.splitlines()
+    contents = re.sub("#.*$|\"\"\"[\\S\\s]*?\"\"\"|'''[\\S\\s]*?'''|\"[^\"].*?[^\\\\]\"|'[^'].*?[^\\\\]'", "", contents).splitlines()
 
     illegal_imports = list()
     uses_open = False
